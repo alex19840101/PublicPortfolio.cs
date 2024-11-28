@@ -1,0 +1,17 @@
+**/DeployPackage/
+**/bin/
+**/obj/
+**/.vs/
+*.suo
+*.orig
+*.user
+*.svclog
+*.tds
+*.~*
+*.obj
+*.exe
+.Debug.
+Web.Debug.config
+Web.Release.config
+
+/OAuth/.tools/linq2db.t4models
