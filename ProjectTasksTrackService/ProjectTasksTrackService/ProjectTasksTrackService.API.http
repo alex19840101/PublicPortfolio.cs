@@ -1,0 +1,11 @@
+﻿@ProjectTasksTrackService.API_HostAddress = https://localhost:7120
+
+POST {{ProjectTasksTrackService.API_HostAddress}}/create
+Content-Type: application/json
+
+{
+    "id":0,
+    "name":"new project"
+}
+
+###

@@ -17,14 +17,14 @@ namespace ProjectTasksTrackService.API.Controllers
             _projectsService = projectsService;
         }
 
-        [HttpPost("[action]")]
+        [HttpPost(Name = "Create")]
         public async Task<Project> Create(Project project)
         {
             return await _projectsService.Create(project);
         }
 
-        [HttpGet("[action]")]
-        public async Task<IEnumerable<Project>> GetProjects()
+        [HttpGet(Name = "GetProjects")]
+        public async Task<IEnumerable<Project>> Read()
         {
             return await _projectsService.GetProjects();
         }
