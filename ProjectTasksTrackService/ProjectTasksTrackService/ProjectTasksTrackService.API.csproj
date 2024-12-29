@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ProjectTasksTrackService.BusinessLogic\ProjectTasksTrackService.BusinessLogic.csproj" />
     <ProjectReference Include="..\ProjectTasksTrackService.Core\ProjectTasksTrackService.Contracts.csproj" />
+    <ProjectReference Include="..\ProjectTasksTrackService.DataAccess\ProjectTasksTrackService.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

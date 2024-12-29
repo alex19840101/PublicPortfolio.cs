@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using ProjectTasksTrackService.API.DtoModels;
+using ProjectTasksTrackService.Contracts;
 using ProjectTasksTrackService.Contracts.Services;
 
 namespace ProjectTasksTrackService.API.Controllers
@@ -16,10 +17,16 @@ namespace ProjectTasksTrackService.API.Controllers
             _projectsService = projectsService;
         }
 
-        [HttpGet(Name = "GetProjects")]
-        public IEnumerable<Project> GetProjects()
+        [HttpPost("[action]")]
+        public async Task<Project> Create(Project project)
         {
-            throw new NotImplementedException();
+            return await _projectsService.Create(project);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<Project>> GetProjects()
+        {
+            return await _projectsService.GetProjects();
         }
     }
 }

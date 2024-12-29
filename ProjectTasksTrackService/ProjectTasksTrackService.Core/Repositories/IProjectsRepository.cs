@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectTasksTrackService.Contracts.Services
+namespace ProjectTasksTrackService.Contracts.Repositories
 {
-    public interface IProjectsService
+    public interface IProjectsRepository
     {
-        Task<Project> Create(Project project);
+        Task<Project> Add(Project project);
         Task<IEnumerable<Project>> GetProjects();
     }
 }

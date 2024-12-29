@@ -1,6 +1,6 @@
 @ProjectTasksTrackService_HostAddress = http://localhost:5255
 
-GET {{ProjectTasksTrackService_HostAddress}}/weatherforecast/
+GET {{ProjectTasksTrackService_HostAddress}}/ProjectTasksTrackService/
 Accept: application/json
 
 ###

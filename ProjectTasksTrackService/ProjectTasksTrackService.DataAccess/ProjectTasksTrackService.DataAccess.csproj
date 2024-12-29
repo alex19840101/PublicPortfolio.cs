@@ -5,4 +5,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ProjectTasksTrackService.Core\ProjectTasksTrackService.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>
