@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ProjectTasksTrackService.API.Contracts.Dto;
 
@@ -15,5 +12,11 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
         Task<ProjectDto> GetProjectByNum(int legacyProjectNumber);
         Task<ProjectDto> GetProjectByName(string name);
         Task<string> Import(IEnumerable<OldProjectDto> projects);
+        Task<string> UpdateProject(ProjectDto projectDto);
+        Task<string> UpdateName(string projectId, string newName);
+        Task<string> UpdateUrl(string projectId, string url);
+        Task<string> UpdateImageUrl(string projectId, string imageUrl);
+        Task<string> UpdateScheduledDayNums(string projectId, HashSet<byte> scheduledDayNums);
+        Task<string> DeleteProject(string projectId, string projectSecretString);
     }
 }

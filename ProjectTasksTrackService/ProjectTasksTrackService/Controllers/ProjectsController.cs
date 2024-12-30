@@ -50,22 +50,62 @@ namespace ProjectTasksTrackService.API.Controllers
         }
 
         [HttpGet("api/Projects/GetProjectById")]
-        public Task<ProjectDto> GetProjectById(string projectId)
+        public async Task<ProjectDto> GetProjectById(string projectId)
         {
-            throw new System.NotImplementedException();
+            var project = await _projectsService.GetProjectById(projectId);
+            return ProjectDto(project);
         }
 
         [HttpGet("api/Projects/GetProjectByNum")]
-        public Task<ProjectDto> GetProjectByNum(int legacyProjectNumber)
+        public async Task<ProjectDto> GetProjectByNum(int legacyProjectNumber)
         {
-            throw new System.NotImplementedException();
+            var project = await _projectsService.GetProjectByNum(legacyProjectNumber);
+            return ProjectDto(project);
         }
 
         [HttpGet("api/Projects/GetProjectByName")]
-        public Task<ProjectDto> GetProjectByName(string name)
+        public async Task<ProjectDto> GetProjectByName(string name)
         {
-            throw new System.NotImplementedException();
+            var project = await _projectsService.GetProjectByName(name);
+            return ProjectDto(project);
         }
+        
+        [HttpPost("api/Projects/UpdateProject")]
+        public async Task<string> UpdateProject(ProjectDto projectDto)
+        {
+            return await _projectsService.UpdateProject(Project(projectDto));
+        }
+
+        [HttpPost("api/Projects/UpdateName")]
+        public async Task<string> UpdateName(string projectId, string newName)
+        {
+            return await _projectsService.UpdateName(projectId, newName);
+        }
+
+        [HttpPost("api/Projects/UpdateUrl")]
+        public async Task<string> UpdateUrl(string projectId, string url)
+        {
+            return await _projectsService.UpdateUrl(projectId, url);
+        }
+
+        [HttpPost("api/Projects/UpdateImageUrl")]
+        public async Task<string> UpdateImageUrl(string projectId, string imageUrl)
+        {
+            return await _projectsService.UpdateImageUrl(projectId, imageUrl);
+        }
+
+        [HttpPost("api/Projects/UpdateScheduledDayNums")]
+        public async Task<string> UpdateScheduledDayNums(string projectId, HashSet<byte> scheduledDayNums)
+        {
+            return await _projectsService.UpdateScheduledDayNums(projectId, scheduledDayNums);
+        }
+
+        [HttpPost("api/Projects/DeleteProject")]
+        public async Task<string> DeleteProject(string projectId, string projectSecretString)
+        {
+            return await _projectsService.DeleteProject(projectId, projectSecretString);
+        }
+
 
         [NonAction]
         private static Project Project(OldProjectDto project) =>
