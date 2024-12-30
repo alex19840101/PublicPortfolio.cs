@@ -23,6 +23,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.MapOpenApi();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "v1");
+    });
 }
 
 app.UseHttpsRedirection();
@@ -30,5 +34,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapGet("/", () => "ProjectTasksTrackService");
 app.Run();

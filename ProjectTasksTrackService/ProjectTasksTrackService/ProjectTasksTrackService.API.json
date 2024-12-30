@@ -1,0 +1,156 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "ProjectTasksTrackService.API | v1",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "ProjectTasksTrackService.API"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Projects": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "Create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Project"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Project"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Project"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "GetProjects",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Project"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Project"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Project"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Project": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "uint8"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageURL": {
+            "type": "string",
+            "nullable": true
+          },
+          "scheduledDayNums": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint8"
+            },
+            "nullable": true
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "ProjectTasksTrackService.API"
+    },
+    {
+      "name": "Projects"
+    }
+  ]
+}
