@@ -8,7 +8,7 @@ using ProjectTasksTrackService.Contracts.Services;
 namespace ProjectTasksTrackService.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("ProjectTasksTrackService")]
     public class ProjectsController : ControllerBase
     {
         private readonly IProjectsService _projectsService;
@@ -17,13 +17,13 @@ namespace ProjectTasksTrackService.API.Controllers
             _projectsService = projectsService;
         }
 
-        [HttpPost(Name = "Create")]
+        [HttpPost("api/Projects/Create")]
         public async Task<Project> Create(Project project)
         {
             return await _projectsService.Create(project);
         }
 
-        [HttpGet(Name = "GetProjects")]
+        [HttpGet("api/Projects/GetProjects")]
         public async Task<IEnumerable<Project>> Read()
         {
             return await _projectsService.GetProjects();

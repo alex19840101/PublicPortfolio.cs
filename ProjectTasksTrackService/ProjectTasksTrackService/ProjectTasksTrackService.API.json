@@ -24,12 +24,11 @@
         }
       }
     },
-    "/Projects": {
+    "/ProjectTasksTrackService/api/Projects/Create": {
       "post": {
         "tags": [
           "Projects"
         ],
-        "operationId": "Create",
         "requestBody": {
           "content": {
             "application/json": {
@@ -72,12 +71,13 @@
             }
           }
         }
-      },
+      }
+    },
+    "/ProjectTasksTrackService/api/Projects/GetProjects": {
       "get": {
         "tags": [
           "Projects"
         ],
-        "operationId": "GetProjects",
         "responses": {
           "200": {
             "description": "OK",
