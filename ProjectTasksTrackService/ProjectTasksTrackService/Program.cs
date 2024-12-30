@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProjectTasksTrackService.BusinessLogic;
-using ProjectTasksTrackService.Contracts.Repositories;
-using ProjectTasksTrackService.Contracts.Services;
+using ProjectTasksTrackService.Core.Repositories;
+using ProjectTasksTrackService.Core.Services;
 using ProjectTasksTrackService.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,5 +34,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapGet("/", () => "ProjectTasksTrackService");
+app.MapGet("/", () => "Service is working");
 app.Run();

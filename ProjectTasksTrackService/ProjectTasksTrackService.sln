@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTasksTrackService.API", "ProjectTasksTrackService\ProjectTasksTrackService.API.csproj", "{FEF051A5-6A5B-46F5-8B2D-650C78872E55}"
 EndProject
@@ -9,7 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTasksTrackService.Bu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTasksTrackService.DataAccess", "ProjectTasksTrackService.DataAccess\ProjectTasksTrackService.DataAccess.csproj", "{F6174F8F-0CD5-4F03-8472-774E0C44C820}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTasksTrackService.Contracts", "ProjectTasksTrackService.Core\ProjectTasksTrackService.Contracts.csproj", "{129C8076-D281-4EFA-A143-4A3C307D984C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTasksTrackService.Core", "ProjectTasksTrackService.Core\ProjectTasksTrackService.Core.csproj", "{129C8076-D281-4EFA-A143-4A3C307D984C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTasksTrackService.API.Contracts", "ProjectTasksTrackService.API.Contracts\ProjectTasksTrackService.API.Contracts.csproj", "{58DB9403-00A9-4BD9-AA20-54F6121BF090}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{129C8076-D281-4EFA-A143-4A3C307D984C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{129C8076-D281-4EFA-A143-4A3C307D984C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{129C8076-D281-4EFA-A143-4A3C307D984C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58DB9403-00A9-4BD9-AA20-54F6121BF090}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58DB9403-00A9-4BD9-AA20-54F6121BF090}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58DB9403-00A9-4BD9-AA20-54F6121BF090}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58DB9403-00A9-4BD9-AA20-54F6121BF090}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
