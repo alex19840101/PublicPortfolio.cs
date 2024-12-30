@@ -19,9 +19,12 @@ namespace ProjectTasksTrackService.BusinessLogic
 
         public async Task<string> Create(Project project)
         {
+            if (string.IsNullOrWhiteSpace(project.ProjectId))
+                throw new InvalidOperationException(ErrorStrings.PROJECT_ID_SHOULD_NOT_BE_EMPTY);
+
             if (string.IsNullOrWhiteSpace(project.Name))
-                throw new InvalidOperationException("Project Name should be not empty");
-            
+                throw new InvalidOperationException(ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY);
+
             return await _projectsRepository.Add(project);
         }
 
@@ -53,10 +56,10 @@ namespace ProjectTasksTrackService.BusinessLogic
         public async Task<string> Import(IEnumerable<Project> projects)
         {
             if (projects is null)
-                throw new InvalidOperationException("Projects list to import should not be null");
+                throw new InvalidOperationException(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_NOT_BE_NULL);
 
             if (!projects.Any())
-                throw new InvalidOperationException("Projects list to import should contain at least 1 project");
+                throw new InvalidOperationException(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_BE_FILLED);
 
             return await _projectsRepository.Import(projects);
         }
@@ -73,6 +76,12 @@ namespace ProjectTasksTrackService.BusinessLogic
 
         public Task<string> UpdateProject(Project projectDto)
         {
+            if (string.IsNullOrWhiteSpace(projectDto.ProjectId))
+                throw new InvalidOperationException(ErrorStrings.PROJECT_ID_SHOULD_NOT_BE_EMPTY);
+
+            if (string.IsNullOrWhiteSpace(projectDto.Name))
+                throw new InvalidOperationException(ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY);
+
             throw new NotImplementedException();
         }
 

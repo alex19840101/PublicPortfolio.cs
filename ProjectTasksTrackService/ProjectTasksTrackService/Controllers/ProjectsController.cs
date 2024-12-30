@@ -10,6 +10,8 @@ namespace ProjectTasksTrackService.API.Controllers
 {
     [ApiController]
     [Route("ProjectTasksTrackService")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
     public class ProjectsController : ControllerBase, IProjectsAPI
     {
         private readonly IProjectsService _projectsService;
