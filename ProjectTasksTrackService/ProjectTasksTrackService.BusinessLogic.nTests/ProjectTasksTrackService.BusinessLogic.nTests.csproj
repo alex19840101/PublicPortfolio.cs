@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	<ImplicitUsings>disable</ImplicitUsings>
+	<Nullable>disable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -25,6 +25,12 @@
     <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProjectTasksTrackService.BusinessLogic\ProjectTasksTrackService.BusinessLogic.csproj" />
+    <ProjectReference Include="..\ProjectTasksTrackService.Core\ProjectTasksTrackService.Core.csproj" />
+    <ProjectReference Include="..\TestFixtures\TestFixtures.csproj" />
   </ItemGroup>
 
   <ItemGroup>

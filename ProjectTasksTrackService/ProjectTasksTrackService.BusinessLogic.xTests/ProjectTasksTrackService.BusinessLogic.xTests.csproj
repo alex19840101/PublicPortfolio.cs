@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	<ImplicitUsings>disable</ImplicitUsings>
+	<Nullable>disable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -23,6 +23,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProjectTasksTrackService.BusinessLogic\ProjectTasksTrackService.BusinessLogic.csproj" />
+    <ProjectReference Include="..\ProjectTasksTrackService.Core\ProjectTasksTrackService.Core.csproj" />
+    <ProjectReference Include="..\TestFixtures\TestFixtures.csproj" />
   </ItemGroup>
 
   <ItemGroup>
