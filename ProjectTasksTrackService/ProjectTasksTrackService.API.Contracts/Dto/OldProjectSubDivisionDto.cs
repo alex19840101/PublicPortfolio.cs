@@ -2,7 +2,7 @@
 
 namespace ProjectTasksTrackService.API.Contracts.Dto
 {
-    /// <summary> Legacy-класс-модель направления (подраздела/модуля/части) в API для импорта/экспорта в старую систему </summary>
+    /// <summary> Legacy-класс-модель направления (подраздела/модуля/части) проекта в API для импорта/экспорта в старую систему </summary>
     public class OldProjectSubDivisionDto
     {
         /// <summary> Id направления (подраздела/модуля/части) проекта </summary>
@@ -23,7 +23,7 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
 
         /// <summary> Legacy-идентификатор (номер) проекта в старой системе </summary>
         [JsonPropertyName("m")]
-        public int LegacyRootProjectNumber { get; set; }
+        public required int LegacyRootProjectNumber { get; set; }
 
         /// <summary> Id проекта </summary>
         [JsonPropertyName("uid")]

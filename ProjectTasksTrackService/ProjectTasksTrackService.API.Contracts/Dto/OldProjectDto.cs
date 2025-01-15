@@ -10,10 +10,10 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         [JsonPropertyName("uid")] public string ProjectId { get; set; }
         
         /// <summary> Legacy-идентификатор (номер) проекта в старой системе </summary>
-        [JsonPropertyName("id")] public int LegacyProjectNumber { get; set; }
+        [JsonPropertyName("id")] public required int LegacyProjectNumber { get; set; }
         
         /// <summary> Название проекта </summary>
-        [JsonPropertyName("n")] public string Name { get; set; }
+        [JsonPropertyName("n")] public required string Name { get; set; }
         
         /// <summary> URL проекта </summary>
         [JsonPropertyName("u")] public string Url { get; set; }

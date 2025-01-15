@@ -6,13 +6,13 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
     public class ProjectDto
     {
         /// <summary> Id проекта </summary>
-        public string ProjectId { get; set; }
+        public required string ProjectId { get; set; }
 
         /// <summary> Legacy-идентификатор (номер) проекта в старой системе </summary>
         public int LegacyProjectNumber { get; set; }
         
         /// <summary> Название проекта </summary>
-        public string Name { get; set; }
+        public required string Name { get; set; }
         
         /// <summary> URL проекта </summary>
         public string Url { get; set; }

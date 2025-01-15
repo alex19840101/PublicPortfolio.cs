@@ -22,6 +22,6 @@
         public int LegacyRootProjectNumber { get; set; }
 
         /// <summary> Id проекта </summary>
-        public string ProjectId { get; set; }
+        public required string ProjectId { get; set; }
     }
 }
