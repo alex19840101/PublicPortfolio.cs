@@ -100,7 +100,7 @@ namespace ProjectTasksTrackService.API.Controllers
             return await _projectsService.UpdateUrl(projectId, url);
         }
 
-        /// <summary> Обновление логотипа(эмблемы) (imageUrl) проекта </summary>
+        /// <summary> Обновление логотипа (эмблемы) (imageUrl) проекта </summary>
         [HttpPost("api/v2/Projects/UpdateImageUrl")]
         public async Task<string> UpdateImageUrl(string projectId, string imageUrl)
         {

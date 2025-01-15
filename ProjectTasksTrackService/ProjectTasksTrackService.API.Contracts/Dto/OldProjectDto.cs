@@ -18,7 +18,7 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         /// <summary> URL проекта </summary>
         [JsonPropertyName("u")] public string Url { get; set; }
         
-        /// <summary> Логотипа(эмблема) (imageUrl) проекта </summary>
+        /// <summary> Логотип (эмблема) (imageUrl) проекта </summary>
         [JsonPropertyName("i")] public string ImageUrl { get; set; }
         
         /// <summary> Номера дней обязательной активности по проекту (совещаний) </summary>
