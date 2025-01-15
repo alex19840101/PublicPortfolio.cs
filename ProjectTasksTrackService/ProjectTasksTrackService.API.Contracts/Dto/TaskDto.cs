@@ -1,4 +1,5 @@
-﻿using ProjectTasksTrackService.API.Contracts.Dto.Enums;
+﻿using System.Text.Json.Serialization;
+using ProjectTasksTrackService.API.Contracts.Dto.Enums;
 
 namespace ProjectTasksTrackService.API.Contracts.Dto
 {
@@ -40,5 +41,8 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         
         /// <summary> Ссылка #2 ((Интернет)) </summary>
         public string Url2 { get; set; }
+
+        /// <summary> Дата и время изменения </summary>
+        public string LastUpdateDt { get; set; }
     }
 }

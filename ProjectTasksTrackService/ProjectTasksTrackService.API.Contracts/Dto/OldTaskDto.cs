@@ -41,5 +41,7 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         
         /// <summary> Ссылка #2 ((Интернет)) </summary>
         [JsonPropertyName("u2")] public string Url2 { get; set; }
+        /// <summary> Дата и время изменения </summary>
+        [JsonPropertyName("tla")] public string LastUpdateDt { get; set; }
     }
 }
