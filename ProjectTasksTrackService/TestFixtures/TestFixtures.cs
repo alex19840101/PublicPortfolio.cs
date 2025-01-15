@@ -13,7 +13,7 @@ namespace TestFixtures
 
             var projectId = fixture.Build<string>().Create();
             var name = fixture.Build<string>().Create();
-            var legacyProjectNumber = fixture.Build<int>().Create();
+            var legacyProjectNumber = fixture.Create<int>();
             var url = fixture.Build<string>().Create();
             var imageUrl = fixture.Build<string>().Create();
             var scheduledDayNums = fixture.Build<HashSet<byte>>().Create();

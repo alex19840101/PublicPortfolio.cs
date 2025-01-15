@@ -9,7 +9,7 @@ namespace ProjectTasksTrackService.Core
         public int? LegacyProjectNumber { get { return _legacyProjectNumber; } }
         public string Name { get { return _name; } }
         public string Url { get { return _url; } }
-        public string ImageURL { get { return _imageUrl; } }
+        public string ImageUrl { get { return _imageUrl; } }
         /// <summary> Номера дней обязательной активности по проекту (совещаний) </summary>
         public HashSet<byte> ScheduledDayNums { get { return _scheduledDayNums; } }
 

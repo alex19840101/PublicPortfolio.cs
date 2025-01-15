@@ -21,6 +21,19 @@ namespace ProjectTasksTrackService.API.Controllers
             _projectsService = projectsService;
         }
 
+        /// <summary> Импорт проектов (из старой системы проектов) </summary>
+        [HttpPost("api/v2/Projects/Import")]
+        public async Task<string> Import(IEnumerable<OldProjectDto> projects)
+        {
+            List<Project> projectsCollection = [];
+            foreach (var project in projects)
+            {
+                projectsCollection.Add(Project(project));
+            }
+
+            return await _projectsService.Import(projectsCollection);
+        }
+
         /// <summary> Создание проекта </summary>
         [HttpPost("api/v2/Projects/Create")]
         public async Task<string> Create(ProjectDto project)
@@ -42,17 +55,18 @@ namespace ProjectTasksTrackService.API.Controllers
             return result;
         }
 
-        /// <summary> Импорт проектов (из старой системы проектов) </summary>
-        [HttpPost("api/v2/Projects/Import")]
-        public async Task<string> Import(IEnumerable<OldProjectDto> projects)
+        /// <summary> Получение списка проектов (в старом компактном JSON-формате) для экспорта в старую систему </summary>
+        [HttpGet("api/v2/Projects/GetProjectsOldDto")]
+        public async Task<IEnumerable<OldProjectDto>> GetProjectsOldDto()
         {
-            List<Project> projectsCollection = [];
-            foreach (var project in projects)
+            var projectsCollection = await _projectsService.GetProjects();
+            List<OldProjectDto> result = [];
+            foreach (var project in projectsCollection)
             {
-                projectsCollection.Add(Project(project));
+                result.Add(OldProjectDto(project));
             }
 
-            return await _projectsService.Import(projectsCollection);
+            return result;
         }
 
         /// <summary> Получение проекта по projectId </summary>
@@ -152,7 +166,19 @@ namespace ProjectTasksTrackService.API.Controllers
                 Name = project.Name,
                 LegacyProjectNumber = project.LegacyProjectNumber.Value,
                 Url = project.Url,
-                ImageUrl = project.ImageURL,
+                ImageUrl = project.ImageUrl,
+                ScheduledDayNums = project.ScheduledDayNums
+            };
+
+        [NonAction]
+        private static OldProjectDto OldProjectDto(Project project) =>
+            new OldProjectDto
+            { 
+                ProjectId = project.ProjectId,
+                Name = project.Name,
+                LegacyProjectNumber = project.LegacyProjectNumber.Value,
+                Url = project.Url,
+                ImageUrl = project.ImageUrl,
                 ScheduledDayNums = project.ScheduledDayNums
             };
         #endregion Dto<->Core mappers
