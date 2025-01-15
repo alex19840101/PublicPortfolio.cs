@@ -1,0 +1,45 @@
+﻿using System.Text.Json.Serialization;
+using ProjectTasksTrackService.API.Contracts.Dto.Enums;
+
+namespace ProjectTasksTrackService.API.Contracts.Dto
+{
+    /// <summary> Legacy-класс-модель задачи в API для импорта/экспорта в старую систему </summary>
+    public class OldTaskDto
+    {
+        /// <summary> Id задачи (события/напоминания) в старой системе </summary>
+        [JsonPropertyName("e")] public required int Id { get; set; }
+
+        /// <summary> Id проекта </summary>
+        [JsonPropertyName("uid")] public string ProjectId { get; set; }
+
+        /// <summary> Id проекта в старой системе </summary>
+        [JsonPropertyName("id")] public required int LegacyRootProjectNumber { get; set; }
+
+        /// <summary> Название задачи/события/напоминания </summary>
+        [JsonPropertyName("n")] public required string Name { get; set; }
+
+        /// <summary> Дата и время создания задачи </summary>
+        [JsonPropertyName("cr")] public string CreatedDt { get; set; }
+
+        /// <summary> Срок (дата и время завершения) задачи по плану </summary>
+        [JsonPropertyName("dt")] public string Deadline { get; set; }
+        
+        /// <summary> Дата и время завершения задачи </summary>
+        [JsonPropertyName("done")] public string DoneDateTime { get; set; }
+
+        /// <summary> Изображение </summary>
+        [JsonPropertyName("i")] public string ImageUrl { get; set; }
+
+        /// <summary> Повторяемость задачи </summary>
+        [JsonPropertyName("r")] public TaskRepeatsType Rep { get; set; }
+        
+        /// <summary> Через (...) дней повторять </summary>
+        [JsonPropertyName("rd")] public ushort? RepDays { get; set; }
+
+        /// <summary> Ссылка #1 ((локальная)) </summary>
+        [JsonPropertyName("u1")] public string Url1 { get; set; }
+        
+        /// <summary> Ссылка #2 ((Интернет)) </summary>
+        [JsonPropertyName("u2")] public string Url2 { get; set; }
+    }
+}

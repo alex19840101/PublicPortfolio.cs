@@ -434,6 +434,10 @@
   "components": {
     "schemas": {
       "OldProjectDto": {
+        "required": [
+          "id",
+          "n"
+        ],
         "type": "object",
         "properties": {
           "uid": {
@@ -467,6 +471,10 @@
         }
       },
       "ProjectDto": {
+        "required": [
+          "projectId",
+          "name"
+        ],
         "type": "object",
         "properties": {
           "projectId": {

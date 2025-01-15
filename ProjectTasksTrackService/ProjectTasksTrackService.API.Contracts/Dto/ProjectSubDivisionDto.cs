@@ -15,6 +15,9 @@
         /// <summary> Дата и время изменения </summary>
         public string LastUpdateDt { get; set; }
 
+        /// <summary> Дата и время завершения задачи </summary>
+        public string DoneDateTime { get; set; }
+
         /// <summary> Флаг готовности подраздела/модуля/части проекта </summary>
         public bool IsFinished { get; set; }
 
