@@ -30,10 +30,10 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         public string ImageUrl { get; set; }
 
         /// <summary> Повторяемость задачи </summary>
-        public TaskRepeatsType Rep { get; set; }
+        public TaskRepeatsType RepeatsType { get; set; }
         
         /// <summary> Через (...) дней повторять </summary>
-        public ushort? RepDays { get; set; }
+        public ushort? RepeatInDays { get; set; }
 
         /// <summary> Ссылка #1 ((локальная)) </summary>
         public string Url1 { get; set; }

@@ -24,6 +24,46 @@
         }
       }
     },
+    "/ProjectTasksTrackService/api/v2/Projects/Import": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OldProjectDto"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OldProjectDto"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/ProjectTasksTrackService/api/v2/Projects/Create": {
       "post": {
         "tags": [
@@ -80,39 +120,21 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/v2/Projects/Import": {
-      "post": {
+    "/ProjectTasksTrackService/api/v2/Projects/GetProjectsOldDto": {
+      "get": {
         "tags": [
           "Projects"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/OldProjectDto"
-                }
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/OldProjectDto"
-                }
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OldProjectDto"
+                  }
                 }
               }
             }
