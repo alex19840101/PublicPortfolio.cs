@@ -24,7 +24,7 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/Projects/Create": {
+    "/ProjectTasksTrackService/api/v2/Projects/Create": {
       "post": {
         "tags": [
           "Projects"
@@ -58,7 +58,7 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/Projects/GetProjects": {
+    "/ProjectTasksTrackService/api/v2/Projects/GetProjects": {
       "get": {
         "tags": [
           "Projects"
@@ -80,7 +80,7 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/Projects/Import": {
+    "/ProjectTasksTrackService/api/v2/Projects/Import": {
       "post": {
         "tags": [
           "Projects"
@@ -120,7 +120,7 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/Projects/GetProjectById": {
+    "/ProjectTasksTrackService/api/v2/Projects/GetProjectById": {
       "get": {
         "tags": [
           "Projects"
@@ -148,7 +148,7 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/Projects/GetProjectByNum": {
+    "/ProjectTasksTrackService/api/v2/Projects/GetProjectByNum": {
       "get": {
         "tags": [
           "Projects"
@@ -177,7 +177,7 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/Projects/GetProjectByName": {
+    "/ProjectTasksTrackService/api/v2/Projects/GetProjectByName": {
       "get": {
         "tags": [
           "Projects"
@@ -205,7 +205,7 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/Projects/UpdateProject": {
+    "/ProjectTasksTrackService/api/v2/Projects/UpdateProject": {
       "post": {
         "tags": [
           "Projects"
@@ -239,7 +239,7 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/Projects/UpdateName": {
+    "/ProjectTasksTrackService/api/v2/Projects/UpdateName": {
       "post": {
         "tags": [
           "Projects"
@@ -274,7 +274,7 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/Projects/UpdateUrl": {
+    "/ProjectTasksTrackService/api/v2/Projects/UpdateUrl": {
       "post": {
         "tags": [
           "Projects"
@@ -309,7 +309,7 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/Projects/UpdateImageUrl": {
+    "/ProjectTasksTrackService/api/v2/Projects/UpdateImageUrl": {
       "post": {
         "tags": [
           "Projects"
@@ -344,7 +344,7 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/Projects/UpdateScheduledDayNums": {
+    "/ProjectTasksTrackService/api/v2/Projects/UpdateScheduledDayNums": {
       "post": {
         "tags": [
           "Projects"
@@ -395,7 +395,7 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/Projects/DeleteProject": {
+    "/ProjectTasksTrackService/api/v2/Projects/DeleteProject": {
       "post": {
         "tags": [
           "Projects"

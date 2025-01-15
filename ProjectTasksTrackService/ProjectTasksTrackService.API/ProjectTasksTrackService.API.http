@@ -1,6 +1,6 @@
 ﻿@ProjectTasksTrackService.API_HostAddress = https://localhost:7120/ProjectTasksTrackService
 
-POST {{ProjectTasksTrackService.API_HostAddress}}/api/Projects/Create
+POST {{ProjectTasksTrackService.API_HostAddress}}/api/v2/Projects/Create
 Content-Type: application/json
 
 {

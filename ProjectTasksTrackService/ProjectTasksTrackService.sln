@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTasksTrackService.API", "ProjectTasksTrackService\ProjectTasksTrackService.API.csproj", "{FEF051A5-6A5B-46F5-8B2D-650C78872E55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTasksTrackService.API", "ProjectTasksTrackService.API\ProjectTasksTrackService.API.csproj", "{FEF051A5-6A5B-46F5-8B2D-650C78872E55}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTasksTrackService.BusinessLogic", "ProjectTasksTrackService.BusinessLogic\ProjectTasksTrackService.BusinessLogic.csproj", "{83C820A3-D40A-4712-A4C6-4E9F1D075319}"
 EndProject

@@ -24,11 +24,11 @@ builder.Services.AddScoped<IProjectsService, ProjectsService>();
 const string URL = "https://github.com/alex19840101/PublicPortfolio.cs/compare/ProjectTasksTrackService";
 builder.Services.AddSwaggerGen(c => // Register the Swagger generator, defining 1 or more Swagger documents
 {
-    c.SwaggerDoc("v1", new OpenApiInfo
+    c.SwaggerDoc("v2", new OpenApiInfo
     {
-        Version = "v1",
+        Version = "v2",
         Title = "ProjectTasksTrackService",
-        Description = "ProjectTasksTrackService Web API",
+        Description = "ProjectTasksTrackService Web API v2",
         TermsOfService = new Uri(URL),
         Contact = new OpenApiContact
         {
@@ -66,7 +66,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/openapi/v1.json", "v1");
+        options.SwaggerEndpoint("../swagger/v2/swagger.json", "ProjectTasksTrackService API v2");
     });
 }
 
