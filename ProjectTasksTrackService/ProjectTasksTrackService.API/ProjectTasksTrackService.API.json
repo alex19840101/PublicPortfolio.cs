@@ -261,143 +261,21 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/v2/Projects/UpdateName": {
-      "post": {
+    "/ProjectTasksTrackService/api/v2/Projects/DeleteProject": {
+      "delete": {
         "tags": [
           "Projects"
-        ],
-        "parameters": [
-          {
-            "name": "projectId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "newName",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/ProjectTasksTrackService/api/v2/Projects/UpdateUrl": {
-      "post": {
-        "tags": [
-          "Projects"
-        ],
-        "parameters": [
-          {
-            "name": "projectId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "url",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/ProjectTasksTrackService/api/v2/Projects/UpdateImageUrl": {
-      "post": {
-        "tags": [
-          "Projects"
-        ],
-        "parameters": [
-          {
-            "name": "projectId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "imageUrl",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/ProjectTasksTrackService/api/v2/Projects/UpdateScheduledDayNums": {
-      "post": {
-        "tags": [
-          "Projects"
-        ],
-        "parameters": [
-          {
-            "name": "projectId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "type": "integer",
-                  "format": "uint8"
-                }
+                "$ref": "#/components/schemas/DeleteProjectRequestDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "type": "integer",
-                  "format": "uint8"
-                }
+                "$ref": "#/components/schemas/DeleteProjectRequestDto"
               }
             }
           },
@@ -416,45 +294,23 @@
           }
         }
       }
-    },
-    "/ProjectTasksTrackService/api/v2/Projects/DeleteProject": {
-      "post": {
-        "tags": [
-          "Projects"
-        ],
-        "parameters": [
-          {
-            "name": "projectId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "projectSecretString",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
     "schemas": {
+      "DeleteProjectRequestDto": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "nullable": true
+          },
+          "projectSecretString": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "OldProjectDto": {
         "required": [
           "id",
@@ -488,6 +344,14 @@
               "type": "integer",
               "format": "uint8"
             },
+            "nullable": true
+          },
+          "pcr": {
+            "type": "string",
+            "nullable": true
+          },
+          "pla": {
+            "type": "string",
             "nullable": true
           }
         }
@@ -525,6 +389,14 @@
               "type": "integer",
               "format": "uint8"
             },
+            "nullable": true
+          },
+          "createdDt": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastUpdateDt": {
+            "type": "string",
             "nullable": true
           }
         }

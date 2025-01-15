@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ProjectTasksTrackService.API.Contracts.Dto;
-using ProjectTasksTrackService.API.Contracts.Dto.Enums;
 
 namespace ProjectTasksTrackService.API.Contracts.Interfaces
 {
@@ -31,20 +30,6 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
 
         /// <summary> Обновление задачи </summary>
         Task<string> UpdateTask(TaskDto taskDto);
-        /// <summary> Обновление названия задачи </summary>
-        Task<string> UpdateName(int taskId, string newName);
-        /// <summary> Обновление срока задачи </summary>
-        Task<string> UpdateDeadLine(int taskId, DateTime deadLine);
-        /// <summary> Обновление даты и времени завершения задачи </summary>
-        Task<string> UpdateDoneDateTime(int taskId, DateTime deadLine);
-        /// <summary> Обновление ссылки (url1) задачи </summary>
-        Task<string> UpdateUrl1(int taskId, string url);
-        /// <summary> Обновление ссылки (url2) задачи </summary>
-        Task<string> UpdateUrl2(int taskId, string url);
-        /// <summary> Обновление изображения (imageUrl) задачи </summary>
-        Task<string> UpdateImageUrl(int taskId, string imageUrl);
-        /// <summary> Обновление RepeatsType задачи </summary>
-        Task<string> UpdateRepeatOptions(int taskId, TaskRepeatsType repeatsType, ushort? repeatInDays = null);
         
         /// <summary> Удаление задачи </summary>
         Task<string> DeleteTask(int taskId, string taskSecretString);

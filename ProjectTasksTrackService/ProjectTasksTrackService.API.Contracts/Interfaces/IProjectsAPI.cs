@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ProjectTasksTrackService.API.Contracts.Dto;
+using ProjectTasksTrackService.API.Contracts.Dto.Requests;
 
 namespace ProjectTasksTrackService.API.Contracts.Interfaces
 {
@@ -26,16 +27,8 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
         
         /// <summary> Обновление проекта </summary>
         Task<string> UpdateProject(ProjectDto projectDto);
-        /// <summary> Обновление названия проекта </summary>
-        Task<string> UpdateName(string projectId, string newName);
-        /// <summary> Обновление ссылки (url) проекта </summary>
-        Task<string> UpdateUrl(string projectId, string url);
-        /// <summary> Обновление логотипа (эмблемы) (imageUrl) проекта </summary>
-        Task<string> UpdateImageUrl(string projectId, string imageUrl);
-        /// <summary> Обновление номеров дней обязательной активности по проекту (совещаний) </summary>
-        Task<string> UpdateScheduledDayNums(string projectId, HashSet<byte> scheduledDayNums);
-        
+
         /// <summary> Удаление проекта </summary>
-        Task<string> DeleteProject(string projectId, string projectSecretString);
+        Task<string> DeleteProject(DeleteProjectRequestDto deleteProjectRequest);
     }
 }

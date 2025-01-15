@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTasksTrackService.API.Contracts.Dto;
+using ProjectTasksTrackService.API.Contracts.Dto.Requests;
 using ProjectTasksTrackService.API.Contracts.Interfaces;
 using ProjectTasksTrackService.Core;
 using ProjectTasksTrackService.Core.Services;
@@ -100,39 +101,13 @@ namespace ProjectTasksTrackService.API.Controllers
             return await _projectsService.UpdateProject(Project(projectDto));
         }
 
-        /// <summary> Обновление названия проекта </summary>
-        [HttpPost("api/v2/Projects/UpdateName")]
-        public async Task<string> UpdateName(string projectId, string newName)
-        {
-            return await _projectsService.UpdateName(projectId, newName);
-        }
-
-        /// <summary> Обновление ссылки (url) проекта </summary>
-        [HttpPost("api/v2/Projects/UpdateUrl")]
-        public async Task<string> UpdateUrl(string projectId, string url)
-        {
-            return await _projectsService.UpdateUrl(projectId, url);
-        }
-
-        /// <summary> Обновление логотипа (эмблемы) (imageUrl) проекта </summary>
-        [HttpPost("api/v2/Projects/UpdateImageUrl")]
-        public async Task<string> UpdateImageUrl(string projectId, string imageUrl)
-        {
-            return await _projectsService.UpdateImageUrl(projectId, imageUrl);
-        }
-
-        /// <summary> Обновление номеров дней обязательной активности по проекту (совещаний) </summary>
-        [HttpPost("api/v2/Projects/UpdateScheduledDayNums")]
-        public async Task<string> UpdateScheduledDayNums(string projectId, HashSet<byte> scheduledDayNums)
-        {
-            return await _projectsService.UpdateScheduledDayNums(projectId, scheduledDayNums);
-        }
-
         /// <summary> Удаление проекта </summary>
-        [HttpPost("api/v2/Projects/DeleteProject")]
-        public async Task<string> DeleteProject(string projectId, string projectSecretString)
+        [HttpDelete("api/v2/Projects/DeleteProject")]
+        public async Task<string> DeleteProject(DeleteProjectRequestDto deleteProjectRequest)
         {
-            return await _projectsService.DeleteProject(projectId, projectSecretString);
+            return await _projectsService.DeleteProject(
+                deleteProjectRequest.ProjectId,
+                deleteProjectRequest.ProjectSecretString);
         }
 
         #region Dto<->Core mappers
@@ -144,8 +119,10 @@ namespace ProjectTasksTrackService.API.Controllers
                 legacyProjectNumber: project.LegacyProjectNumber,
                 url: project.Url,
                 imageUrl: project.ImageUrl,
-                scheduledDayNums: project.ScheduledDayNums
-        );
+                scheduledDayNums: project.ScheduledDayNums,
+                createdDt: project.CreatedDt,
+                lastUpdateDt: project.LastUpdateDt
+            );
 
         [NonAction]
         private static Project Project(ProjectDto project) =>
@@ -155,7 +132,9 @@ namespace ProjectTasksTrackService.API.Controllers
                     legacyProjectNumber: project.LegacyProjectNumber,
                     url: project.Url,
                     imageUrl: project.ImageUrl,
-                    scheduledDayNums: project.ScheduledDayNums
+                    scheduledDayNums: project.ScheduledDayNums,
+                    createdDt: project.CreatedDt,
+                    lastUpdateDt: project.LastUpdateDt
             );
 
         [NonAction]
@@ -167,7 +146,9 @@ namespace ProjectTasksTrackService.API.Controllers
                 LegacyProjectNumber = project.LegacyProjectNumber.Value,
                 Url = project.Url,
                 ImageUrl = project.ImageUrl,
-                ScheduledDayNums = project.ScheduledDayNums
+                ScheduledDayNums = project.ScheduledDayNums,
+                CreatedDt = project.CreatedDt,
+                LastUpdateDt = project.LastUpdateDt
             };
 
         [NonAction]
@@ -179,7 +160,9 @@ namespace ProjectTasksTrackService.API.Controllers
                 LegacyProjectNumber = project.LegacyProjectNumber.Value,
                 Url = project.Url,
                 ImageUrl = project.ImageUrl,
-                ScheduledDayNums = project.ScheduledDayNums
+                ScheduledDayNums = project.ScheduledDayNums,
+                CreatedDt = project.CreatedDt,
+                LastUpdateDt = project.LastUpdateDt
             };
         #endregion Dto<->Core mappers
     }
