@@ -14,20 +14,17 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
         /// <summary> Создание задачи </summary>
         Task<string> Create(TaskDto task);
 
+        /// <summary> Получение задачи </summary>
+        Task<TaskDto> GetTask(string projectId, int taskId);
+
+        /// <summary> Получение списка задач </summary>
+        Task<IEnumerable<TaskDto>> GetTasks(string projectId = null, int? intProjectId = null, string nameSubStr = null);
+
         /// <summary> Получение списка всех задач (в старом компактном JSON-формате) для экспорта в старую систему </summary>
-        Task<IEnumerable<OldTaskDto>> GetAllTasksOldDto();
-        /// <summary> Получение списка всех задач </summary>
-        Task<IEnumerable<TaskDto>> GetAllTasks();
-        /// <summary> Получение списка задач (по названию) </summary>
-        Task<IEnumerable<TaskDto>> GetTasksByTaskNameSubStr(string taskNameSubStr);
-        /// <summary> Получение списка актуальных задач (по сроку) </summary>
-        Task<IEnumerable<TaskDto>> GetAllHotTasksByDeadLine(DateTime deadLine);
+        Task<IEnumerable<OldTaskDto>> GetTasksOldDto(string projectId = null, int? intProjectId = null, string nameSubStr = null);
+
         /// <summary> Получение списка всех актуальных задач </summary>
-        Task<IEnumerable<TaskDto>> GetAllHotTasks();
-        /// <summary> Получение списка задач по проекту </summary>
-        Task<IEnumerable<TaskDto>> GetTasksForProject(string projectId, string taskNameSubStr = null);
-        /// <summary> Получение задачи по taskId </summary>
-        Task<TaskDto> GetTaskById(int taskId);
+        Task<IEnumerable<TaskDto>> GetHotTasks(DateTime? deadLine = null);
 
         /// <summary> Обновление задачи </summary>
         Task<string> UpdateTask(TaskDto taskDto);

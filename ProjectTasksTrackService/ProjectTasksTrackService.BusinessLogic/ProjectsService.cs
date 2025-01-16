@@ -28,26 +28,6 @@ namespace ProjectTasksTrackService.BusinessLogic
             return await _projectsRepository.Add(project);
         }
 
-        public Task<Project> GetProjectById(string projectId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Project> GetProjectByNum(int intProjectId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Project> GetProjectByName(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IEnumerable<Project>> GetProjects()
-        {
-            return await _projectsRepository.GetProjects();
-        }
-
         public async Task<string> Import(IEnumerable<Project> projects)
         {
             if (projects is null)
@@ -70,6 +50,16 @@ namespace ProjectTasksTrackService.BusinessLogic
             throw new NotImplementedException();
         }
         public Task<string> DeleteProject(string projectId, string projectSecretString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Project>> GetProjects(string projectId = null, int? intProjectId = null, string nameSubStr = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Project> GetProject(string projectId = null, int? intProjectId = null, string name = null)
         {
             throw new NotImplementedException();
         }

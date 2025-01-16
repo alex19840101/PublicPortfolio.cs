@@ -27,6 +27,21 @@ namespace ProjectTasksTrackService.BusinessLogic
             throw new NotImplementedException();
         }
 
+        public Task<IEnumerable<ProjectSubDivision>> GetHotSubDivisions(string projectId = null, DateTime? deadLine = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ProjectSubDivision> GetSubDivision(string projectId, int subDivisionId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<ProjectSubDivision>> GetSubDivisions(string projectId = null, int? intProjectId = null, int? subDivisionId = null, string nameSubStr = null)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<string> Import(IEnumerable<ProjectSubDivision> subprojects)
         {
             throw new NotImplementedException();

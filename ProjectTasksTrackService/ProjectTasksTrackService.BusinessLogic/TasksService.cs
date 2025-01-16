@@ -31,32 +31,16 @@ namespace ProjectTasksTrackService.BusinessLogic
             return await _tasksRepository.Add(projectTask);
         }
 
-        public Task<IEnumerable<ProjectTask>> GetAllHotTasks()
+        public Task<IEnumerable<ProjectTask>> GetHotTasks(DateTime? deadLine = null)
+        {
+            throw new NotImplementedException();
+        }
+        public Task<ProjectTask> GetTask(string projectId, int taskId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<ProjectTask>> GetAllHotTasksByDeadLine(DateTime deadLine)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<ProjectTask>> GetAllTasks()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ProjectTask> GetTaskById(int taskId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<ProjectTask>> GetTasksByTaskNameSubStr(string taskNameSubStr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<ProjectTask>> GetTasksForProject(string projectId, string taskNameSubStr)
+        public Task<IEnumerable<ProjectTask>> GetTasks(string projectId = null, int? intProjectId = null, string nameSubStr = null)
         {
             throw new NotImplementedException();
         }

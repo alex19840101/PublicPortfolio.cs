@@ -13,17 +13,14 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
         /// <summary> Создание проекта </summary>
         Task<string> Create(ProjectDto project);
 
+        /// <summary> Получение проекта </summary>
+        Task<ProjectDto> GetProject(string projectId = null, int? intProjectId = null, string name = null);
+
         /// <summary> Получение списка проектов (в старом компактном JSON-формате) для экспорта в старую систему </summary>
-        Task<IEnumerable<OldProjectDto>> GetProjectsOldDto();
+        Task<IEnumerable<OldProjectDto>> GetProjectsOldDto(string projectId = null, int? intProjectId = null, string nameSubStr = null);
 
         /// <summary> Получение списка проектов </summary>
-        Task<IEnumerable<ProjectDto>> GetProjects();
-        /// <summary> Получение проекта по projectId </summary>
-        Task<ProjectDto> GetProjectById(string projectId);
-        /// <summary> Получение проекта по intProjectId </summary>
-        Task<ProjectDto> GetProjectByNum(int intProjectId);
-        /// <summary> Получение проекта по названию (name) </summary>
-        Task<ProjectDto> GetProjectByName(string name);
+        Task<IEnumerable<ProjectDto>> GetProjects(string projectId = null, int? intProjectId = null, string nameSubStr = null);
         
         /// <summary> Обновление проекта </summary>
         Task<string> UpdateProject(ProjectDto projectDto);

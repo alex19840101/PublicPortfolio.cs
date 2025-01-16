@@ -17,6 +17,18 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
         /// <summary> Создание подпроекта </summary>
         Task<string> Create(ProjectSubDivisionDto subproject);
 
+        /// <summary> Получение подпроекта </summary>
+        Task<ProjectSubDivisionDto> GetSubDivision(string projectId, int subDivisionId);
+
+        /// <summary> Получение списка подпроектов </summary>
+        Task<IEnumerable<ProjectSubDivisionDto>> GetSubDivisions(string projectId = null, int? intProjectId = null, int? subDivisionId = null, string nameSubStr = null);
+
+        /// <summary> Получение списка подпроектов (в старом компактном JSON-формате) для экспорта в старую систему </summary>
+        Task<IEnumerable<OldProjectSubDivisionDto>> GetSubDivisionsOldDto(string projectId = null, int? intProjectId = null, int? subDivisionId = null, string nameSubStr = null);
+
+        /// <summary> Получение списка актуальных подпроектов </summary>
+        Task<IEnumerable<ProjectSubDivisionDto>> GetHotSubDivisions(string projectId = null, DateTime? deadLine = null);
+
         /// <summary> Обновление подпроекта </summary>
         Task<string> UpdateSubDivision(ProjectSubDivisionDto taskDto);
 

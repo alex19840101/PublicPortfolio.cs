@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTasksTrackService.API.Contracts.Dto;
@@ -15,11 +16,11 @@ namespace ProjectTasksTrackService.API.Controllers
     [Route("ProjectTasksTrackService")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    public class ProjectSubDivisionControllers : ControllerBase, IProjectSubDivisionAPI
+    public class ProjectSubDivisionsController : ControllerBase, IProjectSubDivisionAPI
     {
         private readonly ISubProjectsService _subProjectsService;
         /// <summary> </summary>
-        public ProjectSubDivisionControllers(ISubProjectsService subProjectsService)
+        public ProjectSubDivisionsController(ISubProjectsService subProjectsService)
         {
             _subProjectsService = subProjectsService;
         }
@@ -42,6 +43,64 @@ namespace ProjectTasksTrackService.API.Controllers
         public async Task<string> Create(ProjectSubDivisionDto subDivision)
         {
             return await _subProjectsService.Create(ProjectSubDivision(subDivision));
+        }
+
+        /// <summary> Получение списка подпроектов </summary>
+        [HttpGet("api/v2/SubDivisions/GetSubDivisions")]
+        public async Task<IEnumerable<ProjectSubDivisionDto>> GetSubDivisions(
+            string projectId = null,
+            int? intProjectId = null,
+            int? subDivisionId = null,
+            string nameSubStr = null)
+        {
+            var subDivisionsCollection = await _subProjectsService.GetSubDivisions(projectId, intProjectId, subDivisionId, nameSubStr);
+            List<ProjectSubDivisionDto> result = [];
+            foreach (var subDivision in subDivisionsCollection)
+            {
+                result.Add(ProjectSubDivisionDto(subDivision));
+            }
+
+            return result;
+        }
+
+        /// <summary> Получение списка подпроектов (в старом компактном JSON-формате) для экспорта в старую систему </summary>
+        [HttpGet("api/v2/SubDivisions/GetSubDivisionsOldDto")]
+        public async Task<IEnumerable<OldProjectSubDivisionDto>> GetSubDivisionsOldDto(
+            string projectId = null,
+            int? intProjectId = null,
+            int? subDivisionId = null,
+            string nameSubStr = null)
+        {
+            var subDivisionsCollection = await _subProjectsService.GetSubDivisions(projectId, intProjectId, subDivisionId, nameSubStr);
+            List<OldProjectSubDivisionDto> result = [];
+            foreach (var subDivision in subDivisionsCollection)
+            {
+                result.Add(OldProjectSubDivisionDto(subDivision));
+            }
+
+            return result;
+        }
+
+        /// <summary> Получение подпроекта </summary>
+        [HttpGet("api/v2/SubDivisions/GetSubDivision")]
+        public async Task<ProjectSubDivisionDto> GetSubDivision(string projectId, int subDivisionId)
+        {
+            var subDivision = await _subProjectsService.GetSubDivision(projectId, subDivisionId);
+            return ProjectSubDivisionDto(subDivision);
+        }
+
+        /// <summary> Получение списка актуальных подпроектов </summary>
+        [HttpGet("api/v2/SubDivisions/GetHotSubDivisions")]
+        public async Task<IEnumerable<ProjectSubDivisionDto>> GetHotSubDivisions(string projectId = null, DateTime? deadLine = null)
+        {
+            var subDivisionsCollection = await _subProjectsService.GetHotSubDivisions(projectId, deadLine);
+            List<ProjectSubDivisionDto> result = [];
+            foreach (var subDivision in subDivisionsCollection)
+            {
+                result.Add(ProjectSubDivisionDto(subDivision));
+            }
+
+            return result;
         }
 
         /// <summary> Обновление подпроекта </summary>
@@ -109,7 +168,7 @@ namespace ProjectTasksTrackService.API.Controllers
             };
 
         [NonAction]
-        private static OldProjectSubDivisionDto OldProjectSubDivision(ProjectSubDivision dto) =>
+        private static OldProjectSubDivisionDto OldProjectSubDivisionDto(ProjectSubDivision dto) =>
             new OldProjectSubDivisionDto
             {
                 Id = dto.Id,

@@ -44,11 +44,11 @@ namespace ProjectTasksTrackService.API.Controllers
             return await _tasksService.Create(ProjectTask(taskDto));
         }
 
-        /// <summary> Получение списка всех задач </summary>
-        [HttpGet("api/v2/Tasks/GetAllTasks")]
-        public async Task<IEnumerable<TaskDto>> GetAllTasks()
+        /// <summary> Получение списка задач </summary>
+        [HttpGet("api/v2/Tasks/GetTasks")]
+        public async Task<IEnumerable<TaskDto>> GetTasks(string projectId = null, int? intProjectId = null, string nameSubStr = null)
         {
-            var tasksCollection = await _tasksService.GetAllTasks();
+            var tasksCollection = await _tasksService.GetTasks(projectId,intProjectId, nameSubStr);
             List<TaskDto> result = [];
             foreach (var task in tasksCollection)
             {
@@ -58,11 +58,11 @@ namespace ProjectTasksTrackService.API.Controllers
             return result;
         }
 
-        /// <summary> Получение списка всех задач (в старом компактном JSON-формате) для экспорта в старую систему </summary>
-        [HttpGet("api/v2/Tasks/GetAllTasksOldDto")]
-        public async Task<IEnumerable<OldTaskDto>> GetAllTasksOldDto()
+        /// <summary> Получение списка задач (в старом компактном JSON-формате) для экспорта в старую систему </summary>
+        [HttpGet("api/v2/Tasks/GetTasksOldDto")]
+        public async Task<IEnumerable<OldTaskDto>> GetTasksOldDto(string projectId = null, int? intProjectId = null, string nameSubStr = null)
         {
-            var tasksCollection = await _tasksService.GetAllTasks();
+            var tasksCollection = await _tasksService.GetTasks(projectId, intProjectId, nameSubStr);
             List<OldTaskDto> result = [];
             foreach (var task in tasksCollection)
             {
@@ -72,20 +72,19 @@ namespace ProjectTasksTrackService.API.Controllers
             return result;
         }
 
-        /// <summary> Получение задачи по taskId </summary>
-        [HttpGet("api/v2/Tasks/GetTaskById")]
-        public async Task<TaskDto> GetTaskById(int taskId)
+        /// <summary> Получение задачи </summary>
+        [HttpGet("api/v2/Tasks/GetTask")]
+        public async Task<TaskDto> GetTask(string projectId, int taskId)
         {
-            var task = await _tasksService.GetTaskById(taskId);
+            var task = await _tasksService.GetTask(projectId, taskId);
             return TaskDto(task);
         }
 
-
-        /// <summary> Получение списка задач (по названию) </summary>
-        [HttpGet("api/v2/Tasks/GetTasksByTaskNameSubStr")]
-        public async Task<IEnumerable<TaskDto>> GetTasksByTaskNameSubStr(string taskNameSubStr)
+        /// <summary> Получение списка актуальных задач </summary>
+        [HttpGet("api/v2/Tasks/GetHotTasks")]
+        public async Task<IEnumerable<TaskDto>> GetHotTasks(DateTime? deadLine = null)
         {
-            var tasksCollection = await _tasksService.GetTasksByTaskNameSubStr(taskNameSubStr);
+            var tasksCollection = await _tasksService.GetHotTasks(deadLine);
             List<TaskDto> result = [];
             foreach (var task in tasksCollection)
             {
@@ -95,47 +94,6 @@ namespace ProjectTasksTrackService.API.Controllers
             return result;
         }
 
-        /// <summary> Получение списка всех актуальных задач </summary>
-        [HttpGet("api/v2/Tasks/GetAllHotTasksByDeadLine")]
-        public async Task<IEnumerable<TaskDto>> GetAllHotTasksByDeadLine(DateTime deadLine)
-        {
-            var tasksCollection = await _tasksService.GetAllHotTasksByDeadLine(deadLine);
-            List<TaskDto> result = [];
-            foreach (var task in tasksCollection)
-            {
-                result.Add(TaskDto(task));
-            }
-
-            return result;
-        }
-
-        /// <summary> Получение списка всех актуальных задач </summary>
-        [HttpGet("api/v2/Tasks/GetAllHotTasks")]
-        public async Task<IEnumerable<TaskDto>> GetAllHotTasks()
-        {
-            var tasksCollection = await _tasksService.GetAllHotTasks();
-            List<TaskDto> result = [];
-            foreach (var task in tasksCollection)
-            {
-                result.Add(TaskDto(task));
-            }
-
-            return result;
-        }
-
-        /// <summary> Получение списка задач по прокту </summary>
-        [HttpGet("api/v2/Tasks/GetTasksForProject")]
-        public async Task<IEnumerable<TaskDto>> GetTasksForProject(string projectId, string taskNameSubStr = null)
-        {
-            var tasksCollection = await _tasksService.GetTasksForProject(projectId, taskNameSubStr);
-            List<TaskDto> result = [];
-            foreach (var task in tasksCollection)
-            {
-                result.Add(TaskDto(task));
-            }
-
-            return result;
-        }
 
         /// <summary> Обновление задачи </summary>
         [HttpPost("api/v2/Tasks/UpdateTask")]

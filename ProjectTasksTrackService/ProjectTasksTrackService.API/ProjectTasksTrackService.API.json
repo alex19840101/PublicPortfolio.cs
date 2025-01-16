@@ -103,6 +103,33 @@
         "tags": [
           "Projects"
         ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          },
+          {
+            "name": "intProjectId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": null
+            }
+          },
+          {
+            "name": "nameSubStr",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -125,6 +152,33 @@
         "tags": [
           "Projects"
         ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          },
+          {
+            "name": "intProjectId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": null
+            }
+          },
+          {
+            "name": "nameSubStr",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -142,7 +196,7 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/v2/Projects/GetProjectById": {
+    "/ProjectTasksTrackService/api/v2/Projects/GetProject": {
       "get": {
         "tags": [
           "Projects"
@@ -152,64 +206,25 @@
             "name": "projectId",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "default": null
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/ProjectTasksTrackService/api/v2/Projects/GetProjectByNum": {
-      "get": {
-        "tags": [
-          "Projects"
-        ],
-        "parameters": [
+          },
           {
             "name": "intProjectId",
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "default": null
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProjectDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/ProjectTasksTrackService/api/v2/Projects/GetProjectByName": {
-      "get": {
-        "tags": [
-          "Projects"
-        ],
-        "parameters": [
+          },
           {
             "name": "name",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "default": null
             }
           }
         ],
@@ -298,7 +313,7 @@
     "/ProjectTasksTrackService/api/v2/SubDivisions/Import": {
       "post": {
         "tags": [
-          "ProjectSubDivisionControllers"
+          "ProjectSubDivisions"
         ],
         "requestBody": {
           "content": {
@@ -338,7 +353,7 @@
     "/ProjectTasksTrackService/api/v2/SubDivisions/Create": {
       "post": {
         "tags": [
-          "ProjectSubDivisionControllers"
+          "ProjectSubDivisions"
         ],
         "requestBody": {
           "content": {
@@ -369,10 +384,203 @@
         }
       }
     },
+    "/ProjectTasksTrackService/api/v2/SubDivisions/GetSubDivisions": {
+      "get": {
+        "tags": [
+          "ProjectSubDivisions"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          },
+          {
+            "name": "intProjectId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": null
+            }
+          },
+          {
+            "name": "subDivisionId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": null
+            }
+          },
+          {
+            "name": "nameSubStr",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectSubDivisionDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ProjectTasksTrackService/api/v2/SubDivisions/GetSubDivisionsOldDto": {
+      "get": {
+        "tags": [
+          "ProjectSubDivisions"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          },
+          {
+            "name": "intProjectId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": null
+            }
+          },
+          {
+            "name": "subDivisionId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": null
+            }
+          },
+          {
+            "name": "nameSubStr",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OldProjectSubDivisionDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ProjectTasksTrackService/api/v2/SubDivisions/GetSubDivision": {
+      "get": {
+        "tags": [
+          "ProjectSubDivisions"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subDivisionId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectSubDivisionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ProjectTasksTrackService/api/v2/SubDivisions/GetHotSubDivisions": {
+      "get": {
+        "tags": [
+          "ProjectSubDivisions"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          },
+          {
+            "name": "deadLine",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "default": null
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectSubDivisionDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/ProjectTasksTrackService/api/v2/SubDivisions/UpdateSubDivision": {
       "post": {
         "tags": [
-          "ProjectSubDivisionControllers"
+          "ProjectSubDivisions"
         ],
         "requestBody": {
           "content": {
@@ -406,7 +614,7 @@
     "/ProjectTasksTrackService/api/v2/SubDivisions/DeleteSubDivision": {
       "delete": {
         "tags": [
-          "ProjectSubDivisionControllers"
+          "ProjectSubDivisions"
         ],
         "requestBody": {
           "content": {
@@ -511,10 +719,37 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/v2/Tasks/GetAllTasks": {
+    "/ProjectTasksTrackService/api/v2/Tasks/GetTasks": {
       "get": {
         "tags": [
           "Tasks"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          },
+          {
+            "name": "intProjectId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": null
+            }
+          },
+          {
+            "name": "nameSubStr",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -533,10 +768,37 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/v2/Tasks/GetAllTasksOldDto": {
+    "/ProjectTasksTrackService/api/v2/Tasks/GetTasksOldDto": {
       "get": {
         "tags": [
           "Tasks"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          },
+          {
+            "name": "intProjectId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": null
+            }
+          },
+          {
+            "name": "nameSubStr",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -555,12 +817,19 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/v2/Tasks/GetTaskById": {
+    "/ProjectTasksTrackService/api/v2/Tasks/GetTask": {
       "get": {
         "tags": [
           "Tasks"
         ],
         "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "taskId",
             "in": "query",
@@ -584,38 +853,7 @@
         }
       }
     },
-    "/ProjectTasksTrackService/api/v2/Tasks/GetTasksByTaskNameSubStr": {
-      "get": {
-        "tags": [
-          "Tasks"
-        ],
-        "parameters": [
-          {
-            "name": "taskNameSubStr",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TaskDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/ProjectTasksTrackService/api/v2/Tasks/GetAllHotTasksByDeadLine": {
+    "/ProjectTasksTrackService/api/v2/Tasks/GetHotTasks": {
       "get": {
         "tags": [
           "Tasks"
@@ -626,67 +864,7 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "format": "date-time"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TaskDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/ProjectTasksTrackService/api/v2/Tasks/GetAllHotTasks": {
-      "get": {
-        "tags": [
-          "Tasks"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TaskDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/ProjectTasksTrackService/api/v2/Tasks/GetTasksForProject": {
-      "get": {
-        "tags": [
-          "Tasks"
-        ],
-        "parameters": [
-          {
-            "name": "projectId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "taskNameSubStr",
-            "in": "query",
-            "schema": {
-              "type": "string",
+              "format": "date-time",
               "default": null
             }
           }
@@ -1171,7 +1349,7 @@
       "name": "Projects"
     },
     {
-      "name": "ProjectSubDivisionControllers"
+      "name": "ProjectSubDivisions"
     },
     {
       "name": "Tasks"

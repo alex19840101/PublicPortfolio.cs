@@ -45,9 +45,9 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Получение списка проектов </summary>
         [HttpGet("api/v2/Projects/GetProjects")]
-        public async Task<IEnumerable<ProjectDto>> GetProjects()
+        public async Task<IEnumerable<ProjectDto>> GetProjects(string projectId = null, int? intProjectId = null, string nameSubStr = null)
         {
-            var projectsCollection = await _projectsService.GetProjects();
+            var projectsCollection = await _projectsService.GetProjects(projectId, intProjectId, nameSubStr);
             List<ProjectDto> result = [];
             foreach (var project in projectsCollection)
             {
@@ -59,9 +59,9 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Получение списка проектов (в старом компактном JSON-формате) для экспорта в старую систему </summary>
         [HttpGet("api/v2/Projects/GetProjectsOldDto")]
-        public async Task<IEnumerable<OldProjectDto>> GetProjectsOldDto()
+        public async Task<IEnumerable<OldProjectDto>> GetProjectsOldDto(string projectId = null, int? intProjectId = null, string nameSubStr = null)
         {
-            var projectsCollection = await _projectsService.GetProjects();
+            var projectsCollection = await _projectsService.GetProjects(projectId, intProjectId, nameSubStr);
             List<OldProjectDto> result = [];
             foreach (var project in projectsCollection)
             {
@@ -71,27 +71,11 @@ namespace ProjectTasksTrackService.API.Controllers
             return result;
         }
 
-        /// <summary> Получение проекта по projectId </summary>
-        [HttpGet("api/v2/Projects/GetProjectById")]
-        public async Task<ProjectDto> GetProjectById(string projectId)
+        /// <summary> Получение проекта </summary>
+        [HttpGet("api/v2/Projects/GetProject")]
+        public async Task<ProjectDto> GetProject(string projectId = null, int? intProjectId = null, string name = null)
         {
-            var project = await _projectsService.GetProjectById(projectId);
-            return ProjectDto(project);
-        }
-
-        /// <summary> Получение проекта по intProjectId </summary>
-        [HttpGet("api/v2/Projects/GetProjectByNum")]
-        public async Task<ProjectDto> GetProjectByNum(int intProjectId)
-        {
-            var project = await _projectsService.GetProjectByNum(intProjectId);
-            return ProjectDto(project);
-        }
-
-        /// <summary> Получение проекта по названию (name) </summary>
-        [HttpGet("api/v2/Projects/GetProjectByName")]
-        public async Task<ProjectDto> GetProjectByName(string name)
-        {
-            var project = await _projectsService.GetProjectByName(name);
+            var project = await _projectsService.GetProject(projectId, intProjectId, name);
             return ProjectDto(project);
         }
 
