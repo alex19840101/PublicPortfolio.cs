@@ -24,9 +24,9 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         [JsonPropertyName("fin")]
         public bool IsFinished { get; set; }
 
-        /// <summary> Legacy-идентификатор (номер) проекта в старой системе </summary>
+        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
         [JsonPropertyName("m")]
-        public required int LegacyRootProjectNumber { get; set; }
+        public required int IntProjectId { get; set; }
 
         /// <summary> Id проекта </summary>
         [JsonPropertyName("uid")]

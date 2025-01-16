@@ -11,7 +11,7 @@ namespace ProjectTasksTrackService.Core.Services
         Task<IEnumerable<ProjectTask>> GetAllTasks();
         Task<IEnumerable<ProjectTask>> GetAllHotTasks();
         Task<ProjectTask> GetTaskById(int taskId);
-        Task<Project> GetProjectByNum(int legacyProjectNumber);
+        Task<Project> GetProjectByNum(int intProjectId);
         Task<Project> GetProjectByName(string name);
         Task<string> UpdateTask(ProjectTask task);
         Task<string> UpdateName(string projectId, string newName);

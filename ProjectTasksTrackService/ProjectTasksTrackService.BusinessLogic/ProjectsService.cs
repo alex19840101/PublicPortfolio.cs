@@ -43,7 +43,7 @@ namespace ProjectTasksTrackService.BusinessLogic
             throw new NotImplementedException();
         }
 
-        public Task<Project> GetProjectByNum(int legacyProjectNumber)
+        public Task<Project> GetProjectByNum(int intProjectId)
         {
             throw new NotImplementedException();
         }

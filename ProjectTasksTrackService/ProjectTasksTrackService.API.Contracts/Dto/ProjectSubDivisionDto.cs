@@ -21,8 +21,8 @@
         /// <summary> Флаг готовности подраздела/модуля/части проекта </summary>
         public bool IsFinished { get; set; }
 
-        /// <summary> Legacy-идентификатор (номер) проекта в старой системе </summary>
-        public int LegacyRootProjectNumber { get; set; }
+        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
+        public int IntProjectId { get; set; }
 
         /// <summary> Id проекта </summary>
         public required string ProjectId { get; set; }

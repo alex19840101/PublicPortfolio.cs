@@ -13,7 +13,7 @@ namespace TestFixtures
 
             var projectId = fixture.Build<string>().Create();
             var name = fixture.Build<string>().Create();
-            var legacyProjectNumber = fixture.Create<int>();
+            var intProjectId = fixture.Create<int>();
             var url = fixture.Build<string>().Create();
             var imageUrl = fixture.Build<string>().Create();
             var scheduledDayNums = fixture.Build<HashSet<byte>>().Create();
@@ -21,7 +21,7 @@ namespace TestFixtures
             return new Project(
                 projectId: projectId,
                 name: name,
-                legacyProjectNumber: legacyProjectNumber,
+                intProjectId: intProjectId,
                 url: url,
                 imageUrl: imageUrl,
                 scheduledDayNums: scheduledDayNums);

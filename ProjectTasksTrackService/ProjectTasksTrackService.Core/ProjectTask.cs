@@ -9,8 +9,8 @@
         public int Id { get; set; }
         public string ProjectId { get { return _projectId; } }
         public int? ProjectSubDivisionId { get { return _projectSubDivisionId; } }
-        /// <summary> Legacy-идентификатор (номер) проекта в старой системе </summary>
-        public int LegacyProjectNumber { get { return _legacyProjectNumber; } }
+        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
+        public int IntProjectId { get { return _intProjectId; } }
         public string Name { get { return _name; } }
         public string Url1 { get { return _url1; } }
         public string Url2 { get { return _url2; } }
@@ -21,7 +21,7 @@
 
         private readonly string _projectId;
         private readonly int? _projectSubDivisionId;
-        private readonly int _legacyProjectNumber;
+        private readonly int _intProjectId;
         private string _name;
         private string _url1;
         private string _url2;
@@ -32,7 +32,7 @@
         public ProjectTask(
             string projectId,
             string name,
-            int legacyProjectNumber,
+            int intProjectId,
             int? projectSubDivisionId = null,
             string url1 = null,
             string url2 = null,
@@ -43,7 +43,7 @@
             )
         {
             _projectId = projectId;
-            _legacyProjectNumber = legacyProjectNumber;
+            _intProjectId = intProjectId;
             _projectSubDivisionId = projectSubDivisionId;
             _name = name;
             _url1 = url1;

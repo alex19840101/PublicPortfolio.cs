@@ -5,8 +5,8 @@ namespace ProjectTasksTrackService.Core
     public class Project
     {
         public string ProjectId { get { return _projectId; } }
-        /// <summary> Legacy-идентификатор (номер) проекта в старой системе </summary>
-        public int? LegacyProjectNumber { get { return _legacyProjectNumber; } }
+        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
+        public int? intProjectId { get { return _intProjectId; } }
         public string Name { get { return _name; } }
         public string Url { get { return _url; } }
         public string ImageUrl { get { return _imageUrl; } }
@@ -16,7 +16,7 @@ namespace ProjectTasksTrackService.Core
         public string LastUpdateDt { get { return _lastUpdateDt; } }
 
         private readonly string _projectId;
-        private readonly int? _legacyProjectNumber;
+        private readonly int? _intProjectId;
         private string _name;
         private string _url;
         private string _imageUrl;
@@ -26,7 +26,7 @@ namespace ProjectTasksTrackService.Core
         public Project(
             string projectId,
             string name,
-            int? legacyProjectNumber = null,
+            int? intProjectId = null,
             string url = null,
             string imageUrl = null,
             HashSet<byte> scheduledDayNums = null,
@@ -35,7 +35,7 @@ namespace ProjectTasksTrackService.Core
             )
         {
             _projectId = projectId;
-            _legacyProjectNumber = legacyProjectNumber;
+            _intProjectId = intProjectId;
             _name = name;
             _url = url;
             _imageUrl = imageUrl;

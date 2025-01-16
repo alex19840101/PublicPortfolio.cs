@@ -11,8 +11,8 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         /// <summary> Id проекта </summary>
         public string ProjectId { get; set; }
 
-        /// <summary> Id проекта в старой системе </summary>
-        public required int LegacyProjectNumber { get; set; }
+        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
+        public required int IntProjectId { get; set; }
 
         /// <summary> Название задачи/события/напоминания </summary>
         public required string Name { get; set; }

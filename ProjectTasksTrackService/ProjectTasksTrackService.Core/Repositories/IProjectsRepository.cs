@@ -8,7 +8,7 @@ namespace ProjectTasksTrackService.Core.Repositories
         Task<string> Add(Project project);
         Task<IEnumerable<Project>> GetProjects();
         Task<Project> GetProjectById(string projectId);
-        Task<Project> GetProjectByNum(int legacyProjectNumber);
+        Task<Project> GetProjectByNum(int intProjectId);
         Task<Project> GetProjectByName(string name);
         Task<string> Import(IEnumerable<Project> projects);
         Task<string> UpdateProject(Project projectDto);

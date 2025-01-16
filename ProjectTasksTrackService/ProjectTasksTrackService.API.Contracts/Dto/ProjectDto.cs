@@ -8,8 +8,8 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         /// <summary> Id проекта </summary>
         public required string ProjectId { get; set; }
 
-        /// <summary> Legacy-идентификатор (номер) проекта в старой системе </summary>
-        public int LegacyProjectNumber { get; set; }
+        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
+        public int IntProjectId { get; set; }
         
         /// <summary> Название проекта </summary>
         public required string Name { get; set; }

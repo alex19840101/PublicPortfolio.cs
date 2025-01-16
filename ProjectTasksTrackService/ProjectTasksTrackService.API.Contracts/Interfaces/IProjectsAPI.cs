@@ -20,8 +20,8 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
         Task<IEnumerable<ProjectDto>> GetProjects();
         /// <summary> Получение проекта по projectId </summary>
         Task<ProjectDto> GetProjectById(string projectId);
-        /// <summary> Получение проекта по legacyProjectNumber </summary>
-        Task<ProjectDto> GetProjectByNum(int legacyProjectNumber);
+        /// <summary> Получение проекта по intProjectId </summary>
+        Task<ProjectDto> GetProjectByNum(int intProjectId);
         /// <summary> Получение проекта по названию (name) </summary>
         Task<ProjectDto> GetProjectByName(string name);
         

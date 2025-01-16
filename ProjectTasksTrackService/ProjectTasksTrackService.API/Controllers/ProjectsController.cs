@@ -79,11 +79,11 @@ namespace ProjectTasksTrackService.API.Controllers
             return ProjectDto(project);
         }
 
-        /// <summary> Получение проекта по legacyProjectNumber </summary>
+        /// <summary> Получение проекта по intProjectId </summary>
         [HttpGet("api/v2/Projects/GetProjectByNum")]
-        public async Task<ProjectDto> GetProjectByNum(int legacyProjectNumber)
+        public async Task<ProjectDto> GetProjectByNum(int intProjectId)
         {
-            var project = await _projectsService.GetProjectByNum(legacyProjectNumber);
+            var project = await _projectsService.GetProjectByNum(intProjectId);
             return ProjectDto(project);
         }
 
@@ -117,7 +117,7 @@ namespace ProjectTasksTrackService.API.Controllers
             new Project(
                 projectId: project.ProjectId,
                 name: project.Name,
-                legacyProjectNumber: project.LegacyProjectNumber,
+                intProjectId: project.IntProjectId,
                 url: project.Url,
                 imageUrl: project.ImageUrl,
                 scheduledDayNums: project.ScheduledDayNums,
@@ -130,7 +130,7 @@ namespace ProjectTasksTrackService.API.Controllers
             new Project(
                     projectId: project.ProjectId,
                     name: project.Name,
-                    legacyProjectNumber: project.LegacyProjectNumber,
+                    intProjectId: project.IntProjectId,
                     url: project.Url,
                     imageUrl: project.ImageUrl,
                     scheduledDayNums: project.ScheduledDayNums,
@@ -144,7 +144,7 @@ namespace ProjectTasksTrackService.API.Controllers
             {
                 ProjectId = project.ProjectId,
                 Name = project.Name,
-                LegacyProjectNumber = project.LegacyProjectNumber.Value,
+                IntProjectId = project.intProjectId.Value,
                 Url = project.Url,
                 ImageUrl = project.ImageUrl,
                 ScheduledDayNums = project.ScheduledDayNums,
@@ -158,7 +158,7 @@ namespace ProjectTasksTrackService.API.Controllers
             { 
                 ProjectId = project.ProjectId,
                 Name = project.Name,
-                LegacyProjectNumber = project.LegacyProjectNumber.Value,
+                IntProjectId = project.intProjectId.Value,
                 Url = project.Url,
                 ImageUrl = project.ImageUrl,
                 ScheduledDayNums = project.ScheduledDayNums,

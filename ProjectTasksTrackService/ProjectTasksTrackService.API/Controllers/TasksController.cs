@@ -150,7 +150,7 @@ namespace ProjectTasksTrackService.API.Controllers
             new ProjectTask(
                 projectId: oldTaskDto.ProjectId,
                 name: oldTaskDto.Name,
-                legacyProjectNumber: oldTaskDto.LegacyProjectNumber,
+                intProjectId: oldTaskDto.IntProjectId,
                 projectSubDivisionId: oldTaskDto.ProjectSubDivisionId,
                 url1: oldTaskDto.Url1,
                 url2: oldTaskDto.Url2,
@@ -165,7 +165,7 @@ namespace ProjectTasksTrackService.API.Controllers
             new ProjectTask(
                     projectId: taskDto.ProjectId,
                     name: taskDto.Name,
-                    legacyProjectNumber: taskDto.LegacyProjectNumber,
+                    intProjectId: taskDto.IntProjectId,
                     projectSubDivisionId: taskDto.ProjectSubDivisionId,
                     url1: taskDto.Url1,
                     url2: taskDto.Url2,
@@ -181,7 +181,7 @@ namespace ProjectTasksTrackService.API.Controllers
             {
                 ProjectId = projectTask.ProjectId,
                 Name = projectTask.Name,
-                LegacyProjectNumber = projectTask.LegacyProjectNumber,
+                IntProjectId = projectTask.IntProjectId,
                 ProjectSubDivisionId = projectTask.ProjectSubDivisionId,
                 Url1 = projectTask.Url1,
                 Url2 = projectTask.Url2,
@@ -197,7 +197,7 @@ namespace ProjectTasksTrackService.API.Controllers
             {
                 ProjectId = projectTask.ProjectId,
                 Name = projectTask.Name,
-                LegacyProjectNumber = projectTask.LegacyProjectNumber,
+                IntProjectId = projectTask.IntProjectId,
                 ProjectSubDivisionId = projectTask.ProjectSubDivisionId,
                 Url1 = projectTask.Url1,
                 Url2 = projectTask.Url2,

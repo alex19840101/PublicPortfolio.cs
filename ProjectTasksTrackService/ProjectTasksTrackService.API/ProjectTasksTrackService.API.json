@@ -177,7 +177,7 @@
         ],
         "parameters": [
           {
-            "name": "legacyProjectNumber",
+            "name": "intProjectId",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -746,7 +746,7 @@
             "type": "string",
             "nullable": true
           },
-          "legacyProjectNumber": {
+          "intProjectId": {
             "type": "integer",
             "format": "int32"
           },
@@ -782,7 +782,7 @@
       },
       "TaskDto": {
         "required": [
-          "legacyProjectNumber",
+          "intProjectId",
           "name"
         ],
         "type": "object",
@@ -795,7 +795,7 @@
             "type": "string",
             "nullable": true
           },
-          "legacyProjectNumber": {
+          "intProjectId": {
             "type": "integer",
             "format": "int32"
           },
