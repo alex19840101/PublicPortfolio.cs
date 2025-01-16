@@ -13,11 +13,6 @@ namespace ProjectTasksTrackService.DataAccess
             throw new NotImplementedException();
         }
 
-        public Task<string> DeleteProject(string projectId, string projectSecretString)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<Project> GetProjectById(string projectId)
         {
             throw new NotImplementedException();
@@ -43,6 +38,11 @@ namespace ProjectTasksTrackService.DataAccess
             throw new NotImplementedException();
         }
 
+        public Task<string> UpdateProject(Project project)
+        {
+            throw new NotImplementedException();
+        }
+        /*
         public Task<string> UpdateImageUrl(string projectId, string imageUrl)
         {
             throw new NotImplementedException();
@@ -53,17 +53,19 @@ namespace ProjectTasksTrackService.DataAccess
             throw new NotImplementedException();
         }
 
-        public Task<string> UpdateProject(Project projectDto)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<string> UpdateScheduledDayNums(string projectId, HashSet<byte> scheduledDayNums)
         {
             throw new NotImplementedException();
         }
 
         public Task<string> UpdateUrl(string projectId, string url)
+        {
+            throw new NotImplementedException();
+        }
+
+        */
+
+        public Task<string> DeleteProject(string projectId, string projectSecretString)
         {
             throw new NotImplementedException();
         }

@@ -48,7 +48,7 @@ namespace ProjectTasksTrackService.API.Controllers
         [HttpGet("api/v2/Tasks/GetAllTasks")]
         public async Task<IEnumerable<TaskDto>> GetAllTasks()
         {
-            var tasksCollection = await _tasksService.GetTasks();
+            var tasksCollection = await _tasksService.GetAllTasks();
             List<TaskDto> result = [];
             foreach (var task in tasksCollection)
             {
@@ -62,7 +62,7 @@ namespace ProjectTasksTrackService.API.Controllers
         [HttpGet("api/v2/Tasks/GetAllTasksOldDto")]
         public async Task<IEnumerable<OldTaskDto>> GetAllTasksOldDto()
         {
-            var tasksCollection = await _tasksService.GetTasks();
+            var tasksCollection = await _tasksService.GetAllTasks();
             List<OldTaskDto> result = [];
             foreach (var task in tasksCollection)
             {
@@ -72,7 +72,7 @@ namespace ProjectTasksTrackService.API.Controllers
             return result;
         }
 
-        /// <summary> Получение задачи по projectId </summary>
+        /// <summary> Получение задачи по taskId </summary>
         [HttpGet("api/v2/Tasks/GetTaskById")]
         public async Task<TaskDto> GetTaskById(int taskId)
         {
@@ -123,9 +123,18 @@ namespace ProjectTasksTrackService.API.Controllers
             return result;
         }
 
-        public Task<IEnumerable<TaskDto>> GetTasksByProjectId(string projectId, string taskNameSubStr = null)
+        /// <summary> Получение списка задач по прокту </summary>
+        [HttpGet("api/v2/Tasks/GetTasksForProject")]
+        public async Task<IEnumerable<TaskDto>> GetTasksForProject(string projectId, string taskNameSubStr = null)
         {
-            throw new NotImplementedException();
+            var tasksCollection = await _tasksService.GetTasksForProject(projectId, taskNameSubStr);
+            List<TaskDto> result = [];
+            foreach (var task in tasksCollection)
+            {
+                result.Add(TaskDto(task));
+            }
+
+            return result;
         }
 
         /// <summary> Обновление задачи </summary>

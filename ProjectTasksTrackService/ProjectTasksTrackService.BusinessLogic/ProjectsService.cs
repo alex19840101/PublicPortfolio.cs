@@ -28,22 +28,17 @@ namespace ProjectTasksTrackService.BusinessLogic
             return await _projectsRepository.Add(project);
         }
 
-        public Task<string> DeleteProject(string projectId, string projectSecretString)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<Project> GetProjectById(string projectId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Project> GetProjectByName(string name)
+        public Task<Project> GetProjectByNum(int intProjectId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Project> GetProjectByNum(int intProjectId)
+        public Task<Project> GetProjectByName(string name)
         {
             throw new NotImplementedException();
         }
@@ -64,16 +59,6 @@ namespace ProjectTasksTrackService.BusinessLogic
             return await _projectsRepository.Import(projects);
         }
 
-        public Task<string> UpdateImageUrl(string projectId, string imageUrl)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string> UpdateName(string projectId, string newName)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<string> UpdateProject(Project projectDto)
         {
             if (string.IsNullOrWhiteSpace(projectDto.ProjectId))
@@ -84,13 +69,7 @@ namespace ProjectTasksTrackService.BusinessLogic
 
             throw new NotImplementedException();
         }
-
-        public Task<string> UpdateScheduledDayNums(string projectId, HashSet<byte> scheduledDayNums)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string> UpdateUrl(string projectId, string url)
+        public Task<string> DeleteProject(string projectId, string projectSecretString)
         {
             throw new NotImplementedException();
         }

@@ -25,7 +25,7 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
         /// <summary> Получение списка всех актуальных задач </summary>
         Task<IEnumerable<TaskDto>> GetAllHotTasks();
         /// <summary> Получение списка задач по проекту </summary>
-        Task<IEnumerable<TaskDto>> GetTasksByProjectId(string projectId, string taskNameSubStr = null);
+        Task<IEnumerable<TaskDto>> GetTasksForProject(string projectId, string taskNameSubStr = null);
         /// <summary> Получение задачи по taskId </summary>
         Task<TaskDto> GetTaskById(int taskId);
 
