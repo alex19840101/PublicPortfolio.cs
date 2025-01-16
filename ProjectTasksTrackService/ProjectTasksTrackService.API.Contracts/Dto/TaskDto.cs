@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using ProjectTasksTrackService.API.Contracts.Dto.Enums;
+﻿using ProjectTasksTrackService.API.Contracts.Dto.Enums;
 
 namespace ProjectTasksTrackService.API.Contracts.Dto
 {
@@ -7,13 +6,13 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
     public class TaskDto
     {
         /// <summary> Id задачи (события/напоминания) в старой системе </summary>
-        public required int Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary> Id проекта </summary>
         public string ProjectId { get; set; }
 
         /// <summary> Id проекта в старой системе </summary>
-        public required int LegacyRootProjectNumber { get; set; }
+        public required int LegacyProjectNumber { get; set; }
 
         /// <summary> Название задачи/события/напоминания </summary>
         public required string Name { get; set; }
@@ -22,7 +21,7 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         public string CreatedDt { get; set; }
 
         /// <summary> Срок (дата и время завершения) задачи по плану </summary>
-        public string Deadline { get; set; }
+        public string DeadLineDt { get; set; }
         
         /// <summary> Дата и время завершения задачи </summary>
         public string DoneDateTime { get; set; }
@@ -44,5 +43,8 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
 
         /// <summary> Дата и время изменения </summary>
         public string LastUpdateDt { get; set; }
+        
+        /// <summary> Id направления (подраздела/модуля/части) проекта </summary>
+        public int? ProjectSubDivisionId { get; set; }
     }
 }

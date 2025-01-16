@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ProjectTasksTrackService.API.Contracts.Dto;
+using ProjectTasksTrackService.API.Contracts.Dto.Requests;
 
 namespace ProjectTasksTrackService.API.Contracts.Interfaces
 {
@@ -9,7 +10,7 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
     public interface ITasksAPI
     {
         /// <summary> Импорт задач (из старой системы) </summary>
-        Task<string> Import(IEnumerable<OldProjectDto> projects);
+        Task<string> Import(IEnumerable<OldTaskDto> projects);
         /// <summary> Создание задачи </summary>
         Task<string> Create(TaskDto task);
 
@@ -32,6 +33,6 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
         Task<string> UpdateTask(TaskDto taskDto);
         
         /// <summary> Удаление задачи </summary>
-        Task<string> DeleteTask(int taskId, string taskSecretString);
+        Task<string> DeleteTask(DeleteTaskRequestDto deleteTaskRequest);
     }
 }

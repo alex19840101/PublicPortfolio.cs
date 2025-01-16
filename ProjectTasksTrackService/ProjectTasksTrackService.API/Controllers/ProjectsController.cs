@@ -17,6 +17,7 @@ namespace ProjectTasksTrackService.API.Controllers
     public class ProjectsController : ControllerBase, IProjectsAPI
     {
         private readonly IProjectsService _projectsService;
+        /// <summary> </summary>
         public ProjectsController(IProjectsService projectsService)
         {
             _projectsService = projectsService;

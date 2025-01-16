@@ -7,13 +7,13 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
     public class OldTaskDto
     {
         /// <summary> Id задачи (события/напоминания) в старой системе </summary>
-        [JsonPropertyName("e")] public required int Id { get; set; }
+        [JsonPropertyName("e")] public int Id { get; set; }
 
         /// <summary> Id проекта </summary>
         [JsonPropertyName("uid")] public string ProjectId { get; set; }
 
         /// <summary> Id проекта в старой системе </summary>
-        [JsonPropertyName("id")] public required int LegacyRootProjectNumber { get; set; }
+        [JsonPropertyName("id")] public required int LegacyProjectNumber { get; set; }
 
         /// <summary> Название задачи/события/напоминания </summary>
         [JsonPropertyName("n")] public required string Name { get; set; }
@@ -22,7 +22,7 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         [JsonPropertyName("cr")] public string CreatedDt { get; set; }
 
         /// <summary> Срок (дата и время завершения) задачи по плану </summary>
-        [JsonPropertyName("dt")] public string Deadline { get; set; }
+        [JsonPropertyName("dt")] public string DeadLineDt { get; set; }
         
         /// <summary> Дата и время завершения задачи </summary>
         [JsonPropertyName("done")] public string DoneDateTime { get; set; }
@@ -41,7 +41,11 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         
         /// <summary> Ссылка #2 ((Интернет)) </summary>
         [JsonPropertyName("u2")] public string Url2 { get; set; }
+        
         /// <summary> Дата и время изменения </summary>
         [JsonPropertyName("tla")] public string LastUpdateDt { get; set; }
+        
+        /// <summary> Id направления (подраздела/модуля/части) проекта </summary>
+        [JsonPropertyName("su")] public int? ProjectSubDivisionId { get; set; }
     }
 }
