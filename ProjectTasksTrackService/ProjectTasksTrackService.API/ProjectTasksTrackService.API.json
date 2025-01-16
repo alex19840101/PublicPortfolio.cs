@@ -295,6 +295,148 @@
         }
       }
     },
+    "/ProjectTasksTrackService/api/v2/SubDivisions/Import": {
+      "post": {
+        "tags": [
+          "ProjectSubDivisionControllers"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OldProjectSubDivisionDto"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OldProjectSubDivisionDto"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ProjectTasksTrackService/api/v2/SubDivisions/Create": {
+      "post": {
+        "tags": [
+          "ProjectSubDivisionControllers"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectSubDivisionDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectSubDivisionDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ProjectTasksTrackService/api/v2/SubDivisions/UpdateSubDivision": {
+      "post": {
+        "tags": [
+          "ProjectSubDivisionControllers"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectSubDivisionDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectSubDivisionDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ProjectTasksTrackService/api/v2/SubDivisions/DeleteSubDivision": {
+      "delete": {
+        "tags": [
+          "ProjectSubDivisionControllers"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteProjectSubDivisionDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteProjectSubDivisionDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/ProjectTasksTrackService/api/v2/Tasks/Import": {
       "post": {
         "tags": [
@@ -650,6 +792,23 @@
           }
         }
       },
+      "DeleteProjectSubDivisionDto": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "nullable": true
+          },
+          "subDivisionId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "subDivisionSecretString": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "DeleteTaskRequestDto": {
         "type": "object",
         "properties": {
@@ -703,6 +862,63 @@
             "nullable": true
           },
           "pla": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "OldProjectSubDivisionDto": {
+        "required": [
+          "i",
+          "n",
+          "m"
+        ],
+        "type": "object",
+        "properties": {
+          "i": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "n": {
+            "type": "string",
+            "nullable": true
+          },
+          "cr": {
+            "type": "string",
+            "nullable": true
+          },
+          "la": {
+            "type": "string",
+            "nullable": true
+          },
+          "done": {
+            "type": "string",
+            "nullable": true
+          },
+          "fin": {
+            "type": "boolean"
+          },
+          "m": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "uid": {
+            "type": "string",
+            "nullable": true
+          },
+          "u1": {
+            "type": "string",
+            "nullable": true
+          },
+          "u2": {
+            "type": "string",
+            "nullable": true
+          },
+          "im": {
+            "type": "string",
+            "nullable": true
+          },
+          "dt": {
             "type": "string",
             "nullable": true
           }
@@ -819,6 +1035,63 @@
           }
         }
       },
+      "ProjectSubDivisionDto": {
+        "required": [
+          "id",
+          "name",
+          "projectId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdDt": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastUpdateDt": {
+            "type": "string",
+            "nullable": true
+          },
+          "doneDateTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "isFinished": {
+            "type": "boolean"
+          },
+          "intProjectId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "projectId": {
+            "type": "string",
+            "nullable": true
+          },
+          "url1": {
+            "type": "string",
+            "nullable": true
+          },
+          "url2": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "deadLineDt": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "TaskDto": {
         "required": [
           "intProjectId",
@@ -896,6 +1169,9 @@
     },
     {
       "name": "Projects"
+    },
+    {
+      "name": "ProjectSubDivisionControllers"
     },
     {
       "name": "Tasks"

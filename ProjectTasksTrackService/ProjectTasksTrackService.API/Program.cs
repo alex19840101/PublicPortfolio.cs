@@ -20,6 +20,14 @@ builder.Services.AddOpenApi();
 builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
 builder.Services.AddScoped<IProjectsService, ProjectsService>();
 
+builder.Services.AddScoped<ISubProjectsRepository, SubProjectsRepository>();
+builder.Services.AddScoped<ISubProjectsService, SubProjectsService>();
+
+builder.Services.AddScoped<ITasksRepository, TasksRepository>();
+builder.Services.AddScoped<ITasksService, TasksService>();
+
+
+
 #region -------------------------------Swagger-------------------------------
 const string URL = "https://github.com/alex19840101/PublicPortfolio.cs/compare/ProjectTasksTrackService";
 builder.Services.AddSwaggerGen(c => // Register the Swagger generator, defining 1 or more Swagger documents

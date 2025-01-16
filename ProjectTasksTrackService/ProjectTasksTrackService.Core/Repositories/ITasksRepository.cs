@@ -6,5 +6,6 @@ namespace ProjectTasksTrackService.Core.Repositories
     {
         Task<string> Add(ProjectTask project);
         Task<string> UpdateTask(ProjectTask project);
+        Task<string> DeleteTask(string taskId, string taskSecretString);
     }
 }

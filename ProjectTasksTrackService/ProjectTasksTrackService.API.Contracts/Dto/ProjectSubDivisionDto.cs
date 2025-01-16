@@ -26,5 +26,17 @@
 
         /// <summary> Id проекта </summary>
         public required string ProjectId { get; set; }
+        
+        /// <summary> Ссылка #1 ((локальная)) </summary>
+        public string Url1 { get; set; }
+
+        /// <summary> Ссылка #2 ((Интернет)) </summary>
+        public string Url2 { get; set; }
+
+        /// <summary> Изображение </summary>
+        public string ImageUrl { get; set; }
+        
+        /// <summary> Срок (дата и время завершения) подпроекта (при необходимости) </summary>
+        public string DeadLineDt { get; set; }
     }
 }

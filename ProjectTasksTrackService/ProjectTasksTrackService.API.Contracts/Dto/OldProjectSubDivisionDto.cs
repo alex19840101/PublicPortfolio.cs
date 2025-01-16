@@ -31,5 +31,17 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         /// <summary> Id проекта </summary>
         [JsonPropertyName("uid")]
         public string ProjectId { get; set; }
+        
+        /// <summary> Ссылка #1 ((локальная)) </summary>
+        [JsonPropertyName("u1")] public string Url1 { get; set; }
+
+        /// <summary> Ссылка #2 ((Интернет)) </summary>
+        [JsonPropertyName("u2")] public string Url2 { get; set; }
+
+        /// <summary> Изображение </summary>
+        [JsonPropertyName("im")] public string ImageUrl { get; set; }
+
+        /// <summary> Срок (дата и время завершения) подпроекта (при необходимости) </summary>
+        [JsonPropertyName("dt")] public string DeadLineDt { get; set; }
     }
 }
