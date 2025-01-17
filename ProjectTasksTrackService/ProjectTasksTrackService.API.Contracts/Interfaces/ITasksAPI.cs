@@ -18,13 +18,26 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
         Task<TaskDto> GetTask(string projectId, int taskId);
 
         /// <summary> Получение списка задач </summary>
-        Task<IEnumerable<TaskDto>> GetTasks(string projectId = null, int? intProjectId = null, string nameSubStr = null);
+        Task<IEnumerable<TaskDto>> GetTasks(
+            string projectId = null,
+            int? intProjectId = null,
+            string nameSubStr = null,
+            int skipCount = 0,
+            int limitCount = 100);
 
         /// <summary> Получение списка всех задач (в старом компактном JSON-формате) для экспорта в старую систему </summary>
-        Task<IEnumerable<OldTaskDto>> GetTasksOldDto(string projectId = null, int? intProjectId = null, string nameSubStr = null);
+        Task<IEnumerable<OldTaskDto>> GetTasksOldDto(
+            string projectId = null,
+            int? intProjectId = null,
+            string nameSubStr = null,
+            int skipCount = 0,
+            int limitCount = 100);
 
         /// <summary> Получение списка всех актуальных задач </summary>
-        Task<IEnumerable<TaskDto>> GetHotTasks(DateTime? deadLine = null);
+        Task<IEnumerable<TaskDto>> GetHotTasks(
+            DateTime? deadLine = null,
+            int skipCount = 0,
+            int limitCount = 100);
 
         /// <summary> Обновление задачи </summary>
         Task<string> UpdateTask(TaskDto taskDto);

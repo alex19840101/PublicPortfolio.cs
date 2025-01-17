@@ -21,13 +21,29 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
         Task<ProjectSubDivisionDto> GetSubDivision(string projectId, int subDivisionId);
 
         /// <summary> Получение списка подпроектов </summary>
-        Task<IEnumerable<ProjectSubDivisionDto>> GetSubDivisions(string projectId = null, int? intProjectId = null, int? subDivisionId = null, string nameSubStr = null);
+        Task<IEnumerable<ProjectSubDivisionDto>> GetSubDivisions(
+            string projectId = null,
+            int? intProjectId = null,
+            int? subDivisionId = null,
+            string nameSubStr = null,
+            int skipCount = 0,
+            int limitCount = 100);
 
         /// <summary> Получение списка подпроектов (в старом компактном JSON-формате) для экспорта в старую систему </summary>
-        Task<IEnumerable<OldProjectSubDivisionDto>> GetSubDivisionsOldDto(string projectId = null, int? intProjectId = null, int? subDivisionId = null, string nameSubStr = null);
+        Task<IEnumerable<OldProjectSubDivisionDto>> GetSubDivisionsOldDto(
+            string projectId = null,
+            int? intProjectId = null,
+            int? subDivisionId = null,
+            string nameSubStr = null,
+            int skipCount = 0,
+            int limitCount = 100);
 
         /// <summary> Получение списка актуальных подпроектов </summary>
-        Task<IEnumerable<ProjectSubDivisionDto>> GetHotSubDivisions(string projectId = null, DateTime? deadLine = null);
+        Task<IEnumerable<ProjectSubDivisionDto>> GetHotSubDivisions(
+            string projectId = null,
+            DateTime? deadLine = null,
+            int skipCount = 0,
+            int limitCount = 100);
 
         /// <summary> Обновление подпроекта </summary>
         Task<string> UpdateSubDivision(ProjectSubDivisionDto taskDto);

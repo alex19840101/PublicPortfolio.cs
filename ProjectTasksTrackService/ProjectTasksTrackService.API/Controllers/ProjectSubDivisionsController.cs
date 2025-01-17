@@ -51,9 +51,11 @@ namespace ProjectTasksTrackService.API.Controllers
             string projectId = null,
             int? intProjectId = null,
             int? subDivisionId = null,
-            string nameSubStr = null)
+            string nameSubStr = null,
+            int skipCount = 0,
+            int limitCount = 100)
         {
-            var subDivisionsCollection = await _subProjectsService.GetSubDivisions(projectId, intProjectId, subDivisionId, nameSubStr);
+            var subDivisionsCollection = await _subProjectsService.GetSubDivisions(projectId, intProjectId, subDivisionId, nameSubStr, skipCount, limitCount);
             List<ProjectSubDivisionDto> result = [];
             foreach (var subDivision in subDivisionsCollection)
             {
@@ -69,9 +71,11 @@ namespace ProjectTasksTrackService.API.Controllers
             string projectId = null,
             int? intProjectId = null,
             int? subDivisionId = null,
-            string nameSubStr = null)
+            string nameSubStr = null,
+            int skipCount = 0,
+            int limitCount = 100)
         {
-            var subDivisionsCollection = await _subProjectsService.GetSubDivisions(projectId, intProjectId, subDivisionId, nameSubStr);
+            var subDivisionsCollection = await _subProjectsService.GetSubDivisions(projectId, intProjectId, subDivisionId, nameSubStr, skipCount, limitCount);
             List<OldProjectSubDivisionDto> result = [];
             foreach (var subDivision in subDivisionsCollection)
             {
@@ -91,9 +95,13 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Получение списка актуальных подпроектов </summary>
         [HttpGet("api/v2/SubDivisions/GetHotSubDivisions")]
-        public async Task<IEnumerable<ProjectSubDivisionDto>> GetHotSubDivisions(string projectId = null, DateTime? deadLine = null)
+        public async Task<IEnumerable<ProjectSubDivisionDto>> GetHotSubDivisions(
+            string projectId = null,
+            DateTime? deadLine = null,
+            int skipCount = 0,
+            int limitCount = 100)
         {
-            var subDivisionsCollection = await _subProjectsService.GetHotSubDivisions(projectId, deadLine);
+            var subDivisionsCollection = await _subProjectsService.GetHotSubDivisions(projectId, deadLine, skipCount, limitCount);
             List<ProjectSubDivisionDto> result = [];
             foreach (var subDivision in subDivisionsCollection)
             {

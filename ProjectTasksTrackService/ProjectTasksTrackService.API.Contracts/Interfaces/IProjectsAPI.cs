@@ -17,10 +17,20 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
         Task<ProjectDto> GetProject(string projectId = null, int? intProjectId = null, string name = null);
 
         /// <summary> Получение списка проектов (в старом компактном JSON-формате) для экспорта в старую систему </summary>
-        Task<IEnumerable<OldProjectDto>> GetProjectsOldDto(string projectId = null, int? intProjectId = null, string nameSubStr = null);
+        Task<IEnumerable<OldProjectDto>> GetProjectsOldDto(
+            string projectId = null,
+            int? intProjectId = null,
+            string nameSubStr = null,
+            int skipCount = 0,
+            int limitCount = 100);
 
         /// <summary> Получение списка проектов </summary>
-        Task<IEnumerable<ProjectDto>> GetProjects(string projectId = null, int? intProjectId = null, string nameSubStr = null);
+        Task<IEnumerable<ProjectDto>> GetProjects(
+            string projectId = null,
+            int? intProjectId = null,
+            string nameSubStr = null,
+            int skipCount = 0,
+            int limitCount = 100);
         
         /// <summary> Обновление проекта </summary>
         Task<string> UpdateProject(ProjectDto projectDto);

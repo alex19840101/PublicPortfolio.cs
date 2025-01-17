@@ -54,7 +54,12 @@ namespace ProjectTasksTrackService.BusinessLogic
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Project>> GetProjects(string projectId = null, int? intProjectId = null, string nameSubStr = null)
+        public Task<IEnumerable<Project>> GetProjects(
+            string projectId = null,
+            int? intProjectId = null,
+            string nameSubStr = null,
+            int skipCount = 0,
+            int limitCount = 100)
         {
             throw new NotImplementedException();
         }

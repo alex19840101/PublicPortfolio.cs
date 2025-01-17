@@ -46,9 +46,14 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Получение списка задач </summary>
         [HttpGet("api/v2/Tasks/GetTasks")]
-        public async Task<IEnumerable<TaskDto>> GetTasks(string projectId = null, int? intProjectId = null, string nameSubStr = null)
+        public async Task<IEnumerable<TaskDto>> GetTasks(
+            string projectId = null,
+            int? intProjectId = null,
+            string nameSubStr = null,
+            int skipCount = 0,
+            int limitCount = 100)
         {
-            var tasksCollection = await _tasksService.GetTasks(projectId,intProjectId, nameSubStr);
+            var tasksCollection = await _tasksService.GetTasks(projectId,intProjectId, nameSubStr, skipCount, limitCount);
             List<TaskDto> result = [];
             foreach (var task in tasksCollection)
             {
@@ -60,9 +65,14 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Получение списка задач (в старом компактном JSON-формате) для экспорта в старую систему </summary>
         [HttpGet("api/v2/Tasks/GetTasksOldDto")]
-        public async Task<IEnumerable<OldTaskDto>> GetTasksOldDto(string projectId = null, int? intProjectId = null, string nameSubStr = null)
+        public async Task<IEnumerable<OldTaskDto>> GetTasksOldDto(
+            string projectId = null,
+            int? intProjectId = null,
+            string nameSubStr = null,
+            int skipCount = 0,
+            int limitCount = 100)
         {
-            var tasksCollection = await _tasksService.GetTasks(projectId, intProjectId, nameSubStr);
+            var tasksCollection = await _tasksService.GetTasks(projectId, intProjectId, nameSubStr, skipCount, limitCount);
             List<OldTaskDto> result = [];
             foreach (var task in tasksCollection)
             {
@@ -82,9 +92,12 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Получение списка актуальных задач </summary>
         [HttpGet("api/v2/Tasks/GetHotTasks")]
-        public async Task<IEnumerable<TaskDto>> GetHotTasks(DateTime? deadLine = null)
+        public async Task<IEnumerable<TaskDto>> GetHotTasks(
+            DateTime? deadLine = null,
+            int skipCount = 0,
+            int limitCount = 100)
         {
-            var tasksCollection = await _tasksService.GetHotTasks(deadLine);
+            var tasksCollection = await _tasksService.GetHotTasks(deadLine, skipCount, limitCount);
             List<TaskDto> result = [];
             foreach (var task in tasksCollection)
             {

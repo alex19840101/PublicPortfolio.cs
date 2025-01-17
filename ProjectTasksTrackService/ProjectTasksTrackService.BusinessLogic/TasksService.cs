@@ -31,7 +31,10 @@ namespace ProjectTasksTrackService.BusinessLogic
             return await _tasksRepository.Add(projectTask);
         }
 
-        public Task<IEnumerable<ProjectTask>> GetHotTasks(DateTime? deadLine = null)
+        public Task<IEnumerable<ProjectTask>> GetHotTasks(
+            DateTime? deadLine = null,
+            int skipCount = 0,
+            int limitCount = 100)
         {
             throw new NotImplementedException();
         }
@@ -40,7 +43,12 @@ namespace ProjectTasksTrackService.BusinessLogic
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<ProjectTask>> GetTasks(string projectId = null, int? intProjectId = null, string nameSubStr = null)
+        public Task<IEnumerable<ProjectTask>> GetTasks(
+            string projectId = null,
+            int? intProjectId = null,
+            string nameSubStr = null,
+            int skipCount = 0,
+            int limitCount = 100)
         {
             throw new NotImplementedException();
         }

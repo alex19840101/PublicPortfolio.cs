@@ -27,7 +27,11 @@ namespace ProjectTasksTrackService.BusinessLogic
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<ProjectSubDivision>> GetHotSubDivisions(string projectId = null, DateTime? deadLine = null)
+        public Task<IEnumerable<ProjectSubDivision>> GetHotSubDivisions(
+            string projectId = null,
+            DateTime? deadLine = null,
+            int skipCount = 0,
+            int limitCount = 100)
         {
             throw new NotImplementedException();
         }
@@ -37,7 +41,13 @@ namespace ProjectTasksTrackService.BusinessLogic
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<ProjectSubDivision>> GetSubDivisions(string projectId = null, int? intProjectId = null, int? subDivisionId = null, string nameSubStr = null)
+        public Task<IEnumerable<ProjectSubDivision>> GetSubDivisions(
+            string projectId = null,
+            int? intProjectId = null,
+            int? subDivisionId = null,
+            string nameSubStr = null,
+            int skipCount = 0,
+            int limitCount = 100)
         {
             throw new NotImplementedException();
         }
