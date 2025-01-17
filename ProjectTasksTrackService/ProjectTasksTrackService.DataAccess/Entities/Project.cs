@@ -2,11 +2,10 @@
 
 namespace ProjectTasksTrackService.DataAccess.Entities
 {
-    /// <summary>
-    /// Entity-класс проекта
-    /// </summary>
+    /// <summary> Entity-класс проекта </summary>
     public class Project
     {
+        /// <summary> Строковый идентификатор проекта </summary>
         public string Id { get { return _id; } }
         /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
         public int IntId { get { return _intId; } }
@@ -19,9 +18,9 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         public string LastUpdateDt { get { return _lastUpdateDt; } }
 
         /// <summary> Навигационное свойство -> список задач проекта </summary>
-        public List<ProjectTask> Tasks { get; set; } = [];
+        public ICollection<ProjectTask> Tasks { get; set; } = [];
         /// <summary> Навигационное свойство -> список подпроектов </summary>
-        public List<ProjectSubDivision> ProjectSubDivisions { get; set; } = [];
+        public ICollection<ProjectSubDivision> ProjectSubDivisions { get; set; } = [];
 
         private readonly string _id;
         private readonly int _intId;

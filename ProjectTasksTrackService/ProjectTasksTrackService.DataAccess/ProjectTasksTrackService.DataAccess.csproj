@@ -14,8 +14,4 @@
     <ProjectReference Include="..\ProjectTasksTrackService.Core\ProjectTasksTrackService.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Entities\" />
-  </ItemGroup>
-
 </Project>

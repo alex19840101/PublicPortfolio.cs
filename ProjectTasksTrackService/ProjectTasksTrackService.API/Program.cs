@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
@@ -26,7 +28,17 @@ builder.Services.AddScoped<ISubProjectsService, SubProjectsService>();
 builder.Services.AddScoped<ITasksRepository, TasksRepository>();
 builder.Services.AddScoped<ITasksService, TasksService>();
 
+IHostEnvironment env = builder.Environment;
 
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
+string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ProjectTasksTrackServiceDb");
+
+builder.Services.AddDbContext<ProjectTasksTrackServiceDbContext>(builder =>
+{
+    builder.UseNpgsql(connectionString: dataBaseConnectionStr);
+});
 
 #region -------------------------------Swagger-------------------------------
 const string URL = "https://github.com/alex19840101/PublicPortfolio.cs/compare/ProjectTasksTrackService";

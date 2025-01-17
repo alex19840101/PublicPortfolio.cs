@@ -1,8 +1,6 @@
 ﻿namespace ProjectTasksTrackService.DataAccess.Entities
 {
-    /// <summary>
-    /// Entity-класс задачи по проекту
-    /// </summary>
+    /// <summary> Entity-класс задачи по проекту </summary>
     public class ProjectTask
     {
         /// <summary> Id задачи (события/напоминания) в старой системе </summary>
@@ -18,6 +16,10 @@
         public string CreatedDt { get { return _createdDt; } }
         public string LastUpdateDt { get { return _lastUpdateDt; } }
         public string DeadLineDt { get { return _deadLineDt; } }
+        /// <summary> Навигационное свойство -> проект </summary>
+        public Project Project { get; set; }
+        /// <summary> Навигационное свойство -> подпроект </summary>
+        public ProjectSubDivision ProjectSubDivision { get; set; }
 
         private readonly string _projectId;
         private readonly int? _projectSubDivisionId;

@@ -2,9 +2,7 @@
 
 namespace ProjectTasksTrackService.DataAccess.Entities
 {
-    /// <summary>
-    /// Entity-класс подпроекта (направления/подраздела/модуля/части) 
-    /// </summary>
+    /// <summary> Entity-класс подпроекта (направления/подраздела/модуля/части) </summary>
     public class ProjectSubDivision
     {
         /// <summary> Id подпроекта (направления/подраздела/модуля/части) (ProjectSubDivisionId) </summary>
@@ -21,8 +19,10 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         public string LastUpdateDt { get { return _lastUpdateDt; } }
         public string DeadLineDt { get { return _deadLineDt; } }
 
+        /// <summary> Навигационное свойство -> проект </summary>
+        public Project Project { get; set; }
         /// <summary> Навигационное свойство -> список задач подпроекта </summary>
-        public List<ProjectTask> Tasks { get; set; } = [];
+        public ICollection<ProjectTask> Tasks { get; set; } = [];
 
         /// <summary> Id подпроекта (направления/подраздела/модуля/части) (ProjectSubDivisionId) </summary>
         private readonly int _id;
