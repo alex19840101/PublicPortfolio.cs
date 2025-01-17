@@ -138,7 +138,7 @@ namespace ProjectTasksTrackService.API.Controllers
             {
                 ProjectId = project.ProjectId,
                 Name = project.Name,
-                IntProjectId = project.intProjectId.Value,
+                IntProjectId = project.IntProjectId,
                 Url = project.Url,
                 ImageUrl = project.ImageUrl,
                 ScheduledDayNums = project.ScheduledDayNums,
@@ -152,7 +152,7 @@ namespace ProjectTasksTrackService.API.Controllers
             { 
                 ProjectId = project.ProjectId,
                 Name = project.Name,
-                IntProjectId = project.intProjectId.Value,
+                IntProjectId = project.IntProjectId,
                 Url = project.Url,
                 ImageUrl = project.ImageUrl,
                 ScheduledDayNums = project.ScheduledDayNums,

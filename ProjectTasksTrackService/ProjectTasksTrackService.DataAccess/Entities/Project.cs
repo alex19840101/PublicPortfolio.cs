@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 
-namespace ProjectTasksTrackService.Core
+namespace ProjectTasksTrackService.DataAccess.Entities
 {
+    /// <summary>
+    /// Entity-класс проекта
+    /// </summary>
     public class Project
     {
-        public string ProjectId { get { return _projectId; } }
+        public string Id { get { return _id; } }
         /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
-        public int IntProjectId { get { return _intProjectId; } }
+        public int IntId { get { return _intId; } }
         public string Name { get { return _name; } }
         public string Url { get { return _url; } }
         public string ImageUrl { get { return _imageUrl; } }
@@ -15,8 +18,13 @@ namespace ProjectTasksTrackService.Core
         public string CreatedDt { get { return _createdDt; } }
         public string LastUpdateDt { get { return _lastUpdateDt; } }
 
-        private readonly string _projectId;
-        private readonly int _intProjectId;
+        /// <summary> Навигационное свойство -> список задач проекта </summary>
+        public List<ProjectTask> Tasks { get; set; } = [];
+        /// <summary> Навигационное свойство -> список подпроектов </summary>
+        public List<ProjectSubDivision> ProjectSubDivisions { get; set; } = [];
+
+        private readonly string _id;
+        private readonly int _intId;
         private string _name;
         private string _url;
         private string _imageUrl;
@@ -26,7 +34,7 @@ namespace ProjectTasksTrackService.Core
         public Project(
             string projectId,
             string name,
-            int intProjectId = 0,
+            int intProjectId,
             string url = null,
             string imageUrl = null,
             HashSet<byte> scheduledDayNums = null,
@@ -34,8 +42,8 @@ namespace ProjectTasksTrackService.Core
             string lastUpdateDt = null
             )
         {
-            _projectId = projectId;
-            _intProjectId = intProjectId;
+            _id = projectId;
+            _intId = intProjectId;
             _name = name;
             _url = url;
             _imageUrl = imageUrl;
