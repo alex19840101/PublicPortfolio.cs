@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using ProjectTasksTrackService.Core;
 using ProjectTasksTrackService.Core.Repositories;
 
-namespace ProjectTasksTrackService.DataAccess
+namespace ProjectTasksTrackService.DataAccess.Repositories
 {
     public class TasksRepository : ITasksRepository
     {

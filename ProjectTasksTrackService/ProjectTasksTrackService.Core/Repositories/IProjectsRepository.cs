@@ -5,12 +5,13 @@ namespace ProjectTasksTrackService.Core.Repositories
 {
     public interface IProjectsRepository
     {
-        Task<string> Add(Project project);
+        Task<int> Add(Project project);
+        Task<int> Import(IEnumerable<Project> projects);
         Task<IEnumerable<Project>> GetProjects();
         Task<Project> GetProjectById(string projectId);
         Task<Project> GetProjectByNum(int intProjectId);
         Task<Project> GetProjectByName(string name);
-        Task<string> Import(IEnumerable<Project> projects);
+        
         Task<string> UpdateProject(Project project);
         /*
         Task<string> UpdateName(string projectId, string newName);

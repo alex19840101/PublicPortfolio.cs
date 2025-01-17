@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTasksTrackService.API.Contracts.Dto;
 using ProjectTasksTrackService.API.Contracts.Dto.Requests;
+using ProjectTasksTrackService.API.Contracts.Dto.Responses;
 using ProjectTasksTrackService.API.Contracts.Interfaces;
 using ProjectTasksTrackService.Core;
 using ProjectTasksTrackService.Core.Services;
@@ -25,7 +27,8 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Импорт проектов (из старой системы проектов) </summary>
         [HttpPost("api/v2/Projects/Import")]
-        public async Task<string> Import(IEnumerable<OldProjectDto> projects)
+        [ProducesResponseType(typeof(ImportProjectsResponseDto), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Import(IEnumerable<OldProjectDto> projects)
         {
             List<Project> projectsCollection = [];
             foreach (var project in projects)
@@ -33,14 +36,19 @@ namespace ProjectTasksTrackService.API.Controllers
                 projectsCollection.Add(Project(project));
             }
 
-            return await _projectsService.Import(projectsCollection);
+            var importedCount = await _projectsService.Import(projectsCollection);
+
+            return Ok(new ImportProjectsResponseDto { ImportedCount = importedCount });
         }
 
         /// <summary> Создание проекта </summary>
         [HttpPost("api/v2/Projects/Create")]
-        public async Task<string> Create(ProjectDto project)
+        [ProducesResponseType(typeof(CreateProjectResponseDto), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Create(ProjectDto project)
         {
-            return await _projectsService.Create(Project(project));
+            var intProjectId = await _projectsService.Create(Project(project));
+
+            return Ok(new CreateProjectResponseDto { IntProjectId = intProjectId, ProjectId = project.ProjectId });
         }
 
         /// <summary> Получение списка проектов </summary>

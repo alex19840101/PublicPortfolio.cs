@@ -17,7 +17,7 @@ namespace ProjectTasksTrackService.BusinessLogic
             _projectsRepository = projectsRepository;
         }
 
-        public async Task<string> Create(Project project)
+        public async Task<int> Create(Project project)
         {
             if (string.IsNullOrWhiteSpace(project.ProjectId))
                 throw new InvalidOperationException(ErrorStrings.PROJECT_ID_SHOULD_NOT_BE_EMPTY);
@@ -25,10 +25,12 @@ namespace ProjectTasksTrackService.BusinessLogic
             if (string.IsNullOrWhiteSpace(project.Name))
                 throw new InvalidOperationException(ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY);
 
-            return await _projectsRepository.Add(project);
+            var intProjectId = await _projectsRepository.Add(project);
+
+            return intProjectId;
         }
 
-        public async Task<string> Import(IEnumerable<Project> projects)
+        public async Task<int> Import(IEnumerable<Project> projects)
         {
             if (projects is null)
                 throw new InvalidOperationException(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_NOT_BE_NULL);

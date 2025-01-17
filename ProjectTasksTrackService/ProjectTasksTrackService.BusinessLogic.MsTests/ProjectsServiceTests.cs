@@ -24,9 +24,9 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         {
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields();
 
-            var resultMessage = await _projectsService.Create(project);
+            var intProjectId = await _projectsService.Create(project);
 
-            Assert.AreEqual(StatusStrings.OK, resultMessage);
+            Assert.AreEqual(project.IntProjectId, intProjectId);
             _projectsRepositoryMock.Verify(repo => repo.Add(project), Times.Once);
         }
 
@@ -35,9 +35,9 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         {
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields();
 
-            var resultMessage = await _projectsService.Create(project);
+            var intProjectId = await _projectsService.Create(project);
 
-            resultMessage.Should().BeEquivalentTo(StatusStrings.OK);
+            intProjectId.Should().Be(project.IntProjectId);
             _projectsRepositoryMock.Verify(repo => repo.Add(project), Times.Once);
         }
 
@@ -46,9 +46,9 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         {
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithRequiredFields();
 
-            var resultMessage = await _projectsService.Create(project);
+            var intProjectId = await _projectsService.Create(project);
 
-            Assert.AreEqual(StatusStrings.OK, resultMessage);
+            Assert.AreEqual(project.IntProjectId, intProjectId);
             _projectsRepositoryMock.Verify(repo => repo.Add(project), Times.Once);
         }
 
@@ -57,9 +57,9 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         {
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithRequiredFields();
 
-            var resultMessage = await _projectsService.Create(project);
+            var intProjectId = await _projectsService.Create(project);
 
-            resultMessage.Should().BeEquivalentTo(StatusStrings.OK);
+            intProjectId.Should().Be(project.IntProjectId);
             _projectsRepositoryMock.Verify(repo => repo.Add(project), Times.Once);
         }
     }

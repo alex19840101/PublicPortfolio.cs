@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectTasksTrackService.DataAccess.Entities
 {
@@ -8,6 +9,7 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         /// <summary> Строковый идентификатор проекта </summary>
         public string Id { get { return _id; } }
         /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IntId { get { return _intId; } }
         public string Name { get { return _name; } }
         public string Url { get { return _url; } }

@@ -11,6 +11,7 @@ using ProjectTasksTrackService.BusinessLogic;
 using ProjectTasksTrackService.Core.Repositories;
 using ProjectTasksTrackService.Core.Services;
 using ProjectTasksTrackService.DataAccess;
+using ProjectTasksTrackService.DataAccess.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

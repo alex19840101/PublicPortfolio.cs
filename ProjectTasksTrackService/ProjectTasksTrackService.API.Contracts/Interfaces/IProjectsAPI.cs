@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using ProjectTasksTrackService.API.Contracts.Dto;
 using ProjectTasksTrackService.API.Contracts.Dto.Requests;
 
@@ -9,9 +10,9 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
     public interface IProjectsAPI
     {
         /// <summary> Импорт проектов (из старой системы проектов) </summary>
-        Task<string> Import(IEnumerable<OldProjectDto> projects);
+        Task<IActionResult> Import(IEnumerable<OldProjectDto> projects);
         /// <summary> Создание проекта </summary>
-        Task<string> Create(ProjectDto project);
+        Task<IActionResult> Create(ProjectDto project);
 
         /// <summary> Получение проекта </summary>
         Task<ProjectDto> GetProject(string projectId = null, int? intProjectId = null, string name = null);

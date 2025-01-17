@@ -33,10 +33,12 @@ namespace TestFixtures
 
             var projectId = fixture.Build<string>().Create();
             var name = fixture.Build<string>().Create();
+            var intProjectId = fixture.Create<int>();
 
             return new Project(
                 projectId: projectId,
-                name: name);
+                name: name,
+                intProjectId: intProjectId);
         }
     }
 }
