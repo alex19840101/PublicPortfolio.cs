@@ -22,7 +22,7 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         [JsonPropertyName("i")] public string ImageUrl { get; set; }
         
         /// <summary> Номера дней обязательной активности по проекту (совещаний) </summary>
-        [JsonPropertyName("s")] public HashSet<byte> ScheduledDayNums { get; set; }
+        [JsonPropertyName("s")] public ICollection<byte> ScheduledDayNums { get; set; }
 
         /// <summary> Дата и время создания </summary>
         [JsonPropertyName("pcr")] public string CreatedDt { get; set; }

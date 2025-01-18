@@ -21,7 +21,7 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         public string ImageUrl { get; set; }
         
         /// <summary> Номера дней обязательной активности по проекту (совещаний) </summary>
-        public HashSet<byte> ScheduledDayNums { get; set; }
+        public ICollection<byte> ScheduledDayNums { get; set; }
 
         /// <summary> Дата и время создания </summary>
         public string CreatedDt { get; set; }

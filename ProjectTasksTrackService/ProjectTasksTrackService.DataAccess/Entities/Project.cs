@@ -15,7 +15,7 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         public string Url { get { return _url; } }
         public string ImageUrl { get { return _imageUrl; } }
         /// <summary> Номера дней обязательной активности по проекту (совещаний) </summary>
-        public HashSet<byte> ScheduledDayNums { get { return _scheduledDayNums; } }
+        public ICollection<byte> ScheduledDayNums { get { return _scheduledDayNums; } }
         public string CreatedDt { get { return _createdDt; } }
         public string LastUpdateDt { get { return _lastUpdateDt; } }
 
@@ -29,7 +29,7 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         private string _name;
         private string _url;
         private string _imageUrl;
-        private HashSet<byte> _scheduledDayNums;
+        private ICollection<byte> _scheduledDayNums;
         private string _createdDt;
         private string _lastUpdateDt;
         public Project(
@@ -38,7 +38,7 @@ namespace ProjectTasksTrackService.DataAccess.Entities
             int intId,
             string url = null,
             string imageUrl = null,
-            HashSet<byte> scheduledDayNums = null,
+            ICollection<byte> scheduledDayNums = null,
             string createdDt = null,
             string lastUpdateDt = null
             )
@@ -56,7 +56,7 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         public void UpdateName(string newName) => _name = newName;
         public void UpdateUrl(string newUrl) => _url = newUrl;
         public void UpdateImageUrl(string newImageUrl) => _imageUrl = newImageUrl;
-        public void UpdateScheduledDayNums(HashSet<byte> scheduledDayNums) => _scheduledDayNums = scheduledDayNums;
+        public void UpdateScheduledDayNums(ICollection<byte> scheduledDayNums) => _scheduledDayNums = scheduledDayNums;
         public void UpdateCreatedDt(string createdDt) => _createdDt = createdDt;
         public void UpdateLastUpdateDt(string lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
     }

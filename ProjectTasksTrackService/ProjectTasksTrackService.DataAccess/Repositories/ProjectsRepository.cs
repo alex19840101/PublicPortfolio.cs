@@ -93,7 +93,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<string> UpdateScheduledDayNums(string projectId, HashSet<byte> scheduledDayNums)
+        public Task<string> UpdateScheduledDayNums(string projectId, ICollection<byte> scheduledDayNums)
         {
             throw new NotImplementedException();
         }
