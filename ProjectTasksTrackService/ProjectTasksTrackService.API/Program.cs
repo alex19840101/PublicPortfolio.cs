@@ -77,6 +77,9 @@ builder.Services.AddSwaggerGen(c => // Register the Swagger generator, defining 
 });
 #endregion -------------------------------Swagger-------------------------------
 
+if (env.IsDevelopment())
+    builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
