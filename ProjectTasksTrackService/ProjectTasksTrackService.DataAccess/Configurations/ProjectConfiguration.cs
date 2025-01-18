@@ -15,6 +15,10 @@ namespace ProjectTasksTrackService.DataAccess.Configurations
             builder.HasKey(p => p.Id);
             builder.HasAlternateKey(p => p.IntId);
 
+            builder.Property(p => p.Id).HasField("_id");
+            builder.Property(p => p.IntId).HasField("_intId");
+            builder.Property(p => p.ScheduledDayNums).HasField("_scheduledDayNums");
+
             builder.Property(p => p.Id).HasMaxLength(MAX_NAME_LENGTH).IsRequired();
             builder.Property(p => p.Name).HasMaxLength(MAX_NAME_LENGTH).IsRequired();
             builder.Property(p => p.Url).HasMaxLength(MAX_URL_LENGTH);

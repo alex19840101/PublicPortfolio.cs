@@ -35,7 +35,7 @@
         public ProjectTask(
             string projectId,
             string name,
-            int intProjectId,
+            int projectIntId,
             int? projectSubDivisionId = null,
             string url1 = null,
             string url2 = null,
@@ -46,7 +46,7 @@
             )
         {
             _projectId = projectId;
-            _projectIntId = intProjectId;
+            _projectIntId = projectIntId;
             _projectSubDivisionId = projectSubDivisionId;
             _name = name;
             _url1 = url1;

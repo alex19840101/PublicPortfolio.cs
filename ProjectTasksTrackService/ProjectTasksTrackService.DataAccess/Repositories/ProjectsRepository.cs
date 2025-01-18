@@ -21,9 +21,9 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             ArgumentNullException.ThrowIfNull(project);
 
             var newProjectEntity = new Entities.Project(
-                projectId: project.ProjectId,
+                id: project.ProjectId,
                 name: project.Name,
-                intProjectId: project.IntProjectId,
+                intId: project.IntProjectId,
                 url: project.Url,
                 imageUrl: project.ImageUrl,
                 scheduledDayNums: project.ScheduledDayNums);
@@ -41,9 +41,9 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 throw new InvalidOperationException("projects should contain at least 1 project.");
             
             IEnumerable<Entities.Project> projectEntities = projects.Select(p => new Entities.Project(
-                projectId: p.ProjectId,
+                id: p.ProjectId,
                 name: p.Name,
-                intProjectId: p.IntProjectId,
+                intId: p.IntProjectId,
                 url: p.Url,
                 imageUrl: p.ImageUrl,
                 scheduledDayNums: p.ScheduledDayNums,

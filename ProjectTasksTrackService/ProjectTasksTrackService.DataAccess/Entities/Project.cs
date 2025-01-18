@@ -33,9 +33,9 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         private string _createdDt;
         private string _lastUpdateDt;
         public Project(
-            string projectId,
+            string id,
             string name,
-            int intProjectId,
+            int intId,
             string url = null,
             string imageUrl = null,
             HashSet<byte> scheduledDayNums = null,
@@ -43,8 +43,8 @@ namespace ProjectTasksTrackService.DataAccess.Entities
             string lastUpdateDt = null
             )
         {
-            _id = projectId;
-            _intId = intProjectId;
+            _id = id;
+            _intId = intId;
             _name = name;
             _url = url;
             _imageUrl = imageUrl;

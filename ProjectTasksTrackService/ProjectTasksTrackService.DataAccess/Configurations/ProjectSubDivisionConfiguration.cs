@@ -13,7 +13,9 @@ namespace ProjectTasksTrackService.DataAccess.Configurations
         public void Configure(EntityTypeBuilder<ProjectSubDivision> builder)
         {
             builder.HasKey(s => s.Id);
-            
+
+            builder.Property(p => p.ProjectIntId).HasField("_projectIntId");
+
             builder.Property(s => s.Id).HasMaxLength(MAX_NAME_LENGTH);
             builder.Property(s => s.ProjectId).HasMaxLength(MAX_NAME_LENGTH);
             builder.Property(s => s.Name).HasMaxLength(MAX_NAME_LENGTH).IsRequired();
