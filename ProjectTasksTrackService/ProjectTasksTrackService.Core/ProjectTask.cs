@@ -1,4 +1,6 @@
-﻿namespace ProjectTasksTrackService.Core
+﻿using System.Security.Cryptography;
+
+namespace ProjectTasksTrackService.Core
 {
     /// <summary>
     /// Класс задачи по проекту
@@ -6,11 +8,11 @@
     public class ProjectTask
     {
         /// <summary> Id задачи (события/напоминания) в старой системе </summary>
-        public int Id { get; set; }
-        public string ProjectId { get { return _projectId; } }
-        public int? ProjectSubDivisionId { get { return _projectSubDivisionId; } }
+        public int Id { get { return _id; } }
         /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
-        public int IntProjectId { get { return _intProjectId; } }
+        public int ProjectId { get { return _projectId; } }
+        public int? ProjectSubDivisionId { get { return _projectSubDivisionId; } }
+
         public string Name { get { return _name; } }
         public string Url1 { get { return _url1; } }
         public string Url2 { get { return _url2; } }
@@ -19,9 +21,9 @@
         public string LastUpdateDt { get { return _lastUpdateDt; } }
         public string DeadLineDt { get { return _deadLineDt; } }
 
-        private readonly string _projectId;
+        private readonly int _id;
+        private readonly int _projectId;
         private readonly int? _projectSubDivisionId;
-        private readonly int _intProjectId;
         private string _name;
         private string _url1;
         private string _url2;
@@ -30,9 +32,9 @@
         private string _lastUpdateDt;
         private string _deadLineDt;
         public ProjectTask(
-            string projectId,
+            int id,
+            int projectId,
             string name,
-            int intProjectId,
             int? projectSubDivisionId = null,
             string url1 = null,
             string url2 = null,
@@ -42,8 +44,8 @@
             string deadLineDt = null
             )
         {
+            _id = id;
             _projectId = projectId;
-            _intProjectId = intProjectId;
             _projectSubDivisionId = projectSubDivisionId;
             _name = name;
             _url1 = url1;

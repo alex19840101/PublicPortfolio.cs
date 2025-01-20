@@ -6,11 +6,11 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
     /// <summary> Legacy-класс-модель проекта в API для импорта/экспорта в старую систему </summary>
     public class OldProjectDto
     {
-        /// <summary> Id проекта </summary>
-        [JsonPropertyName("uid")] public string ProjectId { get; set; }
-        
-        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
-        [JsonPropertyName("id")] public required int IntProjectId { get; set; }
+        /// <summary> Числовой идентификатор - номер проекта, как в старой системе </summary>
+        [JsonPropertyName("id")] public required int Id { get; set; }
+
+        /// <summary> Код проекта </summary>
+        [JsonPropertyName("c")] public required string Code { get; set; }
         
         /// <summary> Название проекта </summary>
         [JsonPropertyName("n")] public required string Name { get; set; }
@@ -21,9 +21,6 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         /// <summary> Логотип (эмблема) (imageUrl) проекта </summary>
         [JsonPropertyName("i")] public string ImageUrl { get; set; }
         
-        /// <summary> Номера дней обязательной активности по проекту (совещаний) </summary>
-        [JsonPropertyName("s")] public ICollection<byte> ScheduledDayNums { get; set; }
-
         /// <summary> Дата и время создания </summary>
         [JsonPropertyName("pcr")] public string CreatedDt { get; set; }
 

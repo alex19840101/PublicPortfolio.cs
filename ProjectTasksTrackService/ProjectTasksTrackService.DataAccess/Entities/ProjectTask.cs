@@ -4,10 +4,10 @@
     public class ProjectTask
     {
         /// <summary> Id задачи (события/напоминания) в старой системе </summary>
-        public int Id { get; set; }
-        public string ProjectId { get { return _projectId; } }
+        public int Id { get { return _id; } }
+        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе  - внешний ключ (Project.Id) </summary>
+        public int ProjectId { get { return _projectId; } }
         public int? ProjectSubDivisionId { get { return _projectSubDivisionId; } }
-        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе  - внешний ключ (Project.IntId) </summary>
         public int ProjectIntId { get { return _projectIntId; } }
         public string Name { get { return _name; } }
         public string Url1 { get { return _url1; } }
@@ -21,9 +21,10 @@
         /// <summary> Навигационное свойство -> подпроект </summary>
         public ProjectSubDivision ProjectSubDivision { get; set; }
 
-        private readonly string _projectId;
+        private readonly int _id;
+        private readonly int _projectId;
         private readonly int? _projectSubDivisionId;
-        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе  - внешний ключ (Project.IntId) </summary>
+        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе  - внешний ключ (Project.Id) </summary>
         private readonly int _projectIntId;
         private string _name;
         private string _url1;
@@ -33,9 +34,9 @@
         private string _lastUpdateDt;
         private string _deadLineDt;
         public ProjectTask(
-            string projectId,
+            int id,
+            int projectId,
             string name,
-            int projectIntId,
             int? projectSubDivisionId = null,
             string url1 = null,
             string url2 = null,
@@ -45,8 +46,8 @@
             string deadLineDt = null
             )
         {
+            _id = id;
             _projectId = projectId;
-            _projectIntId = projectIntId;
             _projectSubDivisionId = projectSubDivisionId;
             _name = name;
             _url1 = url1;

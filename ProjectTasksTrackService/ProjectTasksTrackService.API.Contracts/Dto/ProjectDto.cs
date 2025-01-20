@@ -5,11 +5,11 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
     /// <summary> Класс-модель проекта в API </summary>
     public class ProjectDto
     {
-        /// <summary> Id проекта </summary>
-        public required string ProjectId { get; set; }
-
-        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
-        public int IntProjectId { get; set; }
+        /// <summary> Числовой идентификатор - номер проекта, как в старой системе </summary>
+        public required int Id { get; set; }
+        
+        /// <summary> Код проекта </summary>
+        public required string Code { get; set; }
         
         /// <summary> Название проекта </summary>
         public required string Name { get; set; }
@@ -20,9 +20,6 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         /// <summary> Логотип (эмблема) (imageUrl) проекта </summary>
         public string ImageUrl { get; set; }
         
-        /// <summary> Номера дней обязательной активности по проекту (совещаний) </summary>
-        public ICollection<byte> ScheduledDayNums { get; set; }
-
         /// <summary> Дата и время создания </summary>
         public string CreatedDt { get; set; }
 

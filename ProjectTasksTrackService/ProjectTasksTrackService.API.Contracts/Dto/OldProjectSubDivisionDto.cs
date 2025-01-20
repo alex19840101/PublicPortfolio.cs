@@ -8,6 +8,10 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         /// <summary> Id направления (подраздела/модуля/части) проекта </summary>
         [JsonPropertyName("i")] public required int Id { get; set; }
 
+        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
+        [JsonPropertyName("m")]
+        public required int ProjectId { get; set; }
+
         /// <summary> Название направления (подраздела/модуля/части) проекта </summary>
         [JsonPropertyName("n")] public required string Name { get; set; }
 
@@ -24,14 +28,6 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         [JsonPropertyName("fin")]
         public bool IsFinished { get; set; }
 
-        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
-        [JsonPropertyName("m")]
-        public required int IntProjectId { get; set; }
-
-        /// <summary> Id проекта </summary>
-        [JsonPropertyName("uid")]
-        public string ProjectId { get; set; }
-        
         /// <summary> Ссылка #1 ((локальная)) </summary>
         [JsonPropertyName("u1")] public string Url1 { get; set; }
 

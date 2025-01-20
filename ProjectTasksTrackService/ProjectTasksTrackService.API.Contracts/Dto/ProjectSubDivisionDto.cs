@@ -6,6 +6,9 @@
         /// <summary> Id направления (подраздела/модуля/части) проекта </summary>
         public required int Id { get; set; }
 
+        /// <summary> Числовой идентификатор - номер проекта, как в старой системе </summary>
+        public required int ProjectId { get; set; }
+
         /// <summary> Название направления (подраздела/модуля/части) проекта </summary>
         public required string Name { get; set; }
 
@@ -21,12 +24,6 @@
         /// <summary> Флаг готовности подраздела/модуля/части проекта </summary>
         public bool IsFinished { get; set; }
 
-        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
-        public int IntProjectId { get; set; }
-
-        /// <summary> Id проекта </summary>
-        public required string ProjectId { get; set; }
-        
         /// <summary> Ссылка #1 ((локальная)) </summary>
         public string Url1 { get; set; }
 

@@ -8,11 +8,8 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         /// <summary> Id задачи (события/напоминания) в старой системе </summary>
         public int Id { get; set; }
 
-        /// <summary> Id проекта </summary>
-        public string ProjectId { get; set; }
-
-        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
-        public required int IntProjectId { get; set; }
+        /// <summary> Числовой идентификатор - номер проекта, как в старой системе </summary>
+        public required int ProjectId { get; set; }
 
         /// <summary> Название задачи/события/напоминания </summary>
         public required string Name { get; set; }

@@ -26,7 +26,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
 
             var intProjectId = await _projectsService.Create(project);
 
-            Assert.AreEqual(project.IntProjectId, intProjectId);
+            Assert.AreEqual(project.Id, intProjectId);
             _projectsRepositoryMock.Verify(repo => repo.Add(project), Times.Once);
         }
 
@@ -37,7 +37,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
 
             var intProjectId = await _projectsService.Create(project);
 
-            intProjectId.Should().Be(project.IntProjectId);
+            intProjectId.Should().Be(project.Id);
             _projectsRepositoryMock.Verify(repo => repo.Add(project), Times.Once);
         }
 
@@ -48,7 +48,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
 
             var intProjectId = await _projectsService.Create(project);
 
-            Assert.AreEqual(project.IntProjectId, intProjectId);
+            Assert.AreEqual(project.Id, intProjectId);
             _projectsRepositoryMock.Verify(repo => repo.Add(project), Times.Once);
         }
 
@@ -59,7 +59,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
 
             var intProjectId = await _projectsService.Create(project);
 
-            intProjectId.Should().Be(project.IntProjectId);
+            intProjectId.Should().Be(project.Id);
             _projectsRepositoryMock.Verify(repo => repo.Add(project), Times.Once);
         }
     }

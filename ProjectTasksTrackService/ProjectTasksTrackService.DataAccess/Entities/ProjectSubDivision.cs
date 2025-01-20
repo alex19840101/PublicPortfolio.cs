@@ -7,10 +7,9 @@ namespace ProjectTasksTrackService.DataAccess.Entities
     {
         /// <summary> Id подпроекта (направления/подраздела/модуля/части) (ProjectSubDivisionId) </summary>
         public int Id { get { return _id; } }
-        /// <summary> Id проекта (родительского) - внешний ключ (Project.Id) </summary>
-        public string ProjectId { get { return _projectId; } }
-        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе - внешний ключ (Project.IntId) </summary>
-        public int ProjectIntId { get { return _projectIntId; } }
+
+        /// <summary> Числовой идентификатор - номер (родительского) проекта, как в старой системе - внешний ключ (Project.Id) </summary>
+        public int ProjectId { get { return _projectId; } }
         public string Name { get { return _name; } }
         public string Url1 { get { return _url1; } }
         public string Url2 { get { return _url2; } }
@@ -26,10 +25,8 @@ namespace ProjectTasksTrackService.DataAccess.Entities
 
         /// <summary> Id подпроекта (направления/подраздела/модуля/части) (ProjectSubDivisionId) </summary>
         private readonly int _id;
-        /// <summary> Id проекта (родительского) </summary>
-        private readonly string _projectId;
-        /// <summary> Числовой идентификатор (номер) (родительского) проекта, как в старой системе - внешний ключ (Project.IntId) </summary>
-        private readonly int _projectIntId;
+        /// <summary> Числовой идентификатор - номер (родительского) проекта, как в старой системе - внешний ключ (Project.Id) </summary>
+        private readonly int _projectId;
         private string _name;
         private string _url1;
         private string _url2;
@@ -39,9 +36,8 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         private string _deadLineDt;
         public ProjectSubDivision(
             int id,
-            string projectId,
+            int projectId,
             string name,
-            int projectIntId,
             string url1 = null,
             string url2 = null,
             string imageUrl = null,
@@ -52,7 +48,6 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         {
             _id = id;
             _projectId = projectId;
-            _projectIntId = projectIntId;
             _name = name;
             _url1 = url1;
             _url2 = url2;
