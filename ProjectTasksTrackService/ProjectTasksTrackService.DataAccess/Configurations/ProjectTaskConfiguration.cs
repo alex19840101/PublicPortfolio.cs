@@ -29,7 +29,7 @@ namespace ProjectTasksTrackService.DataAccess.Configurations
                 .WithMany(p => p.Tasks)
                 .OnDelete(DeleteBehavior.NoAction)
                 .HasPrincipalKey(p => p.Id)
-                .HasForeignKey(t => t.ProjectSubDivisionId)
+                .HasForeignKey(t => t.ProjectId)
                 .IsRequired(true);
 
             builder.HasOne(t => t.ProjectSubDivision)

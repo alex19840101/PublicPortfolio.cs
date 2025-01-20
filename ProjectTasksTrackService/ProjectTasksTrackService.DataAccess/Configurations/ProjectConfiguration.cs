@@ -28,15 +28,15 @@ namespace ProjectTasksTrackService.DataAccess.Configurations
             builder.HasMany(p => p.Tasks)
                 .WithOne(t => t.Project)
                 .OnDelete(DeleteBehavior.NoAction)
-                .HasPrincipalKey(p => p.Id)
-                .HasForeignKey(t => t.ProjectId)
+                //.HasPrincipalKey(p => p.Id)
+                //.HasForeignKey(t => t.ProjectId)
                 .IsRequired(false);
 
             builder.HasMany(p => p.ProjectSubDivisions)
                 .WithOne(subDivision => subDivision.Project)
                 .OnDelete(DeleteBehavior.NoAction)
-                .HasPrincipalKey(p => p.Id)
-                .HasForeignKey(subDivision => subDivision.ProjectId)
+                //.HasPrincipalKey(p => p.Id)
+                //.HasForeignKey(subDivision => subDivision.ProjectId)
                 .IsRequired(false);
         }
     }
