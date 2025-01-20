@@ -26,7 +26,14 @@ namespace ProjectTasksTrackService.DataAccess.Configurations
             builder.Property(s => s.LastUpdateDt).HasMaxLength(DATETIME_LENGTH);
             builder.Property(s => s.DeadLineDt).HasMaxLength(DATETIME_LENGTH);
 
-            builder.HasMany(s => s.Tasks)
+            builder.HasOne(subDivision => subDivision.Project)
+                .WithMany(p => p.ProjectSubDivisions)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasPrincipalKey(p => p.Id)
+                .HasForeignKey(s => s.Project)
+                .IsRequired(true);
+
+            builder.HasMany(subDivision => subDivision.Tasks)
                 .WithOne(t => t.ProjectSubDivision)
                 .OnDelete(DeleteBehavior.NoAction)
                 .HasPrincipalKey(p => p.Id)

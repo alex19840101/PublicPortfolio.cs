@@ -12,8 +12,8 @@ namespace ProjectTasksTrackService.DataAccess.Configurations
 
         public void Configure(EntityTypeBuilder<Project> builder)
         {
-            builder.HasKey(p => p.Code);
-            builder.HasAlternateKey(p => p.Id);
+            builder.HasKey(p => p.Id);
+            builder.HasAlternateKey(p => p.Code);
 
             builder.Property(p => p.Code).HasField("_code");
             builder.Property(p => p.Id).HasField("_id");
@@ -28,16 +28,16 @@ namespace ProjectTasksTrackService.DataAccess.Configurations
             builder.HasMany(p => p.Tasks)
                 .WithOne(t => t.Project)
                 .OnDelete(DeleteBehavior.NoAction)
-                .HasPrincipalKey(p => p.Code)
+                .HasPrincipalKey(p => p.Id)
                 .HasForeignKey(t => t.ProjectId)
-                .IsRequired();
+                .IsRequired(false);
 
             builder.HasMany(p => p.ProjectSubDivisions)
                 .WithOne(subDivision => subDivision.Project)
                 .OnDelete(DeleteBehavior.NoAction)
-                .HasPrincipalKey(p => p.Code)
+                .HasPrincipalKey(p => p.Id)
                 .HasForeignKey(subDivision => subDivision.ProjectId)
-                .IsRequired();
+                .IsRequired(false);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace ProjectTasksTrackService.DataAccess.Entities
     /// <summary> Entity-класс проекта </summary>
     public class Project
     {
-        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
+        /// <summary> Числовой идентификатор - номер проекта, как в старой системе </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get { return _id; } }
         /// <summary> Строковый идентификатор проекта </summary>

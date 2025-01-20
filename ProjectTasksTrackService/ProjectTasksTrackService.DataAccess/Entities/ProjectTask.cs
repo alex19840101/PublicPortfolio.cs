@@ -5,7 +5,7 @@
     {
         /// <summary> Id задачи (события/напоминания) в старой системе </summary>
         public int Id { get { return _id; } }
-        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе  - внешний ключ (Project.Id) </summary>
+        /// <summary> Числовой идентификатор - номер проекта, как в старой системе  - внешний ключ (Project.Id) </summary>
         public int ProjectId { get { return _projectId; } }
         public int? ProjectSubDivisionId { get { return _projectSubDivisionId; } }
         public int ProjectIntId { get { return _projectIntId; } }
@@ -24,7 +24,7 @@
         private readonly int _id;
         private readonly int _projectId;
         private readonly int? _projectSubDivisionId;
-        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе  - внешний ключ (Project.Id) </summary>
+        /// <summary> Числовой идентификатор - номер проекта, как в старой системе  - внешний ключ (Project.Id) </summary>
         private readonly int _projectIntId;
         private string _name;
         private string _url1;
