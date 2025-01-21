@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace ProjectTasksTrackService.API.Contracts.Dto
 {
@@ -16,13 +17,13 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         [JsonPropertyName("n")] public required string Name { get; set; }
 
         /// <summary> Дата и время создания </summary>
-        [JsonPropertyName("cr")] public string CreatedDt { get; set; }
+        [JsonPropertyName("cr")] public DateTime? CreatedDt { get; set; }
         
         /// <summary> Дата и время изменения </summary>
-        [JsonPropertyName("la")] public string LastUpdateDt { get; set; }
+        [JsonPropertyName("la")] public DateTime? LastUpdateDt { get; set; }
 
         /// <summary> Дата и время завершения задачи </summary>
-        [JsonPropertyName("done")] public string DoneDateTime { get; set; }
+        [JsonPropertyName("done")] public DateTime? DoneDateTime { get; set; }
 
         /// <summary> Флаг готовности подраздела/модуля/части проекта </summary>
         [JsonPropertyName("fin")]
@@ -38,6 +39,6 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         [JsonPropertyName("im")] public string ImageUrl { get; set; }
 
         /// <summary> Срок (дата и время завершения) подпроекта (при необходимости) </summary>
-        [JsonPropertyName("dt")] public string DeadLineDt { get; set; }
+        [JsonPropertyName("dt")] public DateTime? DeadLineDt { get; set; }
     }
 }

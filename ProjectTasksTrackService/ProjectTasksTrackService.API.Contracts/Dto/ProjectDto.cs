@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ProjectTasksTrackService.API.Contracts.Dto
 {
@@ -21,9 +22,9 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         public string ImageUrl { get; set; }
         
         /// <summary> Дата и время создания </summary>
-        public string CreatedDt { get; set; }
+        public DateTime? CreatedDt { get; set; }
 
         /// <summary> Дата и время изменения </summary>
-        public string LastUpdateDt { get; set; }
+        public DateTime? LastUpdateDt { get; set; }
     }
 }

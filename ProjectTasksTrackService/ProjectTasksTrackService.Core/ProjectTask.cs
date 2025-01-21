@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
 
 namespace ProjectTasksTrackService.Core
 {
@@ -17,9 +18,9 @@ namespace ProjectTasksTrackService.Core
         public string Url1 { get { return _url1; } }
         public string Url2 { get { return _url2; } }
         public string ImageUrl { get { return _imageUrl; } }
-        public string CreatedDt { get { return _createdDt; } }
-        public string LastUpdateDt { get { return _lastUpdateDt; } }
-        public string DeadLineDt { get { return _deadLineDt; } }
+        public DateTime? CreatedDt { get { return _createdDt; } }
+        public DateTime? LastUpdateDt { get { return _lastUpdateDt; } }
+        public DateTime? DeadLineDt { get { return _deadLineDt; } }
 
         private readonly int _id;
         private readonly int _projectId;
@@ -28,9 +29,9 @@ namespace ProjectTasksTrackService.Core
         private string _url1;
         private string _url2;
         private string _imageUrl;
-        private string _createdDt;
-        private string _lastUpdateDt;
-        private string _deadLineDt;
+        private DateTime? _createdDt;
+        private DateTime? _lastUpdateDt;
+        private DateTime? _deadLineDt;
         public ProjectTask(
             int id,
             int projectId,
@@ -39,9 +40,9 @@ namespace ProjectTasksTrackService.Core
             string url1 = null,
             string url2 = null,
             string imageUrl = null,
-            string createdDt = null,
-            string lastUpdateDt = null,
-            string deadLineDt = null
+            DateTime? createdDt = null,
+            DateTime? lastUpdateDt = null,
+            DateTime? deadLineDt = null
             )
         {
             _id = id;
@@ -60,8 +61,8 @@ namespace ProjectTasksTrackService.Core
         public void UpdateUrl1(string newUrl1) => _url1 = newUrl1;
         public void UpdateUrl2(string newUrl2) => _url2 = newUrl2;
         public void UpdateImageUrl(string newImageUrl) => _imageUrl = newImageUrl;
-        public void UpdateCreatedDt(string createdDt) => _createdDt = createdDt;
-        public void UpdateLastUpdateDt(string lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
-        public void UpdateDeadLineDt(string deadLineDt) => _deadLineDt = deadLineDt;
+        public void UpdateCreatedDt(DateTime? createdDt) => _createdDt = createdDt;
+        public void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
+        public void UpdateDeadLineDt(DateTime? deadLineDt) => _deadLineDt = deadLineDt;
     }
 }

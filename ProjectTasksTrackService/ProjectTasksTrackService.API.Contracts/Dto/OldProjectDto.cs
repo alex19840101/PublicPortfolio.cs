@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace ProjectTasksTrackService.API.Contracts.Dto
@@ -22,9 +23,9 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         [JsonPropertyName("i")] public string ImageUrl { get; set; }
         
         /// <summary> Дата и время создания </summary>
-        [JsonPropertyName("pcr")] public string CreatedDt { get; set; }
+        [JsonPropertyName("pcr")] public DateTime? CreatedDt { get; set; }
 
         /// <summary> Дата и время изменения </summary>
-        [JsonPropertyName("pla")] public string LastUpdateDt { get; set; }
+        [JsonPropertyName("pla")] public DateTime? LastUpdateDt { get; set; }
     }
 }

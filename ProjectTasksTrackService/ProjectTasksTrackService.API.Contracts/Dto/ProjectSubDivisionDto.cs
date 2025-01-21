@@ -1,4 +1,6 @@
-﻿namespace ProjectTasksTrackService.API.Contracts.Dto
+﻿using System;
+
+namespace ProjectTasksTrackService.API.Contracts.Dto
 {
     /// <summary> Направление (подраздел/модуль/часть) проекта </summary>
     public class ProjectSubDivisionDto
@@ -13,13 +15,13 @@
         public required string Name { get; set; }
 
         /// <summary> Дата и время создания </summary>
-        public string CreatedDt { get; set; }
+        public DateTime? CreatedDt { get; set; }
         
         /// <summary> Дата и время изменения </summary>
-        public string LastUpdateDt { get; set; }
+        public DateTime? LastUpdateDt { get; set; }
 
         /// <summary> Дата и время завершения подраздела/модуля/части проекта </summary>
-        public string DoneDateTime { get; set; }
+        public DateTime? DoneDateTime { get; set; }
 
         /// <summary> Флаг готовности подраздела/модуля/части проекта </summary>
         public bool IsFinished { get; set; }
@@ -34,6 +36,6 @@
         public string ImageUrl { get; set; }
         
         /// <summary> Срок (дата и время завершения) подпроекта (при необходимости) </summary>
-        public string DeadLineDt { get; set; }
+        public DateTime? DeadLineDt { get; set; }
     }
 }

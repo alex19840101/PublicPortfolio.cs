@@ -1,4 +1,5 @@
-﻿using ProjectTasksTrackService.API.Contracts.Dto.Enums;
+﻿using System;
+using ProjectTasksTrackService.API.Contracts.Dto.Enums;
 
 namespace ProjectTasksTrackService.API.Contracts.Dto
 {
@@ -15,13 +16,13 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         public required string Name { get; set; }
 
         /// <summary> Дата и время создания задачи </summary>
-        public string CreatedDt { get; set; }
+        public DateTime? CreatedDt { get; set; }
 
         /// <summary> Срок (дата и время завершения) задачи по плану </summary>
-        public string DeadLineDt { get; set; }
+        public DateTime? DeadLineDt { get; set; }
         
         /// <summary> Дата и время завершения задачи </summary>
-        public string DoneDateTime { get; set; }
+        public DateTime? DoneDateTime { get; set; }
 
         /// <summary> Изображение </summary>
         public string ImageUrl { get; set; }
@@ -39,7 +40,7 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         public string Url2 { get; set; }
 
         /// <summary> Дата и время изменения </summary>
-        public string LastUpdateDt { get; set; }
+        public DateTime? LastUpdateDt { get; set; }
         
         /// <summary> Id направления (подраздела/модуля/части) проекта </summary>
         public int? ProjectSubDivisionId { get; set; }

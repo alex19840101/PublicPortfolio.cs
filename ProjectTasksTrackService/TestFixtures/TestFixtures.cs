@@ -22,7 +22,9 @@ namespace TestFixtures
                 name: name,
                 id: intProjectId,
                 url: url,
-                imageUrl: imageUrl);
+                imageUrl: imageUrl,
+                createdDt: DateTime.Now,
+                lastUpdateDt: DateTime.Now);
         }
 
         public static Project GetProjectFixtureWithRequiredFields()

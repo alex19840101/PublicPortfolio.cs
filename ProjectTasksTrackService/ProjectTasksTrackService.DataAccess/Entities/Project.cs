@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectTasksTrackService.DataAccess.Entities
@@ -14,8 +15,8 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         public string Name { get { return _name; } }
         public string Url { get { return _url; } }
         public string ImageUrl { get { return _imageUrl; } }
-        public string CreatedDt { get { return _createdDt; } }
-        public string LastUpdateDt { get { return _lastUpdateDt; } }
+        public DateTime? CreatedDt { get { return _createdDt; } }
+        public DateTime? LastUpdateDt { get { return _lastUpdateDt; } }
 
         /// <summary> Навигационное свойство -> список задач проекта </summary>
         public ICollection<ProjectTask> Tasks { get; set; } = [];
@@ -27,16 +28,16 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         private string _name;
         private string _url;
         private string _imageUrl;
-        private string _createdDt;
-        private string _lastUpdateDt;
+        private DateTime? _createdDt;
+        private DateTime? _lastUpdateDt;
         public Project(
             int id,
             string code,
             string name,
             string url = null,
             string imageUrl = null,
-            string createdDt = null,
-            string lastUpdateDt = null
+            DateTime? createdDt = null,
+            DateTime? lastUpdateDt = null
             )
         {
             _id = id;
@@ -51,7 +52,7 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         public void UpdateName(string newName) => _name = newName;
         public void UpdateUrl(string newUrl) => _url = newUrl;
         public void UpdateImageUrl(string newImageUrl) => _imageUrl = newImageUrl;
-        public void UpdateCreatedDt(string createdDt) => _createdDt = createdDt;
-        public void UpdateLastUpdateDt(string lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
+        public void UpdateCreatedDt(DateTime? createdDt) => _createdDt = createdDt;
+        public void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
     }
 }
