@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 using ProjectTasksTrackService.API.Contracts.Dto.Enums;
 
 namespace ProjectTasksTrackService.API.Contracts.Dto
@@ -9,23 +10,20 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         /// <summary> Id задачи (события/напоминания) в старой системе </summary>
         [JsonPropertyName("e")] public int Id { get; set; }
 
-        /// <summary> Id проекта </summary>
-        [JsonPropertyName("uid")] public string ProjectId { get; set; }
-
-        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
-        [JsonPropertyName("id")] public required int IntProjectId { get; set; }
+        /// <summary> Числовой идентификатор - номер проекта, как в старой системе </summary>
+        [JsonPropertyName("id")] public required int ProjectId { get; set; }
 
         /// <summary> Название задачи/события/напоминания </summary>
         [JsonPropertyName("n")] public required string Name { get; set; }
 
         /// <summary> Дата и время создания задачи </summary>
-        [JsonPropertyName("cr")] public string CreatedDt { get; set; }
+        [JsonPropertyName("cr")] public DateTime? CreatedDt { get; set; }
 
         /// <summary> Срок (дата и время завершения) задачи по плану </summary>
-        [JsonPropertyName("dt")] public string DeadLineDt { get; set; }
+        [JsonPropertyName("dt")] public DateTime? DeadLineDt { get; set; }
         
         /// <summary> Дата и время завершения задачи </summary>
-        [JsonPropertyName("done")] public string DoneDateTime { get; set; }
+        [JsonPropertyName("done")] public DateTime? DoneDateTime { get; set; }
 
         /// <summary> Изображение </summary>
         [JsonPropertyName("i")] public string ImageUrl { get; set; }
@@ -43,7 +41,7 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         [JsonPropertyName("u2")] public string Url2 { get; set; }
         
         /// <summary> Дата и время изменения </summary>
-        [JsonPropertyName("tla")] public string LastUpdateDt { get; set; }
+        [JsonPropertyName("tla")] public DateTime? LastUpdateDt { get; set; }
         
         /// <summary> Id направления (подраздела/модуля/части) проекта </summary>
         [JsonPropertyName("su")] public int? ProjectSubDivisionId { get; set; }

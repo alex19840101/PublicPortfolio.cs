@@ -1104,22 +1104,26 @@
       "CreateProjectResponseDto": {
         "type": "object",
         "properties": {
-          "projectId": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "code": {
             "type": "string",
             "nullable": true
           },
-          "intProjectId": {
-            "type": "integer",
-            "format": "int32"
+          "projectSecretString": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
       "DeleteProjectRequestDto": {
         "type": "object",
         "properties": {
-          "projectId": {
-            "type": "string",
-            "nullable": true
+          "id": {
+            "type": "integer",
+            "format": "int32"
           },
           "projectSecretString": {
             "type": "string",
@@ -1169,17 +1173,18 @@
       "OldProjectDto": {
         "required": [
           "id",
+          "c",
           "n"
         ],
         "type": "object",
         "properties": {
-          "uid": {
-            "type": "string",
-            "nullable": true
-          },
           "id": {
             "type": "integer",
             "format": "int32"
+          },
+          "c": {
+            "type": "string",
+            "nullable": true
           },
           "n": {
             "type": "string",
@@ -1193,20 +1198,14 @@
             "type": "string",
             "nullable": true
           },
-          "s": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "uint8"
-            },
-            "nullable": true
-          },
           "pcr": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "pla": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           }
         }
@@ -1214,12 +1213,16 @@
       "OldProjectSubDivisionDto": {
         "required": [
           "i",
-          "n",
-          "m"
+          "m",
+          "n"
         ],
         "type": "object",
         "properties": {
           "i": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "m": {
             "type": "integer",
             "format": "int32"
           },
@@ -1229,26 +1232,21 @@
           },
           "cr": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "la": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "done": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "fin": {
             "type": "boolean"
-          },
-          "m": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "uid": {
-            "type": "string",
-            "nullable": true
           },
           "u1": {
             "type": "string",
@@ -1264,6 +1262,7 @@
           },
           "dt": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           }
         }
@@ -1279,10 +1278,6 @@
             "type": "integer",
             "format": "int32"
           },
-          "uid": {
-            "type": "string",
-            "nullable": true
-          },
           "id": {
             "type": "integer",
             "format": "int32"
@@ -1293,14 +1288,17 @@
           },
           "cr": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "dt": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "done": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "i": {
@@ -1325,6 +1323,7 @@
           },
           "tla": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "su": {
@@ -1336,18 +1335,19 @@
       },
       "ProjectDto": {
         "required": [
-          "projectId",
+          "id",
+          "code",
           "name"
         ],
         "type": "object",
         "properties": {
-          "projectId": {
-            "type": "string",
-            "nullable": true
-          },
-          "intProjectId": {
+          "id": {
             "type": "integer",
             "format": "int32"
+          },
+          "code": {
+            "type": "string",
+            "nullable": true
           },
           "name": {
             "type": "string",
@@ -1361,20 +1361,14 @@
             "type": "string",
             "nullable": true
           },
-          "scheduledDayNums": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "uint8"
-            },
-            "nullable": true
-          },
           "createdDt": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "lastUpdateDt": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           }
         }
@@ -1382,12 +1376,16 @@
       "ProjectSubDivisionDto": {
         "required": [
           "id",
-          "name",
-          "projectId"
+          "projectId",
+          "name"
         ],
         "type": "object",
         "properties": {
           "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "projectId": {
             "type": "integer",
             "format": "int32"
           },
@@ -1397,26 +1395,21 @@
           },
           "createdDt": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "lastUpdateDt": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "doneDateTime": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "isFinished": {
             "type": "boolean"
-          },
-          "intProjectId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "projectId": {
-            "type": "string",
-            "nullable": true
           },
           "url1": {
             "type": "string",
@@ -1432,13 +1425,14 @@
           },
           "deadLineDt": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           }
         }
       },
       "TaskDto": {
         "required": [
-          "intProjectId",
+          "projectId",
           "name"
         ],
         "type": "object",
@@ -1448,10 +1442,6 @@
             "format": "int32"
           },
           "projectId": {
-            "type": "string",
-            "nullable": true
-          },
-          "intProjectId": {
             "type": "integer",
             "format": "int32"
           },
@@ -1461,14 +1451,17 @@
           },
           "createdDt": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "deadLineDt": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "doneDateTime": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "imageUrl": {
@@ -1493,6 +1486,7 @@
           },
           "lastUpdateDt": {
             "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "projectSubDivisionId": {

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace ProjectTasksTrackService.API.Contracts.Dto
 {
@@ -8,30 +9,26 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         /// <summary> Id направления (подраздела/модуля/части) проекта </summary>
         [JsonPropertyName("i")] public required int Id { get; set; }
 
+        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
+        [JsonPropertyName("m")]
+        public required int ProjectId { get; set; }
+
         /// <summary> Название направления (подраздела/модуля/части) проекта </summary>
         [JsonPropertyName("n")] public required string Name { get; set; }
 
         /// <summary> Дата и время создания </summary>
-        [JsonPropertyName("cr")] public string CreatedDt { get; set; }
+        [JsonPropertyName("cr")] public DateTime? CreatedDt { get; set; }
         
         /// <summary> Дата и время изменения </summary>
-        [JsonPropertyName("la")] public string LastUpdateDt { get; set; }
+        [JsonPropertyName("la")] public DateTime? LastUpdateDt { get; set; }
 
         /// <summary> Дата и время завершения задачи </summary>
-        [JsonPropertyName("done")] public string DoneDateTime { get; set; }
+        [JsonPropertyName("done")] public DateTime? DoneDateTime { get; set; }
 
         /// <summary> Флаг готовности подраздела/модуля/части проекта </summary>
         [JsonPropertyName("fin")]
         public bool IsFinished { get; set; }
 
-        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
-        [JsonPropertyName("m")]
-        public required int IntProjectId { get; set; }
-
-        /// <summary> Id проекта </summary>
-        [JsonPropertyName("uid")]
-        public string ProjectId { get; set; }
-        
         /// <summary> Ссылка #1 ((локальная)) </summary>
         [JsonPropertyName("u1")] public string Url1 { get; set; }
 
@@ -42,6 +39,6 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         [JsonPropertyName("im")] public string ImageUrl { get; set; }
 
         /// <summary> Срок (дата и время завершения) подпроекта (при необходимости) </summary>
-        [JsonPropertyName("dt")] public string DeadLineDt { get; set; }
+        [JsonPropertyName("dt")] public DateTime? DeadLineDt { get; set; }
     }
 }

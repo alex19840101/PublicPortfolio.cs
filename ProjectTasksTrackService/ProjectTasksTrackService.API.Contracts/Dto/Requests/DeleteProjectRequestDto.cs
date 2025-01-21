@@ -14,7 +14,7 @@ namespace ProjectTasksTrackService.API.Contracts.Dto.Requests
         /// <summary>
         /// Id проекта
         /// </summary>
-        public string ProjectId { get; set; }
+        public int Id { get; set; }
         /// <summary>
         /// Секретная строка для удаления проекта
         /// </summary>

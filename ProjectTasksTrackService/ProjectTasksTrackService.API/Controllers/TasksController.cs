@@ -128,9 +128,9 @@ namespace ProjectTasksTrackService.API.Controllers
         [NonAction]
         private static ProjectTask ProjectTask(OldTaskDto oldTaskDto) =>
             new ProjectTask(
+                id: oldTaskDto.Id,
                 projectId: oldTaskDto.ProjectId,
                 name: oldTaskDto.Name,
-                intProjectId: oldTaskDto.IntProjectId,
                 projectSubDivisionId: oldTaskDto.ProjectSubDivisionId,
                 url1: oldTaskDto.Url1,
                 url2: oldTaskDto.Url2,
@@ -143,9 +143,9 @@ namespace ProjectTasksTrackService.API.Controllers
         [NonAction]
         private static ProjectTask ProjectTask(TaskDto taskDto) =>
             new ProjectTask(
+                    id: taskDto.Id,
                     projectId: taskDto.ProjectId,
                     name: taskDto.Name,
-                    intProjectId: taskDto.IntProjectId,
                     projectSubDivisionId: taskDto.ProjectSubDivisionId,
                     url1: taskDto.Url1,
                     url2: taskDto.Url2,
@@ -159,9 +159,9 @@ namespace ProjectTasksTrackService.API.Controllers
         private static TaskDto TaskDto(ProjectTask projectTask) =>
             new TaskDto
             {
+                Id = projectTask.Id,
                 ProjectId = projectTask.ProjectId,
                 Name = projectTask.Name,
-                IntProjectId = projectTask.IntProjectId,
                 ProjectSubDivisionId = projectTask.ProjectSubDivisionId,
                 Url1 = projectTask.Url1,
                 Url2 = projectTask.Url2,
@@ -175,9 +175,9 @@ namespace ProjectTasksTrackService.API.Controllers
         private static OldTaskDto OldTaskDto(ProjectTask projectTask) =>
             new OldTaskDto
             {
+                Id = projectTask.Id,
                 ProjectId = projectTask.ProjectId,
                 Name = projectTask.Name,
-                IntProjectId = projectTask.IntProjectId,
                 ProjectSubDivisionId = projectTask.ProjectSubDivisionId,
                 Url1 = projectTask.Url1,
                 Url2 = projectTask.Url2,

@@ -21,17 +21,16 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             ArgumentNullException.ThrowIfNull(project);
 
             var newProjectEntity = new Entities.Project(
-                projectId: project.ProjectId,
+                code: project.Code,
                 name: project.Name,
-                intProjectId: project.IntProjectId,
+                id: project.Id,
                 url: project.Url,
-                imageUrl: project.ImageUrl,
-                scheduledDayNums: project.ScheduledDayNums);
+                imageUrl: project.ImageUrl);
 
             await _dbContext.Projects.AddAsync(newProjectEntity);
             await _dbContext.SaveChangesAsync();
 
-            return newProjectEntity.IntId;
+            return newProjectEntity.Id;
         }
 
         public async Task<int> Import(IEnumerable<Project> projects)
@@ -41,19 +40,18 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 throw new InvalidOperationException("projects should contain at least 1 project.");
             
             IEnumerable<Entities.Project> projectEntities = projects.Select(p => new Entities.Project(
-                projectId: p.ProjectId,
+                id: p.Id,
+                code: p.Code,
                 name: p.Name,
-                intProjectId: p.IntProjectId,
                 url: p.Url,
                 imageUrl: p.ImageUrl,
-                scheduledDayNums: p.ScheduledDayNums,
                 createdDt: p.CreatedDt,
                 lastUpdateDt: p.LastUpdateDt));
 
             await _dbContext.Projects.AddRangeAsync(projectEntities);
             await _dbContext.SaveChangesAsync();
 
-            return projectEntities.Max(p => p.IntId);
+            return projectEntities.Max(p => p.Id);
         }
 
         public Task<Project> GetProjectById(string projectId)
@@ -93,10 +91,6 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<string> UpdateScheduledDayNums(string projectId, HashSet<byte> scheduledDayNums)
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<string> UpdateUrl(string projectId, string url)
         {

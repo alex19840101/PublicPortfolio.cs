@@ -22,9 +22,6 @@ namespace ProjectTasksTrackService.BusinessLogic
 
         public async Task<string> Create(ProjectTask projectTask)
         {
-            if (string.IsNullOrWhiteSpace(projectTask.ProjectId))
-                throw new InvalidOperationException(ErrorStrings.PROJECT_ID_SHOULD_NOT_BE_EMPTY);
-
             if (string.IsNullOrWhiteSpace(projectTask.Name))
                 throw new InvalidOperationException(ErrorStrings.TASK_NAME_SHOULD_NOT_BE_EMPTY);
 

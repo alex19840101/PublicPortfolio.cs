@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using ProjectTasksTrackService.BusinessLogic;
 using ProjectTasksTrackService.Core.Repositories;
@@ -36,10 +37,25 @@ builder.Configuration
     .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
 string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ProjectTasksTrackServiceDb");
 
-builder.Services.AddDbContext<ProjectTasksTrackServiceDbContext>(builder =>
+var isDevelopment = env.IsDevelopment();
+
+if (isDevelopment)
 {
-    builder.UseNpgsql(connectionString: dataBaseConnectionStr);
-});
+    builder.Services.AddDbContext<ProjectTasksTrackServiceDbContext>(builder =>
+    {
+        builder.UseNpgsql(connectionString: dataBaseConnectionStr, o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
+                .LogTo(Console.WriteLine, LogLevel.Information)
+                .EnableSensitiveDataLogging();
+    });
+    builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+}
+else
+{
+    builder.Services.AddDbContext<ProjectTasksTrackServiceDbContext>(builder =>
+    {
+        builder.UseNpgsql(connectionString: dataBaseConnectionStr, o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+    });
+}
 
 #region -------------------------------Swagger-------------------------------
 const string URL = "https://github.com/alex19840101/PublicPortfolio.cs/compare/ProjectTasksTrackService";
@@ -77,10 +93,11 @@ builder.Services.AddSwaggerGen(c => // Register the Swagger generator, defining 
 });
 #endregion -------------------------------Swagger-------------------------------
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (isDevelopment)
 {
     app.UseDeveloperExceptionPage();
     app.MapOpenApi();

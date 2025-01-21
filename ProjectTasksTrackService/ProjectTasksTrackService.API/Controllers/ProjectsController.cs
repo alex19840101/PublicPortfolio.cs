@@ -46,9 +46,9 @@ namespace ProjectTasksTrackService.API.Controllers
         [ProducesResponseType(typeof(CreateProjectResponseDto), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Create(ProjectDto project)
         {
-            var intProjectId = await _projectsService.Create(Project(project));
+            var id = await _projectsService.Create(Project(project));
 
-            return Ok(new CreateProjectResponseDto { IntProjectId = intProjectId, ProjectId = project.ProjectId });
+            return Ok(new CreateProjectResponseDto { Id = id, Code = project.Code });
         }
 
         /// <summary> Получение списка проектов </summary>
@@ -109,7 +109,7 @@ namespace ProjectTasksTrackService.API.Controllers
         public async Task<string> DeleteProject(DeleteProjectRequestDto deleteProjectRequest)
         {
             return await _projectsService.DeleteProject(
-                deleteProjectRequest.ProjectId,
+                deleteProjectRequest.Id,
                 deleteProjectRequest.ProjectSecretString);
         }
 
@@ -117,12 +117,11 @@ namespace ProjectTasksTrackService.API.Controllers
         [NonAction]
         private static Project Project(OldProjectDto project) =>
             new Project(
-                projectId: project.ProjectId,
+                id: project.Id,
+                code: project.Code,
                 name: project.Name,
-                intProjectId: project.IntProjectId,
                 url: project.Url,
                 imageUrl: project.ImageUrl,
-                scheduledDayNums: project.ScheduledDayNums,
                 createdDt: project.CreatedDt,
                 lastUpdateDt: project.LastUpdateDt
             );
@@ -130,12 +129,11 @@ namespace ProjectTasksTrackService.API.Controllers
         [NonAction]
         private static Project Project(ProjectDto project) =>
             new Project(
-                    projectId: project.ProjectId,
+                    id: project.Id,
+                    code: project.Code,
                     name: project.Name,
-                    intProjectId: project.IntProjectId,
                     url: project.Url,
                     imageUrl: project.ImageUrl,
-                    scheduledDayNums: project.ScheduledDayNums,
                     createdDt: project.CreatedDt,
                     lastUpdateDt: project.LastUpdateDt
             );
@@ -144,12 +142,11 @@ namespace ProjectTasksTrackService.API.Controllers
         private static ProjectDto ProjectDto(Project project) =>
             new ProjectDto
             {
-                ProjectId = project.ProjectId,
+                Id = project.Id,
+                Code = project.Code,
                 Name = project.Name,
-                IntProjectId = project.IntProjectId,
                 Url = project.Url,
                 ImageUrl = project.ImageUrl,
-                ScheduledDayNums = project.ScheduledDayNums,
                 CreatedDt = project.CreatedDt,
                 LastUpdateDt = project.LastUpdateDt
             };
@@ -158,12 +155,11 @@ namespace ProjectTasksTrackService.API.Controllers
         private static OldProjectDto OldProjectDto(Project project) =>
             new OldProjectDto
             { 
-                ProjectId = project.ProjectId,
+                Id = project.Id,
+                Code = project.Code,
                 Name = project.Name,
-                IntProjectId = project.IntProjectId,
                 Url = project.Url,
                 ImageUrl = project.ImageUrl,
-                ScheduledDayNums = project.ScheduledDayNums,
                 CreatedDt = project.CreatedDt,
                 LastUpdateDt = project.LastUpdateDt
             };

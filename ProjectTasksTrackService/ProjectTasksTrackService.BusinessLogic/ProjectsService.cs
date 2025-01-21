@@ -19,7 +19,7 @@ namespace ProjectTasksTrackService.BusinessLogic
 
         public async Task<int> Create(Project project)
         {
-            if (string.IsNullOrWhiteSpace(project.ProjectId))
+            if (string.IsNullOrWhiteSpace(project.Code))
                 throw new InvalidOperationException(ErrorStrings.PROJECT_ID_SHOULD_NOT_BE_EMPTY);
 
             if (string.IsNullOrWhiteSpace(project.Name))
@@ -43,7 +43,7 @@ namespace ProjectTasksTrackService.BusinessLogic
 
         public Task<string> UpdateProject(Project projectDto)
         {
-            if (string.IsNullOrWhiteSpace(projectDto.ProjectId))
+            if (string.IsNullOrWhiteSpace(projectDto.Code))
                 throw new InvalidOperationException(ErrorStrings.PROJECT_ID_SHOULD_NOT_BE_EMPTY);
 
             if (string.IsNullOrWhiteSpace(projectDto.Name))
@@ -51,7 +51,7 @@ namespace ProjectTasksTrackService.BusinessLogic
 
             throw new NotImplementedException();
         }
-        public Task<string> DeleteProject(string projectId, string projectSecretString)
+        public Task<string> DeleteProject(int id, string projectSecretString)
         {
             throw new NotImplementedException();
         }

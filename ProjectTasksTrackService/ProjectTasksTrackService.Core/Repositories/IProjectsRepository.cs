@@ -17,7 +17,6 @@ namespace ProjectTasksTrackService.Core.Repositories
         Task<string> UpdateName(string projectId, string newName);
         Task<string> UpdateUrl(string projectId, string url);
         Task<string> UpdateImageUrl(string projectId, string imageUrl);
-        Task<string> UpdateScheduledDayNums(string projectId, HashSet<byte> scheduledDayNums);
         */
         Task<string> DeleteProject(string projectId, string projectSecretString);
     }

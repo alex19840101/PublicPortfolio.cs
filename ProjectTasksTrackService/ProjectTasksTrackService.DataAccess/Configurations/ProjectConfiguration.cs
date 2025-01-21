@@ -13,9 +13,12 @@ namespace ProjectTasksTrackService.DataAccess.Configurations
         public void Configure(EntityTypeBuilder<Project> builder)
         {
             builder.HasKey(p => p.Id);
-            builder.HasAlternateKey(p => p.IntId);
+            builder.HasAlternateKey(p => p.Code);
 
-            builder.Property(p => p.Id).HasMaxLength(MAX_NAME_LENGTH).IsRequired();
+            builder.Property(p => p.Code).HasField("_code");
+            builder.Property(p => p.Id).HasField("_id");
+
+            builder.Property(p => p.Code).HasMaxLength(MAX_NAME_LENGTH).IsRequired();
             builder.Property(p => p.Name).HasMaxLength(MAX_NAME_LENGTH).IsRequired();
             builder.Property(p => p.Url).HasMaxLength(MAX_URL_LENGTH);
             builder.Property(p => p.ImageUrl).HasMaxLength(MAX_URL_LENGTH);
@@ -25,16 +28,16 @@ namespace ProjectTasksTrackService.DataAccess.Configurations
             builder.HasMany(p => p.Tasks)
                 .WithOne(t => t.Project)
                 .OnDelete(DeleteBehavior.NoAction)
-                .HasPrincipalKey(p => p.Id)
-                .HasForeignKey(t => t.ProjectId)
-                .IsRequired();
+                //.HasPrincipalKey(p => p.Id)
+                //.HasForeignKey(t => t.ProjectId)
+                .IsRequired(false);
 
             builder.HasMany(p => p.ProjectSubDivisions)
                 .WithOne(subDivision => subDivision.Project)
                 .OnDelete(DeleteBehavior.NoAction)
-                .HasPrincipalKey(p => p.Id)
-                .HasForeignKey(subDivision => subDivision.ProjectId)
-                .IsRequired();
+                //.HasPrincipalKey(p => p.Id)
+                //.HasForeignKey(subDivision => subDivision.ProjectId)
+                .IsRequired(false);
         }
     }
 }

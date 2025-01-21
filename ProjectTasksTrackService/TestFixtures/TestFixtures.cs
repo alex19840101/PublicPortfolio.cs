@@ -16,15 +16,15 @@ namespace TestFixtures
             var intProjectId = fixture.Create<int>();
             var url = fixture.Build<string>().Create();
             var imageUrl = fixture.Build<string>().Create();
-            var scheduledDayNums = fixture.Build<HashSet<byte>>().Create();
 
             return new Project(
-                projectId: projectId,
+                code: projectId,
                 name: name,
-                intProjectId: intProjectId,
+                id: intProjectId,
                 url: url,
                 imageUrl: imageUrl,
-                scheduledDayNums: scheduledDayNums);
+                createdDt: DateTime.Now,
+                lastUpdateDt: DateTime.Now);
         }
 
         public static Project GetProjectFixtureWithRequiredFields()
@@ -36,9 +36,9 @@ namespace TestFixtures
             var intProjectId = fixture.Create<int>();
 
             return new Project(
-                projectId: projectId,
+                code: projectId,
                 name: name,
-                intProjectId: intProjectId);
+                id: intProjectId);
         }
     }
 }

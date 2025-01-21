@@ -14,8 +14,9 @@ namespace ProjectTasksTrackService.DataAccess.Configurations
         {
             builder.HasKey(t => t.Id);
 
+            builder.Property(p => p.ProjectId).HasField("_projectId");
+
             builder.Property(t => t.Id).HasMaxLength(MAX_NAME_LENGTH);
-            builder.Property(t => t.ProjectId).HasMaxLength(MAX_NAME_LENGTH);
             builder.Property(t => t.Name).HasMaxLength(MAX_NAME_LENGTH).IsRequired();
             builder.Property(t => t.Url1).HasMaxLength(MAX_URL_LENGTH);
             builder.Property(t => t.Url2).HasMaxLength(MAX_URL_LENGTH);
@@ -23,6 +24,20 @@ namespace ProjectTasksTrackService.DataAccess.Configurations
             builder.Property(t => t.CreatedDt).HasMaxLength(DATETIME_LENGTH);
             builder.Property(t => t.LastUpdateDt).HasMaxLength(DATETIME_LENGTH);
             builder.Property(t => t.DeadLineDt).HasMaxLength(DATETIME_LENGTH);
+
+            builder.HasOne(t => t.Project)
+                .WithMany(p => p.Tasks)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasPrincipalKey(p => p.Id)
+                .HasForeignKey(t => t.ProjectId)
+                .IsRequired(true);
+
+            builder.HasOne(t => t.ProjectSubDivision)
+                .WithMany(subDivision => subDivision.Tasks)
+                .OnDelete(DeleteBehavior.NoAction)
+                .HasPrincipalKey(subDivision => subDivision.Id)
+                .HasForeignKey(t => t.ProjectSubDivisionId)
+                .IsRequired(false);
         }
     }
 }

@@ -1,45 +1,41 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ProjectTasksTrackService.Core
 {
     public class Project
     {
-        public string ProjectId { get { return _projectId; } }
-        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
-        public int IntProjectId { get { return _intProjectId; } }
+        /// <summary> Числовой идентификатор - номер проекта, как в старой системе </summary>
+        public int Id { get { return _id; } }
+        public string Code { get { return _code; } }
         public string Name { get { return _name; } }
         public string Url { get { return _url; } }
         public string ImageUrl { get { return _imageUrl; } }
-        /// <summary> Номера дней обязательной активности по проекту (совещаний) </summary>
-        public HashSet<byte> ScheduledDayNums { get { return _scheduledDayNums; } }
-        public string CreatedDt { get { return _createdDt; } }
-        public string LastUpdateDt { get { return _lastUpdateDt; } }
+        public DateTime? CreatedDt { get { return _createdDt; } }
+        public DateTime? LastUpdateDt { get { return _lastUpdateDt; } }
 
-        private readonly string _projectId;
-        private readonly int _intProjectId;
+        private readonly int _id;
+        private readonly string _code;
         private string _name;
         private string _url;
         private string _imageUrl;
-        private HashSet<byte> _scheduledDayNums;
-        private string _createdDt;
-        private string _lastUpdateDt;
+        private DateTime? _createdDt;
+        private DateTime? _lastUpdateDt;
         public Project(
-            string projectId,
+            int id,
+            string code,
             string name,
-            int intProjectId = 0,
             string url = null,
             string imageUrl = null,
-            HashSet<byte> scheduledDayNums = null,
-            string createdDt = null,
-            string lastUpdateDt = null
+            DateTime? createdDt = null,
+            DateTime? lastUpdateDt = null
             )
         {
-            _projectId = projectId;
-            _intProjectId = intProjectId;
+            _id = id;
+            _code = code;
             _name = name;
             _url = url;
             _imageUrl = imageUrl;
-            _scheduledDayNums = scheduledDayNums;
             _createdDt = createdDt;
             _lastUpdateDt = lastUpdateDt;
         }
@@ -47,8 +43,7 @@ namespace ProjectTasksTrackService.Core
         public void UpdateName(string newName) => _name = newName;
         public void UpdateUrl(string newUrl) => _url = newUrl;
         public void UpdateImageUrl(string newImageUrl) => _imageUrl = newImageUrl;
-        public void UpdateScheduledDayNums(HashSet<byte> scheduledDayNums) => _scheduledDayNums = scheduledDayNums;
-        public void UpdateCreatedDt(string createdDt) => _createdDt = createdDt;
-        public void UpdateLastUpdateDt(string lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
+        public void UpdateCreatedDt(DateTime? createdDt) => _createdDt = createdDt;
+        public void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
     }
 }
