@@ -91,9 +91,9 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Получение проекта </summary>
         [HttpGet("api/v2/Projects/GetProject")]
-        public async Task<ProjectDto> GetProject(string projectId = null, int? intProjectId = null, string name = null)
+        public async Task<ProjectDto> GetProject(int? id = null, string codeSubStr = null, string nameSubStr = null)
         {
-            var project = await _projectsService.GetProject(projectId, intProjectId, name);
+            var project = await _projectsService.GetProject(id, codeSubStr, nameSubStr);
             return ProjectDto(project);
         }
 

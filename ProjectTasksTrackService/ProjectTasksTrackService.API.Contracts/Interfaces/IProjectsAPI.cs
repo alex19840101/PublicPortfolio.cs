@@ -15,7 +15,7 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
         Task<IActionResult> Create(ProjectDto project);
 
         /// <summary> Получение проекта </summary>
-        Task<ProjectDto> GetProject(string projectId = null, int? intProjectId = null, string name = null);
+        Task<ProjectDto> GetProject(int? id = null, string codeSubStr = null, string nameSubStr = null);
 
         /// <summary> Получение списка проектов (в старом компактном JSON-формате) для экспорта в старую систему </summary>
         Task<IEnumerable<OldProjectDto>> GetProjectsOldDto(

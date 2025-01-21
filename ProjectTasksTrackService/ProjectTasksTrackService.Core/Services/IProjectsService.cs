@@ -13,7 +13,7 @@ namespace ProjectTasksTrackService.Core.Services
             string nameSubStr = null,
             int skipCount = 0,
             int limitCount = 100);
-        Task<Project> GetProject(string projectId = null, int? intProjectId = null, string name = null);
+        Task<Project> GetProject(int? id = null, string code = null, string name = null);
         Task<string> UpdateProject(Project projectDto);
         Task<string> DeleteProject(int id, string projectSecretString);
     }

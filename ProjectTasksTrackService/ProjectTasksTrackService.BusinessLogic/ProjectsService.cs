@@ -66,9 +66,18 @@ namespace ProjectTasksTrackService.BusinessLogic
             throw new NotImplementedException();
         }
 
-        public Task<Project> GetProject(string projectId = null, int? intProjectId = null, string name = null)
+        public async Task<Project> GetProject(int? id = null, string codeSubStr = null, string nameSubStr = null)
         {
-            throw new NotImplementedException();
+            bool anyCode = string.IsNullOrWhiteSpace(codeSubStr);
+            bool anyName = string.IsNullOrWhiteSpace(nameSubStr);
+
+            if (id == null && anyCode && anyName)
+                throw new InvalidOperationException(ErrorStrings.GET_PROJECT_CALLED_WITH_NULL_EMPTY_PRMS);
+            
+            if (anyCode && anyName)
+                return await _projectsRepository.GetProjectById(id.Value);
+
+            return await _projectsRepository.GetProject(id, codeSubStr, nameSubStr);
         }
     }
 }

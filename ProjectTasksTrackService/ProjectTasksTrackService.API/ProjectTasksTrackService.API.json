@@ -239,15 +239,7 @@
         ],
         "parameters": [
           {
-            "name": "projectId",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "default": null
-            }
-          },
-          {
-            "name": "intProjectId",
+            "name": "id",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -256,7 +248,15 @@
             }
           },
           {
-            "name": "name",
+            "name": "codeSubStr",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "default": null
+            }
+          },
+          {
+            "name": "nameSubStr",
             "in": "query",
             "schema": {
               "type": "string",

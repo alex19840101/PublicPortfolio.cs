@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using ProjectTasksTrackService.Core.Repositories;
 using Project = ProjectTasksTrackService.Core.Project;
 
@@ -25,7 +26,9 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 name: project.Name,
                 id: project.Id,
                 url: project.Url,
-                imageUrl: project.ImageUrl);
+                imageUrl: project.ImageUrl,
+                createdDt: project.CreatedDt ?? DateTime.Now,
+                lastUpdateDt: DateTime.Now);
 
             await _dbContext.Projects.AddAsync(newProjectEntity);
             await _dbContext.SaveChangesAsync();
@@ -54,19 +57,75 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             return projectEntities.Max(p => p.Id);
         }
 
-        public Task<Project> GetProjectById(string projectId)
+        public async Task<Project> GetProjectById(int id)
         {
-            throw new NotImplementedException();
+            var entityProject = await _dbContext.Projects
+                .AsNoTracking()
+                .SingleOrDefaultAsync(p => p.Id == id);
+
+            if (entityProject is null)
+                return null;
+
+            return Project(entityProject);
         }
 
-        public Task<Project> GetProjectByName(string name)
+        public async Task<Project> GetProject(int? id = null, string codeSubStr = null, string nameSubStr = null)
         {
-            throw new NotImplementedException();
-        }
+            if (id is not null)
+            {
+                var entityProject = await _dbContext.Projects
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync(p => p.Id == id);
 
-        public Task<Project> GetProjectByNum(int intProjectId)
-        {
-            throw new NotImplementedException();
+                if (entityProject is null)
+                    return null;
+
+                if (!string.IsNullOrWhiteSpace(codeSubStr))
+                    if (!entityProject.Code.Contains(codeSubStr))
+                        return null;
+
+                if (!string.IsNullOrWhiteSpace(nameSubStr))
+                    if (!entityProject.Name.Contains(nameSubStr))
+                        return null;
+
+                return Project(entityProject);
+            }
+            //id == null
+
+            List<Entities.Project> entityProjectsLst;
+
+            if (string.IsNullOrWhiteSpace(codeSubStr))
+            {
+                entityProjectsLst = await _dbContext.Projects
+                        .AsNoTracking()
+                        .Where(p => p.Name.Contains(nameSubStr)).ToListAsync();
+
+                if (entityProjectsLst.Count == 0)
+                    return null;
+
+                if (entityProjectsLst.Count > 1)
+                    throw new InvalidOperationException(Core.ErrorStrings.MORE_THAN_ONE_PROJECT_FOUND);
+            }
+
+            //id == null, codeSubStr задан
+
+            entityProjectsLst = string.IsNullOrWhiteSpace(nameSubStr) ?
+                await _dbContext.Projects
+                        .AsNoTracking()
+                        .Where(p => p.Code.Contains(codeSubStr)).ToListAsync() :
+                await _dbContext.Projects
+                        .AsNoTracking()
+                        .Where(p => p.Code.Contains(codeSubStr))
+                        .Where(p => p.Name.Contains(nameSubStr))
+                        .ToListAsync();
+
+            if (entityProjectsLst.Count == 0)
+                return null;
+
+            if (entityProjectsLst.Count > 1)
+                throw new InvalidOperationException(Core.ErrorStrings.MORE_THAN_ONE_PROJECT_FOUND);
+
+            return Project(entityProjectsLst.Single());
         }
 
         public Task<IEnumerable<Project>> GetProjects()
@@ -103,5 +162,15 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
         {
             throw new NotImplementedException();
         }
+
+        private static Project Project(Entities.Project project) =>
+            new Project(
+            id: project.Id,
+            code: project.Code,
+            name: project.Name,
+            url: project.Url,
+            imageUrl: project.ImageUrl,
+            createdDt: project.CreatedDt,
+            lastUpdateDt: project.LastUpdateDt);
     }
 }
