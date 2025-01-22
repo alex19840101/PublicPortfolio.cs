@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -54,39 +55,27 @@ namespace ProjectTasksTrackService.API.Controllers
         /// <summary> Получение списка проектов </summary>
         [HttpGet("api/v2/Projects/GetProjects")]
         public async Task<IEnumerable<ProjectDto>> GetProjects(
-            string projectId = null,
-            int? intProjectId = null,
+            string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
             int limitCount = 100)
         {
-            var projectsCollection = await _projectsService.GetProjects(projectId, intProjectId, nameSubStr, skipCount, limitCount);
-            List<ProjectDto> result = [];
-            foreach (var project in projectsCollection)
-            {
-                result.Add(ProjectDto(project));
-            }
-
-            return result;
+            var projectsCollection = await _projectsService.GetProjects(codeSubStr, nameSubStr, skipCount, limitCount);
+            
+            return projectsCollection.SelectMany<Project, ProjectDto>(p => (IEnumerable<ProjectDto>)ProjectDto(p));
         }
 
         /// <summary> Получение списка проектов (в старом компактном JSON-формате) для экспорта в старую систему </summary>
         [HttpGet("api/v2/Projects/GetProjectsOldDto")]
         public async Task<IEnumerable<OldProjectDto>> GetProjectsOldDto(
-            string projectId = null,
-            int? intProjectId = null,
+            string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
             int limitCount = 100)
         {
-            var projectsCollection = await _projectsService.GetProjects(projectId, intProjectId, nameSubStr, skipCount, limitCount);
-            List<OldProjectDto> result = [];
-            foreach (var project in projectsCollection)
-            {
-                result.Add(OldProjectDto(project));
-            }
+            var projectsCollection = await _projectsService.GetProjects(codeSubStr, nameSubStr, skipCount, limitCount);
 
-            return result;
+            return projectsCollection.SelectMany<Project, OldProjectDto>(p => (IEnumerable<OldProjectDto>)OldProjectDto(p));
         }
 
         /// <summary> Получение проекта </summary>
@@ -94,6 +83,7 @@ namespace ProjectTasksTrackService.API.Controllers
         public async Task<ProjectDto> GetProject(int? id = null, string codeSubStr = null, string nameSubStr = null)
         {
             var project = await _projectsService.GetProject(id, codeSubStr, nameSubStr);
+            
             return ProjectDto(project);
         }
 

@@ -128,39 +128,88 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             return Project(entityProjectsLst.Single());
         }
 
-        public Task<IEnumerable<Project>> GetProjects()
+        public async Task<IEnumerable<Project>> GetProjects(
+            string codeSubStr = null,
+            string nameSubStr = null,
+            int skipCount = 0,
+            int limitCount = 100)
         {
-            throw new NotImplementedException();
+            limitCount = limitCount > 100 ? 100 : limitCount;
+            List<Entities.Project> entityProjectsLst;
+
+            if (string.IsNullOrWhiteSpace(codeSubStr))
+            {
+                entityProjectsLst = await _dbContext.Projects
+                        .AsNoTracking()
+                        .Where(p => p.Name.Contains(nameSubStr)).Skip(skipCount).Take(limitCount).ToListAsync();
+
+                if (entityProjectsLst.Count == 0)
+                    return null;
+
+                return entityProjectsLst.SelectMany<Entities.Project, Project>(p => (IEnumerable<Project>)Project(p));
+            }
+
+            //codeSubStr задан
+
+            entityProjectsLst = string.IsNullOrWhiteSpace(nameSubStr) ?
+                await _dbContext.Projects
+                        .AsNoTracking()
+                        .Where(p => p.Code.Contains(codeSubStr)).Skip(skipCount).Take(limitCount).ToListAsync() :
+                await _dbContext.Projects
+                        .AsNoTracking()
+                        .Where(p => p.Code.Contains(codeSubStr))
+                        .Where(p => p.Name.Contains(nameSubStr)).Skip(skipCount).Take(limitCount)
+                        .ToListAsync();
+
+            if (entityProjectsLst.Count == 0)
+                return null;
+
+            return entityProjectsLst.SelectMany<Entities.Project, Project>(p => (IEnumerable<Project>)Project(p));
         }
 
-
-
-        public Task<string> UpdateProject(Project project)
+        public async Task<string> UpdateProject(Project project)
         {
-            throw new NotImplementedException();
+            if (project is null)
+                throw new ArgumentNullException(nameof(project));
+
+            var entityProject = await _dbContext.Projects
+                .SingleOrDefaultAsync(p => p.Id == project.Id);
+
+            if (entityProject is null)
+                return null;
+
+            if (!project.Code.Equals(entityProject.Code))
+                return Core.ErrorStrings.CODE_SHOULD_BE_THE_SAME;
+
+            if (!project.Name.Equals(entityProject.Name))         entityProject.UpdateName(entityProject.Name);
+            if (!project.Url.Equals(entityProject.Url))           entityProject.UpdateUrl(entityProject.Url);
+            if (!project.ImageUrl.Equals(entityProject.ImageUrl)) entityProject.UpdateImageUrl(entityProject.ImageUrl);
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                entityProject.UpdateLastUpdateDt(DateTime.Now);
+                await _dbContext.SaveChangesAsync();
+                return Core.ErrorStrings.PROJECT_UPDATED;
+            }
+            return Core.ErrorStrings.PROJECT_IS_ACTUAL;
         }
-        /*
-        public Task<string> UpdateImageUrl(string projectId, string imageUrl)
+
+        public async Task<string> DeleteProject(int id, string projectSecretString)
         {
-            throw new NotImplementedException();
-        }
+            var entityProject = await _dbContext.Projects
+                .AsNoTracking()
+                .SingleOrDefaultAsync(p => p.Id == id);
 
-        public Task<string> UpdateName(string projectId, string newName)
-        {
-            throw new NotImplementedException();
-        }
+            if (entityProject is null)
+                return Core.ErrorStrings.PROJECT_NOT_FOUND;
+            
+            if (string.IsNullOrWhiteSpace(projectSecretString))
+                throw new ArgumentNullException(projectSecretString);
 
+            _dbContext.Projects.Remove(entityProject);
+            await _dbContext.SaveChangesAsync();
 
-        public Task<string> UpdateUrl(string projectId, string url)
-        {
-            throw new NotImplementedException();
-        }
-
-        */
-
-        public Task<string> DeleteProject(string projectId, string projectSecretString)
-        {
-            throw new NotImplementedException();
+            return Core.ErrorStrings.OK;
         }
 
         private static Project Project(Entities.Project project) =>

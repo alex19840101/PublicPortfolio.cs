@@ -105,19 +105,10 @@
         ],
         "parameters": [
           {
-            "name": "projectId",
+            "name": "codeSubStr",
             "in": "query",
             "schema": {
               "type": "string",
-              "default": null
-            }
-          },
-          {
-            "name": "intProjectId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
               "default": null
             }
           },
@@ -172,19 +163,10 @@
         ],
         "parameters": [
           {
-            "name": "projectId",
+            "name": "codeSubStr",
             "in": "query",
             "schema": {
               "type": "string",
-              "default": null
-            }
-          },
-          {
-            "name": "intProjectId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
               "default": null
             }
           },

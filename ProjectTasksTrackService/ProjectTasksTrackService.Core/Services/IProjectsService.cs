@@ -8,8 +8,7 @@ namespace ProjectTasksTrackService.Core.Services
         Task<int> Import(IEnumerable<Project> projects);
         Task<int> Create(Project project);
         Task<IEnumerable<Project>> GetProjects(
-            string projectId = null,
-            int? intProjectId = null,
+            string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
             int limitCount = 100);

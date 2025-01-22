@@ -20,7 +20,7 @@ namespace ProjectTasksTrackService.BusinessLogic
         public async Task<int> Create(Project project)
         {
             if (string.IsNullOrWhiteSpace(project.Code))
-                throw new InvalidOperationException(ErrorStrings.PROJECT_ID_SHOULD_NOT_BE_EMPTY);
+                throw new InvalidOperationException(ErrorStrings.PROJECT_CODE_SHOULD_NOT_BE_EMPTY);
 
             if (string.IsNullOrWhiteSpace(project.Name))
                 throw new InvalidOperationException(ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY);
@@ -41,29 +41,28 @@ namespace ProjectTasksTrackService.BusinessLogic
             return await _projectsRepository.Import(projects);
         }
 
-        public Task<string> UpdateProject(Project projectDto)
+        public async Task<string> UpdateProject(Project project)
         {
-            if (string.IsNullOrWhiteSpace(projectDto.Code))
-                throw new InvalidOperationException(ErrorStrings.PROJECT_ID_SHOULD_NOT_BE_EMPTY);
+            if (string.IsNullOrWhiteSpace(project.Code))
+                throw new InvalidOperationException(ErrorStrings.PROJECT_CODE_SHOULD_NOT_BE_EMPTY);
 
-            if (string.IsNullOrWhiteSpace(projectDto.Name))
+            if (string.IsNullOrWhiteSpace(project.Name))
                 throw new InvalidOperationException(ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY);
 
-            throw new NotImplementedException();
+            return await _projectsRepository.UpdateProject(project);
         }
-        public Task<string> DeleteProject(int id, string projectSecretString)
+        public async Task<string> DeleteProject(int id, string projectSecretString)
         {
-            throw new NotImplementedException();
+            return await _projectsRepository.DeleteProject(id, projectSecretString);
         }
 
-        public Task<IEnumerable<Project>> GetProjects(
-            string projectId = null,
-            int? intProjectId = null,
+        public async Task<IEnumerable<Project>> GetProjects(
+            string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
             int limitCount = 100)
         {
-            throw new NotImplementedException();
+            return await _projectsRepository.GetProjects(codeSubStr, nameSubStr, skipCount, limitCount);
         }
 
         public async Task<Project> GetProject(int? id = null, string codeSubStr = null, string nameSubStr = null)
