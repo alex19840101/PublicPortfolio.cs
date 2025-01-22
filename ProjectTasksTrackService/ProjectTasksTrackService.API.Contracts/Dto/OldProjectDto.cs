@@ -8,7 +8,7 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
     public class OldProjectDto
     {
         /// <summary> Числовой идентификатор - номер проекта, как в старой системе </summary>
-        [JsonPropertyName("id")] public required int Id { get; set; }
+        [JsonPropertyName("id")] public int Id { get; set; }
 
         /// <summary> Код проекта </summary>
         [JsonPropertyName("c")] public required string Code { get; set; }

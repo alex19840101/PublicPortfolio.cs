@@ -1154,7 +1154,6 @@
       },
       "OldProjectDto": {
         "required": [
-          "id",
           "c",
           "n"
         ],
