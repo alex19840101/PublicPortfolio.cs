@@ -28,7 +28,8 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Импорт проектов (из старой системы проектов) </summary>
         [HttpPost("api/v2/Projects/Import")]
-        [ProducesResponseType(typeof(ImportProjectsResponseDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ImportProjectsResponseDto), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Import(IEnumerable<OldProjectDto> projects)
         {
             List<Project> projectsCollection = [];
@@ -39,12 +40,12 @@ namespace ProjectTasksTrackService.API.Controllers
 
             var importedCount = await _projectsService.Import(projectsCollection);
 
-            return Ok(new ImportProjectsResponseDto { ImportedCount = importedCount });
+            return CreatedAtAction(nameof(Import), new ImportProjectsResponseDto { ImportedCount = importedCount });
         }
 
         /// <summary> Создание проекта </summary>
         [HttpPost("api/v2/Projects/Create")]
-        [ProducesResponseType(typeof(CreateProjectResponseDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(CreateProjectResponseDto), (int)HttpStatusCode.Created)]
         public async Task<IActionResult> Create(ProjectDto project)
         {
             var id = await _projectsService.Create(Project(project));
@@ -80,11 +81,17 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Получение проекта </summary>
         [HttpGet("api/v2/Projects/GetProject")]
-        public async Task<ProjectDto> GetProject(int? id = null, string codeSubStr = null, string nameSubStr = null)
+        [ProducesResponseType(typeof(ProjectDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> GetProject(int? id = null, string codeSubStr = null, string nameSubStr = null)
         {
             var project = await _projectsService.GetProject(id, codeSubStr, nameSubStr);
-            
-            return ProjectDto(project);
+
+            if (project is null)
+                return NotFound(new MessageResponseDto { Message = ErrorStrings.PROJECT_NOT_FOUND});
+
+            return Ok(ProjectDto(project));
         }
 
         /// <summary> Обновление проекта </summary>

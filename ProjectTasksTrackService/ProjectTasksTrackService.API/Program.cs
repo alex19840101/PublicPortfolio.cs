@@ -46,6 +46,8 @@ if (isDevelopment)
         builder.UseNpgsql(connectionString: dataBaseConnectionStr, o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
                 .LogTo(Console.WriteLine, LogLevel.Information)
                 .EnableSensitiveDataLogging();
+
+        builder.LogTo(Console.WriteLine);
     });
     builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 }
