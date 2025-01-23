@@ -38,6 +38,16 @@ namespace ProjectTasksTrackService.BusinessLogic
             if (!projects.Any())
                 throw new InvalidOperationException(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_BE_FILLED);
 
+            var existingProjects = await _projectsRepository.GetAllProjects();
+
+            List<int> existingIds = new List<int>();
+            foreach (var impProject in projects)
+                if (existingProjects.Any(p => p.Id == impProject.Id))
+                    existingIds.Add(impProject.Id);
+
+            if (existingIds.Any())
+                throw new InvalidOperationException("Conflict"); //TODO: конфликт при импорте
+
             return await _projectsRepository.Import(projects);
         }
 

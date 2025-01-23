@@ -167,6 +167,13 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             return entityProjectsLst.SelectMany<Entities.Project, Project>(p => (IEnumerable<Project>)Project(p));
         }
 
+        public async Task<IEnumerable<Project>> GetAllProjects()
+        {
+            var projects = await _dbContext.Projects
+                .AsNoTracking().SelectMany<Entities.Project, Project>(p => (IEnumerable<Project>)Project(p)).ToListAsync();
+
+            return projects;
+        }
         public async Task<string> UpdateProject(Project project)
         {
             if (project is null)

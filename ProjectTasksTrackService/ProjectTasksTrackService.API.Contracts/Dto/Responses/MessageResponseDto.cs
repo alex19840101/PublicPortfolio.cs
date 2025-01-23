@@ -12,7 +12,7 @@ namespace ProjectTasksTrackService.API.Contracts.Dto.Responses
     public class MessageResponseDto
     {
         /// <summary>
-        /// Ссообщение о предупреждении/ошибке
+        /// Сообщение о предупреждении/ошибке
         /// </summary>
         public string Message { get; set; }
     }

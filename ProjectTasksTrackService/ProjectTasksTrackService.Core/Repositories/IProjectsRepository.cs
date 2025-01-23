@@ -15,6 +15,7 @@ namespace ProjectTasksTrackService.Core.Repositories
             int skipCount = 0,
             int limitCount = 100);
 
+        Task<IEnumerable<Project>> GetAllProjects();
 
         Task<string> UpdateProject(Project project);
         /*
