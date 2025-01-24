@@ -23,10 +23,10 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
         {
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields();
 
-            var intProjectId = await _projectsService.Create(project);
+            var id = await _projectsService.Create(project);
 
-            Assert.Equal(project.Id, intProjectId);
-            _projectsRepositoryMock.Verify(repo => repo.Add(project), Times.Once);
+            Assert.True(id > 0);
+            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Once);
         }
 
         [Fact]
@@ -34,10 +34,10 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
         {
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields();
 
-            var intProjectId = await _projectsService.Create(project);
+            var id = await _projectsService.Create(project);
 
-            intProjectId.Should().Be(project.Id);
-            _projectsRepositoryMock.Verify(repo => repo.Add(project), Times.Once);
+            id.Should().BeGreaterThan(0);
+            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Once);
         }
 
         [Fact]
@@ -45,10 +45,10 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
         {
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithRequiredFields();
 
-            var intProjectId = await _projectsService.Create(project);
+            var id = await _projectsService.Create(project);
 
-            Assert.Equal(project.Id, intProjectId);
-            _projectsRepositoryMock.Verify(repo => repo.Add(project), Times.Once);
+            Assert.True(id > 0);
+            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Once);
         }
 
         [Fact]
@@ -56,10 +56,10 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
         {
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithRequiredFields();
 
-            var intProjectId = await _projectsService.Create(project);
+            var id = await _projectsService.Create(project);
 
-            intProjectId.Should().Be(project.Id);
-            _projectsRepositoryMock.Verify(repo => repo.Add(project), Times.Once);
+            id.Should().BeGreaterThan(0);
+            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Once);
         }
     }
 }

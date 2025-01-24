@@ -5,7 +5,7 @@ namespace ProjectTasksTrackService.Core.Repositories
 {
     public interface IProjectsRepository
     {
-        Task<int> Add(Project project);
+        Task<int> Add(Project project, bool trySetId = false);
         Task<ImportResult> Import(IEnumerable<Project> projects);
         Task<Project> GetProject(int? id = null, string codeSubStr = null, string nameSubStr = null);
         Task<Project> GetProjectById(int id);

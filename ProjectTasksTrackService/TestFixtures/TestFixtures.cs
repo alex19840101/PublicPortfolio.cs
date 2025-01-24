@@ -7,38 +7,38 @@ namespace TestFixtures
 {
     public class TestFixtures
     {
-        public static Project GetProjectFixtureWithAllFields()
+        public static Project GetProjectFixtureWithAllFields(bool generateId = false)
         {
             var fixture = new Fixture();
 
-            var projectId = fixture.Build<string>().Create();
+            var id = generateId ? fixture.Create<int>() : 0;
+            var code = fixture.Build<string>().Create();
             var name = fixture.Build<string>().Create();
-            var intProjectId = fixture.Create<int>();
             var url = fixture.Build<string>().Create();
             var imageUrl = fixture.Build<string>().Create();
 
             return new Project(
-                code: projectId,
+                id: id,
+                code: code,
                 name: name,
-                id: intProjectId,
                 url: url,
                 imageUrl: imageUrl,
                 createdDt: DateTime.Now,
                 lastUpdateDt: DateTime.Now);
         }
 
-        public static Project GetProjectFixtureWithRequiredFields()
+        public static Project GetProjectFixtureWithRequiredFields(bool generateId = false)
         {
             var fixture = new Fixture();
 
-            var projectId = fixture.Build<string>().Create();
+            var id = generateId ? fixture.Create<int>() : 0;
+            var code = fixture.Build<string>().Create();
             var name = fixture.Build<string>().Create();
-            var intProjectId = fixture.Create<int>();
 
             return new Project(
-                code: projectId,
-                name: name,
-                id: intProjectId);
+                id: id,
+                code: code,
+                name: name);
         }
     }
 }

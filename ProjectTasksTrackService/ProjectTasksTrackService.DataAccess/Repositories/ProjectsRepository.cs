@@ -18,14 +18,14 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<int> Add(Project project)
+        public async Task<int> Add(Project project, bool trySetId = false)
         {
             ArgumentNullException.ThrowIfNull(project);
 
             var newProjectEntity = new Entities.Project(
+                id: trySetId ? project.Id : 0,
                 code: project.Code,
                 name: project.Name,
-                id: project.Id,
                 url: project.Url,
                 imageUrl: project.ImageUrl,
                 createdDt: project.CreatedDt ?? DateTime.Now,
@@ -33,7 +33,8 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
 
             await _dbContext.Projects.AddAsync(newProjectEntity);
             await _dbContext.SaveChangesAsync();
-
+            
+            await _dbContext.Entry(newProjectEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id
             return newProjectEntity.Id;
         }
 
