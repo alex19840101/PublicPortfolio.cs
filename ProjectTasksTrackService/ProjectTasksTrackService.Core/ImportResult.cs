@@ -1,8 +1,10 @@
-﻿
-namespace ProjectTasksTrackService.API.Contracts.Dto.Responses
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ProjectTasksTrackService.Core
 {
-    /// <summary> Класс ответа на запрос /Projects/Import </summary>
-    public class ImportProjectsResponseDto
+    public class ImportResult
     {
         /// <summary> Количество импортированных (добавленных) проектов </summary>
         public int ImportedCount { get; set; }

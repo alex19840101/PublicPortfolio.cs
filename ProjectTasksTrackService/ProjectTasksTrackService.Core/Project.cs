@@ -45,5 +45,20 @@ namespace ProjectTasksTrackService.Core
         public void UpdateImageUrl(string newImageUrl) => _imageUrl = newImageUrl;
         public void UpdateCreatedDt(DateTime? createdDt) => _createdDt = createdDt;
         public void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
+
+        public override bool Equals(object obj)
+        {
+            var comparedProject = (Project)obj;
+            if (comparedProject.Id != _id ||
+                !string.Equals(comparedProject.Code, _code) ||
+                !string.Equals(comparedProject.Name, _name) ||
+                !string.Equals(comparedProject.Url, _url) ||
+                !string.Equals(comparedProject.ImageUrl, _imageUrl) ||
+                comparedProject.CreatedDt != _createdDt ||
+                comparedProject.LastUpdateDt != _lastUpdateDt)
+                return false;
+
+            return true;
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ProjectTasksTrackService.Core;
 using ProjectTasksTrackService.Core.Repositories;
 using Project = ProjectTasksTrackService.Core.Project;
 
@@ -36,7 +37,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             return newProjectEntity.Id;
         }
 
-        public async Task<int> Import(IEnumerable<Project> projects)
+        public async Task<ImportResult> Import(IEnumerable<Project> projects)
         {
             ArgumentNullException.ThrowIfNull(projects);
             if (!projects.Any())
@@ -54,7 +55,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             await _dbContext.Projects.AddRangeAsync(projectEntities);
             await _dbContext.SaveChangesAsync();
 
-            return projectEntities.Max(p => p.Id);
+            return new ImportResult { ImportedCount = projects.Count(), Message = ErrorStrings.OK};
         }
 
         public async Task<Project> GetProjectById(int id)
@@ -146,7 +147,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 if (entityProjectsLst.Count == 0)
                     return null;
 
-                return entityProjectsLst.SelectMany<Entities.Project, Project>(p => (IEnumerable<Project>)Project(p));
+                return entityProjectsLst.Select(p => Project(p));
             }
 
             //codeSubStr задан
@@ -164,13 +165,13 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             if (entityProjectsLst.Count == 0)
                 return null;
 
-            return entityProjectsLst.SelectMany<Entities.Project, Project>(p => (IEnumerable<Project>)Project(p));
+            return entityProjectsLst.Select(p => Project(p));
         }
 
         public async Task<IEnumerable<Project>> GetAllProjects()
         {
             var projects = await _dbContext.Projects
-                .AsNoTracking().SelectMany<Entities.Project, Project>(p => (IEnumerable<Project>)Project(p)).ToListAsync();
+                .AsNoTracking().Select(p => Project(p)).ToListAsync();
 
             return projects;
         }

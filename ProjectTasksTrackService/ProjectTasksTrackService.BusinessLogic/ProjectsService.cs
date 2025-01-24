@@ -30,7 +30,7 @@ namespace ProjectTasksTrackService.BusinessLogic
             return intProjectId;
         }
 
-        public async Task<int> Import(IEnumerable<Project> projects)
+        public async Task<ImportResult> Import(IEnumerable<Project> projects)
         {
             if (projects is null)
                 throw new InvalidOperationException(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_NOT_BE_NULL);
@@ -40,15 +40,29 @@ namespace ProjectTasksTrackService.BusinessLogic
 
             var existingProjects = await _projectsRepository.GetAllProjects();
 
-            List<int> existingIds = new List<int>();
+            List<int> conflictedIds = new List<int>();
+            List<Project> newProjectsToImport = new List<Project>();
             foreach (var impProject in projects)
+            {
                 if (existingProjects.Any(p => p.Id == impProject.Id))
-                    existingIds.Add(impProject.Id);
+                {
+                    var existingProject = existingProjects.Single(p => p.Id == impProject.Id);
+                    if (!impProject.Equals(existingProject))
+                        conflictedIds.Add(impProject.Id);
+                }
+                else
+                    newProjectsToImport.Add(impProject);
+            }
 
-            if (existingIds.Any())
-                throw new InvalidOperationException("Conflict"); //TODO: конфликт при импорте
+            if (conflictedIds.Any())
+                return new ImportResult { ImportedCount = 0, Message = $"{ErrorStrings.PROJECT_CONFLICTS}:{string.Join(",", conflictedIds)}" };
 
-            return await _projectsRepository.Import(projects);
+            if (!newProjectsToImport.Any())
+                return new ImportResult { ImportedCount = 0, Message = ErrorStrings.ALREADY_IMPORTED };
+
+            var importResult = await _projectsRepository.Import(newProjectsToImport);
+
+            return new ImportResult { ImportedCount = importResult.ImportedCount, Message = ErrorStrings.IMPORTED };
         }
 
         public async Task<string> UpdateProject(Project project)

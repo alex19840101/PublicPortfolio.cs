@@ -30,6 +30,7 @@ namespace ProjectTasksTrackService.API.Controllers
         [HttpPost("api/v2/Projects/Import")]
         [ProducesResponseType(typeof(ImportProjectsResponseDto), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ImportProjectsResponseDto), (int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> Import(IEnumerable<OldProjectDto> projects)
         {
             List<Project> projectsCollection = [];
@@ -38,9 +39,19 @@ namespace ProjectTasksTrackService.API.Controllers
                 projectsCollection.Add(Project(project));
             }
 
-            var importedCount = await _projectsService.Import(projectsCollection);
+            var importResult = await _projectsService.Import(projectsCollection);
 
-            return CreatedAtAction(nameof(Import), new ImportProjectsResponseDto { ImportedCount = importedCount });
+            if (importResult.ImportedCount == 0)
+                return new ConflictObjectResult(new ImportProjectsResponseDto
+                {
+                    Message = importResult.Message
+                });
+
+            return CreatedAtAction(nameof(Import), new ImportProjectsResponseDto
+            {
+                ImportedCount = importResult.ImportedCount,
+                Message = importResult.Message
+            });
         }
 
         /// <summary> Создание проекта </summary>
