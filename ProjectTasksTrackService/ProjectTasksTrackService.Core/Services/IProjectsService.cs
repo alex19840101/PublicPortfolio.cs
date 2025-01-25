@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using ProjectTasksTrackService.Core.Results;
 
 namespace ProjectTasksTrackService.Core.Services
 {
@@ -18,7 +19,7 @@ namespace ProjectTasksTrackService.Core.Services
             string code = null,
             string name = null,
             bool ignoreCase = true);
-        Task<string> UpdateProject(Project projectDto);
+        Task<UpdateResult> UpdateProject(Project projectDto);
         Task<string> DeleteProject(int id, string projectSecretString);
     }
 }

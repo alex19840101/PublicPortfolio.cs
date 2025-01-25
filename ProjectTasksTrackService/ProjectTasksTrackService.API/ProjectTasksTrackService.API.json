@@ -350,7 +350,27 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/UpdateResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateResult"
                 }
               }
             }
@@ -1207,6 +1227,9 @@
           }
         }
       },
+      "HttpStatusCode": {
+        "type": "integer"
+      },
       "ImportProjectsResponseDto": {
         "type": "object",
         "properties": {
@@ -1581,6 +1604,18 @@
       },
       "TaskRepeatsType": {
         "type": "integer"
+      },
+      "UpdateResult": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusCode": {
+            "$ref": "#/components/schemas/HttpStatusCode"
+          }
+        }
       }
     }
   },

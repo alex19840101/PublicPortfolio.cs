@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTasksTrackService.API.Contracts.Dto;
 using ProjectTasksTrackService.API.Contracts.Dto.Requests;
@@ -119,9 +120,20 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Обновление проекта </summary>
         [HttpPost("api/v2/Projects/UpdateProject")]
-        public async Task<string> UpdateProject(ProjectDto projectDto)
+        [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> UpdateProject(ProjectDto projectDto)
         {
-            return await _projectsService.UpdateProject(Project(projectDto));
+            var updateResult = await _projectsService.UpdateProject(Project(projectDto));
+
+            if (updateResult.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(updateResult);
+
+            if (updateResult.StatusCode == HttpStatusCode.Conflict)
+                return new ConflictObjectResult(updateResult);
+
+            return Ok(updateResult);
         }
 
         /// <summary> Удаление проекта </summary>

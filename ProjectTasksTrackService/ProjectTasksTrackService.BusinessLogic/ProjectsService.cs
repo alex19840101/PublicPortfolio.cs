@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ProjectTasksTrackService.Core;
 using ProjectTasksTrackService.Core.Repositories;
+using ProjectTasksTrackService.Core.Results;
 using ProjectTasksTrackService.Core.Services;
 
 namespace ProjectTasksTrackService.BusinessLogic
@@ -68,13 +69,21 @@ namespace ProjectTasksTrackService.BusinessLogic
             return new ImportResult { ImportedCount = importResult.ImportedCount, Message = ErrorStrings.IMPORTED };
         }
 
-        public async Task<string> UpdateProject(Project project)
+        public async Task<UpdateResult> UpdateProject(Project project)
         {
             if (string.IsNullOrWhiteSpace(project.Code))
-                throw new InvalidOperationException(ErrorStrings.PROJECT_CODE_SHOULD_NOT_BE_EMPTY);
+                return new UpdateResult
+                {
+                    Message = ErrorStrings.PROJECT_CODE_SHOULD_NOT_BE_EMPTY,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                };
 
             if (string.IsNullOrWhiteSpace(project.Name))
-                throw new InvalidOperationException(ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY);
+                return new UpdateResult
+                {
+                    Message = ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                };
 
             return await _projectsRepository.UpdateProject(project);
         }

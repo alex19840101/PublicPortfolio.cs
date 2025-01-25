@@ -38,7 +38,7 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
             bool ignoreCase = true);
         
         /// <summary> Обновление проекта </summary>
-        Task<string> UpdateProject(ProjectDto projectDto);
+        Task<IActionResult> UpdateProject(ProjectDto projectDto);
 
         /// <summary> Удаление проекта </summary>
         Task<string> DeleteProject(DeleteProjectRequestDto deleteProjectRequest);

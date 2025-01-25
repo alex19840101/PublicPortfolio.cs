@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ProjectTasksTrackService.Core
+namespace ProjectTasksTrackService.Core.Results
 {
     public class ImportResult
     {

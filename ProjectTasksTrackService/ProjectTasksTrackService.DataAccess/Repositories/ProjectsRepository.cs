@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ProjectTasksTrackService.Core;
 using ProjectTasksTrackService.Core.Repositories;
+using ProjectTasksTrackService.Core.Results;
 using Project = ProjectTasksTrackService.Core.Project;
 
 namespace ProjectTasksTrackService.DataAccess.Repositories
@@ -209,31 +211,36 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
 
             return projects;
         }
-        public async Task<string> UpdateProject(Project project)
+        public async Task<UpdateResult> UpdateProject(Project project)
         {
-            if (project is null)
-                throw new ArgumentNullException(nameof(project));
+            ArgumentNullException.ThrowIfNull(project);
 
             var entityProject = await _dbContext.Projects
                 .SingleOrDefaultAsync(p => p.Id == project.Id);
 
             if (entityProject is null)
-                return null;
+                return new UpdateResult(ErrorStrings.PROJECT_NOT_FOUND, HttpStatusCode.NotFound);
 
             if (!project.Code.Equals(entityProject.Code))
-                return Core.ErrorStrings.CODE_SHOULD_BE_THE_SAME;
+                return new UpdateResult(ErrorStrings.CODE_SHOULD_BE_THE_SAME, HttpStatusCode.Conflict);
 
-            if (!project.Name.Equals(entityProject.Name))         entityProject.UpdateName(entityProject.Name);
-            if (!project.Url.Equals(entityProject.Url))           entityProject.UpdateUrl(entityProject.Url);
-            if (!project.ImageUrl.Equals(entityProject.ImageUrl)) entityProject.UpdateImageUrl(entityProject.ImageUrl);
+            if (!string.Equals(project.Name, entityProject.Name))         entityProject.UpdateName(project.Name);
+            if (!string.Equals(project.Url, entityProject.Url))           entityProject.UpdateUrl(project.Url);
+            if (!string.Equals(project.ImageUrl, entityProject.ImageUrl)) entityProject.UpdateImageUrl(project.ImageUrl);
+
+            if (project.CreatedDt != null && entityProject.CreatedDt == null)
+                entityProject.UpdateCreatedDt(project.CreatedDt.Value.ToUniversalTime());
+
+            if (project.LastUpdateDt != null && entityProject.LastUpdateDt == null)
+                entityProject.UpdateLastUpdateDt(project.LastUpdateDt.Value.ToUniversalTime());
 
             if (_dbContext.ChangeTracker.HasChanges())
             {
-                entityProject.UpdateLastUpdateDt(DateTime.Now);
+                entityProject.UpdateLastUpdateDt(DateTime.Now.ToUniversalTime());
                 await _dbContext.SaveChangesAsync();
-                return Core.ErrorStrings.PROJECT_UPDATED;
+                return new UpdateResult(ErrorStrings.PROJECT_UPDATED, HttpStatusCode.OK);
             }
-            return Core.ErrorStrings.PROJECT_IS_ACTUAL;
+            return new UpdateResult(ErrorStrings.PROJECT_IS_ACTUAL, HttpStatusCode.OK);
         }
 
         public async Task<string> DeleteProject(int id, string projectSecretString)
@@ -260,7 +267,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             name: project.Name,
             url: project.Url,
             imageUrl: project.ImageUrl,
-            createdDt: project.CreatedDt,
-            lastUpdateDt: project.LastUpdateDt);
+            createdDt: project.CreatedDt?.ToLocalTime(),
+            lastUpdateDt: project.LastUpdateDt?.ToLocalTime());
     }
 }

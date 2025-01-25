@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using ProjectTasksTrackService.Core.Results;
 
 namespace ProjectTasksTrackService.Core.Repositories
 {
@@ -22,7 +23,7 @@ namespace ProjectTasksTrackService.Core.Repositories
 
         Task<IEnumerable<Project>> GetAllProjects();
 
-        Task<string> UpdateProject(Project project);
+        Task<UpdateResult> UpdateProject(Project project);
         /*
         Task<string> UpdateName(string projectId, string newName);
         Task<string> UpdateUrl(string projectId, string url);
