@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ProjectTasksTrackService.Core;
@@ -71,8 +72,13 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             return Project(entityProject);
         }
 
-        public async Task<Project> GetProject(int? id = null, string codeSubStr = null, string nameSubStr = null)
+        public async Task<Project> GetProject(
+            int? id = null,
+            string codeSubStr = null,
+            string nameSubStr = null,
+            bool ignoreCase = true)
         {
+            var sc = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.Ordinal;
             if (id is not null)
             {
                 var entityProject = await _dbContext.Projects
@@ -83,11 +89,11 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                     return null;
 
                 if (!string.IsNullOrWhiteSpace(codeSubStr))
-                    if (!entityProject.Code.Contains(codeSubStr))
+                    if (!entityProject.Code.Contains(codeSubStr, sc))
                         return null;
 
                 if (!string.IsNullOrWhiteSpace(nameSubStr))
-                    if (!entityProject.Name.Contains(nameSubStr))
+                    if (!entityProject.Name.Contains(nameSubStr, sc))
                         return null;
 
                 return Project(entityProject);
@@ -95,18 +101,26 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             //id == null
 
             List<Entities.Project> entityProjectsLst;
+            Expression<Func<Entities.Project, bool>> expressionWhereCode = ignoreCase ?
+                p => EF.Functions.Like(p.Code.ToLower(), $"%{codeSubStr.ToLower()}%") :
+                p => p.Code.Contains(codeSubStr);
+            Expression<Func<Entities.Project, bool>> expressionWhereName = ignoreCase ?
+                p => EF.Functions.Like(p.Name.ToLower(), $"%{nameSubStr.ToLower()}%") :
+                p => p.Name.Contains(nameSubStr);
 
             if (string.IsNullOrWhiteSpace(codeSubStr))
             {
                 entityProjectsLst = await _dbContext.Projects
                         .AsNoTracking()
-                        .Where(p => p.Name.Contains(nameSubStr)).ToListAsync();
+                        .Where(expressionWhereName).ToListAsync();
 
                 if (entityProjectsLst.Count == 0)
                     return null;
 
                 if (entityProjectsLst.Count > 1)
                     throw new InvalidOperationException(Core.ErrorStrings.MORE_THAN_ONE_PROJECT_FOUND);
+
+                return Project(entityProjectsLst.Single());
             }
 
             //id == null, codeSubStr задан
@@ -114,11 +128,11 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             entityProjectsLst = string.IsNullOrWhiteSpace(nameSubStr) ?
                 await _dbContext.Projects
                         .AsNoTracking()
-                        .Where(p => p.Code.Contains(codeSubStr)).ToListAsync() :
+                        .Where(expressionWhereCode).ToListAsync() :
                 await _dbContext.Projects
                         .AsNoTracking()
-                        .Where(p => p.Code.Contains(codeSubStr))
-                        .Where(p => p.Name.Contains(nameSubStr))
+                        .Where(expressionWhereCode)
+                        .Where(expressionWhereName)
                         .ToListAsync();
 
             if (entityProjectsLst.Count == 0)
@@ -134,37 +148,56 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
-            int limitCount = 100)
+            int limitCount = 100,
+            bool ignoreCase = true)
         {
             limitCount = limitCount > 100 ? 100 : limitCount;
             List<Entities.Project> entityProjectsLst;
+
+            if (string.IsNullOrWhiteSpace(codeSubStr) && string.IsNullOrWhiteSpace(nameSubStr))
+            {
+                entityProjectsLst = await _dbContext.Projects
+                            .AsNoTracking()
+                            .Skip(skipCount).Take(limitCount).ToListAsync();
+
+                if (entityProjectsLst.Count == 0)
+                    return [];
+
+                return entityProjectsLst.Select(p => Project(p));
+            }
+            Expression<Func<Entities.Project, bool>> expressionWhereName = ignoreCase ?
+                p => EF.Functions.Like(p.Name.ToLower(), $"%{nameSubStr.ToLower()}%") :
+                p => p.Name.Contains(nameSubStr);
 
             if (string.IsNullOrWhiteSpace(codeSubStr))
             {
                 entityProjectsLst = await _dbContext.Projects
                         .AsNoTracking()
-                        .Where(p => p.Name.Contains(nameSubStr)).Skip(skipCount).Take(limitCount).ToListAsync();
+                        .Where(expressionWhereName).Skip(skipCount).Take(limitCount).ToListAsync();
 
                 if (entityProjectsLst.Count == 0)
-                    return null;
+                    return [];
 
                 return entityProjectsLst.Select(p => Project(p));
             }
 
             //codeSubStr задан
+            Expression<Func<Entities.Project, bool>> expressionWhereCode = ignoreCase ?
+                p => EF.Functions.Like(p.Code.ToLower(), $"%{codeSubStr.ToLower()}%") :
+                p => p.Code.Contains(codeSubStr);
 
             entityProjectsLst = string.IsNullOrWhiteSpace(nameSubStr) ?
                 await _dbContext.Projects
                         .AsNoTracking()
-                        .Where(p => p.Code.Contains(codeSubStr)).Skip(skipCount).Take(limitCount).ToListAsync() :
+                        .Where(expressionWhereCode).Skip(skipCount).Take(limitCount).ToListAsync() :
                 await _dbContext.Projects
                         .AsNoTracking()
-                        .Where(p => p.Code.Contains(codeSubStr))
-                        .Where(p => p.Name.Contains(nameSubStr)).Skip(skipCount).Take(limitCount)
+                        .Where(expressionWhereCode)
+                        .Where(expressionWhereName).Skip(skipCount).Take(limitCount)
                         .ToListAsync();
 
             if (entityProjectsLst.Count == 0)
-                return null;
+                return [];
 
             return entityProjectsLst.Select(p => Project(p));
         }
@@ -220,7 +253,6 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
 
             return Core.ErrorStrings.OK;
         }
-
         private static Project Project(Entities.Project project) =>
             new Project(
             id: project.Id,

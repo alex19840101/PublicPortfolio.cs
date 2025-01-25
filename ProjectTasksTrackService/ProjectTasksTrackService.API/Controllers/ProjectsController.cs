@@ -70,11 +70,15 @@ namespace ProjectTasksTrackService.API.Controllers
             string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
-            int limitCount = 100)
+            int limitCount = 100,
+            bool ignoreCase = true)
         {
-            var projectsCollection = await _projectsService.GetProjects(codeSubStr, nameSubStr, skipCount, limitCount);
+            var projectsCollection = await _projectsService.GetProjects(codeSubStr, nameSubStr, skipCount, limitCount, ignoreCase);
             
-            return projectsCollection.SelectMany<Project, ProjectDto>(p => (IEnumerable<ProjectDto>)ProjectDto(p));
+            if (!projectsCollection.Any())
+                return [];
+
+            return projectsCollection.Select(p => ProjectDto(p));
         }
 
         /// <summary> Получение списка проектов (в старом компактном JSON-формате) для экспорта в старую систему </summary>
@@ -83,11 +87,15 @@ namespace ProjectTasksTrackService.API.Controllers
             string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
-            int limitCount = 100)
+            int limitCount = 100,
+            bool ignoreCase = true)
         {
             var projectsCollection = await _projectsService.GetProjects(codeSubStr, nameSubStr, skipCount, limitCount);
 
-            return projectsCollection.SelectMany<Project, OldProjectDto>(p => (IEnumerable<OldProjectDto>)OldProjectDto(p));
+            if (!projectsCollection.Any())
+                return [];
+
+            return projectsCollection.Select(p => OldProjectDto(p));
         }
 
         /// <summary> Получение проекта </summary>
@@ -95,7 +103,11 @@ namespace ProjectTasksTrackService.API.Controllers
         [ProducesResponseType(typeof(ProjectDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetProject(int? id = null, string codeSubStr = null, string nameSubStr = null)
+        public async Task<IActionResult> GetProject(
+            int? id = null,
+            string codeSubStr = null,
+            string nameSubStr = null,
+            bool ignoreCase = true)
         {
             var project = await _projectsService.GetProject(id, codeSubStr, nameSubStr);
 

@@ -7,13 +7,18 @@ namespace ProjectTasksTrackService.Core.Repositories
     {
         Task<int> Add(Project project, bool trySetId = false);
         Task<ImportResult> Import(IEnumerable<Project> projects);
-        Task<Project> GetProject(int? id = null, string codeSubStr = null, string nameSubStr = null);
+        Task<Project> GetProject(
+            int? id = null,
+            string codeSubStr = null,
+            string nameSubStr = null,
+            bool ignoreCase = true);
         Task<Project> GetProjectById(int id);
         Task<IEnumerable<Project>> GetProjects(
             string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
-            int limitCount = 100);
+            int limitCount = 100,
+            bool ignoreCase = true);
 
         Task<IEnumerable<Project>> GetAllProjects();
 

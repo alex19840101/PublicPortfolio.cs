@@ -15,21 +15,27 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
         Task<IActionResult> Create(ProjectDto project);
 
         /// <summary> Получение проекта </summary>
-        Task<IActionResult> GetProject(int? id = null, string codeSubStr = null, string nameSubStr = null);
+        Task<IActionResult> GetProject(
+            int? id = null,
+            string codeSubStr = null,
+            string nameSubStr = null,
+            bool ignoreCase = true);
 
         /// <summary> Получение списка проектов (в старом компактном JSON-формате) для экспорта в старую систему </summary>
         Task<IEnumerable<OldProjectDto>> GetProjectsOldDto(
             string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
-            int limitCount = 100);
+            int limitCount = 100,
+            bool ignoreCase = true);
 
         /// <summary> Получение списка проектов </summary>
         Task<IEnumerable<ProjectDto>> GetProjects(
             string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
-            int limitCount = 100);
+            int limitCount = 100,
+            bool ignoreCase = true);
         
         /// <summary> Обновление проекта </summary>
         Task<string> UpdateProject(ProjectDto projectDto);

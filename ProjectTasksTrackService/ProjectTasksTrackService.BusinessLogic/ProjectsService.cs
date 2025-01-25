@@ -87,12 +87,17 @@ namespace ProjectTasksTrackService.BusinessLogic
             string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
-            int limitCount = 100)
+            int limitCount = 100,
+            bool ignoreCase = true)
         {
             return await _projectsRepository.GetProjects(codeSubStr, nameSubStr, skipCount, limitCount);
         }
 
-        public async Task<Project> GetProject(int? id = null, string codeSubStr = null, string nameSubStr = null)
+        public async Task<Project> GetProject(
+            int? id = null,
+            string codeSubStr = null,
+            string nameSubStr = null,
+            bool ignoreCase = true)
         {
             bool anyCode = string.IsNullOrWhiteSpace(codeSubStr);
             bool anyName = string.IsNullOrWhiteSpace(nameSubStr);
