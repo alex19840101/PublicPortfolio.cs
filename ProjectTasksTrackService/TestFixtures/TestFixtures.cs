@@ -40,5 +40,8 @@ namespace TestFixtures
                 code: code,
                 name: name);
         }
+
+        public static int GenerateId() => new Fixture().Create<int>();
+
     }
 }
