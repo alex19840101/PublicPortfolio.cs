@@ -12,5 +12,8 @@
         public const string PROJECT_CONFLICTS = "Project conflict(s)";
         public const string ALREADY_IMPORTED = "Already imported";
         public const string IMPORTED = "Imported";
+        public const string SUBPROJECTS_LIST_TO_IMPORT_SHOULD_NOT_BE_NULL = "Subprojects list to import should not be null";
+        public const string SUBPROJECTS_LIST_TO_IMPORT_SHOULD_BE_FILLED = "Subprojects list to import should contain at least 1 subproject";
+        public const string SUBPROJECTS_CONFLICTS = "Subprojects conflict(s)";
     }
 }

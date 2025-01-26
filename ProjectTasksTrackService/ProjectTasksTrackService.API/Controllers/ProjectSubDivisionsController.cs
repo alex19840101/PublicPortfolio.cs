@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTasksTrackService.API.Contracts.Dto;
 using ProjectTasksTrackService.API.Contracts.Dto.Requests;
+using ProjectTasksTrackService.API.Contracts.Dto.Responses;
 using ProjectTasksTrackService.API.Contracts.Interfaces;
-using ProjectTasksTrackService.BusinessLogic;
 using ProjectTasksTrackService.Core;
 using ProjectTasksTrackService.Core.Services;
 
@@ -27,15 +28,33 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Импорт подпроектов (из старой системы) </summary>
         [HttpPost("api/v2/SubDivisions/Import")]
-        public async Task<string> Import(IEnumerable<OldProjectSubDivisionDto> oldSubDivisions)
+        [ProducesResponseType(typeof(ImportProjectsResponseDto), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ImportProjectsResponseDto), (int)HttpStatusCode.Conflict)]
+        public async Task<IActionResult> Import(IEnumerable<OldProjectSubDivisionDto> oldSubDivisions)
         {
-            List<ProjectSubDivision> subDivisionsCollection = [];
-            foreach (var oldSubDivisionDto in oldSubDivisions)
+            List<ProjectSubDivision> subsList = [];
+            foreach (var sub in oldSubDivisions)
             {
-                subDivisionsCollection.Add(ProjectSubDivision(oldSubDivisionDto));
+                subsList.Add(ProjectSubDivision(sub));
             }
 
-            return await _subProjectsService.Import(subDivisionsCollection);
+            var importResult = await _subProjectsService.Import(subsList);
+
+            if (importResult.StatusCode == HttpStatusCode.BadRequest)
+                return new BadRequestObjectResult(new ProblemDetails { Title = importResult.Message });
+
+            if (importResult.StatusCode == HttpStatusCode.Conflict || importResult.ImportedCount == 0)
+                return new ConflictObjectResult(new ImportProjectsResponseDto
+                {
+                    Message = importResult.Message
+                });
+
+            return CreatedAtAction(nameof(Import), new ImportProjectsResponseDto
+            {
+                ImportedCount = importResult.ImportedCount,
+                Message = importResult.Message
+            });
         }
 
         /// <summary> Создание подпроекта </summary>
@@ -87,7 +106,7 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Получение подпроекта </summary>
         [HttpGet("api/v2/SubDivisions/GetSubDivision")]
-        public async Task<ProjectSubDivisionDto> GetSubDivision(string projectId, int subDivisionId)
+        public async Task<ProjectSubDivisionDto> GetSubDivision(int projectId, int subDivisionId)
         {
             var subDivision = await _subProjectsService.GetSubDivision(projectId, subDivisionId);
             return ProjectSubDivisionDto(subDivision);

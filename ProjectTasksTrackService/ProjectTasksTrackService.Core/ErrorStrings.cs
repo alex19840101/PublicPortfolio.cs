@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ProjectTasksTrackService.Core
+﻿namespace ProjectTasksTrackService.Core
 {
     public class ErrorStrings
     {
@@ -17,5 +13,6 @@ namespace ProjectTasksTrackService.Core
         public const string SUBDIVISION_NOT_FOUND = "Subdivision not found";
         public const string SUBDIVISION_UPDATED = "Subdivision updated";
         public const string SUBDIVISION_IS_ACTUAL = "Subdivision is actual";
+        public const string MORE_THAN_ONE_SUBDIVISION_FOUND = "More than one subdivision found";
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using ProjectTasksTrackService.API.Contracts.Dto;
 using ProjectTasksTrackService.API.Contracts.Dto.Requests;
 
@@ -12,13 +13,13 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
     public interface IProjectSubDivisionAPI
     {
         /// <summary> Импорт подпроектов (из старой системы) </summary>
-        Task<string> Import(IEnumerable<OldProjectSubDivisionDto> subprojects);
+        Task<IActionResult> Import(IEnumerable<OldProjectSubDivisionDto> subprojects);
         
         /// <summary> Создание подпроекта </summary>
         Task<string> Create(ProjectSubDivisionDto subproject);
 
         /// <summary> Получение подпроекта </summary>
-        Task<ProjectSubDivisionDto> GetSubDivision(string projectId, int subDivisionId);
+        Task<ProjectSubDivisionDto> GetSubDivision(int projectId, int subDivisionId);
 
         /// <summary> Получение списка подпроектов </summary>
         Task<IEnumerable<ProjectSubDivisionDto>> GetSubDivisions(

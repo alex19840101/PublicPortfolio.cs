@@ -11,12 +11,15 @@ namespace ProjectTasksTrackService.Core.Repositories
         Task<CreateResult> Add(ProjectSubDivision subDivision, bool trySetId = false);
         Task<ImportResult> Import(IEnumerable<ProjectSubDivision> subDivisions);
         Task<ProjectSubDivision> GetProjectSubDivision(
+            int? projectId = null,
             int? id = null,
             string codeSubStr = null,
             string nameSubStr = null,
             bool ignoreCase = true);
         Task<ProjectSubDivision> GetProjectSubDivision(int projectId, int id);
         Task<IEnumerable<ProjectSubDivision>> GetProjectSubDivisions(
+            int? projectId = null,
+            int? id = null,
             string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,

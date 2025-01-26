@@ -26,7 +26,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             ArgumentNullException.ThrowIfNull(project);
 
             var newProjectEntity = new Entities.Project(
-                id: trySetId ? project.Id : await _dbContext.Projects.MaxAsync(p => p.Id) + 1,
+                id: trySetId ? project.Id : await _dbContext.Projects.AsNoTracking().MaxAsync(p => p.Id) + 1,
                 code: project.Code,
                 name: project.Name,
                 url: project.Url,

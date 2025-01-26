@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ProjectTasksTrackService.Core.Results;
 
 namespace ProjectTasksTrackService.Core.Services
 {
     public interface ISubProjectsService
     {
-        Task<string> Import(IEnumerable<ProjectSubDivision> subprojects);
+        Task<ImportResult> Import(IEnumerable<ProjectSubDivision> subprojects);
         Task<string> Create(ProjectSubDivision subproject);
-        Task<ProjectSubDivision> GetSubDivision(string projectId, int subDivisionId);
+        Task<ProjectSubDivision> GetSubDivision(int subDivisionId, int? projectId = null);
         Task<IEnumerable<ProjectSubDivision>> GetHotSubDivisions(
             string projectId = null,
             DateTime? deadLine = null,

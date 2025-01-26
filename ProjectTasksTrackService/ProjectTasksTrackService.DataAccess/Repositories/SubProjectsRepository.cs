@@ -8,7 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using ProjectTasksTrackService.Core;
 using ProjectTasksTrackService.Core.Repositories;
 using ProjectTasksTrackService.Core.Results;
-using ProjectSubDivisionsubDivision = ProjectTasksTrackService.Core.ProjectSubDivision;
+using ProjectTasksTrackService.DataAccess.Entities;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using ProjectSubDivision = ProjectTasksTrackService.Core.ProjectSubDivision;
 
 namespace ProjectTasksTrackService.DataAccess.Repositories
 {
@@ -26,7 +28,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             ArgumentNullException.ThrowIfNull(sub);
 
             var newProjectEntity = new Entities.ProjectSubDivision(
-                id: trySetId ? sub.Id : await _dbContext.ProjectSubDivisions.MaxAsync(p => p.Id) + 1,
+                id: trySetId ? sub.Id : await _dbContext.ProjectSubDivisions.AsNoTracking().MaxAsync(p => p.Id) + 1,
                 projectId : sub.ProjectId,
                 code: sub.Code,
                 name: sub.Name,
@@ -49,16 +51,16 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             if (!subs.Any())
                 return new ImportResult { Message = ErrorStrings.SUBDIVISIONS_SHOULD_CONTAIN_AT_LEAST_1_SUBDIVISION };
 
-            IEnumerable<Entities.ProjectSubDivision> subdivisionEntities = subs.Select(p => new Entities.ProjectSubDivision(
-                id: p.Id,
-                projectId: p.ProjectId,
-                code: p.Code,
-                name: p.Name,
-                url1: p.Url1,
-                url2: p.Url2,
-                imageUrl: p.ImageUrl,
-                createdDt: p.CreatedDt == null ? DateTime.Now.ToUniversalTime() : p.CreatedDt.Value.ToUniversalTime(),
-                lastUpdateDt: p.LastUpdateDt == null ? DateTime.Now.ToUniversalTime() : p.LastUpdateDt.Value.ToUniversalTime()));
+            IEnumerable<Entities.ProjectSubDivision> subdivisionEntities = subs.Select(s => new Entities.ProjectSubDivision(
+                id: s.Id,
+                projectId: s.ProjectId,
+                code: s.Code,
+                name: s.Name,
+                url1: s.Url1,
+                url2: s.Url2,
+                imageUrl: s.ImageUrl,
+                createdDt: s.CreatedDt == null ? DateTime.Now.ToUniversalTime() : s.CreatedDt.Value.ToUniversalTime(),
+                lastUpdateDt: s.LastUpdateDt == null ? DateTime.Now.ToUniversalTime() : s.LastUpdateDt.Value.ToUniversalTime()));
 
             await _dbContext.ProjectSubDivisions.AddRangeAsync(subdivisionEntities);
             await _dbContext.SaveChangesAsync();
@@ -70,7 +72,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
         {
             var subDivisionEntity = await _dbContext.ProjectSubDivisions
                 .AsNoTracking()
-                .SingleOrDefaultAsync(p => p.Id == id);
+                .SingleOrDefaultAsync(s => s.Id == id && s.ProjectId == projectId);
 
             if (subDivisionEntity is null)
                 return null;
@@ -79,17 +81,24 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
         }
 
         public async Task<ProjectSubDivision> GetProjectSubDivision(
+            int? projectId = null,
             int? id = null,
             string codeSubStr = null,
             string nameSubStr = null,
             bool ignoreCase = true)
         {
+            if (projectId != null && id != null && string.IsNullOrWhiteSpace(codeSubStr) && string.IsNullOrWhiteSpace(nameSubStr))
+                return await GetProjectSubDivision(projectId.Value, id.Value);
+
             var sc = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.Ordinal;
+
+            var query = _dbContext.ProjectSubDivisions.AsNoTracking();
+            if (projectId != null)
+                query = query.Where(s => s.ProjectId == projectId.Value);
+
             if (id is not null)
             {
-                var subdivisionEntity = await _dbContext.ProjectSubDivisions
-                    .AsNoTracking()
-                    .SingleOrDefaultAsync(p => p.Id == id);
+                var subdivisionEntity = await query.SingleOrDefaultAsync(s => s.Id == id);
 
                 if (subdivisionEntity is null)
                     return null;
@@ -108,23 +117,21 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
 
             List<Entities.ProjectSubDivision> entityProjectSubDivisionsLst;
             Expression<Func<Entities.ProjectSubDivision, bool>> expressionWhereCode = ignoreCase ?
-                p => EF.Functions.Like(p.Code.ToLower(), $"%{codeSubStr.ToLower()}%") :
-                p => p.Code.Contains(codeSubStr);
+                s => EF.Functions.Like(s.Code.ToLower(), $"%{codeSubStr.ToLower()}%") :
+                s => s.Code.Contains(codeSubStr);
             Expression<Func<Entities.ProjectSubDivision, bool>> expressionWhereName = ignoreCase ?
-                p => EF.Functions.Like(p.Name.ToLower(), $"%{nameSubStr.ToLower()}%") :
-                p => p.Name.Contains(nameSubStr);
+                s => EF.Functions.Like(s.Name.ToLower(), $"%{nameSubStr.ToLower()}%") :
+                s => s.Name.Contains(nameSubStr);
 
             if (string.IsNullOrWhiteSpace(codeSubStr))
             {
-                entityProjectSubDivisionsLst = await _dbContext.ProjectSubDivisions
-                        .AsNoTracking()
-                        .Where(expressionWhereName).ToListAsync();
+                entityProjectSubDivisionsLst = await query.Where(expressionWhereName).ToListAsync();
 
                 if (entityProjectSubDivisionsLst.Count == 0)
                     return null;
 
                 if (entityProjectSubDivisionsLst.Count > 1)
-                    throw new InvalidOperationException(Core.ErrorStrings.MORE_THAN_ONE_PROJECT_FOUND);
+                    throw new InvalidOperationException(Core.ErrorStrings.MORE_THAN_ONE_SUBDIVISION_FOUND);
 
                 return ProjectSubDivision(entityProjectSubDivisionsLst.Single());
             }
@@ -132,11 +139,9 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             //id == null, codeSubStr задан
 
             entityProjectSubDivisionsLst = string.IsNullOrWhiteSpace(nameSubStr) ?
-                await _dbContext.ProjectSubDivisions
-                        .AsNoTracking()
+                await query
                         .Where(expressionWhereCode).ToListAsync() :
-                await _dbContext.ProjectSubDivisions
-                        .AsNoTracking()
+                await query
                         .Where(expressionWhereCode)
                         .Where(expressionWhereName)
                         .ToListAsync();
@@ -145,12 +150,14 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 return null;
 
             if (entityProjectSubDivisionsLst.Count > 1)
-                throw new InvalidOperationException(Core.ErrorStrings.MORE_THAN_ONE_PROJECT_FOUND);
+                throw new InvalidOperationException(Core.ErrorStrings.MORE_THAN_ONE_SUBDIVISION_FOUND);
 
             return ProjectSubDivision(entityProjectSubDivisionsLst.Single());
         }
 
         public async Task<IEnumerable<ProjectSubDivision>> GetProjectSubDivisions(
+            int? projectId = null,
+            int? id = null,
             string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
@@ -160,10 +167,14 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             limitCount = limitCount > 100 ? 100 : limitCount;
             List<Entities.ProjectSubDivision> entityProjectSubDivisionsLst;
 
+            var query = _dbContext.ProjectSubDivisions.AsNoTracking();
+            if (projectId != null)
+                query = query.Where(s => s.ProjectId == projectId.Value);
+
+
             if (string.IsNullOrWhiteSpace(codeSubStr) && string.IsNullOrWhiteSpace(nameSubStr))
             {
-                entityProjectSubDivisionsLst = await _dbContext.ProjectSubDivisions
-                            .AsNoTracking()
+                entityProjectSubDivisionsLst = await query
                             .Skip(skipCount).Take(limitCount).ToListAsync();
 
                 if (entityProjectSubDivisionsLst.Count == 0)
@@ -172,13 +183,12 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 return entityProjectSubDivisionsLst.Select(p => ProjectSubDivision(p));
             }
             Expression<Func<Entities.ProjectSubDivision, bool>> expressionWhereName = ignoreCase ?
-                p => EF.Functions.Like(p.Name.ToLower(), $"%{nameSubStr.ToLower()}%") :
-                p => p.Name.Contains(nameSubStr);
+                s => EF.Functions.Like(s.Name.ToLower(), $"%{nameSubStr.ToLower()}%") :
+                s => s.Name.Contains(nameSubStr);
 
             if (string.IsNullOrWhiteSpace(codeSubStr))
             {
-                entityProjectSubDivisionsLst = await _dbContext.ProjectSubDivisions
-                        .AsNoTracking()
+                entityProjectSubDivisionsLst = await query
                         .Where(expressionWhereName).Skip(skipCount).Take(limitCount).ToListAsync();
 
                 if (entityProjectSubDivisionsLst.Count == 0)
@@ -189,29 +199,23 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
 
             //codeSubStr задан
             Expression<Func<Entities.ProjectSubDivision, bool>> expressionWhereCode = ignoreCase ?
-                p => EF.Functions.Like(p.Code.ToLower(), $"%{codeSubStr.ToLower()}%") :
-                p => p.Code.Contains(codeSubStr);
+                s => EF.Functions.Like(s.Code.ToLower(), $"%{codeSubStr.ToLower()}%") :
+                s => s.Code.Contains(codeSubStr);
 
             entityProjectSubDivisionsLst = string.IsNullOrWhiteSpace(nameSubStr) ?
-                await _dbContext.ProjectSubDivisions
-                        .AsNoTracking()
-                        .Where(expressionWhereCode).Skip(skipCount).Take(limitCount).ToListAsync() :
-                await _dbContext.ProjectSubDivisions
-                        .AsNoTracking()
-                        .Where(expressionWhereCode)
-                        .Where(expressionWhereName).Skip(skipCount).Take(limitCount)
-                        .ToListAsync();
+                await query.Where(expressionWhereCode).Skip(skipCount).Take(limitCount).ToListAsync() :
+                await query.Where(expressionWhereCode).Where(expressionWhereName).Skip(skipCount).Take(limitCount).ToListAsync();
 
             if (entityProjectSubDivisionsLst.Count == 0)
                 return [];
 
-            return entityProjectSubDivisionsLst.Select(p => ProjectSubDivision(p));
+            return entityProjectSubDivisionsLst.Select(s => ProjectSubDivision(s));
         }
 
         public async Task<IEnumerable<ProjectSubDivision>> GetAllProjectSubDivisions()
         {
             var subs = await _dbContext.ProjectSubDivisions
-                .AsNoTracking().Select(p => ProjectSubDivision(p)).ToListAsync();
+                .AsNoTracking().Select(s => ProjectSubDivision(s)).ToListAsync();
 
             return subs;
         }
@@ -220,7 +224,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             ArgumentNullException.ThrowIfNull(sub);
 
             var entityProject = await _dbContext.ProjectSubDivisions
-                .SingleOrDefaultAsync(p => p.Id == sub.Id);
+                .SingleOrDefaultAsync(s => s.Id == sub.Id);
 
             if (entityProject is null)
                 return new UpdateResult(ErrorStrings.SUBDIVISION_NOT_FOUND, HttpStatusCode.NotFound);
@@ -252,7 +256,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
         {
             var subdivisionEntity = await _dbContext.ProjectSubDivisions
                 .AsNoTracking()
-                .SingleOrDefaultAsync(p => p.Id == id);
+                .SingleOrDefaultAsync(s => s.Id == id);
 
             if (subdivisionEntity is null)
                 return Core.ErrorStrings.SUBDIVISION_NOT_FOUND;
