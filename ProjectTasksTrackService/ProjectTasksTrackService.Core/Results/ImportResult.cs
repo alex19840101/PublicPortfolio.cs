@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Net;
 
 namespace ProjectTasksTrackService.Core.Results
 {
@@ -11,5 +9,16 @@ namespace ProjectTasksTrackService.Core.Results
 
         /// <summary> Сообщение о результате импорта </summary>
         public string Message { get; set; }
+
+        public HttpStatusCode StatusCode { get; set; }
+        public ImportResult()
+        { }
+
+        public ImportResult(string message, HttpStatusCode statusCode, int importedCount = 0)
+        {
+            Message = message;
+            StatusCode = statusCode;
+            ImportedCount = importedCount;
+        }
     }
 }

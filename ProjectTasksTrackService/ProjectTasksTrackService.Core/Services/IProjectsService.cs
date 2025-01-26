@@ -7,7 +7,7 @@ namespace ProjectTasksTrackService.Core.Services
     public interface IProjectsService
     {
         Task<ImportResult> Import(IEnumerable<Project> projects);
-        Task<int> Create(Project project);
+        Task<CreateResult> Create(Project project);
         Task<IEnumerable<Project>> GetProjects(
             string codeSubStr = null,
             string nameSubStr = null,

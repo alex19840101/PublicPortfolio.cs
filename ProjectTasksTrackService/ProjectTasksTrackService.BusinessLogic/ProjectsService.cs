@@ -18,29 +18,29 @@ namespace ProjectTasksTrackService.BusinessLogic
             _projectsRepository = projectsRepository;
         }
 
-        public async Task<int> Create(Project project)
+        public async Task<CreateResult> Create(Project project)
         {
             if (string.IsNullOrWhiteSpace(project.Code))
-                throw new InvalidOperationException(ErrorStrings.PROJECT_CODE_SHOULD_NOT_BE_EMPTY);
+                return new CreateResult(ErrorStrings.PROJECT_CODE_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
             if (string.IsNullOrWhiteSpace(project.Name))
-                throw new InvalidOperationException(ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY);
+                return new CreateResult(ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
             if (project.Id != 0)
-                throw new InvalidOperationException(ErrorStrings.PROJECT_ID_SHOULD_BE_ZERO);
+                return new CreateResult(ErrorStrings.PROJECT_ID_SHOULD_BE_ZERO, System.Net.HttpStatusCode.BadRequest);
 
-            var id = await _projectsRepository.Add(project);
+            var createResult = await _projectsRepository.Add(project);
 
-            return id;
+            return createResult;
         }
 
         public async Task<ImportResult> Import(IEnumerable<Project> projects)
         {
             if (projects is null)
-                throw new InvalidOperationException(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_NOT_BE_NULL);
+                return new ImportResult(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_NOT_BE_NULL, System.Net.HttpStatusCode.BadRequest);
 
             if (!projects.Any())
-                throw new InvalidOperationException(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_BE_FILLED);
+                return new ImportResult(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_BE_FILLED, System.Net.HttpStatusCode.BadRequest);
 
             var existingProjects = await _projectsRepository.GetAllProjects();
 

@@ -21,40 +21,40 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<int> Add(Project project, bool trySetId = false)
+        public async Task<CreateResult> Add(Project project, bool trySetId = false)
         {
             ArgumentNullException.ThrowIfNull(project);
 
             var newProjectEntity = new Entities.Project(
-                id: trySetId ? project.Id : 0,
+                id: trySetId ? project.Id : await _dbContext.Projects.MaxAsync(p => p.Id) + 1,
                 code: project.Code,
                 name: project.Name,
                 url: project.Url,
                 imageUrl: project.ImageUrl,
-                createdDt: project.CreatedDt ?? DateTime.Now,
-                lastUpdateDt: DateTime.Now);
+                createdDt: project.CreatedDt == null ? DateTime.Now.ToUniversalTime() : project.CreatedDt.Value.ToUniversalTime(),
+                lastUpdateDt: DateTime.Now.ToUniversalTime());
 
             await _dbContext.Projects.AddAsync(newProjectEntity);
             await _dbContext.SaveChangesAsync();
             
             await _dbContext.Entry(newProjectEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id
-            return newProjectEntity.Id;
+            return new CreateResult { Id = newProjectEntity.Id, StatusCode = HttpStatusCode.Created };
         }
 
         public async Task<ImportResult> Import(IEnumerable<Project> projects)
         {
             ArgumentNullException.ThrowIfNull(projects);
             if (!projects.Any())
-                throw new InvalidOperationException("projects should contain at least 1 project.");
-            
+                return new ImportResult { Message = ErrorStrings.PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT };
+
             IEnumerable<Entities.Project> projectEntities = projects.Select(p => new Entities.Project(
                 id: p.Id,
                 code: p.Code,
                 name: p.Name,
                 url: p.Url,
                 imageUrl: p.ImageUrl,
-                createdDt: p.CreatedDt,
-                lastUpdateDt: p.LastUpdateDt));
+                createdDt: p.CreatedDt == null ? DateTime.Now.ToUniversalTime() : p.CreatedDt.Value.ToUniversalTime(),
+                lastUpdateDt: p.LastUpdateDt == null ? DateTime.Now.ToUniversalTime() : p.LastUpdateDt.Value.ToUniversalTime()));
 
             await _dbContext.Projects.AddRangeAsync(projectEntities);
             await _dbContext.SaveChangesAsync();

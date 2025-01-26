@@ -12,5 +12,6 @@ namespace ProjectTasksTrackService.Core
         public const string CODE_SHOULD_BE_THE_SAME = "Project.Code should be the same";
         public const string PROJECT_UPDATED = "Project updated";
         public const string PROJECT_IS_ACTUAL = "Project is actual";
+        public const string PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT = "Projects list in Import should contain at least 1 project.";
     }
 }

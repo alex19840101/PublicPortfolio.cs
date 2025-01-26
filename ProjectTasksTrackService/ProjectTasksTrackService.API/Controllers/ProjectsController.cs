@@ -9,6 +9,7 @@ using ProjectTasksTrackService.API.Contracts.Dto.Requests;
 using ProjectTasksTrackService.API.Contracts.Dto.Responses;
 using ProjectTasksTrackService.API.Contracts.Interfaces;
 using ProjectTasksTrackService.Core;
+using ProjectTasksTrackService.Core.Results;
 using ProjectTasksTrackService.Core.Services;
 
 namespace ProjectTasksTrackService.API.Controllers
@@ -42,7 +43,10 @@ namespace ProjectTasksTrackService.API.Controllers
 
             var importResult = await _projectsService.Import(projectsCollection);
 
-            if (importResult.ImportedCount == 0)
+            if (importResult.StatusCode == HttpStatusCode.BadRequest)
+                return new BadRequestObjectResult(new ProblemDetails { Title = importResult.Message });
+
+            if (importResult.StatusCode == HttpStatusCode.Conflict || importResult.ImportedCount == 0)
                 return new ConflictObjectResult(new ImportProjectsResponseDto
                 {
                     Message = importResult.Message
@@ -58,11 +62,19 @@ namespace ProjectTasksTrackService.API.Controllers
         /// <summary> Создание проекта </summary>
         [HttpPost("api/v2/Projects/Create")]
         [ProducesResponseType(typeof(CreateProjectResponseDto), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> Create(ProjectDto project)
         {
-            var id = await _projectsService.Create(Project(project));
+            var createResult = await _projectsService.Create(Project(project));
 
-            return Ok(new CreateProjectResponseDto { Id = id, Code = project.Code });
+            if (createResult.StatusCode == HttpStatusCode.BadRequest)
+                return new BadRequestObjectResult(new ProblemDetails { Title = createResult.Message });
+
+            if (createResult.StatusCode == HttpStatusCode.Conflict)
+                return new ConflictObjectResult(new MessageResponseDto { Message = createResult.Message });
+
+            return Ok(new CreateProjectResponseDto { Id = createResult.Id.Value, Code = project.Code });
         }
 
         /// <summary> Получение списка проектов </summary>
