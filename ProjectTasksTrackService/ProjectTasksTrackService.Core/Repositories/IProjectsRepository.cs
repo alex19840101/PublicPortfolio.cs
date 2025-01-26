@@ -24,11 +24,6 @@ namespace ProjectTasksTrackService.Core.Repositories
         Task<IEnumerable<Project>> GetAllProjects();
 
         Task<UpdateResult> UpdateProject(Project project);
-        /*
-        Task<string> UpdateName(string projectId, string newName);
-        Task<string> UpdateUrl(string projectId, string url);
-        Task<string> UpdateImageUrl(string projectId, string imageUrl);
-        */
         Task<string> DeleteProject(int id, string projectSecretString);
     }
 }

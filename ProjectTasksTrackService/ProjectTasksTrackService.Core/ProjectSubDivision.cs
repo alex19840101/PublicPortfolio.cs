@@ -11,6 +11,7 @@ namespace ProjectTasksTrackService.Core
         public int Id { get { return _id; } }
         /// <summary> Id проекта (родительского) </summary>
         public int ProjectId { get { return _projectId; } }
+        public string Code { get { return _code; } }
         /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
         public string Name { get { return _name; } }
         public string Url1 { get { return _url1; } }
@@ -24,6 +25,7 @@ namespace ProjectTasksTrackService.Core
         private readonly int _id;
         /// <summary> Числовой идентификатор (номер) (родительского) проекта, как в старой системе </summary>
         private readonly int _projectId;
+        private string _code;
         private string _name;
         private string _url1;
         private string _url2;
@@ -34,6 +36,7 @@ namespace ProjectTasksTrackService.Core
         public ProjectSubDivision(
             int id,
             int projectId,
+            string code,
             string name,
             string url1 = null,
             string url2 = null,
@@ -45,6 +48,7 @@ namespace ProjectTasksTrackService.Core
         {
             _id = id;
             _projectId = projectId;
+            _code = code;
             _name = name;
             _url1 = url1;
             _url2 = url2;

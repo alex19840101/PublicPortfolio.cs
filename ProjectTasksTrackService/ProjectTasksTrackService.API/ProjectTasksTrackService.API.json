@@ -1315,6 +1315,7 @@
         "required": [
           "i",
           "m",
+          "c",
           "n"
         ],
         "type": "object",
@@ -1326,6 +1327,10 @@
           "m": {
             "type": "integer",
             "format": "int32"
+          },
+          "c": {
+            "type": "string",
+            "nullable": true
           },
           "n": {
             "type": "string",
@@ -1503,6 +1508,7 @@
         "required": [
           "id",
           "projectId",
+          "c",
           "name"
         ],
         "type": "object",
@@ -1514,6 +1520,10 @@
           "projectId": {
             "type": "integer",
             "format": "int32"
+          },
+          "c": {
+            "type": "string",
+            "nullable": true
           },
           "name": {
             "type": "string",

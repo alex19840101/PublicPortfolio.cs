@@ -3,6 +3,7 @@ using FluentAssertions;
 using Moq;
 using ProjectTasksTrackService.Core;
 using ProjectTasksTrackService.Core.Repositories;
+using ProjectTasksTrackService.Core.Results;
 using System.Threading.Tasks;
 
 namespace ProjectTasksTrackService.BusinessLogic.nTests
@@ -31,12 +32,14 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
             _projectsRepositoryMock.Setup(pr => pr.Add(project, false))
-                .ReturnsAsync(expectedId);
+                .ReturnsAsync(new CreateResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
-            var id = await _projectsService.Create(project);
+            var createResult = await _projectsService.Create(project);
 
-            Assert.That(id, Is.GreaterThan(0));
-            Assert.That(id, Is.EqualTo(expectedId));
+            Assert.That(createResult.Id, Is.GreaterThan(0));
+            Assert.That(createResult.Id, Is.EqualTo(expectedId));
+            Assert.That(createResult.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Created));
+
             _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Once);
         }
 
@@ -48,12 +51,14 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
             _projectsRepositoryMock.Setup(pr => pr.Add(project, false))
-                .ReturnsAsync(expectedId);
+                .ReturnsAsync(new CreateResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
-            var id = await _projectsService.Create(project);
+            var createResult = await _projectsService.Create(project);
 
-            id.Should().BeGreaterThan(0);
-            id.Should().Be(expectedId);
+            createResult.Id.Should().BeGreaterThan(0);
+            createResult.Id.Should().Be(expectedId);
+            createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
+
             _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Once);
         }
 
@@ -65,12 +70,14 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
             _projectsRepositoryMock.Setup(pr => pr.Add(project, false))
-                .ReturnsAsync(expectedId);
+                .ReturnsAsync(new CreateResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
-            var id = await _projectsService.Create(project);
+            var createResult = await _projectsService.Create(project);
 
-            Assert.That(id, Is.GreaterThan(0));
-            Assert.That(id, Is.EqualTo(expectedId));
+            Assert.That(createResult.Id, Is.GreaterThan(0));
+            Assert.That(createResult.Id, Is.EqualTo(expectedId));
+            Assert.That(createResult.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Created));
+
             _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Once);
         }
 
@@ -82,12 +89,14 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
             _projectsRepositoryMock.Setup(pr => pr.Add(project, false))
-                .ReturnsAsync(expectedId);
+                .ReturnsAsync(new CreateResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
-            var id = await _projectsService.Create(project);
+            var createResult = await _projectsService.Create(project);
 
-            id.Should().BeGreaterThan(0);
-            id.Should().Be(expectedId);
+            createResult.Id.Should().BeGreaterThan(0);
+            createResult.Id.Should().Be(expectedId);
+            createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
+
             _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Once);
         }
     }

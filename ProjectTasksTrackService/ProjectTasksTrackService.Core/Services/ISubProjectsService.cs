@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ProjectTasksTrackService.Core.Services
@@ -24,6 +23,5 @@ namespace ProjectTasksTrackService.Core.Services
             int limitCount = 100);
         Task<string> UpdateSubDivision(ProjectSubDivision subproject);
         Task<string> DeleteSubDivision(string projectId, int subDivisionId, string taskSecretString);
-        
     }
 }

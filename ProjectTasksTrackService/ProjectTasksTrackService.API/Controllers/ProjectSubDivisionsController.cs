@@ -134,6 +134,7 @@ namespace ProjectTasksTrackService.API.Controllers
             new ProjectSubDivision(
                 id: oldDto.Id,
                 projectId: oldDto.ProjectId,
+                code: oldDto.Code,
                 name: oldDto.Name,
                 url1: oldDto.Url1,
                 url2: oldDto.Url2,
@@ -148,6 +149,7 @@ namespace ProjectTasksTrackService.API.Controllers
             new ProjectSubDivision(
                     id: dto.Id,
                     projectId: dto.ProjectId,
+                    code: dto.Code,
                     name: dto.Name,
                     url1: dto.Url1,
                     url2: dto.Url2,
@@ -163,6 +165,7 @@ namespace ProjectTasksTrackService.API.Controllers
             {
                 Id = dto.Id,
                 ProjectId = dto.ProjectId,
+                Code = dto.Code,
                 Name = dto.Name,
                 Url1 = dto.Url1,
                 Url2 = dto.Url2,
@@ -178,6 +181,7 @@ namespace ProjectTasksTrackService.API.Controllers
             {
                 Id = dto.Id,
                 ProjectId = dto.ProjectId,
+                Code = dto.Code,
                 Name = dto.Name,
                 Url1 = dto.Url1,
                 Url2 = dto.Url2,

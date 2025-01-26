@@ -13,5 +13,9 @@ namespace ProjectTasksTrackService.Core
         public const string PROJECT_UPDATED = "Project updated";
         public const string PROJECT_IS_ACTUAL = "Project is actual";
         public const string PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT = "Projects list in Import should contain at least 1 project.";
+        public const string SUBDIVISIONS_SHOULD_CONTAIN_AT_LEAST_1_SUBDIVISION = "Subdivision list in Import should contain at least 1 subdivision.";
+        public const string SUBDIVISION_NOT_FOUND = "Subdivision not found";
+        public const string SUBDIVISION_UPDATED = "Subdivision updated";
+        public const string SUBDIVISION_IS_ACTUAL = "Subdivision is actual";
     }
 }

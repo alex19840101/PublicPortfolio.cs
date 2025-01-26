@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace ProjectTasksTrackService.API.Contracts.Dto
 {
@@ -10,6 +11,9 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
 
         /// <summary> Числовой идентификатор - номер проекта, как в старой системе </summary>
         public required int ProjectId { get; set; }
+
+        /// <summary> Код направления (подраздела/модуля/части) </summary>
+        [JsonPropertyName("c")] public required string Code { get; set; }
 
         /// <summary> Название направления (подраздела/модуля/части) проекта </summary>
         public required string Name { get; set; }
