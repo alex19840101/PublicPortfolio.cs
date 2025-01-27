@@ -35,9 +35,9 @@ namespace ProjectTasksTrackService.BusinessLogic
             return createResult;
         }
 
-        public Task<string> DeleteSubDivision(string projectId, int subDivisionId, string taskSecretString)
+        public async Task<string> DeleteSubDivision(int subDivisionId, string projectSubDivionSecretString, int? projectId = null)
         {
-            throw new NotImplementedException(); //TODO:
+            return await _subProjectsRepository.DeleteSubDivision(subDivisionId, projectSubDivionSecretString, projectId);
         }
 
         public Task<IEnumerable<ProjectSubDivision>> GetHotSubDivisions(
@@ -46,7 +46,7 @@ namespace ProjectTasksTrackService.BusinessLogic
             int skipCount = 0,
             int limitCount = 100)
         {
-            throw new NotImplementedException(); //TODO:
+            throw new NotImplementedException(); //TODO: GetHotSubDivisions
         }
 
         public async Task<ProjectSubDivision> GetSubDivision(int subDivisionId, int? projectId = null)
@@ -101,9 +101,23 @@ namespace ProjectTasksTrackService.BusinessLogic
             return new ImportResult { ImportedCount = importResult.ImportedCount, Message = ErrorStrings.IMPORTED };
         }
 
-        public Task<string> UpdateSubDivision(ProjectSubDivision subproject)
+        public async Task<UpdateResult> UpdateSubDivision(ProjectSubDivision subproject)
         {
-            throw new NotImplementedException(); //TODO:
+            if (string.IsNullOrWhiteSpace(subproject.Code))
+                return new UpdateResult
+                {
+                    Message = ErrorStrings.SUBPROJECT_CODE_SHOULD_NOT_BE_EMPTY,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                };
+
+            if (string.IsNullOrWhiteSpace(subproject.Name))
+                return new UpdateResult
+                {
+                    Message = ErrorStrings.SUBPROJECT_NAME_SHOULD_NOT_BE_EMPTY,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                };
+
+            return await _subProjectsRepository.UpdateSubDivision(subproject);
         }
     }
 }

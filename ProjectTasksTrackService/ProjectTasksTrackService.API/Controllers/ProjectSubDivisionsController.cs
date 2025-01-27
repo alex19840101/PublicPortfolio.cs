@@ -8,6 +8,7 @@ using ProjectTasksTrackService.API.Contracts.Dto.Requests;
 using ProjectTasksTrackService.API.Contracts.Dto.Responses;
 using ProjectTasksTrackService.API.Contracts.Interfaces;
 using ProjectTasksTrackService.Core;
+using ProjectTasksTrackService.Core.Results;
 using ProjectTasksTrackService.Core.Services;
 
 namespace ProjectTasksTrackService.API.Controllers
@@ -158,9 +159,20 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Обновление подпроекта </summary>
         [HttpPost("api/v2/SubDivisions/UpdateSubDivision")]
-        public async Task<string> UpdateSubDivision(ProjectSubDivisionDto subDivisionDto)
+        [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> UpdateSubDivision(ProjectSubDivisionDto subDivisionDto)
         {
-            return await _subProjectsService.UpdateSubDivision(ProjectSubDivision(subDivisionDto));
+            var updateResult = await _subProjectsService.UpdateSubDivision(ProjectSubDivision(subDivisionDto));
+
+            if (updateResult.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(updateResult);
+
+            if (updateResult.StatusCode == HttpStatusCode.Conflict)
+                return new ConflictObjectResult(updateResult);
+
+            return Ok(updateResult);
         }
 
         /// <summary> Удаление подпроекта </summary>
@@ -168,9 +180,9 @@ namespace ProjectTasksTrackService.API.Controllers
         public async Task<string> DeleteSubDivision(DeleteProjectSubDivisionDto deleteSubProjectRequest)
         {
             return await _subProjectsService.DeleteSubDivision(
-                deleteSubProjectRequest.ProjectId,
                 deleteSubProjectRequest.SubDivisionId,
-                deleteSubProjectRequest.SubDivisionSecretString);
+                deleteSubProjectRequest.SubDivisionSecretString,
+                deleteSubProjectRequest.ProjectId);
         }
 
         #region Dto<->Core mappers

@@ -77,14 +77,21 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
 
         public async Task<ProjectSubDivision> GetProjectSubDivision(int subDivisionId, int? projectId = null)
         {
-            var subDivisionEntity = projectId != null ?
-                await _dbContext.ProjectSubDivisions.AsNoTracking().SingleOrDefaultAsync(s => s.Id == subDivisionId && s.ProjectId == projectId) :
-                await _dbContext.ProjectSubDivisions.AsNoTracking().SingleOrDefaultAsync(s => s.Id == subDivisionId);
+            var subDivisionEntity = await GetProjectSubDivisionEntity(subDivisionId, projectId);
 
             if (subDivisionEntity is null)
                 return null;
 
             return ProjectSubDivision(subDivisionEntity);
+        }
+
+        private async Task<Entities.ProjectSubDivision> GetProjectSubDivisionEntity(int subDivisionId, int? projectId = null)
+        {
+            var subDivisionEntity = projectId != null ?
+                    await _dbContext.ProjectSubDivisions.AsNoTracking().SingleOrDefaultAsync(s => s.Id == subDivisionId && s.ProjectId == projectId) :
+                    await _dbContext.ProjectSubDivisions.AsNoTracking().SingleOrDefaultAsync(s => s.Id == subDivisionId);
+
+            return subDivisionEntity;
         }
 
         public async Task<ProjectSubDivision> GetProjectSubDivision(
@@ -240,6 +247,9 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             if (!sub.Code.Equals(entityProject.Code))
                 return new UpdateResult(ErrorStrings.CODE_SHOULD_BE_THE_SAME, HttpStatusCode.Conflict);
 
+            if (!sub.ProjectId.Equals(entityProject.ProjectId))
+                return new UpdateResult(ErrorStrings.SUBDIVISION_PROJECT_ID_SHOULD_BE_THE_SAME, HttpStatusCode.Conflict);
+
             if (!string.Equals(sub.Name, entityProject.Name)) entityProject.UpdateName(sub.Name);
             if (!string.Equals(sub.Url1, entityProject.Url1)) entityProject.UpdateUrl1(sub.Url1);
             if (!string.Equals(sub.Url2, entityProject.Url2)) entityProject.UpdateUrl2(sub.Url2);
@@ -251,6 +261,10 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             if (sub.LastUpdateDt != null && entityProject.LastUpdateDt == null)
                 entityProject.UpdateLastUpdateDt(sub.LastUpdateDt.Value.ToUniversalTime());
 
+
+            if (sub.DeadLineDt != null && entityProject.DeadLineDt == null)
+                entityProject.UpdateDeadLineDt(sub.DeadLineDt.Value.ToUniversalTime());
+
             if (_dbContext.ChangeTracker.HasChanges())
             {
                 entityProject.UpdateLastUpdateDt(DateTime.Now.ToUniversalTime());
@@ -260,11 +274,9 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             return new UpdateResult(ErrorStrings.SUBDIVISION_IS_ACTUAL, HttpStatusCode.OK);
         }
 
-        public async Task<string> DeleteSubDivision(int id, string projectSubDivisionSecretString)
+        public async Task<string> DeleteSubDivision(int id, string projectSubDivisionSecretString, int? projectId)
         {
-            var subdivisionEntity = await _dbContext.ProjectSubDivisions
-                .AsNoTracking()
-                .SingleOrDefaultAsync(s => s.Id == id);
+            var subdivisionEntity = await GetProjectSubDivisionEntity(id, projectId);
 
             if (subdivisionEntity is null)
                 return Core.ErrorStrings.SUBDIVISION_NOT_FOUND;
@@ -277,6 +289,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
 
             return Core.ErrorStrings.OK;
         }
+
         private static ProjectSubDivision ProjectSubDivision(Entities.ProjectSubDivision sub) =>
             new ProjectSubDivision(
             id: sub.Id,

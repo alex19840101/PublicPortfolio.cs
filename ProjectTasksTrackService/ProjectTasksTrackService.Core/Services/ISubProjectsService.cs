@@ -23,7 +23,7 @@ namespace ProjectTasksTrackService.Core.Services
             int skipCount = 0,
             int limitCount = 100,
             bool ignoreCase = true);
-        Task<string> UpdateSubDivision(ProjectSubDivision subproject);
-        Task<string> DeleteSubDivision(string projectId, int subDivisionId, string taskSecretString);
+        Task<UpdateResult> UpdateSubDivision(ProjectSubDivision subproject);
+        Task<string> DeleteSubDivision(int subDivisionId, string subDivisionSecretString, int? projectId = null);
     }
 }

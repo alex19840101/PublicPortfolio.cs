@@ -29,6 +29,6 @@ namespace ProjectTasksTrackService.Core.Repositories
         Task<IEnumerable<ProjectSubDivision>> GetAllProjectSubDivisions();
 
         Task<UpdateResult> UpdateSubDivision(ProjectSubDivision project);
-        Task<string> DeleteSubDivision(int id, string projectSubDivionSecretString);
+        Task<string> DeleteSubDivision(int id, string projectSubDivionSecretString, int? projectId = null);
     }
 }

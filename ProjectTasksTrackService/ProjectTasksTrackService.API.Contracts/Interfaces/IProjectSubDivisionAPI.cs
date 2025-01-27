@@ -47,7 +47,7 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
             int limitCount = 100);
 
         /// <summary> Обновление подпроекта </summary>
-        Task<string> UpdateSubDivision(ProjectSubDivisionDto taskDto);
+        Task<IActionResult> UpdateSubDivision(ProjectSubDivisionDto taskDto);
 
         /// <summary> Удаление подпроекта </summary>
         Task<string> DeleteSubDivision(DeleteProjectSubDivisionDto deleteSubProjectRequest);

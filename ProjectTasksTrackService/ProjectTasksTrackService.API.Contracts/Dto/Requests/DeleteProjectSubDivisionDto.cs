@@ -8,7 +8,7 @@
         /// <summary>
         /// Id проекта
         /// </summary>
-        public string ProjectId { get; set; }
+        public int? ProjectId { get; set; }
 
         /// <summary>
         /// Id подпроекта
