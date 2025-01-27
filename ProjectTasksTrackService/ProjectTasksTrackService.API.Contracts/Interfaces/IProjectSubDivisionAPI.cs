@@ -16,25 +16,25 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
         Task<IActionResult> Import(IEnumerable<OldProjectSubDivisionDto> subprojects);
         
         /// <summary> Создание подпроекта </summary>
-        Task<string> Create(ProjectSubDivisionDto subproject);
+        Task<IActionResult> Create(ProjectSubDivisionDto subproject);
 
         /// <summary> Получение подпроекта </summary>
-        Task<ProjectSubDivisionDto> GetSubDivision(int projectId, int subDivisionId);
+        Task<IActionResult> GetSubDivision(int subDivisionId, int? projectId = null);
 
         /// <summary> Получение списка подпроектов </summary>
         Task<IEnumerable<ProjectSubDivisionDto>> GetSubDivisions(
-            string projectId = null,
-            int? intProjectId = null,
-            int? subDivisionId = null,
+            int? projectId = null,
+            int? id = null,
+            string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
             int limitCount = 100);
 
         /// <summary> Получение списка подпроектов (в старом компактном JSON-формате) для экспорта в старую систему </summary>
         Task<IEnumerable<OldProjectSubDivisionDto>> GetSubDivisionsOldDto(
-            string projectId = null,
-            int? intProjectId = null,
-            int? subDivisionId = null,
+            int? projectId = null,
+            int? id = null,
+            string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
             int limitCount = 100);

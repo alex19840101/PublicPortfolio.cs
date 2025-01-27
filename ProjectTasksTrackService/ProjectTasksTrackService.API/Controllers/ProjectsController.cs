@@ -79,6 +79,8 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Получение списка проектов </summary>
         [HttpGet("api/v2/Projects/GetProjects")]
+        [ProducesResponseType(typeof(ProjectDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         public async Task<IEnumerable<ProjectDto>> GetProjects(
             string codeSubStr = null,
             string nameSubStr = null,
@@ -96,6 +98,8 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Получение списка проектов (в старом компактном JSON-формате) для экспорта в старую систему </summary>
         [HttpGet("api/v2/Projects/GetProjectsOldDto")]
+        [ProducesResponseType(typeof(OldProjectDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         public async Task<IEnumerable<OldProjectDto>> GetProjectsOldDto(
             string codeSubStr = null,
             string nameSubStr = null,

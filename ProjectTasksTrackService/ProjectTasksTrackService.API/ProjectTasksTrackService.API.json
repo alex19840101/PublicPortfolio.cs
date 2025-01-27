@@ -193,10 +193,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ProjectDto"
-                  }
+                  "$ref": "#/components/schemas/ProjectDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -259,10 +266,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OldProjectDto"
-                  }
+                  "$ref": "#/components/schemas/OldProjectDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -513,12 +527,42 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/CreateProjectResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponseDto"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponseDto"
                 }
               }
             }
@@ -536,25 +580,25 @@
             "name": "projectId",
             "in": "query",
             "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": null
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": null
+            }
+          },
+          {
+            "name": "codeSubStr",
+            "in": "query",
+            "schema": {
               "type": "string",
-              "default": null
-            }
-          },
-          {
-            "name": "intProjectId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": null
-            }
-          },
-          {
-            "name": "subDivisionId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
               "default": null
             }
           },
@@ -612,25 +656,25 @@
             "name": "projectId",
             "in": "query",
             "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": null
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": null
+            }
+          },
+          {
+            "name": "codeSubStr",
+            "in": "query",
+            "schema": {
               "type": "string",
-              "default": null
-            }
-          },
-          {
-            "name": "intProjectId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": null
-            }
-          },
-          {
-            "name": "subDivisionId",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
               "default": null
             }
           },
@@ -667,10 +711,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OldProjectSubDivisionDto"
-                  }
+                  "$ref": "#/components/schemas/OldProjectSubDivisionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -685,7 +736,7 @@
         ],
         "parameters": [
           {
-            "name": "projectId",
+            "name": "subDivisionId",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -693,11 +744,12 @@
             }
           },
           {
-            "name": "subDivisionId",
+            "name": "projectId",
             "in": "query",
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "default": null
             }
           }
         ],
@@ -708,6 +760,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProjectSubDivisionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponseDto"
                 }
               }
             }
@@ -763,10 +835,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ProjectSubDivisionDto"
-                  }
+                  "$ref": "#/components/schemas/ProjectSubDivisionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -1334,7 +1413,6 @@
       },
       "OldProjectSubDivisionDto": {
         "required": [
-          "i",
           "m",
           "c",
           "n"
@@ -1527,7 +1605,6 @@
       },
       "ProjectSubDivisionDto": {
         "required": [
-          "id",
           "projectId",
           "c",
           "name"

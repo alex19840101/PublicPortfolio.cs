@@ -12,7 +12,7 @@ namespace ProjectTasksTrackService.Core
         /// <summary> Id проекта (родительского) </summary>
         public int ProjectId { get { return _projectId; } }
         public string Code { get { return _code; } }
-        /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
+        /// <summary> Название подпроекта (направления/подраздела/модуля/части) </summary>
         public string Name { get { return _name; } }
         public string Url1 { get { return _url1; } }
         public string Url2 { get { return _url2; } }

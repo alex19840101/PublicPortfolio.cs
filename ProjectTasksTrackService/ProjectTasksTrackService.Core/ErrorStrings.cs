@@ -14,5 +14,6 @@
         public const string SUBDIVISION_UPDATED = "Subdivision updated";
         public const string SUBDIVISION_IS_ACTUAL = "Subdivision is actual";
         public const string MORE_THAN_ONE_SUBDIVISION_FOUND = "More than one subdivision found";
+        public const string PARENT_PROJECT_NOT_FOUND = "Parent project by projectId not found";
     }
 }

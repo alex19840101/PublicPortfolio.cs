@@ -7,7 +7,7 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
     public class ProjectSubDivisionDto
     {
         /// <summary> Id направления (подраздела/модуля/части) проекта </summary>
-        public required int Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary> Числовой идентификатор - номер проекта, как в старой системе </summary>
         public required int ProjectId { get; set; }

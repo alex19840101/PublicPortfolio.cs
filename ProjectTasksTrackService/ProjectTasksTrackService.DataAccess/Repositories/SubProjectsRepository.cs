@@ -8,8 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using ProjectTasksTrackService.Core;
 using ProjectTasksTrackService.Core.Repositories;
 using ProjectTasksTrackService.Core.Results;
-using ProjectTasksTrackService.DataAccess.Entities;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using ProjectSubDivision = ProjectTasksTrackService.Core.ProjectSubDivision;
 
 namespace ProjectTasksTrackService.DataAccess.Repositories
@@ -26,6 +24,15 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
         public async Task<CreateResult> Add(ProjectSubDivision sub, bool trySetId = false)
         {
             ArgumentNullException.ThrowIfNull(sub);
+
+            var parentProject = await _dbContext.Projects.AsNoTracking().SingleOrDefaultAsync(p => p.Id == sub.ProjectId);
+
+            if (parentProject is null)
+                return new CreateResult
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Message = ErrorStrings.PARENT_PROJECT_NOT_FOUND
+                };
 
             var newProjectEntity = new Entities.ProjectSubDivision(
                 id: trySetId ? sub.Id : await _dbContext.ProjectSubDivisions.AsNoTracking().MaxAsync(p => p.Id) + 1,
@@ -68,11 +75,11 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             return new ImportResult { ImportedCount = subs.Count(), Message = ErrorStrings.OK };
         }
 
-        public async Task<ProjectSubDivision> GetProjectSubDivision(int projectId, int id)
+        public async Task<ProjectSubDivision> GetProjectSubDivision(int subDivisionId, int? projectId = null)
         {
-            var subDivisionEntity = await _dbContext.ProjectSubDivisions
-                .AsNoTracking()
-                .SingleOrDefaultAsync(s => s.Id == id && s.ProjectId == projectId);
+            var subDivisionEntity = projectId != null ?
+                await _dbContext.ProjectSubDivisions.AsNoTracking().SingleOrDefaultAsync(s => s.Id == subDivisionId && s.ProjectId == projectId) :
+                await _dbContext.ProjectSubDivisions.AsNoTracking().SingleOrDefaultAsync(s => s.Id == subDivisionId);
 
             if (subDivisionEntity is null)
                 return null;
@@ -87,8 +94,8 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             string nameSubStr = null,
             bool ignoreCase = true)
         {
-            if (projectId != null && id != null && string.IsNullOrWhiteSpace(codeSubStr) && string.IsNullOrWhiteSpace(nameSubStr))
-                return await GetProjectSubDivision(projectId.Value, id.Value);
+            if (string.IsNullOrWhiteSpace(codeSubStr) && string.IsNullOrWhiteSpace(nameSubStr))
+                return await GetProjectSubDivision(id.Value, projectId);
 
             var sc = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.Ordinal;
 
@@ -170,7 +177,8 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             var query = _dbContext.ProjectSubDivisions.AsNoTracking();
             if (projectId != null)
                 query = query.Where(s => s.ProjectId == projectId.Value);
-
+            if (id != null)
+                query = query.Where(s => s.Id == id.Value);
 
             if (string.IsNullOrWhiteSpace(codeSubStr) && string.IsNullOrWhiteSpace(nameSubStr))
             {

@@ -59,22 +59,37 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Создание подпроекта </summary>
         [HttpPost("api/v2/SubDivisions/Create")]
-        public async Task<string> Create(ProjectSubDivisionDto subDivision)
+        [ProducesResponseType(typeof(CreateProjectResponseDto), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.Conflict)]
+        public async Task<IActionResult> Create(ProjectSubDivisionDto subDivision)
         {
-            return await _subProjectsService.Create(ProjectSubDivision(subDivision));
+            var createResult = await _subProjectsService.Create(ProjectSubDivision(subDivision));
+
+            if (createResult.StatusCode == HttpStatusCode.BadRequest)
+                return new BadRequestObjectResult(new ProblemDetails { Title = createResult.Message });
+
+            if (createResult.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(new MessageResponseDto { Message = createResult.Message });
+
+            if (createResult.StatusCode == HttpStatusCode.Conflict)
+                return new ConflictObjectResult(new MessageResponseDto { Message = createResult.Message });
+
+            return Ok(new CreateProjectResponseDto { Id = createResult.Id.Value, Code = subDivision.Code });
         }
 
         /// <summary> Получение списка подпроектов </summary>
         [HttpGet("api/v2/SubDivisions/GetSubDivisions")]
         public async Task<IEnumerable<ProjectSubDivisionDto>> GetSubDivisions(
-            string projectId = null,
-            int? intProjectId = null,
-            int? subDivisionId = null,
+            int? projectId = null,
+            int? id = null,
+            string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
             int limitCount = 100)
         {
-            var subDivisionsCollection = await _subProjectsService.GetSubDivisions(projectId, intProjectId, subDivisionId, nameSubStr, skipCount, limitCount);
+            var subDivisionsCollection = await _subProjectsService.GetSubDivisions(projectId, id, codeSubStr, nameSubStr, skipCount, limitCount);
             List<ProjectSubDivisionDto> result = [];
             foreach (var subDivision in subDivisionsCollection)
             {
@@ -86,15 +101,17 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Получение списка подпроектов (в старом компактном JSON-формате) для экспорта в старую систему </summary>
         [HttpGet("api/v2/SubDivisions/GetSubDivisionsOldDto")]
+        [ProducesResponseType(typeof(OldProjectSubDivisionDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         public async Task<IEnumerable<OldProjectSubDivisionDto>> GetSubDivisionsOldDto(
-            string projectId = null,
-            int? intProjectId = null,
-            int? subDivisionId = null,
+            int? projectId = null,
+            int? id = null,
+            string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
             int limitCount = 100)
         {
-            var subDivisionsCollection = await _subProjectsService.GetSubDivisions(projectId, intProjectId, subDivisionId, nameSubStr, skipCount, limitCount);
+            var subDivisionsCollection = await _subProjectsService.GetSubDivisions(projectId, id, codeSubStr, nameSubStr, skipCount, limitCount);
             List<OldProjectSubDivisionDto> result = [];
             foreach (var subDivision in subDivisionsCollection)
             {
@@ -106,14 +123,23 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Получение подпроекта </summary>
         [HttpGet("api/v2/SubDivisions/GetSubDivision")]
-        public async Task<ProjectSubDivisionDto> GetSubDivision(int projectId, int subDivisionId)
+        [ProducesResponseType(typeof(ProjectSubDivisionDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> GetSubDivision(int subDivisionId, int? projectId = null)
         {
-            var subDivision = await _subProjectsService.GetSubDivision(projectId, subDivisionId);
-            return ProjectSubDivisionDto(subDivision);
+            var subDivision = await _subProjectsService.GetSubDivision(subDivisionId, projectId);
+
+            if (subDivision is null)
+                return NotFound(new MessageResponseDto { Message = ErrorStrings.SUBDIVISION_NOT_FOUND });
+
+            return Ok(ProjectSubDivisionDto(subDivision));
         }
 
         /// <summary> Получение списка актуальных подпроектов </summary>
         [HttpGet("api/v2/SubDivisions/GetHotSubDivisions")]
+        [ProducesResponseType(typeof(ProjectSubDivisionDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         public async Task<IEnumerable<ProjectSubDivisionDto>> GetHotSubDivisions(
             string projectId = null,
             DateTime? deadLine = null,

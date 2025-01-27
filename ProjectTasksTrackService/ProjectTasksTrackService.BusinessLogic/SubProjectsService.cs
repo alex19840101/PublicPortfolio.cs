@@ -19,14 +19,25 @@ namespace ProjectTasksTrackService.BusinessLogic
             _subProjectsRepository = subProjectsRepository;
         }
 
-        public Task<string> Create(ProjectSubDivision subproject)
+        public async Task<CreateResult> Create(ProjectSubDivision subproject)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(subproject.Code))
+                return new CreateResult(ErrorStrings.SUBPROJECT_CODE_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            if (string.IsNullOrWhiteSpace(subproject.Name))
+                return new CreateResult(ErrorStrings.SUBPROJECT_NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            if (subproject.Id != 0)
+                return new CreateResult(ErrorStrings.SUBPROJECT_ID_SHOULD_BE_ZERO, System.Net.HttpStatusCode.BadRequest);
+
+            var createResult = await _subProjectsRepository.Add(subproject);
+
+            return createResult;
         }
 
         public Task<string> DeleteSubDivision(string projectId, int subDivisionId, string taskSecretString)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(); //TODO:
         }
 
         public Task<IEnumerable<ProjectSubDivision>> GetHotSubDivisions(
@@ -35,23 +46,24 @@ namespace ProjectTasksTrackService.BusinessLogic
             int skipCount = 0,
             int limitCount = 100)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(); //TODO:
         }
 
-        public Task<ProjectSubDivision> GetSubDivision(int subDivisionId, int? projectId = null)
+        public async Task<ProjectSubDivision> GetSubDivision(int subDivisionId, int? projectId = null)
         {
-            throw new NotImplementedException();
+            return await _subProjectsRepository.GetProjectSubDivision(projectId, subDivisionId);
         }
 
-        public Task<IEnumerable<ProjectSubDivision>> GetSubDivisions(
-            string projectId = null,
-            int? intProjectId = null,
-            int? subDivisionId = null,
+        public async Task<IEnumerable<ProjectSubDivision>> GetSubDivisions(
+            int? projectId = null,
+            int? id = null,
+            string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
-            int limitCount = 100)
+            int limitCount = 100,
+            bool ignoreCase = true)
         {
-            throw new NotImplementedException();
+            return await _subProjectsRepository.GetProjectSubDivisions(projectId, id, codeSubStr, nameSubStr, skipCount, limitCount, ignoreCase);
         }
 
         public async Task<ImportResult> Import(IEnumerable<ProjectSubDivision> subs)
@@ -91,7 +103,7 @@ namespace ProjectTasksTrackService.BusinessLogic
 
         public Task<string> UpdateSubDivision(ProjectSubDivision subproject)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(); //TODO:
         }
     }
 }

@@ -16,7 +16,7 @@ namespace ProjectTasksTrackService.Core.Repositories
             string codeSubStr = null,
             string nameSubStr = null,
             bool ignoreCase = true);
-        Task<ProjectSubDivision> GetProjectSubDivision(int projectId, int id);
+        Task<ProjectSubDivision> GetProjectSubDivision(int subDivisionId, int? projectId = null);
         Task<IEnumerable<ProjectSubDivision>> GetProjectSubDivisions(
             int? projectId = null,
             int? id = null,
