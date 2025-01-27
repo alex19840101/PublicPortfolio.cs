@@ -234,6 +234,12 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             if (project.LastUpdateDt != null && entityProject.LastUpdateDt == null)
                 entityProject.UpdateLastUpdateDt(project.LastUpdateDt.Value.ToUniversalTime());
 
+            if (project.DeadLineDt != null && entityProject.DeadLineDt == null)
+                entityProject.UpdateDeadLineDt(project.DeadLineDt.Value.ToUniversalTime());
+
+            if (project.DoneDt != null && entityProject.DoneDt == null)
+                entityProject.UpdateDoneDt(project.DoneDt.Value.ToUniversalTime());
+
             if (_dbContext.ChangeTracker.HasChanges())
             {
                 entityProject.UpdateLastUpdateDt(DateTime.Now.ToUniversalTime());

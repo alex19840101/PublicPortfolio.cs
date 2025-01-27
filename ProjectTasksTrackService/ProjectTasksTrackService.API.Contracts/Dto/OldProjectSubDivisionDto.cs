@@ -28,7 +28,7 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
 
         /// <summary> Флаг готовности подраздела/модуля/части проекта </summary>
         [JsonPropertyName("fin")]
-        public bool IsFinished { get; set; }
+        public bool IsFinished { get { return DoneDateTime != null; } }
 
         /// <summary> Ссылка #1 ((локальная)) </summary>
         [JsonPropertyName("u1")] public string Url1 { get; set; }

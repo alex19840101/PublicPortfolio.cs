@@ -28,7 +28,7 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         public DateTime? DoneDateTime { get; set; }
 
         /// <summary> Флаг готовности подраздела/модуля/части проекта </summary>
-        public bool IsFinished { get; set; }
+        public bool IsFinished { get { return DoneDateTime != null; } }
 
         /// <summary> Ссылка #1 ((локальная)) </summary>
         public string Url1 { get; set; }
