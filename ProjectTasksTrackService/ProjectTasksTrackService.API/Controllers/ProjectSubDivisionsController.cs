@@ -88,9 +88,10 @@ namespace ProjectTasksTrackService.API.Controllers
             string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
-            int limitCount = 100)
+            int limitCount = 100,
+            bool ignoreCase = true)
         {
-            var subDivisionsCollection = await _subProjectsService.GetSubDivisions(projectId, id, codeSubStr, nameSubStr, skipCount, limitCount);
+            var subDivisionsCollection = await _subProjectsService.GetSubDivisions(projectId, id, codeSubStr, nameSubStr, skipCount, limitCount, ignoreCase);
             List<ProjectSubDivisionDto> result = [];
             foreach (var subDivision in subDivisionsCollection)
             {
@@ -110,9 +111,10 @@ namespace ProjectTasksTrackService.API.Controllers
             string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
-            int limitCount = 100)
+            int limitCount = 100,
+            bool ignoreCase = true)
         {
-            var subDivisionsCollection = await _subProjectsService.GetSubDivisions(projectId, id, codeSubStr, nameSubStr, skipCount, limitCount);
+            var subDivisionsCollection = await _subProjectsService.GetSubDivisions(projectId, id, codeSubStr, nameSubStr, skipCount, limitCount, ignoreCase);
             List<OldProjectSubDivisionDto> result = [];
             foreach (var subDivision in subDivisionsCollection)
             {

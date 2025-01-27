@@ -627,6 +627,14 @@
               "format": "int32",
               "default": 100
             }
+          },
+          {
+            "name": "ignoreCase",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
@@ -702,6 +710,14 @@
               "type": "integer",
               "format": "int32",
               "default": 100
+            }
+          },
+          {
+            "name": "ignoreCase",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": true
             }
           }
         ],

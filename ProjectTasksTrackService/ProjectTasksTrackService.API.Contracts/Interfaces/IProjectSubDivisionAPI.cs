@@ -28,7 +28,8 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
             string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
-            int limitCount = 100);
+            int limitCount = 100,
+            bool ignoreCase = true);
 
         /// <summary> Получение списка подпроектов (в старом компактном JSON-формате) для экспорта в старую систему </summary>
         Task<IEnumerable<OldProjectSubDivisionDto>> GetSubDivisionsOldDto(
@@ -37,7 +38,8 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
             string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
-            int limitCount = 100);
+            int limitCount = 100,
+            bool ignoreCase = true);
 
         /// <summary> Получение списка актуальных подпроектов </summary>
         Task<IEnumerable<ProjectSubDivisionDto>> GetHotSubDivisions(
