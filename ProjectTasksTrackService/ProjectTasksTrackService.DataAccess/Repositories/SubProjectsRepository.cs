@@ -300,6 +300,26 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             url2: sub.Url2,
             imageUrl: sub.ImageUrl,
             createdDt: sub.CreatedDt?.ToLocalTime(),
-            lastUpdateDt: sub.LastUpdateDt?.ToLocalTime());
+            lastUpdateDt: sub.LastUpdateDt?.ToLocalTime(),
+            deadLineDt: sub.DeadLineDt?.ToLocalTime(),
+            doneDt: sub.DoneDt?.ToLocalTime());
+
+        public async Task<IEnumerable<ProjectSubDivision>> GetHotSubDivisions(
+            int? projectId = null,
+            DateTime? deadLine = null,
+            int skipCount = 0,
+            int limitCount = 100)
+        {
+            var query = _dbContext.ProjectSubDivisions.AsNoTracking().Where(s => s.DoneDt == null);
+            if (projectId != null)
+                query = query.Where(s => s.ProjectId == projectId.Value);
+
+            if (deadLine != null)
+                query = query.Where(s => s.DeadLineDt != null && s.DeadLineDt.Value.ToLocalTime() <= deadLine);
+
+            var entityProjectSubDivisionsLst = await query.Skip(skipCount).Take(limitCount).ToListAsync();
+
+            return entityProjectSubDivisionsLst.Select(p => ProjectSubDivision(p));
+        }
     }
 }

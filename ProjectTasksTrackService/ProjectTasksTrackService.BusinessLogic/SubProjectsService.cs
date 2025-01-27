@@ -40,13 +40,14 @@ namespace ProjectTasksTrackService.BusinessLogic
             return await _subProjectsRepository.DeleteSubDivision(subDivisionId, projectSubDivionSecretString, projectId);
         }
 
-        public Task<IEnumerable<ProjectSubDivision>> GetHotSubDivisions(
-            string projectId = null,
+        public async Task<IEnumerable<ProjectSubDivision>> GetHotSubDivisions(
+            int? projectId = null,
             DateTime? deadLine = null,
             int skipCount = 0,
             int limitCount = 100)
         {
-            throw new NotImplementedException(); //TODO: GetHotSubDivisions
+            var subdivisions = await _subProjectsRepository.GetHotSubDivisions(projectId, deadLine, skipCount, limitCount);
+            return subdivisions;
         }
 
         public async Task<ProjectSubDivision> GetSubDivision(int subDivisionId, int? projectId = null)

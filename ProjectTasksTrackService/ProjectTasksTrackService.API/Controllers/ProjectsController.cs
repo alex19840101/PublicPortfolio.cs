@@ -170,8 +170,11 @@ namespace ProjectTasksTrackService.API.Controllers
                 name: project.Name,
                 url: project.Url,
                 imageUrl: project.ImageUrl,
+                
                 createdDt: project.CreatedDt,
-                lastUpdateDt: project.LastUpdateDt
+                lastUpdateDt: project.LastUpdateDt,
+                deadLineDt: project.DeadLineDt,
+                doneDt: project.DoneDateTime
             );
 
         [NonAction]
@@ -182,8 +185,11 @@ namespace ProjectTasksTrackService.API.Controllers
                     name: project.Name,
                     url: project.Url,
                     imageUrl: project.ImageUrl,
+                    
                     createdDt: project.CreatedDt,
-                    lastUpdateDt: project.LastUpdateDt
+                    lastUpdateDt: project.LastUpdateDt,
+                    deadLineDt: project.DeadLineDt,
+                    doneDt: project.DoneDateTime
             );
 
         [NonAction]
@@ -195,8 +201,11 @@ namespace ProjectTasksTrackService.API.Controllers
                 Name = project.Name,
                 Url = project.Url,
                 ImageUrl = project.ImageUrl,
+                
                 CreatedDt = project.CreatedDt,
-                LastUpdateDt = project.LastUpdateDt
+                LastUpdateDt = project.LastUpdateDt,
+                DeadLineDt = project.DeadLineDt,
+                DoneDateTime = project.DoneDt
             };
 
         [NonAction]
@@ -207,9 +216,11 @@ namespace ProjectTasksTrackService.API.Controllers
                 Code = project.Code,
                 Name = project.Name,
                 Url = project.Url,
+                
                 ImageUrl = project.ImageUrl,
                 CreatedDt = project.CreatedDt,
-                LastUpdateDt = project.LastUpdateDt
+                LastUpdateDt = project.LastUpdateDt,
+                DoneDateTime = project.DoneDt
             };
         #endregion Dto<->Core mappers
     }

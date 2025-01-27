@@ -24,6 +24,7 @@ namespace ProjectTasksTrackService.DataAccess.Configurations
             builder.Property(t => t.CreatedDt).HasMaxLength(DATETIME_LENGTH);
             builder.Property(t => t.LastUpdateDt).HasMaxLength(DATETIME_LENGTH);
             builder.Property(t => t.DeadLineDt).HasMaxLength(DATETIME_LENGTH);
+            builder.Property(t => t.DoneDt).HasMaxLength(DATETIME_LENGTH);
 
             builder.HasOne(t => t.Project)
                 .WithMany(p => p.Tasks)

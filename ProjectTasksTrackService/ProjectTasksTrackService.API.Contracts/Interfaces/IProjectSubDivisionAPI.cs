@@ -43,7 +43,7 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
 
         /// <summary> Получение списка актуальных подпроектов </summary>
         Task<IEnumerable<ProjectSubDivisionDto>> GetHotSubDivisions(
-            string projectId = null,
+            int? projectId = null,
             DateTime? deadLine = null,
             int skipCount = 0,
             int limitCount = 100);

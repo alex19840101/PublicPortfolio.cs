@@ -813,7 +813,8 @@
             "name": "projectId",
             "in": "query",
             "schema": {
-              "type": "string",
+              "type": "integer",
+              "format": "int32",
               "default": null
             }
           },
@@ -1445,6 +1446,16 @@
             "type": "string",
             "format": "date-time",
             "nullable": true
+          },
+          "d": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "dt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         }
       },
@@ -1634,6 +1645,16 @@
             "nullable": true
           },
           "lastUpdateDt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "doneDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "deadLineDt": {
             "type": "string",
             "format": "date-time",
             "nullable": true

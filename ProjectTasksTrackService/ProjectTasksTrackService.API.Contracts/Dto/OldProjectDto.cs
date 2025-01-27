@@ -27,5 +27,11 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
 
         /// <summary> Дата и время изменения </summary>
         [JsonPropertyName("pla")] public DateTime? LastUpdateDt { get; set; }
+        
+        /// <summary> Дата и время завершения проекта </summary>
+        [JsonPropertyName("d")] public DateTime? DoneDateTime { get; set; }
+
+        /// <summary> Срок (дата и время завершения) проекта по плану </summary>
+        [JsonPropertyName("dt")] public DateTime? DeadLineDt { get; set; }
     }
 }

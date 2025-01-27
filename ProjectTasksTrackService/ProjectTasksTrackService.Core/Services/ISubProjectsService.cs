@@ -11,7 +11,7 @@ namespace ProjectTasksTrackService.Core.Services
         Task<CreateResult> Create(ProjectSubDivision subproject);
         Task<ProjectSubDivision> GetSubDivision(int subDivisionId, int? projectId = null);
         Task<IEnumerable<ProjectSubDivision>> GetHotSubDivisions(
-            string projectId = null,
+            int? projectId = null,
             DateTime? deadLine = null,
             int skipCount = 0,
             int limitCount = 100);

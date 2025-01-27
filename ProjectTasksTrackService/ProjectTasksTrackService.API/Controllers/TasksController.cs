@@ -135,9 +135,11 @@ namespace ProjectTasksTrackService.API.Controllers
                 url1: oldTaskDto.Url1,
                 url2: oldTaskDto.Url2,
                 imageUrl: oldTaskDto.ImageUrl,
+
                 deadLineDt: oldTaskDto.DeadLineDt,
                 createdDt: oldTaskDto.CreatedDt,
-                lastUpdateDt: oldTaskDto.LastUpdateDt
+                lastUpdateDt: oldTaskDto.LastUpdateDt,
+                doneDt: oldTaskDto.DoneDateTime
             );
 
         [NonAction]
@@ -150,9 +152,11 @@ namespace ProjectTasksTrackService.API.Controllers
                     url1: taskDto.Url1,
                     url2: taskDto.Url2,
                     imageUrl: taskDto.ImageUrl,
+
                     deadLineDt: taskDto.DeadLineDt,
                     createdDt: taskDto.CreatedDt,
-                    lastUpdateDt: taskDto.LastUpdateDt
+                    lastUpdateDt: taskDto.LastUpdateDt,
+                    doneDt: taskDto.DoneDateTime
             );
 
         [NonAction]
@@ -166,9 +170,11 @@ namespace ProjectTasksTrackService.API.Controllers
                 Url1 = projectTask.Url1,
                 Url2 = projectTask.Url2,
                 ImageUrl = projectTask.ImageUrl,
+
                 DeadLineDt = projectTask.DeadLineDt,
                 CreatedDt = projectTask.CreatedDt,
-                LastUpdateDt = projectTask.LastUpdateDt
+                LastUpdateDt = projectTask.LastUpdateDt,
+                DoneDateTime = projectTask.DoneDt
             };
 
         [NonAction]
@@ -182,9 +188,11 @@ namespace ProjectTasksTrackService.API.Controllers
                 Url1 = projectTask.Url1,
                 Url2 = projectTask.Url2,
                 ImageUrl = projectTask.ImageUrl,
+
                 DeadLineDt = projectTask.DeadLineDt,
                 CreatedDt = projectTask.CreatedDt,
-                LastUpdateDt = projectTask.LastUpdateDt
+                LastUpdateDt = projectTask.LastUpdateDt,
+                DoneDateTime = projectTask.DoneDt
             };
 
         #endregion Dto<->Core mappers

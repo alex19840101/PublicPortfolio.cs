@@ -144,7 +144,7 @@ namespace ProjectTasksTrackService.API.Controllers
         [ProducesResponseType(typeof(ProjectSubDivisionDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         public async Task<IEnumerable<ProjectSubDivisionDto>> GetHotSubDivisions(
-            string projectId = null,
+            int? projectId = null,
             DateTime? deadLine = null,
             int skipCount = 0,
             int limitCount = 100)
@@ -198,9 +198,11 @@ namespace ProjectTasksTrackService.API.Controllers
                 url1: oldDto.Url1,
                 url2: oldDto.Url2,
                 imageUrl: oldDto.ImageUrl,
+                
                 deadLineDt: oldDto.DeadLineDt,
                 createdDt: oldDto.CreatedDt,
-                lastUpdateDt: oldDto.LastUpdateDt
+                lastUpdateDt: oldDto.LastUpdateDt,
+                doneDt: oldDto.LastUpdateDt
             );
 
         [NonAction]
@@ -213,9 +215,11 @@ namespace ProjectTasksTrackService.API.Controllers
                     url1: dto.Url1,
                     url2: dto.Url2,
                     imageUrl: dto.ImageUrl,
+                    
                     deadLineDt: dto.DeadLineDt,
                     createdDt: dto.CreatedDt,
-                    lastUpdateDt: dto.LastUpdateDt
+                    lastUpdateDt: dto.LastUpdateDt,
+                    doneDt: dto.LastUpdateDt
             );
 
         [NonAction]
@@ -229,9 +233,11 @@ namespace ProjectTasksTrackService.API.Controllers
                 Url1 = dto.Url1,
                 Url2 = dto.Url2,
                 ImageUrl = dto.ImageUrl,
+                
                 DeadLineDt = dto.DeadLineDt,
                 CreatedDt = dto.CreatedDt,
-                LastUpdateDt = dto.LastUpdateDt
+                LastUpdateDt = dto.LastUpdateDt,
+                DoneDateTime = dto.DoneDt
             };
 
         [NonAction]
@@ -245,9 +251,11 @@ namespace ProjectTasksTrackService.API.Controllers
                 Url1 = dto.Url1,
                 Url2 = dto.Url2,
                 ImageUrl = dto.ImageUrl,
+                
                 DeadLineDt = dto.DeadLineDt,
                 CreatedDt = dto.CreatedDt,
-                LastUpdateDt = dto.LastUpdateDt
+                LastUpdateDt = dto.LastUpdateDt,
+                DoneDateTime = dto.DoneDt
             };
 
         #endregion Dto<->Core mappers

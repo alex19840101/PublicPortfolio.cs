@@ -20,6 +20,7 @@ namespace ProjectTasksTrackService.Core
         public DateTime? CreatedDt { get { return _createdDt; } }
         public DateTime? LastUpdateDt { get { return _lastUpdateDt; } }
         public DateTime? DeadLineDt { get { return _deadLineDt; } }
+        public DateTime? DoneDt { get { return _doneDt; } }
 
         /// <summary> Id подпроекта (направления/подраздела/модуля/части) (ProjectSubDivisionId) </summary>
         private readonly int _id;
@@ -33,6 +34,7 @@ namespace ProjectTasksTrackService.Core
         private DateTime? _createdDt;
         private DateTime? _lastUpdateDt;
         private DateTime? _deadLineDt;
+        private DateTime? _doneDt;
         public ProjectSubDivision(
             int id,
             int projectId,
@@ -43,7 +45,8 @@ namespace ProjectTasksTrackService.Core
             string imageUrl = null,
             DateTime? createdDt = null,
             DateTime? lastUpdateDt = null,
-            DateTime? deadLineDt = null
+            DateTime? deadLineDt = null,
+            DateTime? doneDt = null
             )
         {
             _id = id;
@@ -56,6 +59,7 @@ namespace ProjectTasksTrackService.Core
             _createdDt = createdDt;
             _lastUpdateDt = lastUpdateDt;
             _deadLineDt = deadLineDt;
+            _doneDt = doneDt;
         }
 
         public void UpdateName(string newName) => _name = newName;
@@ -65,5 +69,6 @@ namespace ProjectTasksTrackService.Core
         public void UpdateCreatedDt(DateTime? createdDt) => _createdDt = createdDt;
         public void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
         public void UpdateDeadLineDt(DateTime? deadLineDt) => _deadLineDt = deadLineDt;
+        public void UpdateDoneDt(DateTime? doneDt) => _doneDt = doneDt;
     }
 }

@@ -18,6 +18,7 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         public DateTime? CreatedDt { get { return _createdDt; } }
         public DateTime? LastUpdateDt { get { return _lastUpdateDt; } }
         public DateTime? DeadLineDt { get { return _deadLineDt; } }
+        public DateTime? DoneDt { get { return _doneDt; } }
         /// <summary> Навигационное свойство -> проект </summary>
         public Project Project { get; set; }
         /// <summary> Навигационное свойство -> подпроект </summary>
@@ -35,6 +36,7 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         private DateTime? _createdDt;
         private DateTime? _lastUpdateDt;
         private DateTime? _deadLineDt;
+        private DateTime? _doneDt;
         public ProjectTask(
             int id,
             int projectId,
@@ -45,7 +47,8 @@ namespace ProjectTasksTrackService.DataAccess.Entities
             string imageUrl = null,
             DateTime? createdDt = null,
             DateTime? lastUpdateDt = null,
-            DateTime? deadLineDt = null
+            DateTime? deadLineDt = null,
+            DateTime? doneDt = null
             )
         {
             _id = id;
@@ -58,6 +61,7 @@ namespace ProjectTasksTrackService.DataAccess.Entities
             _createdDt = createdDt;
             _lastUpdateDt = lastUpdateDt;
             _deadLineDt = deadLineDt;
+            _doneDt = doneDt;
         }
 
         public void UpdateName(string newName) => _name = newName;
@@ -67,5 +71,6 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         public void UpdateCreatedDt(DateTime? createdDt) => _createdDt = createdDt;
         public void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
         public void UpdateDeadLineDt(DateTime? deadLineDt) => _deadLineDt = deadLineDt;
+        public void UpdateDoneDt(DateTime? doneDt) => _doneDt = doneDt;
     }
 }

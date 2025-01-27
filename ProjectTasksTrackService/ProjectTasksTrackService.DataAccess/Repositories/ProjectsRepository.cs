@@ -268,6 +268,8 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             url: project.Url,
             imageUrl: project.ImageUrl,
             createdDt: project.CreatedDt?.ToLocalTime(),
-            lastUpdateDt: project.LastUpdateDt?.ToLocalTime());
+            lastUpdateDt: project.LastUpdateDt?.ToLocalTime(),
+            deadLineDt: project.DeadLineDt?.ToLocalTime(),
+            doneDt: project.DoneDt?.ToLocalTime());
     }
 }
