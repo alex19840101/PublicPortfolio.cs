@@ -1664,7 +1664,7 @@
       "ProjectSubDivisionDto": {
         "required": [
           "projectId",
-          "c",
+          "code",
           "name"
         ],
         "type": "object",
@@ -1677,7 +1677,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "c": {
+          "code": {
             "type": "string",
             "nullable": true
           },

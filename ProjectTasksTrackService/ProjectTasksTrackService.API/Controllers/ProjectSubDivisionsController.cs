@@ -202,7 +202,7 @@ namespace ProjectTasksTrackService.API.Controllers
                 deadLineDt: oldDto.DeadLineDt,
                 createdDt: oldDto.CreatedDt,
                 lastUpdateDt: oldDto.LastUpdateDt,
-                doneDt: oldDto.LastUpdateDt
+                doneDt: oldDto.DoneDateTime
             );
 
         [NonAction]
@@ -219,7 +219,7 @@ namespace ProjectTasksTrackService.API.Controllers
                     deadLineDt: dto.DeadLineDt,
                     createdDt: dto.CreatedDt,
                     lastUpdateDt: dto.LastUpdateDt,
-                    doneDt: dto.LastUpdateDt
+                    doneDt: dto.DoneDateTime
             );
 
         [NonAction]
