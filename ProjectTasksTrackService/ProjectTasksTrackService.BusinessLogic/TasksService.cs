@@ -42,7 +42,7 @@ namespace ProjectTasksTrackService.BusinessLogic
             }
 
             if (conflictedIds.Any())
-                return new ImportResult { ImportedCount = 0, Message = $"{ErrorStrings.SUBPROJECTS_CONFLICTS}:{string.Join(",", conflictedIds)}" };
+                return new ImportResult { ImportedCount = 0, Message = $"{ErrorStrings.TASKS_CONFLICTS}:{string.Join(",", conflictedIds)}" };
 
             if (!newTasksToImport.Any())
                 return new ImportResult { ImportedCount = 0, Message = ErrorStrings.ALREADY_IMPORTED };
