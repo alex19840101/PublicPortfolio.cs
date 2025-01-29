@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ProjectTasksTrackService.Core;
 using ProjectTasksTrackService.Core.Repositories;
+using ProjectTasksTrackService.Core.Results;
 using ProjectTasksTrackService.Core.Services;
 
 namespace ProjectTasksTrackService.BusinessLogic
@@ -15,49 +17,125 @@ namespace ProjectTasksTrackService.BusinessLogic
         {
             _tasksRepository = tasksRepository;
         }
-        public Task<string> Import(IEnumerable<ProjectTask> tasks)
+        public async Task<ImportResult> Import(IEnumerable<ProjectTask> tasks)
         {
-            throw new NotImplementedException();
+            if (tasks is null)
+                return new ImportResult(ErrorStrings.TASKS_LIST_TO_IMPORT_SHOULD_NOT_BE_NULL, System.Net.HttpStatusCode.BadRequest);
+
+            if (!tasks.Any())
+                return new ImportResult(ErrorStrings.TASKS_LIST_TO_IMPORT_SHOULD_BE_FILLED, System.Net.HttpStatusCode.BadRequest);
+
+            var existingTasks = await _tasksRepository.GetAllTasks();
+
+            List<int> conflictedIds = new List<int>();
+            List<ProjectTask> newTasksToImport = new List<ProjectTask>();
+            foreach (var impTask in tasks)
+            {
+                if (existingTasks.Any(t => t.Id == impTask.Id))
+                {
+                    var existingTask = existingTasks.Single(t => t.Id == impTask.Id);
+                    if (!impTask.Equals(existingTask))
+                        conflictedIds.Add(impTask.Id);
+                }
+                else
+                    newTasksToImport.Add(impTask);
+            }
+
+            if (conflictedIds.Any())
+                return new ImportResult { ImportedCount = 0, Message = $"{ErrorStrings.SUBPROJECTS_CONFLICTS}:{string.Join(",", conflictedIds)}" };
+
+            if (!newTasksToImport.Any())
+                return new ImportResult { ImportedCount = 0, Message = ErrorStrings.ALREADY_IMPORTED };
+
+            var importResult = await _tasksRepository.Import(newTasksToImport);
+
+            return new ImportResult { ImportedCount = importResult.ImportedCount, Message = ErrorStrings.IMPORTED };
         }
 
-        public async Task<string> Create(ProjectTask projectTask)
+        public async Task<CreateResult> Create(ProjectTask task)
         {
-            if (string.IsNullOrWhiteSpace(projectTask.Name))
-                throw new InvalidOperationException(ErrorStrings.TASK_NAME_SHOULD_NOT_BE_EMPTY);
+            if (!string.IsNullOrWhiteSpace(task.Code))
+                return new CreateResult(ErrorStrings.TASK_CODE_SHOULD_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
-            return await _tasksRepository.Add(projectTask);
+            if (string.IsNullOrWhiteSpace(task.Name))
+                return new CreateResult(ErrorStrings.TASK_NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            if (task.Id != 0)
+                return new CreateResult(ErrorStrings.TASK_ID_SHOULD_BE_ZERO, System.Net.HttpStatusCode.BadRequest);
+
+            var createResult = await _tasksRepository.Add(task);
+
+            return createResult;
         }
 
-        public Task<IEnumerable<ProjectTask>> GetHotTasks(
+        public async Task<IEnumerable<ProjectTask>> GetHotTasks(
+            int? projectId = null,
+            int? subdivisionId = null,
             DateTime? deadLine = null,
             int skipCount = 0,
             int limitCount = 100)
         {
-            throw new NotImplementedException();
+            var tasks = await _tasksRepository.GetHotTasks(
+                projectId: projectId,
+                subdivisionId: subdivisionId,
+                deadLine: deadLine,
+                skipCount: skipCount,
+                limitCount: limitCount);
+
+            return tasks;
         }
-        public Task<ProjectTask> GetTask(string projectId, int taskId)
+        public async Task<ProjectTask> GetTask(int taskId, int? projectId = null, int? subdivisionId = null)
         {
-            throw new NotImplementedException();
+            return await _tasksRepository.GetTask(taskId, projectId, subdivisionId);
         }
 
-        public Task<IEnumerable<ProjectTask>> GetTasks(
-            string projectId = null,
-            int? intProjectId = null,
+        public async Task<IEnumerable<ProjectTask>> GetTasks(
+            int? projectId = null,
+            int? subdivisionId = null,
+            int? id = null,
+            string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
-            int limitCount = 100)
+            int limitCount = 100,
+            bool ignoreCase = true)
         {
-            throw new NotImplementedException();
+            return await _tasksRepository.GetTasks(
+                projectId: projectId,
+                subdivisionId: subdivisionId,
+                id: id,
+                codeSubStr: codeSubStr,
+                nameSubStr: nameSubStr,
+                skipCount: skipCount,
+                limitCount: limitCount,
+                ignoreCase: ignoreCase);
         }
 
-        public Task<string> UpdateTask(ProjectTask task)
+        public async Task<UpdateResult> UpdateTask(ProjectTask task)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(task.Code))
+                return new UpdateResult
+                {
+                    Message = ErrorStrings.TASK_CODE_SHOULD_BE_THE_SAME,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                };
+
+            if (string.IsNullOrWhiteSpace(task.Name))
+                return new UpdateResult
+                {
+                    Message = ErrorStrings.TASK_NAME_SHOULD_NOT_BE_EMPTY,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                };
+
+            return await _tasksRepository.UpdateTask(task);
         }
 
-        public Task<string> DeleteTask(int taskId, string taskSecretString)
+        public async Task<string> DeleteTask(
+            int taskId,
+            string taskSecretString,
+            int? projectId = null,
+            int? subdivisionId = null)
         {
-            throw new NotImplementedException();
+            return await _tasksRepository.DeleteTask(taskId, taskSecretString, projectId, subdivisionId);
         }
     }
 }

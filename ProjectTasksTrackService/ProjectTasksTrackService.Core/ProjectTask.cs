@@ -13,7 +13,7 @@ namespace ProjectTasksTrackService.Core
         /// <summary> Числовой идентификатор (номер) проекта, как в старой системе </summary>
         public int ProjectId { get { return _projectId; } }
         public int? ProjectSubDivisionId { get { return _projectSubDivisionId; } }
-
+        public string Code { get { return _code; } }
         public string Name { get { return _name; } }
         public string Url1 { get { return _url1; } }
         public string Url2 { get { return _url2; } }
@@ -26,6 +26,7 @@ namespace ProjectTasksTrackService.Core
         private readonly int _id;
         private readonly int _projectId;
         private readonly int? _projectSubDivisionId;
+        private readonly string _code;
         private string _name;
         private string _url1;
         private string _url2;
@@ -37,6 +38,7 @@ namespace ProjectTasksTrackService.Core
         public ProjectTask(
             int id,
             int projectId,
+            string code,
             string name,
             int? projectSubDivisionId = null,
             string url1 = null,
@@ -51,6 +53,7 @@ namespace ProjectTasksTrackService.Core
             _id = id;
             _projectId = projectId;
             _projectSubDivisionId = projectSubDivisionId;
+            _code = code;
             _name = name;
             _url1 = url1;
             _url2 = url2;
@@ -69,5 +72,25 @@ namespace ProjectTasksTrackService.Core
         public void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
         public void UpdateDeadLineDt(DateTime? deadLineDt) => _deadLineDt = deadLineDt;
         public void UpdateDoneDt(DateTime? doneDt) => _doneDt = doneDt;
+
+        public override bool Equals(object obj)
+        {
+            var comparedProject = (ProjectTask)obj;
+            if (comparedProject.Id != _id ||
+                comparedProject.ProjectId != _projectId ||
+                comparedProject.ProjectSubDivisionId != _projectSubDivisionId ||
+                !string.Equals(comparedProject.Code, _code) ||
+                !string.Equals(comparedProject.Name, _name) ||
+                !string.Equals(comparedProject.Url1, _url1) ||
+                !string.Equals(comparedProject.Url2, _url2) ||
+                !string.Equals(comparedProject.ImageUrl, _imageUrl) ||
+                comparedProject.CreatedDt != _createdDt ||
+                comparedProject.LastUpdateDt != _lastUpdateDt ||
+                comparedProject.DeadLineDt != _deadLineDt ||
+                comparedProject.DoneDt != _doneDt)
+                return false;
+
+            return true;
+        }
     }
 }

@@ -35,7 +35,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 };
 
             var newProjectEntity = new Entities.ProjectSubDivision(
-                id: trySetId ? sub.Id : await _dbContext.ProjectSubDivisions.AsNoTracking().MaxAsync(p => p.Id) + 1,
+                id: trySetId ? sub.Id : await _dbContext.ProjectSubDivisions.AsNoTracking().MaxAsync(s => s.Id) + 1,
                 projectId : sub.ProjectId,
                 code: sub.Code,
                 name: sub.Name,
@@ -43,7 +43,9 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 url2: sub.Url2,
                 imageUrl: sub.ImageUrl,
                 createdDt: sub.CreatedDt == null ? DateTime.Now.ToUniversalTime() : sub.CreatedDt.Value.ToUniversalTime(),
-                lastUpdateDt: DateTime.Now.ToUniversalTime());
+                lastUpdateDt: sub.LastUpdateDt == null ? null : sub.LastUpdateDt.Value.ToUniversalTime(),
+                deadLineDt: sub.DeadLineDt == null ? null : sub.DeadLineDt.Value.ToUniversalTime(),
+                doneDt: sub.DoneDt == null ? null : sub.DoneDt.Value.ToUniversalTime());
 
             await _dbContext.ProjectSubDivisions.AddAsync(newProjectEntity);
             await _dbContext.SaveChangesAsync();
@@ -67,7 +69,9 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 url2: s.Url2,
                 imageUrl: s.ImageUrl,
                 createdDt: s.CreatedDt == null ? DateTime.Now.ToUniversalTime() : s.CreatedDt.Value.ToUniversalTime(),
-                lastUpdateDt: s.LastUpdateDt == null ? DateTime.Now.ToUniversalTime() : s.LastUpdateDt.Value.ToUniversalTime()));
+                lastUpdateDt: s.LastUpdateDt == null ? null : s.LastUpdateDt.Value.ToUniversalTime(),
+                deadLineDt: s.DeadLineDt == null ? null : s.DeadLineDt.Value.ToUniversalTime(),
+                doneDt: s.DoneDt == null ? null : s.DoneDt.Value.ToUniversalTime()));
 
             await _dbContext.ProjectSubDivisions.AddRangeAsync(subdivisionEntities);
             await _dbContext.SaveChangesAsync();
@@ -107,12 +111,16 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             var sc = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.Ordinal;
 
             var query = _dbContext.ProjectSubDivisions.AsNoTracking();
+
+            if (id != null)
+                query = query.Where(s => s.Id == id.Value);
+
             if (projectId != null)
                 query = query.Where(s => s.ProjectId == projectId.Value);
 
             if (id is not null)
             {
-                var subdivisionEntity = await query.SingleOrDefaultAsync(s => s.Id == id);
+                var subdivisionEntity = await query.SingleOrDefaultAsync();
 
                 if (subdivisionEntity is null)
                     return null;
@@ -182,10 +190,10 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             List<Entities.ProjectSubDivision> entityProjectSubDivisionsLst;
 
             var query = _dbContext.ProjectSubDivisions.AsNoTracking();
-            if (projectId != null)
-                query = query.Where(s => s.ProjectId == projectId.Value);
             if (id != null)
                 query = query.Where(s => s.Id == id.Value);
+            if (projectId != null)
+                query = query.Where(s => s.ProjectId == projectId.Value);
 
             if (string.IsNullOrWhiteSpace(codeSubStr) && string.IsNullOrWhiteSpace(nameSubStr))
             {
@@ -321,7 +329,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
 
             var entityProjectSubDivisionsLst = await query.Skip(skipCount).Take(limitCount).ToListAsync();
 
-            return entityProjectSubDivisionsLst.Select(p => ProjectSubDivision(p));
+            return entityProjectSubDivisionsLst.Select(s => ProjectSubDivision(s));
         }
     }
 }

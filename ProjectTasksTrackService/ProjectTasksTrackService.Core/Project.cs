@@ -66,6 +66,7 @@ namespace ProjectTasksTrackService.Core
                 !string.Equals(comparedProject.ImageUrl, _imageUrl) ||
                 comparedProject.CreatedDt != _createdDt ||
                 comparedProject.LastUpdateDt != _lastUpdateDt ||
+                comparedProject.DeadLineDt != _deadLineDt ||
                 comparedProject.DoneDt != _doneDt)
                 return false;
 

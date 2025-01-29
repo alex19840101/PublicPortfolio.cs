@@ -30,9 +30,9 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Импорт проектов (из старой системы проектов) </summary>
         [HttpPost("api/v2/Projects/Import")]
-        [ProducesResponseType(typeof(ImportProjectsResponseDto), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ImportResponseDto), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(ImportProjectsResponseDto), (int)HttpStatusCode.Conflict)]
+        [ProducesResponseType(typeof(ImportResponseDto), (int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> Import(IEnumerable<OldProjectDto> projects)
         {
             List<Project> projectsCollection = [];
@@ -47,12 +47,12 @@ namespace ProjectTasksTrackService.API.Controllers
                 return new BadRequestObjectResult(new ProblemDetails { Title = importResult.Message });
 
             if (importResult.StatusCode == HttpStatusCode.Conflict || importResult.ImportedCount == 0)
-                return new ConflictObjectResult(new ImportProjectsResponseDto
+                return new ConflictObjectResult(new ImportResponseDto
                 {
                     Message = importResult.Message
                 });
 
-            return CreatedAtAction(nameof(Import), new ImportProjectsResponseDto
+            return CreatedAtAction(nameof(Import), new ImportResponseDto
             {
                 ImportedCount = importResult.ImportedCount,
                 Message = importResult.Message
@@ -61,7 +61,7 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Создание проекта </summary>
         [HttpPost("api/v2/Projects/Create")]
-        [ProducesResponseType(typeof(CreateProjectResponseDto), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(CreateResponseDto), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> Create(ProjectDto project)
@@ -74,7 +74,12 @@ namespace ProjectTasksTrackService.API.Controllers
             if (createResult.StatusCode == HttpStatusCode.Conflict)
                 return new ConflictObjectResult(new MessageResponseDto { Message = createResult.Message });
 
-            return Ok(new CreateProjectResponseDto { Id = createResult.Id.Value, Code = project.Code });
+            return Ok(new CreateResponseDto
+            {
+                Id = createResult.Id.Value,
+                Code = project.Code,
+                SecretString = createResult.SecretString
+            });
         }
 
         /// <summary> Получение списка проектов </summary>

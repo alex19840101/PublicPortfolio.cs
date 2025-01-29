@@ -70,5 +70,24 @@ namespace ProjectTasksTrackService.Core
         public void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
         public void UpdateDeadLineDt(DateTime? deadLineDt) => _deadLineDt = deadLineDt;
         public void UpdateDoneDt(DateTime? doneDt) => _doneDt = doneDt;
+
+        public override bool Equals(object obj)
+        {
+            var comparedProject = (ProjectSubDivision)obj;
+            if (comparedProject.Id != _id ||
+                comparedProject.ProjectId != _projectId ||
+                !string.Equals(comparedProject.Code, _code) ||
+                !string.Equals(comparedProject.Name, _name) ||
+                !string.Equals(comparedProject.Url1, _url1) ||
+                !string.Equals(comparedProject.Url2, _url2) ||
+                !string.Equals(comparedProject.ImageUrl, _imageUrl) ||
+                comparedProject.CreatedDt != _createdDt ||
+                comparedProject.LastUpdateDt != _lastUpdateDt ||
+                comparedProject.DeadLineDt != _deadLineDt ||
+                comparedProject.DoneDt != _doneDt)
+                return false;
+
+            return true;
+        }
     }
 }

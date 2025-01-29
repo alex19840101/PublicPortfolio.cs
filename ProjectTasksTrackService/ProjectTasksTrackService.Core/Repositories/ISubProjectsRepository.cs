@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using ProjectTasksTrackService.Core.Results;
 using System.Threading.Tasks;
+using ProjectTasksTrackService.Core.Results;
 
 namespace ProjectTasksTrackService.Core.Repositories
 {

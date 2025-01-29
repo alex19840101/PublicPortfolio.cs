@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using ProjectTasksTrackService.Core;
 using ProjectTasksTrackService.Core.Repositories;
@@ -75,16 +74,16 @@ namespace ProjectTasksTrackService.BusinessLogic
             if (!subs.Any())
                 return new ImportResult(ErrorStrings.SUBPROJECTS_LIST_TO_IMPORT_SHOULD_BE_FILLED, System.Net.HttpStatusCode.BadRequest);
 
-            var existingProjects = await _subProjectsRepository.GetAllProjectSubDivisions();
+            var existingSubs = await _subProjectsRepository.GetAllProjectSubDivisions();
 
             List<int> conflictedIds = new List<int>();
             List<ProjectSubDivision> newSubsToImport = new List<ProjectSubDivision>();
             foreach (var impSub in subs)
             {
-                if (existingProjects.Any(p => p.Id == impSub.Id))
+                if (existingSubs.Any(s => s.Id == impSub.Id))
                 {
-                    var existingProject = existingProjects.Single(p => p.Id == impSub.Id);
-                    if (!impSub.Equals(existingProject))
+                    var existingSub = existingSubs.Single(s => s.Id == impSub.Id);
+                    if (!impSub.Equals(existingSub))
                         conflictedIds.Add(impSub.Id);
                 }
                 else

@@ -14,15 +14,17 @@ namespace ProjectTasksTrackService.Core.Results
         public string Message { get; set; }
 
         public HttpStatusCode StatusCode { get; set; }
+        public string SecretString { get; set; }
 
         public CreateResult()
         { }
 
-        public CreateResult(string message, HttpStatusCode statusCode, int? id = null)
+        public CreateResult(string message, HttpStatusCode statusCode, int? id = null, string secretString = null)
         {
             Message = message;
             StatusCode = statusCode;
             Id = id;
+            SecretString = secretString;
         }
     }
 }

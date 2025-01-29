@@ -10,7 +10,7 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         /// <summary> Числовой идентификатор - номер проекта, как в старой системе  - внешний ключ (Project.Id) </summary>
         public int ProjectId { get { return _projectId; } }
         public int? ProjectSubDivisionId { get { return _projectSubDivisionId; } }
-        public int ProjectIntId { get { return _projectIntId; } }
+        public string Code { get { return _code; } }
         public string Name { get { return _name; } }
         public string Url1 { get { return _url1; } }
         public string Url2 { get { return _url2; } }
@@ -25,10 +25,10 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         public ProjectSubDivision ProjectSubDivision { get; set; }
 
         private readonly int _id;
+        /// <summary> Числовой идентификатор - номер проекта, как в старой системе  - внешний ключ (Project.Id) </summary>
         private readonly int _projectId;
         private readonly int? _projectSubDivisionId;
-        /// <summary> Числовой идентификатор - номер проекта, как в старой системе  - внешний ключ (Project.Id) </summary>
-        private readonly int _projectIntId;
+        private readonly string _code;
         private string _name;
         private string _url1;
         private string _url2;
@@ -40,6 +40,7 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         public ProjectTask(
             int id,
             int projectId,
+            string code,
             string name,
             int? projectSubDivisionId = null,
             string url1 = null,
@@ -54,6 +55,7 @@ namespace ProjectTasksTrackService.DataAccess.Entities
             _id = id;
             _projectId = projectId;
             _projectSubDivisionId = projectSubDivisionId;
+            _code = code;
             _name = name;
             _url1 = url1;
             _url2 = url2;

@@ -13,6 +13,9 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         /// <summary> Числовой идентификатор - номер проекта, как в старой системе </summary>
         [JsonPropertyName("id")] public required int ProjectId { get; set; }
 
+        /// <summary> Код задачи (генерируется автоматически: {Project.Code}[.{Subdivision.Code}].{Task.Id})</summary>
+        [JsonPropertyName("c")] public string Code { get; set; }
+
         /// <summary> Название задачи/события/напоминания </summary>
         [JsonPropertyName("n")] public required string Name { get; set; }
 

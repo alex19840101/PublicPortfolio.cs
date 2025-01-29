@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTasksTrackService.API.Contracts.Dto;
 using ProjectTasksTrackService.API.Contracts.Dto.Requests;
+using ProjectTasksTrackService.API.Contracts.Dto.Responses;
 using ProjectTasksTrackService.API.Contracts.Interfaces;
 using ProjectTasksTrackService.Core;
+using ProjectTasksTrackService.Core.Results;
 using ProjectTasksTrackService.Core.Services;
 
 namespace ProjectTasksTrackService.API.Controllers
@@ -26,7 +29,10 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Импорт задач (из старой системы) </summary>
         [HttpPost("api/v2/Tasks/Import")]
-        public async Task<string> Import(IEnumerable<OldTaskDto> tasks)
+        [ProducesResponseType(typeof(ImportResponseDto), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ImportResponseDto), (int)HttpStatusCode.Conflict)]
+        public async Task<IActionResult> Import(IEnumerable<OldTaskDto> tasks)
         {
             List<ProjectTask> tasksCollection = [];
             foreach (var oldTaskDto in tasks)
@@ -34,26 +40,61 @@ namespace ProjectTasksTrackService.API.Controllers
                 tasksCollection.Add(ProjectTask(oldTaskDto));
             }
 
-            return await _tasksService.Import(tasksCollection);
+            var importResult = await _tasksService.Import(tasksCollection);
+
+            if (importResult.StatusCode == HttpStatusCode.BadRequest)
+                return new BadRequestObjectResult(new ProblemDetails { Title = importResult.Message });
+
+            if (importResult.StatusCode == HttpStatusCode.Conflict || importResult.ImportedCount == 0)
+                return new ConflictObjectResult(new ImportResponseDto
+                {
+                    Message = importResult.Message
+                });
+
+            return CreatedAtAction(nameof(Import), new ImportResponseDto
+            {
+                ImportedCount = importResult.ImportedCount,
+                Message = importResult.Message
+            });
         }
 
         /// <summary> Создание задачи </summary>
         [HttpPost("api/v2/Tasks/Create")]
-        public async Task<string> Create(TaskDto taskDto)
+        [ProducesResponseType(typeof(CreateResponseDto), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.Conflict)]
+        public async Task<IActionResult> Create(TaskDto taskDto)
         {
-            return await _tasksService.Create(ProjectTask(taskDto));
+            var createResult = await _tasksService.Create(ProjectTask(taskDto));
+
+            if (createResult.StatusCode == HttpStatusCode.BadRequest)
+                return new BadRequestObjectResult(new ProblemDetails { Title = createResult.Message });
+
+            if (createResult.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(new MessageResponseDto { Message = createResult.Message });
+
+            if (createResult.StatusCode == HttpStatusCode.Conflict)
+                return new ConflictObjectResult(new MessageResponseDto { Message = createResult.Message });
+
+            return Ok(new CreateResponseDto { Id = createResult.Id.Value, SecretString = createResult.SecretString });
         }
 
         /// <summary> Получение списка задач </summary>
         [HttpGet("api/v2/Tasks/GetTasks")]
+        [ProducesResponseType(typeof(TaskDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         public async Task<IEnumerable<TaskDto>> GetTasks(
-            string projectId = null,
-            int? intProjectId = null,
+            int? projectId = null,
+            int? subdivisionId = null,
+            int? id = null,
+            string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
-            int limitCount = 100)
+            int limitCount = 100,
+            bool ignoreCase = true)
         {
-            var tasksCollection = await _tasksService.GetTasks(projectId,intProjectId, nameSubStr, skipCount, limitCount);
+            var tasksCollection = await _tasksService.GetTasks(projectId, subdivisionId, id, codeSubStr, nameSubStr, skipCount, limitCount, ignoreCase);
             List<TaskDto> result = [];
             foreach (var task in tasksCollection)
             {
@@ -65,14 +106,19 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Получение списка задач (в старом компактном JSON-формате) для экспорта в старую систему </summary>
         [HttpGet("api/v2/Tasks/GetTasksOldDto")]
+        [ProducesResponseType(typeof(OldTaskDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         public async Task<IEnumerable<OldTaskDto>> GetTasksOldDto(
-            string projectId = null,
-            int? intProjectId = null,
+            int? projectId = null,
+            int? subdivisionId = null,
+            int? id = null,
+            string codeSubStr = null,
             string nameSubStr = null,
             int skipCount = 0,
-            int limitCount = 100)
+            int limitCount = 100,
+            bool ignoreCase = true)
         {
-            var tasksCollection = await _tasksService.GetTasks(projectId, intProjectId, nameSubStr, skipCount, limitCount);
+            var tasksCollection = await _tasksService.GetTasks(projectId, subdivisionId, id, codeSubStr, nameSubStr, skipCount, limitCount, ignoreCase);
             List<OldTaskDto> result = [];
             foreach (var task in tasksCollection)
             {
@@ -84,20 +130,31 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Получение задачи </summary>
         [HttpGet("api/v2/Tasks/GetTask")]
-        public async Task<TaskDto> GetTask(string projectId, int taskId)
+        [ProducesResponseType(typeof(ProjectSubDivisionDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> GetTask(int taskId, int? projectId = null, int? subdivisionId = null)
         {
-            var task = await _tasksService.GetTask(projectId, taskId);
-            return TaskDto(task);
+            var task = await _tasksService.GetTask(taskId, projectId, subdivisionId);
+
+            if (task is null)
+                return NotFound(new MessageResponseDto { Message = ErrorStrings.SUBDIVISION_NOT_FOUND });
+
+            return Ok(TaskDto(task));
         }
 
         /// <summary> Получение списка актуальных задач </summary>
         [HttpGet("api/v2/Tasks/GetHotTasks")]
+        [ProducesResponseType(typeof(TaskDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         public async Task<IEnumerable<TaskDto>> GetHotTasks(
+            int? projectId = null,
+            int? subdivisionId = null,
             DateTime? deadLine = null,
             int skipCount = 0,
             int limitCount = 100)
         {
-            var tasksCollection = await _tasksService.GetHotTasks(deadLine, skipCount, limitCount);
+            var tasksCollection = await _tasksService.GetHotTasks(projectId, subdivisionId, deadLine, skipCount, limitCount);
             List<TaskDto> result = [];
             foreach (var task in tasksCollection)
             {
@@ -110,9 +167,20 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Обновление задачи </summary>
         [HttpPost("api/v2/Tasks/UpdateTask")]
-        public async Task<string> UpdateTask(TaskDto taskDto)
+        [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> UpdateTask(TaskDto taskDto)
         {
-            return await _tasksService.UpdateTask(ProjectTask(taskDto));
+            var updateResult = await _tasksService.UpdateTask(ProjectTask(taskDto));
+
+            if (updateResult.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(updateResult);
+
+            if (updateResult.StatusCode == HttpStatusCode.Conflict)
+                return new ConflictObjectResult(updateResult);
+
+            return Ok(updateResult);
         }
 
         /// <summary> Удаление задачи </summary>
@@ -130,6 +198,7 @@ namespace ProjectTasksTrackService.API.Controllers
             new ProjectTask(
                 id: oldTaskDto.Id,
                 projectId: oldTaskDto.ProjectId,
+                code: oldTaskDto.Code,
                 name: oldTaskDto.Name,
                 projectSubDivisionId: oldTaskDto.ProjectSubDivisionId,
                 url1: oldTaskDto.Url1,
@@ -147,6 +216,7 @@ namespace ProjectTasksTrackService.API.Controllers
             new ProjectTask(
                     id: taskDto.Id,
                     projectId: taskDto.ProjectId,
+                    code: taskDto.Code,
                     name: taskDto.Name,
                     projectSubDivisionId: taskDto.ProjectSubDivisionId,
                     url1: taskDto.Url1,
