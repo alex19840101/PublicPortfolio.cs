@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTasksTrackService.API.Contracts.Dto;
 using ProjectTasksTrackService.API.Contracts.Dto.Requests;
@@ -74,12 +74,13 @@ namespace ProjectTasksTrackService.API.Controllers
             if (createResult.StatusCode == HttpStatusCode.Conflict)
                 return new ConflictObjectResult(new MessageResponseDto { Message = createResult.Message });
 
-            return Ok(new CreateResponseDto
+            var result = new CreateResponseDto
             {
                 Id = createResult.Id.Value,
                 Code = project.Code,
                 SecretString = createResult.SecretString
-            });
+            };
+            return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
         }
 
         /// <summary> Получение списка проектов </summary>

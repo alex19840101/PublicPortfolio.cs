@@ -32,9 +32,9 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 url: project.Url,
                 imageUrl: project.ImageUrl,
                 createdDt: project.CreatedDt == null ? DateTime.Now.ToUniversalTime() : project.CreatedDt.Value.ToUniversalTime(),
-                lastUpdateDt: project.LastUpdateDt == null ? null : project.LastUpdateDt.Value.ToUniversalTime(),
-                deadLineDt: project.DeadLineDt == null ? null : project.DeadLineDt.Value.ToUniversalTime(),
-                doneDt: project.DoneDt == null ? null : project.DoneDt.Value.ToUniversalTime());
+                lastUpdateDt: project.LastUpdateDt?.ToUniversalTime(),
+                deadLineDt: project.DeadLineDt?.ToUniversalTime(),
+                doneDt: project.DoneDt?.ToUniversalTime());
 
             await _dbContext.Projects.AddAsync(newProjectEntity);
             await _dbContext.SaveChangesAsync();
@@ -56,9 +56,9 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 url: p.Url,
                 imageUrl: p.ImageUrl,
                 createdDt: p.CreatedDt == null ? DateTime.Now.ToUniversalTime() : p.CreatedDt.Value.ToUniversalTime(),
-                lastUpdateDt: p.LastUpdateDt == null ? null : p.LastUpdateDt.Value.ToUniversalTime(),
-                deadLineDt: p.DeadLineDt == null ? null : p.DeadLineDt.Value.ToUniversalTime(),
-                doneDt: p.DoneDt == null ? null : p.DoneDt.Value.ToUniversalTime()));
+                lastUpdateDt: p.LastUpdateDt?.ToUniversalTime(),
+                deadLineDt: p.DeadLineDt?.ToUniversalTime(),
+                doneDt: p.DoneDt?.ToUniversalTime()));
 
             await _dbContext.Projects.AddRangeAsync(projectEntities);
             await _dbContext.SaveChangesAsync();

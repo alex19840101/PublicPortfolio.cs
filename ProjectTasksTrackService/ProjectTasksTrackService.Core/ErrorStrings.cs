@@ -25,5 +25,7 @@
         public const string TASK_PROJECTSUBDIVISIONID_SHOULD_BE_THE_SAME = "Task.ProjectSubDivisionId should be the same";
         public const string TASK_UPDATED = "Task updated";
         public const string TASK_IS_ACTUAL = "Task is actual";
+        public const string TASK_REPEATSTYPE_SHOULD_BE_THE_SAME = "Task.RepeatsType should be the same";
+        public const string TASK_REPEATINDAYS_SHOULD_BE_THE_SAME = "Task.RepeatInDays should be the same";
     }
 }

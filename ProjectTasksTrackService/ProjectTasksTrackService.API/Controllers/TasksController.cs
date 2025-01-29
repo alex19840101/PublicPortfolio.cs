@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTasksTrackService.API.Contracts.Dto;
 using ProjectTasksTrackService.API.Contracts.Dto.Requests;
@@ -78,7 +79,9 @@ namespace ProjectTasksTrackService.API.Controllers
             if (createResult.StatusCode == HttpStatusCode.Conflict)
                 return new ConflictObjectResult(new MessageResponseDto { Message = createResult.Message });
 
-            return Ok(new CreateResponseDto { Id = createResult.Id.Value, SecretString = createResult.SecretString });
+            var result = new CreateResponseDto { Id = createResult.Id.Value, SecretString = createResult.SecretString };
+
+            return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created};
         }
 
         /// <summary> Получение списка задач </summary>
@@ -139,7 +142,7 @@ namespace ProjectTasksTrackService.API.Controllers
             var task = await _tasksService.GetTask(taskId, projectId, subdivisionId);
 
             if (task is null)
-                return NotFound(new MessageResponseDto { Message = ErrorStrings.SUBDIVISION_NOT_FOUND });
+                return NotFound(new MessageResponseDto { Message = ErrorStrings.TASK_NOT_FOUND });
 
             return Ok(TaskDto(task));
         }
@@ -240,6 +243,7 @@ namespace ProjectTasksTrackService.API.Controllers
             {
                 Id = projectTask.Id,
                 ProjectId = projectTask.ProjectId,
+                Code = projectTask.Code,
                 Name = projectTask.Name,
                 ProjectSubDivisionId = projectTask.ProjectSubDivisionId,
                 Url1 = projectTask.Url1,
@@ -258,6 +262,7 @@ namespace ProjectTasksTrackService.API.Controllers
             {
                 Id = projectTask.Id,
                 ProjectId = projectTask.ProjectId,
+                Code = projectTask.Code,
                 Name = projectTask.Name,
                 ProjectSubDivisionId = projectTask.ProjectSubDivisionId,
                 Url1 = projectTask.Url1,

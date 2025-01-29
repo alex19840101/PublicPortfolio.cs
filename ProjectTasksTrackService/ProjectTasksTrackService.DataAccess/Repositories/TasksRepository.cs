@@ -65,9 +65,9 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 imageUrl: task.ImageUrl,
 
                 createdDt: task.CreatedDt == null ? DateTime.Now.ToUniversalTime() : task.CreatedDt.Value.ToUniversalTime(),
-                lastUpdateDt: task.LastUpdateDt == null ? null : task.LastUpdateDt.Value.ToUniversalTime(),
-                deadLineDt: task.DeadLineDt == null ? null : task.DeadLineDt.Value.ToUniversalTime(),
-                doneDt: task.DoneDt == null ? null : task.DoneDt.Value.ToUniversalTime());
+                lastUpdateDt: task.LastUpdateDt?.ToUniversalTime(),
+                deadLineDt: task.DeadLineDt?.ToUniversalTime(),
+                doneDt: task.DoneDt?.ToUniversalTime());
 
             await _dbContext.ProjectTasks.AddAsync(newTaskEntity);
             await _dbContext.SaveChangesAsync();
@@ -83,10 +83,13 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             if (!tasks.Any())
                 return new ImportResult { Message = ErrorStrings.TASKS_SHOULD_CONTAIN_AT_LEAST_1_TASK };
 
+            var projects = await _dbContext.Projects.AsNoTracking().ToListAsync();
+            var subProjects = await _dbContext.Projects.AsNoTracking().ToListAsync();
+
             IEnumerable<Entities.ProjectTask> tasksEntities = tasks.Select(task => new Entities.ProjectTask(
                 id: task.Id,
                 projectId : task.ProjectId,
-                code: task.Code,
+                code: $"{projects.Single(p => p.Id == task.ProjectId).Code}.{(subProjects.SingleOrDefault(s => s.Id == task.ProjectSubDivisionId))?.Code}.{task.Id}",
                 name: task.Name,
                 repeatsType: (short)task.RepeatsType,
                 repeatInDays: task.RepeatInDays,
@@ -96,9 +99,9 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 imageUrl: task.ImageUrl,
 
                 createdDt: task.CreatedDt == null ? DateTime.Now.ToUniversalTime() : task.CreatedDt.Value.ToUniversalTime(),
-                lastUpdateDt: task.LastUpdateDt == null ? null : task.LastUpdateDt.Value.ToUniversalTime(),
-                deadLineDt: task.DeadLineDt == null ? null : task.DeadLineDt.Value.ToUniversalTime(),
-                doneDt: task.DoneDt == null ? null : task.DoneDt.Value.ToUniversalTime()));
+                lastUpdateDt: task.LastUpdateDt?.ToUniversalTime(),
+                deadLineDt: task.DeadLineDt?.ToUniversalTime(),
+                doneDt: task.DoneDt?.ToUniversalTime()));
 
             await _dbContext.ProjectTasks.AddRangeAsync(tasksEntities);
             await _dbContext.SaveChangesAsync();
@@ -306,6 +309,12 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
 
             if (!task.ProjectSubDivisionId.Equals(entityTask.ProjectSubDivisionId))
                 return new UpdateResult(ErrorStrings.TASK_PROJECTSUBDIVISIONID_SHOULD_BE_THE_SAME, HttpStatusCode.Conflict);
+
+            if ((short)task.RepeatsType != entityTask.RepeatsType)
+                return new UpdateResult(ErrorStrings.TASK_REPEATSTYPE_SHOULD_BE_THE_SAME, HttpStatusCode.Conflict);
+
+            if (!task.RepeatInDays.Equals(entityTask.RepeatInDays))
+                return new UpdateResult(ErrorStrings.TASK_REPEATINDAYS_SHOULD_BE_THE_SAME, HttpStatusCode.Conflict);
 
             if (!string.Equals(task.Name, entityTask.Name)) entityTask.UpdateName(task.Name);
             if (!string.Equals(task.Url1, entityTask.Url1)) entityTask.UpdateUrl1(task.Url1);
