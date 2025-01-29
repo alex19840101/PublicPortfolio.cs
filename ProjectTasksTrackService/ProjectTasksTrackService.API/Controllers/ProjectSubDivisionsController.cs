@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -96,8 +97,8 @@ namespace ProjectTasksTrackService.API.Controllers
             int? id = null,
             string codeSubStr = null,
             string nameSubStr = null,
-            int skipCount = 0,
-            int limitCount = 100,
+            [Range(0, int.MaxValue)] int skipCount = 0,
+            [Range(0, 100)] int limitCount = 100,
             bool ignoreCase = true)
         {
             var subDivisionsCollection = await _subProjectsService.GetSubDivisions(projectId, id, codeSubStr, nameSubStr, skipCount, limitCount, ignoreCase);
@@ -119,8 +120,8 @@ namespace ProjectTasksTrackService.API.Controllers
             int? id = null,
             string codeSubStr = null,
             string nameSubStr = null,
-            int skipCount = 0,
-            int limitCount = 100,
+            [Range(0, int.MaxValue)] int skipCount = 0,
+            [Range(0, 100)] int limitCount = 100,
             bool ignoreCase = true)
         {
             var subDivisionsCollection = await _subProjectsService.GetSubDivisions(projectId, id, codeSubStr, nameSubStr, skipCount, limitCount, ignoreCase);
@@ -155,8 +156,8 @@ namespace ProjectTasksTrackService.API.Controllers
         public async Task<IEnumerable<ProjectSubDivisionDto>> GetHotSubDivisions(
             int? projectId = null,
             DateTime? deadLine = null,
-            int skipCount = 0,
-            int limitCount = 100)
+            [Range(0, int.MaxValue)] int skipCount = 0,
+            [Range(0, 100)] int limitCount = 100)
         {
             var subDivisionsCollection = await _subProjectsService.GetHotSubDivisions(projectId, deadLine, skipCount, limitCount);
             List<ProjectSubDivisionDto> result = [];

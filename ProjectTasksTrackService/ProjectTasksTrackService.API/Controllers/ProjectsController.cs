@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -90,8 +91,8 @@ namespace ProjectTasksTrackService.API.Controllers
         public async Task<IEnumerable<ProjectDto>> GetProjects(
             string codeSubStr = null,
             string nameSubStr = null,
-            int skipCount = 0,
-            int limitCount = 100,
+            [Range(0, int.MaxValue)] int skipCount = 0,
+            [Range(0, 100)] int limitCount = 100,
             bool ignoreCase = true)
         {
             var projectsCollection = await _projectsService.GetProjects(codeSubStr, nameSubStr, skipCount, limitCount, ignoreCase);
@@ -109,8 +110,8 @@ namespace ProjectTasksTrackService.API.Controllers
         public async Task<IEnumerable<OldProjectDto>> GetProjectsOldDto(
             string codeSubStr = null,
             string nameSubStr = null,
-            int skipCount = 0,
-            int limitCount = 100,
+            [Range(0, int.MaxValue)] int skipCount = 0,
+            [Range(0, 100)] int limitCount = 100,
             bool ignoreCase = true)
         {
             var projectsCollection = await _projectsService.GetProjects(codeSubStr, nameSubStr, skipCount, limitCount);

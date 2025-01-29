@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -99,8 +100,8 @@ namespace ProjectTasksTrackService.API.Controllers
             int? id = null,
             string codeSubStr = null,
             string nameSubStr = null,
-            int skipCount = 0,
-            int limitCount = 100,
+            [Range(0, int.MaxValue)] int skipCount = 0,
+            [Range(0, 100)] int limitCount = 100,
             bool ignoreCase = true)
         {
             var tasksCollection = await _tasksService.GetTasks(projectId, subdivisionId, id, codeSubStr, nameSubStr, skipCount, limitCount, ignoreCase);
@@ -123,8 +124,8 @@ namespace ProjectTasksTrackService.API.Controllers
             int? id = null,
             string codeSubStr = null,
             string nameSubStr = null,
-            int skipCount = 0,
-            int limitCount = 100,
+            [Range(0, int.MaxValue)] int skipCount = 0,
+            [Range(0, 100)] int limitCount = 100,
             bool ignoreCase = true)
         {
             var tasksCollection = await _tasksService.GetTasks(projectId, subdivisionId, id, codeSubStr, nameSubStr, skipCount, limitCount, ignoreCase);
@@ -160,8 +161,8 @@ namespace ProjectTasksTrackService.API.Controllers
             int? projectId = null,
             int? subdivisionId = null,
             DateTime? deadLine = null,
-            int skipCount = 0,
-            int limitCount = 100)
+            [Range(0, int.MaxValue)] int skipCount = 0,
+            [Range(0, 100)] int limitCount = 100)
         {
             var tasksCollection = await _tasksService.GetHotTasks(projectId, subdivisionId, deadLine, skipCount, limitCount);
             List<TaskDto> result = [];
