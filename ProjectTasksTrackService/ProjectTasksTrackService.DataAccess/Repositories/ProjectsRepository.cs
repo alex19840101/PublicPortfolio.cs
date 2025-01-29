@@ -40,7 +40,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             await _dbContext.SaveChangesAsync();
             
             await _dbContext.Entry(newProjectEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id
-            return new CreateResult { Id = newProjectEntity.Id, StatusCode = HttpStatusCode.Created };
+            return new CreateResult { Id = newProjectEntity.Id, StatusCode = HttpStatusCode.Created, Code = newProjectEntity.Code };
         }
 
         public async Task<ImportResult> Import(IEnumerable<Project> projects)

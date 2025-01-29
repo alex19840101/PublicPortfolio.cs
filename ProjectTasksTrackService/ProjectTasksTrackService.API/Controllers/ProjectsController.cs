@@ -77,7 +77,7 @@ namespace ProjectTasksTrackService.API.Controllers
             var result = new CreateResponseDto
             {
                 Id = createResult.Id.Value,
-                Code = project.Code,
+                Code = createResult.Code,
                 SecretString = createResult.SecretString
             };
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };

@@ -34,7 +34,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                     Message = ErrorStrings.PARENT_PROJECT_NOT_FOUND
                 };
 
-            var newProjectEntity = new Entities.ProjectSubDivision(
+            var newSubEntity = new Entities.ProjectSubDivision(
                 id: trySetId ? sub.Id : await _dbContext.ProjectSubDivisions.AsNoTracking().MaxAsync(s => s.Id) + 1,
                 projectId : sub.ProjectId,
                 code: sub.Code,
@@ -47,11 +47,11 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 deadLineDt: sub.DeadLineDt?.ToUniversalTime(),
                 doneDt: sub.DoneDt?.ToUniversalTime());
 
-            await _dbContext.ProjectSubDivisions.AddAsync(newProjectEntity);
+            await _dbContext.ProjectSubDivisions.AddAsync(newSubEntity);
             await _dbContext.SaveChangesAsync();
 
-            await _dbContext.Entry(newProjectEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id
-            return new CreateResult { Id = newProjectEntity.Id, StatusCode = HttpStatusCode.Created };
+            await _dbContext.Entry(newSubEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id
+            return new CreateResult { Id = newSubEntity.Id, StatusCode = HttpStatusCode.Created, Code = newSubEntity.Code };
         }
 
         public async Task<ImportResult> Import(IEnumerable<ProjectSubDivision> subs)

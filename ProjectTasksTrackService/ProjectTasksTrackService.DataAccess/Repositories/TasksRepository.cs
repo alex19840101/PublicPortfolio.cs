@@ -73,7 +73,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             await _dbContext.SaveChangesAsync();
 
             await _dbContext.Entry(newTaskEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id
-            return new CreateResult { Id = newTaskEntity.Id, StatusCode = HttpStatusCode.Created };
+            return new CreateResult { Id = newTaskEntity.Id, StatusCode = HttpStatusCode.Created, Code = newTaskEntity.Code };
         }
         
 

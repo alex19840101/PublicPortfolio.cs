@@ -79,7 +79,12 @@ namespace ProjectTasksTrackService.API.Controllers
             if (createResult.StatusCode == HttpStatusCode.Conflict)
                 return new ConflictObjectResult(new MessageResponseDto { Message = createResult.Message });
 
-            var result = new CreateResponseDto { Id = createResult.Id.Value, SecretString = createResult.SecretString };
+            var result = new CreateResponseDto
+            {
+                Id = createResult.Id.Value,
+                Code = createResult.Code,
+                SecretString = createResult.SecretString
+            };
 
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created};
         }
