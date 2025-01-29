@@ -19,6 +19,11 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         public DateTime? LastUpdateDt { get { return _lastUpdateDt; } }
         public DateTime? DeadLineDt { get { return _deadLineDt; } }
         public DateTime? DoneDt { get { return _doneDt; } }
+        /// <summary> Повторяемость задачи (по TaskRepeatsType) </summary>
+        public short RepeatsType { get { return _repeatsType; } }
+        /// <summary> Через (...) дней повторять </summary>
+        public ushort? RepeatInDays { get { return _repeatInDays; } }
+
         /// <summary> Навигационное свойство -> проект </summary>
         public Project Project { get; set; }
         /// <summary> Навигационное свойство -> подпроект </summary>
@@ -37,11 +42,15 @@ namespace ProjectTasksTrackService.DataAccess.Entities
         private DateTime? _lastUpdateDt;
         private DateTime? _deadLineDt;
         private DateTime? _doneDt;
+        private readonly short _repeatsType;
+        private readonly ushort? _repeatInDays;
         public ProjectTask(
             int id,
             int projectId,
             string code,
             string name,
+            short repeatsType,
+            ushort? repeatInDays,
             int? projectSubDivisionId = null,
             string url1 = null,
             string url2 = null,
@@ -57,6 +66,8 @@ namespace ProjectTasksTrackService.DataAccess.Entities
             _projectSubDivisionId = projectSubDivisionId;
             _code = code;
             _name = name;
+            _repeatsType = repeatsType;
+            _repeatInDays = repeatInDays;
             _url1 = url1;
             _url2 = url2;
             _imageUrl = imageUrl;

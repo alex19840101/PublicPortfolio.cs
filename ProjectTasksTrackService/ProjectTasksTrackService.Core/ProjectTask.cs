@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
+using ProjectTasksTrackService.Core.Enums;
 
 namespace ProjectTasksTrackService.Core
 {
@@ -22,6 +23,11 @@ namespace ProjectTasksTrackService.Core
         public DateTime? LastUpdateDt { get { return _lastUpdateDt; } }
         public DateTime? DeadLineDt { get { return _deadLineDt; } }
         public DateTime? DoneDt { get { return _doneDt; } }
+        /// <summary> Повторяемость задачи по TaskRepeatsType </summary>
+        public TaskRepeatsType RepeatsType { get { return _repeatsType; } }
+
+        /// <summary> Через (...) дней повторять </summary>
+        public ushort? RepeatInDays { get { return _repeatInDays; } }
 
         private readonly int _id;
         private readonly int _projectId;
@@ -35,11 +41,16 @@ namespace ProjectTasksTrackService.Core
         private DateTime? _lastUpdateDt;
         private DateTime? _deadLineDt;
         private DateTime? _doneDt;
+        private TaskRepeatsType _repeatsType;
+        private ushort? _repeatInDays;
+
         public ProjectTask(
             int id,
             int projectId,
             string code,
             string name,
+            TaskRepeatsType repeatsType,
+            ushort? repeatInDays,
             int? projectSubDivisionId = null,
             string url1 = null,
             string url2 = null,
@@ -52,9 +63,11 @@ namespace ProjectTasksTrackService.Core
         {
             _id = id;
             _projectId = projectId;
-            _projectSubDivisionId = projectSubDivisionId;
             _code = code;
             _name = name;
+            _projectSubDivisionId = projectSubDivisionId;
+            _repeatsType = repeatsType;
+            _repeatInDays = repeatInDays;
             _url1 = url1;
             _url2 = url2;
             _imageUrl = imageUrl;
@@ -87,7 +100,9 @@ namespace ProjectTasksTrackService.Core
                 comparedProject.CreatedDt != _createdDt ||
                 comparedProject.LastUpdateDt != _lastUpdateDt ||
                 comparedProject.DeadLineDt != _deadLineDt ||
-                comparedProject.DoneDt != _doneDt)
+                comparedProject.DoneDt != _doneDt ||
+                comparedProject.RepeatsType != _repeatsType ||
+                comparedProject.RepeatInDays != _repeatInDays)
                 return false;
 
             return true;

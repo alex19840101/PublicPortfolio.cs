@@ -16,6 +16,8 @@ namespace ProjectTasksTrackService.DataAccess.Configurations
 
             builder.Property(t => t.ProjectId).HasField("_projectId");
             builder.Property(t => t.Code).HasField("_code");
+            builder.Property(t => t.RepeatsType).HasField("_repeatsType").IsRequired();
+            builder.Property(t => t.RepeatInDays).HasField("_repeatInDays");
 
             builder.Property(t => t.Id).IsRequired();
             builder.Property(t => t.Code).HasMaxLength(MAX_NAME_LENGTH).IsRequired();

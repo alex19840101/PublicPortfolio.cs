@@ -8,6 +8,7 @@ using ProjectTasksTrackService.API.Contracts.Dto.Requests;
 using ProjectTasksTrackService.API.Contracts.Dto.Responses;
 using ProjectTasksTrackService.API.Contracts.Interfaces;
 using ProjectTasksTrackService.Core;
+using ProjectTasksTrackService.Core.Enums;
 using ProjectTasksTrackService.Core.Results;
 using ProjectTasksTrackService.Core.Services;
 
@@ -200,6 +201,8 @@ namespace ProjectTasksTrackService.API.Controllers
                 projectId: oldTaskDto.ProjectId,
                 code: oldTaskDto.Code,
                 name: oldTaskDto.Name,
+                repeatsType: (TaskRepeatsType)oldTaskDto.RepeatsType,
+                repeatInDays: oldTaskDto.RepeatInDays,
                 projectSubDivisionId: oldTaskDto.ProjectSubDivisionId,
                 url1: oldTaskDto.Url1,
                 url2: oldTaskDto.Url2,
@@ -218,6 +221,8 @@ namespace ProjectTasksTrackService.API.Controllers
                     projectId: taskDto.ProjectId,
                     code: taskDto.Code,
                     name: taskDto.Name,
+                    repeatsType: (TaskRepeatsType)taskDto.RepeatsType,
+                    repeatInDays: taskDto.RepeatInDays,
                     projectSubDivisionId: taskDto.ProjectSubDivisionId,
                     url1: taskDto.Url1,
                     url2: taskDto.Url2,

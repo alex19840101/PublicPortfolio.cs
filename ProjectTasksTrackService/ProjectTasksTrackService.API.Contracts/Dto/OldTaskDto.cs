@@ -31,7 +31,7 @@ namespace ProjectTasksTrackService.API.Contracts.Dto
         /// <summary> Изображение </summary>
         [JsonPropertyName("i")] public string ImageUrl { get; set; }
 
-        /// <summary> Повторяемость задачи </summary>
+        /// <summary> Повторяемость задачи по TaskRepeatsType </summary>
         [JsonPropertyName("r")] public TaskRepeatsType RepeatsType { get; set; }
         
         /// <summary> Через (...) дней повторять </summary>

@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ProjectTasksTrackService.Core;
+using ProjectTasksTrackService.Core.Enums;
 using ProjectTasksTrackService.Core.Repositories;
 using ProjectTasksTrackService.Core.Results;
 using ProjectTask = ProjectTasksTrackService.Core.ProjectTask;
@@ -56,6 +57,8 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 projectId : task.ProjectId,
                 code: code,
                 name: task.Name,
+                repeatsType: (short)task.RepeatsType,
+                repeatInDays: task.RepeatInDays,
                 projectSubDivisionId: task.ProjectSubDivisionId,
                 url1: task.Url1,
                 url2: task.Url2,
@@ -85,6 +88,8 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 projectId : task.ProjectId,
                 code: task.Code,
                 name: task.Name,
+                repeatsType: (short)task.RepeatsType,
+                repeatInDays: task.RepeatInDays,
                 projectSubDivisionId: task.ProjectSubDivisionId,
                 url1: task.Url1,
                 url2: task.Url2,
@@ -350,6 +355,8 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             projectId: sub.ProjectId,
             code: sub.Code,
             name: sub.Name,
+            repeatsType: (TaskRepeatsType)sub.RepeatsType,
+            repeatInDays: sub.RepeatInDays,
             projectSubDivisionId: sub.ProjectSubDivisionId,
             url1: sub.Url1,
             url2: sub.Url2,
