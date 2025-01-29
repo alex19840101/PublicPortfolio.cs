@@ -263,17 +263,17 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             if (!string.Equals(sub.Url2, entitySub.Url2)) entitySub.UpdateUrl2(sub.Url2);
             if (!string.Equals(sub.ImageUrl, entitySub.ImageUrl)) entitySub.UpdateImageUrl(sub.ImageUrl);
 
-            if (sub.CreatedDt != null && entitySub.CreatedDt == null)
-                entitySub.UpdateCreatedDt(sub.CreatedDt.Value.ToUniversalTime());
+            if (sub.CreatedDt?.ToUniversalTime() != entitySub.CreatedDt)
+                entitySub.UpdateCreatedDt(sub.CreatedDt?.ToUniversalTime());
 
-            if (sub.LastUpdateDt != null && entitySub.LastUpdateDt == null)
-                entitySub.UpdateLastUpdateDt(sub.LastUpdateDt.Value.ToUniversalTime());
+            if (sub.LastUpdateDt?.ToUniversalTime() != entitySub.LastUpdateDt)
+                entitySub.UpdateLastUpdateDt(sub.LastUpdateDt?.ToUniversalTime());
 
-            if (sub.DeadLineDt != null && entitySub.DeadLineDt == null)
-                entitySub.UpdateDeadLineDt(sub.DeadLineDt.Value.ToUniversalTime());
+            if (sub.DeadLineDt?.ToUniversalTime() != entitySub.DeadLineDt)
+                entitySub.UpdateDeadLineDt(sub.DeadLineDt?.ToUniversalTime());
 
-            if (sub.DoneDt != null && entitySub.DoneDt == null)
-                entitySub.UpdateDoneDt(sub.DoneDt.Value.ToUniversalTime());
+            if (sub.DoneDt?.ToUniversalTime() != entitySub.DoneDt)
+                entitySub.UpdateDoneDt(sub.DoneDt?.ToUniversalTime());
 
             if (_dbContext.ChangeTracker.HasChanges())
             {
