@@ -1,10 +1,8 @@
-﻿using AutoFixture;
+﻿using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
-using ProjectTasksTrackService.Core;
 using ProjectTasksTrackService.Core.Repositories;
 using ProjectTasksTrackService.Core.Results;
-using System.Threading.Tasks;
 
 namespace ProjectTasksTrackService.BusinessLogic.xTests
 {

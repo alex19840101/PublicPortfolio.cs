@@ -164,6 +164,7 @@ namespace ProjectTasksTrackService.API.Controllers
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> DeleteProject(DeleteProjectRequestDto deleteProjectRequest)
         {
             var deleteResult = await _projectsService.DeleteProject(
