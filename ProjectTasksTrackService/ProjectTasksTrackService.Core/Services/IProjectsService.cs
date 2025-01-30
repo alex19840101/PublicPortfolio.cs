@@ -20,6 +20,6 @@ namespace ProjectTasksTrackService.Core.Services
             string name = null,
             bool ignoreCase = true);
         Task<UpdateResult> UpdateProject(Project projectDto);
-        Task<string> DeleteProject(int id, string projectSecretString);
+        Task<DeleteResult> DeleteProject(int id, string projectSecretString);
     }
 }

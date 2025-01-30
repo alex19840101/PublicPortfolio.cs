@@ -129,7 +129,7 @@ namespace ProjectTasksTrackService.BusinessLogic
             return await _tasksRepository.UpdateTask(task);
         }
 
-        public async Task<string> DeleteTask(
+        public async Task<DeleteResult> DeleteTask(
             int taskId,
             string taskSecretString,
             int? projectId = null,

@@ -52,6 +52,6 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
         Task<IActionResult> UpdateTask(TaskDto taskDto);
         
         /// <summary> Удаление задачи </summary>
-        Task<string> DeleteTask(DeleteTaskRequestDto deleteTaskRequest);
+        Task<IActionResult> DeleteTask(DeleteTaskRequestDto deleteTaskRequest);
     }
 }

@@ -73,7 +73,13 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             await _dbContext.SaveChangesAsync();
 
             await _dbContext.Entry(newTaskEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id
-            return new CreateResult { Id = newTaskEntity.Id, StatusCode = HttpStatusCode.Created, Code = newTaskEntity.Code };
+            return new CreateResult
+            {
+                Id = newTaskEntity.Id,
+                StatusCode = HttpStatusCode.Created,
+                Code = newTaskEntity.Code,
+                SecretString = GetSecretString(newTaskEntity)
+            };
         }
         
 
@@ -343,20 +349,23 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
         }
 
         
-        public async Task<string> DeleteTask(int id, string projectSubDivisionSecretString, int? projectId, int? subdivisionId)
+        public async Task<DeleteResult> DeleteTask(int id, string projectSubDivisionSecretString, int? projectId, int? subdivisionId)
         {
             var taskEntity = await GetTaskEntity(id, projectId, subdivisionId);
 
             if (taskEntity is null)
-                return Core.ErrorStrings.TASK_NOT_FOUND;
+                return new DeleteResult(ErrorStrings.TASK_NOT_FOUND, HttpStatusCode.NotFound);
 
             if (string.IsNullOrWhiteSpace(projectSubDivisionSecretString))
-                throw new ArgumentNullException(projectSubDivisionSecretString);
+                return new DeleteResult(ErrorStrings.EMPTY_OR_NULL_SECRET_STRING, HttpStatusCode.Forbidden);
+
+            if (!string.Equals(GetSecretString(taskEntity), projectSubDivisionSecretString))
+                return new DeleteResult(ErrorStrings.INVALID_SECRET_STRING, HttpStatusCode.Forbidden);
 
             _dbContext.ProjectTasks.Remove(taskEntity);
             await _dbContext.SaveChangesAsync();
 
-            return Core.ErrorStrings.OK;
+            return new DeleteResult(ErrorStrings.OK, HttpStatusCode.OK);
         }
         private static ProjectTask ProjectTask(Entities.ProjectTask sub) =>
             new ProjectTask(
@@ -394,6 +403,11 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             var entityProjectTasksLst = await query.Skip(skipCount).Take(limitCount).ToListAsync();
 
             return entityProjectTasksLst.Select(t => ProjectTask(t));
+        }
+
+        private static string GetSecretString(Entities.ProjectTask task)
+        {
+            return $"ProjectId={task.ProjectId}.ProjectSubDivisionId={task.ProjectSubDivisionId}.Id={task.Id}".GetHashCode().ToString();
         }
 
     }

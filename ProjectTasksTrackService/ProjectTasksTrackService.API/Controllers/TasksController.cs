@@ -195,11 +195,21 @@ namespace ProjectTasksTrackService.API.Controllers
 
         /// <summary> Удаление задачи </summary>
         [HttpDelete("api/v2/Tasks/DeleteTask")]
-        public async Task<string> DeleteTask(DeleteTaskRequestDto deleteProjectRequest)
+        [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.Forbidden)]
+        public async Task<IActionResult> DeleteTask(DeleteTaskRequestDto deleteProjectRequest)
         {
-            return await _tasksService.DeleteTask(
+            var deleteResult = await _tasksService.DeleteTask(
                 deleteProjectRequest.TaskId,
                 deleteProjectRequest.TaskSecretString);
+
+            if (deleteResult.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(deleteResult);
+            if (deleteResult.StatusCode == HttpStatusCode.Forbidden)
+                return new ObjectResult(deleteResult) { StatusCode = StatusCodes.Status403Forbidden };
+
+            return Ok(deleteResult);
         }
 
         #region Dto<->Core mappers

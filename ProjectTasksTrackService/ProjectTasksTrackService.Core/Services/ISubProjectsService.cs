@@ -24,6 +24,6 @@ namespace ProjectTasksTrackService.Core.Services
             int limitCount = 100,
             bool ignoreCase = true);
         Task<UpdateResult> UpdateSubDivision(ProjectSubDivision subproject);
-        Task<string> DeleteSubDivision(int subDivisionId, string subDivisionSecretString, int? projectId = null);
+        Task<DeleteResult> DeleteSubDivision(int subDivisionId, string subDivisionSecretString, int? projectId = null);
     }
 }

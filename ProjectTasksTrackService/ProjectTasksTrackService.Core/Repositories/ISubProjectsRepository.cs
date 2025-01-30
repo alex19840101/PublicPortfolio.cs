@@ -28,7 +28,7 @@ namespace ProjectTasksTrackService.Core.Repositories
         Task<IEnumerable<ProjectSubDivision>> GetAllProjectSubDivisions();
 
         Task<UpdateResult> UpdateSubDivision(ProjectSubDivision project);
-        Task<string> DeleteSubDivision(int id, string projectSubDivionSecretString, int? projectId = null);
+        Task<DeleteResult> DeleteSubDivision(int id, string projectSubDivionSecretString, int? projectId = null);
         Task<IEnumerable<ProjectSubDivision>> GetHotSubDivisions(
             int? projectId = null,
             DateTime? deadLine = null,

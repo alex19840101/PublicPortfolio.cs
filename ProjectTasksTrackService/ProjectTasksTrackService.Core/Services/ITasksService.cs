@@ -27,6 +27,6 @@ namespace ProjectTasksTrackService.Core.Services
             bool ignoreCase = true);
 
         Task<UpdateResult> UpdateTask(ProjectTask task);
-        Task<string> DeleteTask(int taskId, string taskSecretString, int? projectId = null, int? subdivisionId = null);
+        Task<DeleteResult> DeleteTask(int taskId, string taskSecretString, int? projectId = null, int? subdivisionId = null);
     }
 }

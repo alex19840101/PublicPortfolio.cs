@@ -51,7 +51,13 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             await _dbContext.SaveChangesAsync();
 
             await _dbContext.Entry(newSubEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id
-            return new CreateResult { Id = newSubEntity.Id, StatusCode = HttpStatusCode.Created, Code = newSubEntity.Code };
+            return new CreateResult
+            {
+                Id = newSubEntity.Id,
+                StatusCode = HttpStatusCode.Created,
+                Code = newSubEntity.Code,
+                SecretString = GetSecretString(newSubEntity)
+            };
         }
 
         public async Task<ImportResult> Import(IEnumerable<ProjectSubDivision> subs)
@@ -284,20 +290,23 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             return new UpdateResult(ErrorStrings.SUBDIVISION_IS_ACTUAL, HttpStatusCode.OK);
         }
 
-        public async Task<string> DeleteSubDivision(int id, string projectSubDivisionSecretString, int? projectId)
+        public async Task<DeleteResult> DeleteSubDivision(int id, string projectSubDivisionSecretString, int? projectId)
         {
             var subdivisionEntity = await GetProjectSubDivisionEntity(id, projectId);
 
             if (subdivisionEntity is null)
-                return Core.ErrorStrings.SUBDIVISION_NOT_FOUND;
+                return new DeleteResult(ErrorStrings.SUBDIVISION_NOT_FOUND, HttpStatusCode.NotFound);
 
             if (string.IsNullOrWhiteSpace(projectSubDivisionSecretString))
-                throw new ArgumentNullException(projectSubDivisionSecretString);
+                return new DeleteResult(ErrorStrings.EMPTY_OR_NULL_SECRET_STRING, HttpStatusCode.Forbidden);
+
+            if (!string.Equals(GetSecretString(subdivisionEntity), projectSubDivisionSecretString))
+                return new DeleteResult(ErrorStrings.INVALID_SECRET_STRING, HttpStatusCode.Forbidden);
 
             _dbContext.ProjectSubDivisions.Remove(subdivisionEntity);
             await _dbContext.SaveChangesAsync();
 
-            return Core.ErrorStrings.OK;
+            return new DeleteResult(ErrorStrings.OK, HttpStatusCode.OK);
         }
 
         private static ProjectSubDivision ProjectSubDivision(Entities.ProjectSubDivision sub) =>
@@ -330,6 +339,11 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             var entityProjectSubDivisionsLst = await query.Skip(skipCount).Take(limitCount).ToListAsync();
 
             return entityProjectSubDivisionsLst.Select(s => ProjectSubDivision(s));
+        }
+
+        private static string GetSecretString(Entities.ProjectSubDivision sub)
+        {
+            return $"ProjectId={sub.ProjectId}.Id={sub.Id}".GetHashCode().ToString();
         }
     }
 }

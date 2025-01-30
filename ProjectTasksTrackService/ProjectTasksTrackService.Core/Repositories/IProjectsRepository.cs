@@ -24,6 +24,6 @@ namespace ProjectTasksTrackService.Core.Repositories
         Task<IEnumerable<Project>> GetAllProjects();
 
         Task<UpdateResult> UpdateProject(Project project);
-        Task<string> DeleteProject(int id, string projectSecretString);
+        Task<DeleteResult> DeleteProject(int id, string projectSecretString);
     }
 }

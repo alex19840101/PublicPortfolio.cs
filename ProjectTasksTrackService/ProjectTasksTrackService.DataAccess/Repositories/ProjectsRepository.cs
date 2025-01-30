@@ -40,7 +40,12 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             await _dbContext.SaveChangesAsync();
             
             await _dbContext.Entry(newProjectEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id
-            return new CreateResult { Id = newProjectEntity.Id, StatusCode = HttpStatusCode.Created, Code = newProjectEntity.Code };
+            return new CreateResult {
+                Id = newProjectEntity.Id,
+                StatusCode = HttpStatusCode.Created,
+                Code = newProjectEntity.Code,
+                SecretString = GetSecretString(newProjectEntity)
+            };
         }
 
         public async Task<ImportResult> Import(IEnumerable<Project> projects)
@@ -254,23 +259,32 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             return new UpdateResult(ErrorStrings.PROJECT_IS_ACTUAL, HttpStatusCode.OK);
         }
 
-        public async Task<string> DeleteProject(int id, string projectSecretString)
+        public async Task<DeleteResult> DeleteProject(int id, string projectSecretString)
         {
             var entityProject = await _dbContext.Projects
                 .AsNoTracking()
                 .SingleOrDefaultAsync(p => p.Id == id);
 
             if (entityProject is null)
-                return Core.ErrorStrings.PROJECT_NOT_FOUND;
-            
+                return new DeleteResult(ErrorStrings.PROJECT_NOT_FOUND, HttpStatusCode.NotFound);
+
             if (string.IsNullOrWhiteSpace(projectSecretString))
-                throw new ArgumentNullException(projectSecretString);
+                return new DeleteResult(ErrorStrings.EMPTY_OR_NULL_SECRET_STRING, HttpStatusCode.Forbidden);
+
+            if (!string.Equals(GetSecretString(entityProject), projectSecretString))
+                return new DeleteResult(ErrorStrings.INVALID_SECRET_STRING, HttpStatusCode.Forbidden);
 
             _dbContext.Projects.Remove(entityProject);
             await _dbContext.SaveChangesAsync();
 
-            return Core.ErrorStrings.OK;
+            return new DeleteResult(ErrorStrings.OK, HttpStatusCode.OK);
         }
+
+        private static string GetSecretString(Entities.Project project)
+        {
+            return $"ProjectId={project.Id}".GetHashCode().ToString();
+        }
+
         private static Project Project(Entities.Project project) =>
             new Project(
             id: project.Id,

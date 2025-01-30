@@ -34,7 +34,7 @@ namespace ProjectTasksTrackService.BusinessLogic
             return createResult;
         }
 
-        public async Task<string> DeleteSubDivision(int subDivisionId, string projectSubDivionSecretString, int? projectId = null)
+        public async Task<DeleteResult> DeleteSubDivision(int subDivisionId, string projectSubDivionSecretString, int? projectId = null)
         {
             return await _subProjectsRepository.DeleteSubDivision(subDivisionId, projectSubDivionSecretString, projectId);
         }

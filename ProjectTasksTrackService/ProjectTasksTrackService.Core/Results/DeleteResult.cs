@@ -2,17 +2,17 @@
 
 namespace ProjectTasksTrackService.Core.Results
 {
-    public class UpdateResult
+    public class DeleteResult
     {
-        /// <summary> Сообщение о результате обновления </summary>
+        /// <summary> Сообщение о результате удаления </summary>
         public string Message { get; set; }
 
         public HttpStatusCode StatusCode { get; set; }
 
-        public UpdateResult()
+        public DeleteResult()
         { }
 
-        public UpdateResult(string message, HttpStatusCode statusCode)
+        public DeleteResult(string message, HttpStatusCode statusCode)
         {
             Message = message;
             StatusCode = statusCode;

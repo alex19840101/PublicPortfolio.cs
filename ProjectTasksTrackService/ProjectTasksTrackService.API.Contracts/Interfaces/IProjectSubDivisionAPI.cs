@@ -50,6 +50,6 @@ namespace ProjectTasksTrackService.API.Contracts.Interfaces
         Task<IActionResult> UpdateSubDivision(ProjectSubDivisionDto taskDto);
 
         /// <summary> Удаление подпроекта </summary>
-        Task<string> DeleteSubDivision(DeleteProjectSubDivisionDto deleteSubProjectRequest);
+        Task<IActionResult> DeleteSubDivision(DeleteProjectSubDivisionDto deleteSubProjectRequest);
     }
 }
