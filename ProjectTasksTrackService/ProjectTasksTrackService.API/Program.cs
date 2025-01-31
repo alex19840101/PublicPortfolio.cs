@@ -109,6 +109,11 @@ if (isDevelopment)
         options.SwaggerEndpoint("../swagger/v2/swagger.json", "ProjectTasksTrackService API v2");
     });
 }
+else
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+}
 
 app.UseHttpsRedirection();
 
