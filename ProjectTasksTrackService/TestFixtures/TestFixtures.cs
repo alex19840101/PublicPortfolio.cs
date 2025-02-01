@@ -6,13 +6,13 @@ namespace TestFixtures
 {
     public class TestFixtures
     {
-        public static Project GetProjectFixtureWithAllFields(bool generateId = false)
+        public static Project GetProjectFixtureWithAllFields(bool generateId = false, bool generateCode = true, bool generateName = true)
         {
             var fixture = new Fixture();
 
             var id = generateId ? fixture.Create<int>() : 0;
-            var code = fixture.Build<string>().Create();
-            var name = fixture.Build<string>().Create();
+            var code = generateCode ? fixture.Build<string>().Create() : null;
+            var name = generateName ? fixture.Build<string>().Create() : null;
             var url = fixture.Build<string>().Create();
             var imageUrl = fixture.Build<string>().Create();
 
@@ -41,6 +41,5 @@ namespace TestFixtures
         }
 
         public static int GenerateId() => new Fixture().Create<int>();
-
     }
 }

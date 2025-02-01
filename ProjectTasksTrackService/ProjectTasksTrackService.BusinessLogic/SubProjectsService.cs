@@ -20,6 +20,9 @@ namespace ProjectTasksTrackService.BusinessLogic
 
         public async Task<CreateResult> Create(ProjectSubDivision subproject)
         {
+            if (subproject == null)
+                throw new ArgumentNullException(ErrorStrings.SUBPROJECT_PARAM_NAME);
+
             if (string.IsNullOrWhiteSpace(subproject.Code))
                 return new CreateResult(ErrorStrings.SUBPROJECT_CODE_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 

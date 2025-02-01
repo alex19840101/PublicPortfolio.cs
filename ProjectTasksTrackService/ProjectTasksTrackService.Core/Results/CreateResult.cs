@@ -10,7 +10,7 @@ namespace ProjectTasksTrackService.Core.Results
         /// <summary> Сообщение о результате выполнения запроса Create </summary>
         public string Message { get; set; }
 
-        /// <summary> Сообщение о результате выполнения запроса Create </summary>
+        /// <summary> Код добавленной сущности </summary>
         public string Code { get; set; }
 
         public HttpStatusCode StatusCode { get; set; }

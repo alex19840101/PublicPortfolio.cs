@@ -20,6 +20,9 @@ namespace ProjectTasksTrackService.BusinessLogic
 
         public async Task<CreateResult> Create(Project project)
         {
+            if (project == null)
+                throw new ArgumentNullException(ErrorStrings.PROJECT_PARAM_NAME);
+
             if (string.IsNullOrWhiteSpace(project.Code))
                 return new CreateResult(ErrorStrings.PROJECT_CODE_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
