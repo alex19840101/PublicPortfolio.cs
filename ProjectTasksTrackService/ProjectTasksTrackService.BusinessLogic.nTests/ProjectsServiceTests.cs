@@ -102,6 +102,32 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
         }
 
         [Test]
+        public async Task Create_ProjectWithNotNullId_ShouldReturnCreateResult_PROJECT_ID_SHOULD_BE_ZERO_400()
+        {
+            var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true);
+            var createResult = await _projectsService.Create(project);
+
+            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            Assert.That(createResult != null);
+            Assert.That(createResult.Message, Is.EqualTo(ErrorStrings.PROJECT_ID_SHOULD_BE_ZERO));
+            Assert.That(createResult.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.BadRequest));
+            Assert.That(createResult.Code, Is.EqualTo(null));
+        }
+
+        [Test]
+        public async Task Create_ProjectWithNotNullId_ShouldReturnCreateResult_PROJECT_ID_SHOULD_BE_ZERO_Fluent()
+        {
+            var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true);
+            var createResult = await _projectsService.Create(project);
+
+            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            createResult.Should().NotBeNull();
+            createResult.Message.Should().Be(ErrorStrings.PROJECT_ID_SHOULD_BE_ZERO);
+            createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+            createResult.Code.Should().BeNull();
+        }
+
+        [Test]
         public async Task Create_ProjectIsValidAndFull_ShouldReturnOk()
         {
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields();
