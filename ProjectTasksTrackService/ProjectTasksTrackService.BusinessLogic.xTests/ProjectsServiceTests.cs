@@ -229,5 +229,29 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             importResult.Should().BeNull();
             exception.ParamName.Should().Be(ErrorStrings.PROJECTS_PARAM_NAME);
         }
+
+        [Fact]
+        public async Task Import_ProjectsIsEmpty_ShouldReturnImportResult_PROJECTS_LIST_TO_IMPORT_SHOULD_BE_FILLED()
+        {
+            IEnumerable<Core.Project> projects = [];
+            var importResult = await _projectsService.Import(projects);
+
+            _projectsRepositoryMock.Verify(repo => repo.Import(projects), Times.Never);
+            Assert.NotNull(importResult);
+            Assert.Equal(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_BE_FILLED, importResult.Message);
+            Assert.Equal(System.Net.HttpStatusCode.BadRequest, importResult.StatusCode);
+        }
+
+        [Fact]
+        public async Task Import_ProjectsIsEmpty_ShouldReturnImportResult_PROJECTS_LIST_TO_IMPORT_SHOULD_BE_FILLED_FluentAssertion()
+        {
+            IEnumerable<Core.Project> projects = [];
+            var importResult = await _projectsService.Import(projects);
+
+            _projectsRepositoryMock.Verify(repo => repo.Import(projects), Times.Never);
+            importResult.Should().NotBeNull();
+            importResult.Message.Should().Be(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_BE_FILLED);
+            importResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+        }
     }
 }
