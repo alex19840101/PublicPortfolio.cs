@@ -65,7 +65,7 @@ namespace ProjectTasksTrackService.BusinessLogic
                 return new ImportResult { ImportedCount = 0, Message = $"{ErrorStrings.PROJECT_CONFLICTS}:{string.Join(",", conflictedIds)}" };
 
             if (!newProjectsToImport.Any())
-                return new ImportResult { ImportedCount = 0, Message = ErrorStrings.ALREADY_IMPORTED };
+                return new ImportResult { ImportedCount = 0, Message = ErrorStrings.ALREADY_IMPORTED, StatusCode = System.Net.HttpStatusCode.OK };
 
             var importResult = await _projectsRepository.Import(newProjectsToImport);
 

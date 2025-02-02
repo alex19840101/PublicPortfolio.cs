@@ -248,5 +248,61 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             importResult.Message.Should().Be(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_BE_FILLED);
             importResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
         }
+
+        [TestMethod]
+        public async Task Import_AlreadyImportedProjects_ShouldReturnImportResult_ALREADY_IMPORTED()
+        {
+            List<int> excludeIds = [];
+            var project1 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
+            var project2 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
+            var project3 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
+
+            IEnumerable<Core.Project> projects = new List<Core.Project>
+            {
+                project1,
+                project2,
+                project3,
+            };
+
+            _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
+                .ReturnsAsync(projects);
+
+            var importResult = await _projectsService.Import(projects);
+
+            _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
+            _projectsRepositoryMock.Verify(repo => repo.Import(projects), Times.Never);
+            Assert.IsNotNull(importResult);
+            Assert.AreEqual(ErrorStrings.ALREADY_IMPORTED, importResult.Message);
+            Assert.AreEqual(0, importResult.ImportedCount);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, importResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task Import_AlreadyImportedProjects_ShouldReturnImportResult_ALREADY_IMPORTED_FluentAssertion()
+        {
+            List<int> excludeIds = [];
+            var project1 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
+            var project2 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
+            var project3 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
+
+            IEnumerable<Core.Project> projects = new List<Core.Project>
+            {
+                project1,
+                project2,
+                project3,
+            };
+
+            _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
+                .ReturnsAsync(projects);
+
+            var importResult = await _projectsService.Import(projects);
+
+            _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Import(projects), Times.Never);
+            importResult.Should().NotBeNull();
+            importResult.Message.Should().Be(ErrorStrings.ALREADY_IMPORTED);
+            importResult.ImportedCount.Should().Be(0);
+            importResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+        }
     }
 }
