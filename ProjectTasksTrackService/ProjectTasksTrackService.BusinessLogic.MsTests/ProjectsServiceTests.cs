@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -196,6 +197,32 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
 
             _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task Import_ProjectsIsNull_ShouldThrowArgumentNullException()
+        {
+            IEnumerable<Core.Project> projects = null;
+            ImportResult importResult = null;
+            var exception = await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => importResult = await _projectsService.Import(projects));
+
+            _projectsRepositoryMock.Verify(repo => repo.Import(projects), Times.Never);
+            Assert.IsNotNull(exception);
+            Assert.IsNull(importResult);
+            Assert.AreEqual(ErrorStrings.PROJECTS_PARAM_NAME, exception.ParamName);
+        }
+
+        [TestMethod]
+        public async Task Import_ProjectsIsNull_ShouldThrowArgumentNullException_FluentAssertion()
+        {
+            IEnumerable<Core.Project> projects = null;
+            ImportResult importResult = null;
+            var exception = await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => importResult = await _projectsService.Import(projects));
+
+            _projectsRepositoryMock.Verify(repo => repo.Import(projects), Times.Never);
+            exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ErrorStrings.PROJECTS_PARAM_NAME);
+            importResult.Should().BeNull();
+            exception.ParamName.Should().Be(ErrorStrings.PROJECTS_PARAM_NAME);
         }
     }
 }

@@ -40,7 +40,7 @@ namespace ProjectTasksTrackService.BusinessLogic
         public async Task<ImportResult> Import(IEnumerable<Project> projects)
         {
             if (projects is null)
-                return new ImportResult(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_NOT_BE_NULL, System.Net.HttpStatusCode.BadRequest);
+                throw new ArgumentNullException(ErrorStrings.PROJECTS_PARAM_NAME);
 
             if (!projects.Any())
                 return new ImportResult(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_BE_FILLED, System.Net.HttpStatusCode.BadRequest);
