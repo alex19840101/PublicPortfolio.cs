@@ -52,7 +52,12 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
         {
             ArgumentNullException.ThrowIfNull(projects);
             if (!projects.Any())
-                return new ImportResult { Message = ErrorStrings.PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT };
+                return new ImportResult
+                {
+                    ImportedCount = 0,
+                    Message = ErrorStrings.PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT,
+                    StatusCode = HttpStatusCode.BadRequest
+                };
 
             IEnumerable<Entities.Project> projectEntities = projects.Select(p => new Entities.Project(
                 id: p.Id,

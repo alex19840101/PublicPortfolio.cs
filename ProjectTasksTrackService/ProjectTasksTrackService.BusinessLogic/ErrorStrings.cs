@@ -36,5 +36,7 @@
         public const string TASKS_LIST_TO_IMPORT_SHOULD_NOT_BE_NULL = "Tasks list to import should not be null";
         public const string TASKS_LIST_TO_IMPORT_SHOULD_BE_FILLED = "Tasks list to import should contain at least 1 task";
         public const string TASKS_CONFLICTS = "Tasks conflict(s)";
+
+        public const string IMPORT_RESULT_STATUS_CODE_IS_NOT_OK = "importResult.StatusCode != OK";
     }
 }
