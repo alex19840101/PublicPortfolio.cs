@@ -99,5 +99,15 @@ namespace TestFixtures
 
             return (projects, imProjects);
         }
+
+        public static List<Project> GenerateProjectsList(uint count)
+        {
+            List<int> excludeIds = new List<int>();
+            List<Project> projectList = new List<Project>();
+            for (uint i = 0; i < count; i++)
+                projectList.Add(GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds));
+            
+            return projectList;
+        }
     }
 }

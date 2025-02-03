@@ -257,17 +257,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
         [Fact]
         public async Task Import_AlreadyImportedProjects_ShouldReturnImportResult_ALREADY_IMPORTED()
         {
-            List<int> excludeIds = [];
-            var project1 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
-            var project2 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
-            var project3 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
-
-            IEnumerable<Core.Project> projects = new List<Core.Project>
-            {
-                project1,
-                project2,
-                project3,
-            };
+            var projects = TestFixtures.TestFixtures.GenerateProjectsList(3);
 
             _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
                 .ReturnsAsync(projects);
@@ -285,17 +275,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
         [Fact]
         public async Task Import_AlreadyImportedProjects_ShouldReturnImportResult_ALREADY_IMPORTED_FluentAssertion()
         {
-            List<int> excludeIds = [];
-            var project1 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
-            var project2 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
-            var project3 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
-
-            IEnumerable<Core.Project> projects = new List<Core.Project>
-            {
-                project1,
-                project2,
-                project3,
-            };
+            var projects = TestFixtures.TestFixtures.GenerateProjectsList(3);
 
             _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
                 .ReturnsAsync(projects);

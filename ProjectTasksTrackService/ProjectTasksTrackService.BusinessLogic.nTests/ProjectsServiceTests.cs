@@ -258,17 +258,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
         [Test]
         public async Task Import_AlreadyImportedProjects_ShouldReturnImportResult_ALREADY_IMPORTED()
         {
-            List<int> excludeIds = [];
-            var project1 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
-            var project2 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
-            var project3 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
-
-            IEnumerable<Core.Project> projects = new List<Core.Project>
-            {
-                project1,
-                project2,
-                project3,
-            };
+            var projects = TestFixtures.TestFixtures.GenerateProjectsList(3);
 
             _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
                 .ReturnsAsync(projects);
@@ -283,21 +273,11 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             Assert.That(importResult.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK));
         }
 
-        /// <summary> Здесь бывает ошибка-глюк тестирования (из-за FluentAssertion + nUnit): Moq.MockException : Expected invocation on the mock once, but was 2 times: pr => pr.GetAllProjects()</summary>
+        /// <summary> Здесь бывает ошибка-глюк тестирования ((из-за nUnit+FluentAssertion)): Moq.MockException : Expected invocation on the mock once, but was 2 times: pr => pr.GetAllProjects()</summary>
         [Test]
         public async Task Import_AlreadyImportedProjects_ShouldReturnImportResult_ALREADY_IMPORTED_FluentAssertion()
         {
-            List<int> excludeIds = [];
-            var project1 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
-            var project2 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
-            var project3 = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
-
-            IEnumerable<Core.Project> projects = new List<Core.Project>
-            {
-                project1,
-                project2,
-                project3,
-            };
+            var projects = TestFixtures.TestFixtures.GenerateProjectsList(3);
 
             _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
                 .ReturnsAsync(projects);
@@ -313,7 +293,9 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
         }
 
 
-        /// <summary> Тест импорта набора из 5 проектов, с конфликтами в проектах с индексами [0], [2], [4] </summary>
+        /// <summary> Тест импорта набора из 5 проектов, с конфликтами в проектах с индексами [0], [2], [4]
+        /// Здесь бывает ошибка-глюк тестирования ((из-за nUnit)): Moq.MockException : Expected invocation on the mock once, but was 2 times: pr => pr.GetAllProjects()
+        /// </summary>
         [Test]
         public async Task Import_ProjectsWithConflicts1_3_5_ShouldReturnImportResult_PROJECT_CONFLICTS()
         {
@@ -334,7 +316,8 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             Assert.That(importResult.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Conflict));
         }
 
-        /// <summary> Тест импорта набора из 5 проектов, с конфликтами в проектах с индексами [0], [2], [4] </summary>
+        /// <summary> Тест импорта набора из 5 проектов, с конфликтами в проектах с индексами [0], [2], [4].
+        /// Здесь бывает ошибка-глюк тестирования ((из-за nUnit+FluentAssertion)): Moq.MockException : Expected invocation on the mock once, but was 2 times: pr => pr.GetAllProjects().</summary>
         [Test]
         public async Task Import_ProjectsWithConflicts1_3_5_ShouldReturnImportResult_PROJECT_CONFLICTS_FluentAssertion()
         {

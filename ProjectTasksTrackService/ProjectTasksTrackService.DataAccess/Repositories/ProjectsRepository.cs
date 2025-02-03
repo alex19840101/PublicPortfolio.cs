@@ -68,7 +68,11 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             await _dbContext.Projects.AddRangeAsync(projectEntities);
             await _dbContext.SaveChangesAsync();
 
-            return new ImportResult { ImportedCount = projects.Count(), Message = ErrorStrings.OK};
+            return new ImportResult
+            {
+                ImportedCount = projects.Count(),
+                Message = ErrorStrings.OK,
+                StatusCode = HttpStatusCode.OK };
         }
 
         public async Task<Project> GetProjectById(int id)

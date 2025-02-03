@@ -70,11 +70,21 @@ namespace ProjectTasksTrackService.BusinessLogic
                 };
 
             if (!newProjectsToImport.Any())
-                return new ImportResult { ImportedCount = 0, Message = ErrorStrings.ALREADY_IMPORTED, StatusCode = System.Net.HttpStatusCode.OK };
+                return new ImportResult
+                {
+                    ImportedCount = 0,
+                    Message = ErrorStrings.ALREADY_IMPORTED,
+                    StatusCode = System.Net.HttpStatusCode.OK
+                };
 
             var importResult = await _projectsRepository.Import(newProjectsToImport);
 
-            return new ImportResult { ImportedCount = importResult.ImportedCount, Message = ErrorStrings.IMPORTED };
+            return new ImportResult
+            {
+                ImportedCount = importResult.ImportedCount,
+                Message = ErrorStrings.IMPORTED,
+                StatusCode = importResult.StatusCode
+            };
         }
 
         public async Task<UpdateResult> UpdateProject(Project project)
