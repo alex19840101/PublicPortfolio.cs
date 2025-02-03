@@ -62,7 +62,12 @@ namespace ProjectTasksTrackService.BusinessLogic
             }
 
             if (conflictedIds.Any())
-                return new ImportResult { ImportedCount = 0, Message = $"{ErrorStrings.PROJECT_CONFLICTS}:{string.Join(",", conflictedIds)}" };
+                return new ImportResult
+                {
+                    ImportedCount = 0,
+                    Message = $"{ErrorStrings.PROJECT_CONFLICTS}:{string.Join(",", conflictedIds)}",
+                    StatusCode = System.Net.HttpStatusCode.Conflict
+                };
 
             if (!newProjectsToImport.Any())
                 return new ImportResult { ImportedCount = 0, Message = ErrorStrings.ALREADY_IMPORTED, StatusCode = System.Net.HttpStatusCode.OK };

@@ -71,5 +71,10 @@ namespace ProjectTasksTrackService.Core
 
             return true;
         }
+
+        public override string ToString()
+        {
+            return $"{_id} {_code} {_name}";
+        }
     }
 }

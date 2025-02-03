@@ -309,5 +309,48 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             importResult.ImportedCount.Should().Be(0);
             importResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
+
+
+        /// <summary> Тест импорта набора из 5 проектов, с конфликтами в проектах с индексами [0], [2], [4] </summary>
+        [Fact]
+        public async Task Import_ProjectsWithConflicts1_3_5_ShouldReturnImportResult_PROJECT_CONFLICTS()
+        {
+            (List<Core.Project> existingProjects, List<Core.Project> projectToImport) =
+               TestFixtures.TestFixtures.Simulate10ProjectsWithConflicts1_3_5_ToImport();
+
+            _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
+                .ReturnsAsync(existingProjects);
+            var expectedMessage = $"{ErrorStrings.PROJECT_CONFLICTS}:{existingProjects[0].Id},{existingProjects[2].Id},{existingProjects[4].Id}";
+
+            var importResult = await _projectsService.Import(projectToImport);
+
+            _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
+            _projectsRepositoryMock.Verify(repo => repo.Import(projectToImport), Times.Never);
+            Assert.NotNull(importResult);
+            Assert.Equal(expectedMessage, importResult.Message);
+            Assert.Equal(0, importResult.ImportedCount);
+            Assert.Equal(System.Net.HttpStatusCode.Conflict, importResult.StatusCode);
+        }
+
+        /// <summary> Тест импорта набора из 5 проектов, с конфликтами в проектах с индексами [0], [2], [4] </summary>
+        [Fact]
+        public async Task Import_ProjectsWithConflicts1_3_5_ShouldReturnImportResult_PROJECT_CONFLICTS_FluentAssertion()
+        {
+            (List<Core.Project> existingProjects, List<Core.Project> projectToImport) =
+               TestFixtures.TestFixtures.Simulate10ProjectsWithConflicts1_3_5_ToImport();
+
+            _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
+                .ReturnsAsync(existingProjects);
+            var expectedMessage = $"{ErrorStrings.PROJECT_CONFLICTS}:{existingProjects[0].Id},{existingProjects[2].Id},{existingProjects[4].Id}";
+
+            var importResult = await _projectsService.Import(projectToImport);
+
+            _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Import(projectToImport), Times.Never);
+            importResult.Should().NotBeNull();
+            importResult.Message.Should().Be(expectedMessage);
+            importResult.ImportedCount.Should().Be(0);
+            importResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Conflict);
+        }
     }
 }

@@ -283,6 +283,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             Assert.That(importResult.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK));
         }
 
+        /// <summary> Здесь бывает ошибка-глюк тестирования (из-за FluentAssertion + nUnit): Moq.MockException : Expected invocation on the mock once, but was 2 times: pr => pr.GetAllProjects()</summary>
         [Test]
         public async Task Import_AlreadyImportedProjects_ShouldReturnImportResult_ALREADY_IMPORTED_FluentAssertion()
         {
@@ -309,6 +310,49 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             importResult.Message.Should().Be(ErrorStrings.ALREADY_IMPORTED);
             importResult.ImportedCount.Should().Be(0);
             importResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+        }
+
+
+        /// <summary> Тест импорта набора из 5 проектов, с конфликтами в проектах с индексами [0], [2], [4] </summary>
+        [Test]
+        public async Task Import_ProjectsWithConflicts1_3_5_ShouldReturnImportResult_PROJECT_CONFLICTS()
+        {
+            (List<Core.Project> existingProjects, List<Core.Project> projectToImport) =
+               TestFixtures.TestFixtures.Simulate10ProjectsWithConflicts1_3_5_ToImport();
+
+            _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
+                .ReturnsAsync(existingProjects);
+            var expectedMessage = $"{ErrorStrings.PROJECT_CONFLICTS}:{existingProjects[0].Id},{existingProjects[2].Id},{existingProjects[4].Id}";
+
+            var importResult = await _projectsService.Import(projectToImport);
+
+            _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
+            _projectsRepositoryMock.Verify(repo => repo.Import(projectToImport), Times.Never);
+            Assert.That(importResult != null);
+            Assert.That(importResult.Message, Is.EqualTo(expectedMessage));
+            Assert.That(importResult.ImportedCount, Is.EqualTo(0));
+            Assert.That(importResult.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Conflict));
+        }
+
+        /// <summary> Тест импорта набора из 5 проектов, с конфликтами в проектах с индексами [0], [2], [4] </summary>
+        [Test]
+        public async Task Import_ProjectsWithConflicts1_3_5_ShouldReturnImportResult_PROJECT_CONFLICTS_FluentAssertion()
+        {
+            (List<Core.Project> existingProjects, List<Core.Project> projectToImport) =
+               TestFixtures.TestFixtures.Simulate10ProjectsWithConflicts1_3_5_ToImport();
+
+            _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
+                .ReturnsAsync(existingProjects);
+            var expectedMessage = $"{ErrorStrings.PROJECT_CONFLICTS}:{existingProjects[0].Id},{existingProjects[2].Id},{existingProjects[4].Id}";
+
+            var importResult = await _projectsService.Import(projectToImport);
+
+            _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Import(projectToImport), Times.Never);
+            importResult.Should().NotBeNull();
+            importResult.Message.Should().Be(expectedMessage);
+            importResult.ImportedCount.Should().Be(0);
+            importResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Conflict);
         }
     }
 }
