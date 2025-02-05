@@ -528,8 +528,6 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var id = TestFixtures.TestFixtures.GenerateId();
             var projectSecretString = TestFixtures.TestFixtures.GenerateString();
 
-            var existingProjects = new List<Project>();
-
             _projectsRepositoryMock.Setup(pr => pr.DeleteProject(id, projectSecretString))
                 .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.NotFound, Message = Core.ErrorStrings.PROJECT_NOT_FOUND });
 
@@ -548,8 +546,6 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var id = TestFixtures.TestFixtures.GenerateId();
             var projectSecretString = TestFixtures.TestFixtures.GenerateString();
 
-            var existingProjects = new List<Project>();
-
             _projectsRepositoryMock.Setup(pr => pr.DeleteProject(id, projectSecretString))
                 .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.NotFound, Message = Core.ErrorStrings.PROJECT_NOT_FOUND });
 
@@ -560,6 +556,46 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(Core.ErrorStrings.PROJECT_NOT_FOUND);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+        }
+
+        [DataTestMethod]
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" ")]
+        public async Task DeleteProject_EmptyOrNullOrSpaceSecretString_ShouldReturnDeleteResult_EMPTY_OR_NULL_SECRET_STRING(string projectSecretString)
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+
+            _projectsRepositoryMock.Setup(pr => pr.DeleteProject(id, projectSecretString))
+                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.Forbidden, Message = Core.ErrorStrings.EMPTY_OR_NULL_SECRET_STRING });
+
+            var deleteResult = await _projectsService.DeleteProject(id, projectSecretString);
+
+            _projectsRepositoryMock.Verify(pr => pr.DeleteProject(id, projectSecretString), Times.Once);
+
+            Assert.IsNotNull(deleteResult);
+            Assert.AreEqual(Core.ErrorStrings.EMPTY_OR_NULL_SECRET_STRING, deleteResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, deleteResult.StatusCode);
+        }
+
+        [DataTestMethod]
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" ")]
+        public async Task DeleteProject_EmptyOrNullOrSpaceSecretString_ShouldReturnDeleteResult_EMPTY_OR_NULL_SECRET_STRING_FluentAssertion(string projectSecretString)
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+
+            _projectsRepositoryMock.Setup(pr => pr.DeleteProject(id, projectSecretString))
+                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.Forbidden, Message = Core.ErrorStrings.EMPTY_OR_NULL_SECRET_STRING });
+
+            var deleteResult = await _projectsService.DeleteProject(id, projectSecretString);
+
+            _projectsRepositoryMock.Verify(pr => pr.DeleteProject(id, projectSecretString), Times.Once);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(Core.ErrorStrings.EMPTY_OR_NULL_SECRET_STRING);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
         }
     }
 }

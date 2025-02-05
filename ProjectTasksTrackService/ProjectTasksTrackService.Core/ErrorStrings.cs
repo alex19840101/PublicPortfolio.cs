@@ -28,7 +28,7 @@
         public const string TASK_REPEATSTYPE_SHOULD_BE_THE_SAME = "Task.RepeatsType should be the same";
         public const string TASK_REPEATINDAYS_SHOULD_BE_THE_SAME = "Task.RepeatInDays should be the same";
 
-        public const string EMPTY_OR_NULL_SECRET_STRING = "Empty/null secret string";
+        public const string EMPTY_OR_NULL_SECRET_STRING = "Empty/null/space secret string";
         public const string INVALID_SECRET_STRING = "Invalid secret string";
     }
 }
