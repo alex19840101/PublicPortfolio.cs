@@ -995,5 +995,41 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
             updateResult.Message.Should().Be(Core.ErrorStrings.PROJECT_IS_ACTUAL);
         }
+
+
+        [Test]
+        public async Task Update_ProjectNotFound_ShouldReturnUpdateResult_PROJECT_NOT_FOUND()
+        {
+            var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true);
+
+            _projectsRepositoryMock.Setup(pr => pr.UpdateProject(project))
+                .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.PROJECT_NOT_FOUND, StatusCode = System.Net.HttpStatusCode.NotFound });
+
+            var updateResult = await _projectsService.UpdateProject(project);
+
+            _projectsRepositoryMock.Verify(pr => pr.UpdateProject(project), Times.Once);
+
+            Assert.That(updateResult != null);
+            Assert.That(updateResult.Message, Is.EqualTo(Core.ErrorStrings.PROJECT_NOT_FOUND));
+            Assert.That(updateResult.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.NotFound));
+        }
+
+        [Test]
+        public async Task Update_ProjectNotFound_ShouldReturnUpdateResult_PROJECT_NOT_FOUND_FluentAssertion()
+        {
+            var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true);
+
+            _projectsRepositoryMock.Setup(pr => pr.UpdateProject(project))
+                .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.PROJECT_NOT_FOUND, StatusCode = System.Net.HttpStatusCode.NotFound });
+
+            var updateResult = await _projectsService.UpdateProject(project);
+
+
+            _projectsRepositoryMock.Verify(pr => pr.UpdateProject(project), Times.Once);
+
+            updateResult.Should().NotBeNull();
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+            updateResult.Message.Should().Be(Core.ErrorStrings.PROJECT_NOT_FOUND);
+        }
     }
 }
