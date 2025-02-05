@@ -146,6 +146,13 @@ namespace TestFixtures
             return projectList;
         }
 
+        public static string GenerateString()
+        {
+            var fixture = new Fixture();
+
+            return fixture.Build<string>().Create();
+        }
+
         public static List<Project> ReturnSomeOfProjects(List<Project> projects)
         {
             var random = new Random();

@@ -526,5 +526,46 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             importResult.ImportedCount.Should().Be(expectedImportedCount);
             importResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
+
+
+        [Fact]
+        public async Task DeleteProject_ProjectNotFound_ShouldReturnDeleteResult_PROJECT_NOT_FOUND()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            var projectSecretString = TestFixtures.TestFixtures.GenerateString();
+
+            var existingProjects = new List<Project>();
+
+            _projectsRepositoryMock.Setup(pr => pr.DeleteProject(id, projectSecretString))
+                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.NotFound, Message = Core.ErrorStrings.PROJECT_NOT_FOUND });
+
+            var deleteResult = await _projectsService.DeleteProject(id, projectSecretString);
+
+            _projectsRepositoryMock.Verify(pr => pr.DeleteProject(id, projectSecretString), Times.Once);
+
+            Assert.NotNull(deleteResult);
+            Assert.Equal(Core.ErrorStrings.PROJECT_NOT_FOUND, deleteResult.Message);
+            Assert.Equal(System.Net.HttpStatusCode.NotFound, deleteResult.StatusCode);
+        }
+
+        [Fact]
+        public async Task DeleteProject_ProjectNotFound_ShouldReturnDeleteResult_PROJECT_NOT_FOUND_FluentAssertion()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            var projectSecretString = TestFixtures.TestFixtures.GenerateString();
+
+            var existingProjects = new List<Project>();
+
+            _projectsRepositoryMock.Setup(pr => pr.DeleteProject(id, projectSecretString))
+                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.NotFound, Message = Core.ErrorStrings.PROJECT_NOT_FOUND });
+
+            var deleteResult = await _projectsService.DeleteProject(id, projectSecretString);
+
+            _projectsRepositoryMock.Verify(pr => pr.DeleteProject(id, projectSecretString), Times.Once);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(Core.ErrorStrings.PROJECT_NOT_FOUND);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+        }
     }
 }
