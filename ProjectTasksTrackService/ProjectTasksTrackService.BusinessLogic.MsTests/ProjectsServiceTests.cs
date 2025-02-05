@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -368,9 +369,60 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var exception = await Assert.ThrowsExceptionAsync<InvalidOperationException>(async () => importResult = await _projectsService.Import(projects));
 
             _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
-            _projectsRepositoryMock.Verify(repo => repo.Import(emptyProjectList), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Import(emptyProjectList), Times.Once);
             importResult.Should().BeNull();
             exception.Should().NotBeNull().And.Match<InvalidOperationException>(e => string.Equals(e.Message, $"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK} ({importResult.StatusCode}). Message: ({importResultExpectedMessage})"));
+        }
+
+
+        [TestMethod]
+        public async Task Import_PartiallyImportedProjects_ShouldReturnImportResult_OK_with_new_importedCount()
+        {
+            var projects = TestFixtures.TestFixtures.GenerateProjectsList(10);
+
+            var existingProjects = TestFixtures.TestFixtures.ReturnSomeOfProjects(projects);
+            var newProjects = projects.Except(existingProjects).ToList();
+            var expectedImportedCount = newProjects.Count;
+
+            _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
+                .ReturnsAsync(existingProjects);
+            _projectsRepositoryMock.Setup(pr => pr.Import(newProjects))
+                .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.OK, Message = ErrorStrings.IMPORTED, ImportedCount = newProjects.Count });
+
+            var importResult = await _projectsService.Import(projects);
+
+            _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Import(newProjects), Times.Once);
+
+            Assert.IsNotNull(importResult);
+            Assert.AreEqual(ErrorStrings.IMPORTED, importResult.Message);
+            Assert.AreEqual(expectedImportedCount, importResult.ImportedCount);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, importResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task Import_PartiallyImportedProjects_ShouldReturnImportResult_OK_with_new_importedCount_FluentAssertion()
+        {
+            var projects = TestFixtures.TestFixtures.GenerateProjectsList(10);
+
+            var existingProjects = TestFixtures.TestFixtures.ReturnSomeOfProjects(projects);
+            var newProjects = projects.Except(existingProjects).ToList();
+            var expectedImportedCount = newProjects.Count;
+
+            _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
+                .ReturnsAsync(existingProjects);
+            _projectsRepositoryMock.Setup(pr => pr.Import(newProjects))
+                .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.OK, Message = ErrorStrings.IMPORTED, ImportedCount = newProjects.Count });
+
+            var importResult = await _projectsService.Import(projects);
+
+            _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Import(newProjects), Times.Once);
+
+            importResult.Should().NotBeNull();
+            importResult.Message.Should().Be(ErrorStrings.IMPORTED);
+            importResult.ImportedCount.Should().Be(expectedImportedCount);
+            importResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
     }
 }

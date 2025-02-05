@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
+using ProjectTasksTrackService.Core;
 using ProjectTasksTrackService.Core.Repositories;
 using ProjectTasksTrackService.Core.Results;
 
@@ -331,6 +333,102 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             importResult.Message.Should().Be(expectedMessage);
             importResult.ImportedCount.Should().Be(0);
             importResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Conflict);
+        }
+
+
+        [Fact]
+        public async Task Import_PartiallyImportedProjects_ShouldReturnImportResult_OK_with_new_importedCount()
+        {
+            var projects = TestFixtures.TestFixtures.GenerateProjectsList(10);
+
+            var existingProjects = TestFixtures.TestFixtures.ReturnSomeOfProjects(projects);
+            var newProjects = projects.Except(existingProjects).ToList();
+            var expectedImportedCount = newProjects.Count;
+
+            _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
+                .ReturnsAsync(existingProjects);
+            _projectsRepositoryMock.Setup(pr => pr.Import(newProjects))
+                .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.OK, Message = ErrorStrings.IMPORTED, ImportedCount = newProjects.Count });
+
+            var importResult = await _projectsService.Import(projects);
+
+            _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Import(newProjects), Times.Once);
+
+            Assert.NotNull(importResult);
+            Assert.Equal(ErrorStrings.IMPORTED, importResult.Message);
+            Assert.Equal(expectedImportedCount, importResult.ImportedCount);
+            Assert.Equal(System.Net.HttpStatusCode.OK, importResult.StatusCode);
+        }
+
+        [Fact]
+        public async Task Import_PartiallyImportedProjects_ShouldReturnImportResult_OK_with_new_importedCount_FluentAssertion()
+        {
+            var projects = TestFixtures.TestFixtures.GenerateProjectsList(10);
+
+            var existingProjects = TestFixtures.TestFixtures.ReturnSomeOfProjects(projects);
+            var newProjects = projects.Except(existingProjects).ToList();
+            var expectedImportedCount = newProjects.Count;
+
+            _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
+                .ReturnsAsync(existingProjects);
+            _projectsRepositoryMock.Setup(pr => pr.Import(newProjects))
+                .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.OK, Message = ErrorStrings.IMPORTED, ImportedCount = newProjects.Count });
+
+            var importResult = await _projectsService.Import(projects);
+
+            _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Import(newProjects), Times.Once);
+
+            importResult.Should().NotBeNull();
+            importResult.Message.Should().Be(ErrorStrings.IMPORTED);
+            importResult.ImportedCount.Should().Be(expectedImportedCount);
+            importResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+        }
+
+
+        [Fact]
+        public async Task Import_IMPORT_RESULT_STATUS_CODE_IS_NOT_OK_ShouldThrowInvalidOperationException()
+        {
+            var projects = TestFixtures.TestFixtures.GenerateProjectsList(3);
+            List<Project> emptyProjectList = [];
+            _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
+                .ReturnsAsync(projects);
+            var importResultExpectedMessage = Core.ErrorStrings.PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT;
+            _projectsRepositoryMock.Setup(pr => pr.Import(emptyProjectList))
+                .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.BadRequest, Message = importResultExpectedMessage, ImportedCount = 0 });
+
+            ImportResult importResult = null;
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(async () => importResult = await _projectsService.Import(projects));
+
+            _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Import(emptyProjectList), Times.Once);
+
+            Assert.NotNull(exception);
+            Assert.Null(importResult);
+            Assert.Equal($"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK} ({importResult.StatusCode}). Message: ({importResultExpectedMessage})", exception.Message);
+            Assert.Equal(System.Net.HttpStatusCode.BadRequest, importResult.StatusCode);
+        }
+
+        [Fact]
+        public async Task Import_IMPORT_RESULT_STATUS_CODE_IS_NOT_OK_ShouldThrowInvalidOperationException_FluentAssertion()
+        {
+            var projects = TestFixtures.TestFixtures.GenerateProjectsList(3);
+            List<Project> emptyProjectList = [];
+
+            _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
+                .ReturnsAsync(projects);
+            var importResultExpectedMessage = Core.ErrorStrings.PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT;
+            _projectsRepositoryMock.Setup(pr => pr.Import(emptyProjectList))
+                .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.BadRequest, Message = importResultExpectedMessage, ImportedCount = 0 });
+
+            ImportResult importResult = null;
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(async () => importResult = await _projectsService.Import(projects));
+
+            _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Import(emptyProjectList), Times.Once);
+            importResult.Should().BeNull();
+            exception.Should().NotBeNull().And.Match<InvalidOperationException>(e => string.Equals(e.Message, $"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK} ({importResult.StatusCode}). Message: ({importResultExpectedMessage})"));
         }
     }
 }

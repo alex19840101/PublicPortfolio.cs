@@ -109,5 +109,32 @@ namespace TestFixtures
             
             return projectList;
         }
+
+        public static List<Project> ReturnSomeOfProjects(List<Project> projects)
+        {
+            var random = new Random();
+
+            int projectsCount = projects.Count;
+            int randomCount = random.Next(1, projectsCount);
+
+            List<Project> someOfProjectsList = new List<Project>();
+            List<int> indexList = new List<int>();
+            
+            var returnCount = 0;
+            int maxIndex = projectsCount - 1;
+            int randomIndex = random.Next(0, maxIndex);
+
+            while (returnCount == 0 || returnCount < randomCount)
+            {
+                while (indexList.Contains(randomIndex))
+                    randomIndex = random.Next(0, maxIndex);
+
+                someOfProjectsList.Add(projects[randomIndex]);
+                indexList.Add(randomIndex);
+                returnCount++;
+            }
+
+            return someOfProjectsList;
+        }
     }
 }
