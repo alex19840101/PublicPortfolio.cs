@@ -697,5 +697,51 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             project.Should().BeNull();
             exception.Should().NotBeNull().And.Match<InvalidOperationException>(e => string.Equals(e.Message, $"{ErrorStrings.GET_PROJECT_CALLED_WITH_NULL_EMPTY_PRMS}"));
         }
+
+        [DataTestMethod]
+        [DataRow(0)]
+        [DataRow(1)]
+        [DataRow(2)]
+        [DataRow(3)]
+        public async Task GetProject_ExistingProjectById_ShouldReturnProject(int id)
+        {
+            Project project = null;
+            string codeSubStr = null;
+            string nameSubStr = null;
+            var existingProject = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(setId: id);
+            _projectsRepositoryMock.Setup(pr => pr.GetProjectById(id))
+                .ReturnsAsync(existingProject);
+
+            project = await _projectsService.GetProject(id, codeSubStr, nameSubStr);
+
+            _projectsRepositoryMock.Verify(pr => pr.GetProjectById(id), Times.Once);
+
+            Assert.IsNotNull(project);
+            Assert.AreEqual(id, project.Id);
+            Assert.AreEqual(existingProject, project);
+        }
+
+        [DataTestMethod]
+        [DataRow(0)]
+        [DataRow(1)]
+        [DataRow(2)]
+        [DataRow(3)]
+        public async Task GetProject_ExistingProjectById_ShouldReturnProject_FluentAssertion(int id)
+        {
+            Project project = null;
+            string codeSubStr = null;
+            string nameSubStr = null;
+            var existingProject = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(setId: id);
+            _projectsRepositoryMock.Setup(pr => pr.GetProjectById(id))
+                .ReturnsAsync(existingProject);
+
+            project = await _projectsService.GetProject(id, codeSubStr, nameSubStr);
+
+            _projectsRepositoryMock.Verify(pr => pr.GetProjectById(id), Times.Once);
+
+            project.Should().NotBeNull();
+            project.Id.Should().Be(id);
+            project.Should().Be(existingProject);
+        }
     }
 }

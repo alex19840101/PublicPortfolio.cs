@@ -711,5 +711,52 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             project.Should().BeNull();
             exception.Should().NotBeNull().And.Match<InvalidOperationException>(e => string.Equals(e.Message, $"{ErrorStrings.GET_PROJECT_CALLED_WITH_NULL_EMPTY_PRMS}"));
         }
+
+
+        [Test]
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        public async Task GetProject_ExistingProjectById_ShouldReturnProject(int id)
+        {
+            Project project = null;
+            string codeSubStr = null;
+            string nameSubStr = null;
+            var existingProject = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(setId: id);
+            _projectsRepositoryMock.Setup(pr => pr.GetProjectById(id))
+                .ReturnsAsync(existingProject);
+
+            project = await _projectsService.GetProject(id, codeSubStr, nameSubStr);
+
+            _projectsRepositoryMock.Verify(pr => pr.GetProjectById(id), Times.Once);
+
+            Assert.That(project != null);
+            Assert.That(project.Id, Is.EqualTo(id));
+            Assert.That(project, Is.EqualTo(existingProject));
+        }
+
+        [Test]
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        public async Task GetProject_ExistingProjectById_ShouldReturnProject_FluentAssertion(int id)
+        {
+            Project project = null;
+            string codeSubStr = null;
+            string nameSubStr = null;
+            var existingProject = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(setId: id);
+            _projectsRepositoryMock.Setup(pr => pr.GetProjectById(id))
+                .ReturnsAsync(existingProject);
+
+            project = await _projectsService.GetProject(id, codeSubStr, nameSubStr);
+
+            _projectsRepositoryMock.Verify(pr => pr.GetProjectById(id), Times.Once);
+
+            project.Should().NotBeNull();
+            project.Id.Should().Be(id);
+            project.Should().Be(existingProject);
+        }
     }
 }
