@@ -608,5 +608,42 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             deleteResult.Message.Should().Be(Core.ErrorStrings.EMPTY_OR_NULL_SECRET_STRING);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
         }
+
+
+        [Test]
+        public async Task DeleteProject_InvalidSecretString_ShouldReturnDeleteResult_INVALID_SECRET_STRING()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            var projectSecretString = TestFixtures.TestFixtures.GenerateString();
+
+            _projectsRepositoryMock.Setup(pr => pr.DeleteProject(id, projectSecretString))
+                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.Forbidden, Message = Core.ErrorStrings.INVALID_SECRET_STRING });
+
+            var deleteResult = await _projectsService.DeleteProject(id, projectSecretString);
+
+            _projectsRepositoryMock.Verify(pr => pr.DeleteProject(id, projectSecretString), Times.Once);
+
+            Assert.That(deleteResult != null);
+            Assert.That(deleteResult.Message, Is.EqualTo(Core.ErrorStrings.INVALID_SECRET_STRING));
+            Assert.That(deleteResult.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Forbidden));
+        }
+
+        [Test]
+        public async Task DeleteProject_InvalidSecretString_ShouldReturnDeleteResult_INVALID_SECRET_STRING_FluentAssertion()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            var projectSecretString = TestFixtures.TestFixtures.GenerateString();
+
+            _projectsRepositoryMock.Setup(pr => pr.DeleteProject(id, projectSecretString))
+                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.Forbidden, Message = Core.ErrorStrings.INVALID_SECRET_STRING });
+
+            var deleteResult = await _projectsService.DeleteProject(id, projectSecretString);
+
+            _projectsRepositoryMock.Verify(pr => pr.DeleteProject(id, projectSecretString), Times.Once);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(Core.ErrorStrings.INVALID_SECRET_STRING);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
+        }
     }
 }
