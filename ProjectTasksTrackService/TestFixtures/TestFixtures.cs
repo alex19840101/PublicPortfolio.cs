@@ -100,6 +100,42 @@ namespace TestFixtures
             return (projects, imProjects);
         }
 
+        /// <summary>
+        /// Сгенерировать набор из 5+3 проектов без конфликтов
+        /// </summary>
+        /// <returns> List(Project) существующие_проекты, List(Project) импортируемые_проекты </returns>
+        public static (List<Project> existingProjects, List<Project> projectToImport) Simulate5And3ProjectsWithoutConflicts()
+        {
+            List<int> excludeIds = new List<int>();
+            var project1 = GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
+            var project2 = GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
+            var project3 = GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
+            var project4 = GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
+            var project5 = GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
+
+            var project1Imp = GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
+            var project2Imp = GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
+            var project3Imp = GetProjectFixtureWithAllFields(generateId: true, excludeIds: excludeIds);
+
+
+            List<Project> projects = new List<Project>
+            {
+                project1,
+                project2,
+                project3,
+                project4,
+                project5,
+            };
+            List<Project> imProjects = new List<Project>
+            {
+                project1Imp,
+                project2Imp,
+                project3Imp,
+            };
+
+            return (projects, imProjects);
+        }
+
         public static List<Project> GenerateProjectsList(uint count)
         {
             List<int> excludeIds = new List<int>();
