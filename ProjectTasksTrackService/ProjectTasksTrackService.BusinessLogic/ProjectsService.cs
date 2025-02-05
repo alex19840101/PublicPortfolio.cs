@@ -124,7 +124,7 @@ namespace ProjectTasksTrackService.BusinessLogic
         }
 
         public async Task<Project> GetProject(
-            int? id = null,
+            int? id,
             string codeSubStr = null,
             string nameSubStr = null,
             bool ignoreCase = true)
@@ -138,7 +138,7 @@ namespace ProjectTasksTrackService.BusinessLogic
             if (anyCode && anyName)
                 return await _projectsRepository.GetProjectById(id.Value);
 
-            return await _projectsRepository.GetProject(id, codeSubStr, nameSubStr);
+            return await _projectsRepository.GetProject(id, codeSubStr, nameSubStr, ignoreCase);
         }
     }
 }

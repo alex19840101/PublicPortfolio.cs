@@ -9,10 +9,10 @@ namespace ProjectTasksTrackService.Core.Repositories
         Task<CreateResult> Add(Project project, bool trySetId = false);
         Task<ImportResult> Import(IEnumerable<Project> projects);
         Task<Project> GetProject(
-            int? id = null,
-            string codeSubStr = null,
-            string nameSubStr = null,
-            bool ignoreCase = true);
+            int? id,
+            string codeSubStr,
+            string nameSubStr,
+            bool ignoreCase);
         Task<Project> GetProjectById(int id);
         Task<IEnumerable<Project>> GetProjects(
             string codeSubStr = null,

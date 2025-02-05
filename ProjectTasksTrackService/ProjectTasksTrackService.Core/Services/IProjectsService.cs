@@ -15,7 +15,7 @@ namespace ProjectTasksTrackService.Core.Services
             int limitCount = 100,
             bool ignoreCase = true);
         Task<Project> GetProject(
-            int? id = null,
+            int? id,
             string code = null,
             string name = null,
             bool ignoreCase = true);

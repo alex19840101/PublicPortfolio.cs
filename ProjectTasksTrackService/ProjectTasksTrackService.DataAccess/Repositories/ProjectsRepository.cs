@@ -93,10 +93,10 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
         }
 
         public async Task<Project> GetProject(
-            int? id = null,
-            string codeSubStr = null,
-            string nameSubStr = null,
-            bool ignoreCase = true)
+            int? id,
+            string codeSubStr,
+            string nameSubStr,
+            bool ignoreCase)
         {
             var sc = ignoreCase ? StringComparison.InvariantCultureIgnoreCase : StringComparison.Ordinal;
             if (id is not null)

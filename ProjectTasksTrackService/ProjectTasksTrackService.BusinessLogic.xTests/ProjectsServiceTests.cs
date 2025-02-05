@@ -790,5 +790,78 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
 
             project.Should().BeNull();
         }
+
+
+        [Theory]
+        [InlineData(20, "cd", null)]
+        [InlineData(50, "cod", "nam")]
+        [InlineData(30, null, "nam")]
+        [InlineData(null, "cde", null)]
+        [InlineData(null, "cod", "nam")]
+        [InlineData(null, null, "namE")]
+        public async Task GetProject_ExistingProjectByCodeOrName_ShouldReturnProject(int? id, string codeSubStr, string nameSubStr)
+        {
+            Project project = null;
+            var existingProject = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: id == null, setId: id ?? 0);
+            if (!string.IsNullOrWhiteSpace(nameSubStr))
+                existingProject.UpdateName($"{nameSubStr}{existingProject.Name}");
+
+            if (!string.IsNullOrWhiteSpace(codeSubStr))
+                existingProject = new Project(
+                id: existingProject.Id,
+                code: $"{codeSubStr}{existingProject.Code}",
+                name: existingProject.Name,
+                url: existingProject.Url,
+                imageUrl: existingProject.ImageUrl,
+                createdDt: DateTime.Now,
+                lastUpdateDt: DateTime.Now);
+
+            _projectsRepositoryMock.Setup(pr => pr.GetProject(id, codeSubStr, nameSubStr, true)).ReturnsAsync(existingProject);
+
+            project = await _projectsService.GetProject(id, codeSubStr, nameSubStr);
+
+            if (id != null) _projectsRepositoryMock.Verify(pr => pr.GetProjectById(id.Value), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.GetProject(id, codeSubStr, nameSubStr, true), Times.Once);
+
+            Assert.NotNull(project);
+            if (id != null) Assert.Equal(id, project.Id);
+            Assert.Equal(existingProject, project);
+        }
+
+        [Theory]
+        [InlineData(10, "cd", null)]
+        [InlineData(60, "cod", "nam")]
+        [InlineData(30, null, "nam")]
+        [InlineData(null, "cde", null)]
+        [InlineData(null, "cod", "nam")]
+        [InlineData(null, null, "namE")]
+        public async Task GetProject_ExistingProjectByCodeOrName_ShouldReturnProject_FluentAssertion(int? id, string codeSubStr, string nameSubStr)
+        {
+            Project project = null;
+            var existingProject = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: id == null, setId: id ?? 0);
+            if (!string.IsNullOrWhiteSpace(nameSubStr))
+                existingProject.UpdateName($"{nameSubStr}{existingProject.Name}");
+
+            if (!string.IsNullOrWhiteSpace(codeSubStr))
+                existingProject = new Project(
+                id: existingProject.Id,
+                code: $"{codeSubStr}{existingProject.Code}",
+                name: existingProject.Name,
+                url: existingProject.Url,
+                imageUrl: existingProject.ImageUrl,
+                createdDt: DateTime.Now,
+                lastUpdateDt: DateTime.Now);
+
+            _projectsRepositoryMock.Setup(pr => pr.GetProject(id, codeSubStr, nameSubStr, true)).ReturnsAsync(existingProject);
+
+            project = await _projectsService.GetProject(id, codeSubStr, nameSubStr);
+
+            if (id != null) _projectsRepositoryMock.Verify(pr => pr.GetProjectById(id.Value), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.GetProject(id, codeSubStr, nameSubStr, true), Times.Once);
+
+            project.Should().NotBeNull();
+            if (id != null) project.Id.Should().Be(id);
+            project.Should().Be(existingProject);
+        }
     }
 }
