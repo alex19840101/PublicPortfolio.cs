@@ -1025,5 +1025,40 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
             updateResult.Message.Should().Be(Core.ErrorStrings.PROJECT_NOT_FOUND);
         }
+
+
+        [Fact]
+        public async Task Update_CodeChanging_ShouldReturnUpdateResult_CODE_SHOULD_BE_THE_SAME()
+        {
+            var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true);
+
+            _projectsRepositoryMock.Setup(pr => pr.UpdateProject(project))
+                .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.CODE_SHOULD_BE_THE_SAME, StatusCode = System.Net.HttpStatusCode.Conflict });
+
+            var updateResult = await _projectsService.UpdateProject(project);
+
+            _projectsRepositoryMock.Verify(pr => pr.UpdateProject(project), Times.Once);
+
+            Assert.NotNull(updateResult);
+            Assert.Equal(System.Net.HttpStatusCode.Conflict, updateResult.StatusCode);
+            Assert.Equal(Core.ErrorStrings.CODE_SHOULD_BE_THE_SAME, updateResult.Message);
+        }
+
+        [Fact]
+        public async Task Update_CodeChanging_ShouldReturnUpdateResult_CODE_SHOULD_BE_THE_SAME_FluentAssertion()
+        {
+            var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true);
+
+            _projectsRepositoryMock.Setup(pr => pr.UpdateProject(project))
+                .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.CODE_SHOULD_BE_THE_SAME, StatusCode = System.Net.HttpStatusCode.Conflict });
+
+            var updateResult = await _projectsService.UpdateProject(project);
+
+            _projectsRepositoryMock.Verify(pr => pr.UpdateProject(project), Times.Once);
+
+            updateResult.Should().NotBeNull();
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Conflict);
+            updateResult.Message.Should().Be(Core.ErrorStrings.CODE_SHOULD_BE_THE_SAME);
+        }
     }
 }
