@@ -896,5 +896,33 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
             updateResult.Message.Should().Be(ErrorStrings.PROJECT_CODE_SHOULD_NOT_BE_EMPTY);
         }
+
+        [Test]
+        public async Task Update_NameIsNullOrWhiteSpace_ShouldReturnUpdateResult_PROJECT_NAME_SHOULD_NOT_BE_EMPTY()
+        {
+            var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, generateName: false);
+
+            var updateResult = await _projectsService.UpdateProject(project);
+
+            _projectsRepositoryMock.Verify(pr => pr.UpdateProject(project), Times.Never);
+
+            Assert.That(updateResult != null);
+            Assert.That(updateResult.Message, Is.EqualTo(ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY));
+            Assert.That(updateResult.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.BadRequest));
+        }
+
+        [Test]
+        public async Task Update_NameIsNullOrWhiteSpace_ShouldReturnUpdateResult_PROJECT_NAME_SHOULD_NOT_BE_EMPTY_FluentAssertion()
+        {
+            var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, generateName: false);
+
+            var updateResult = await _projectsService.UpdateProject(project);
+
+            _projectsRepositoryMock.Verify(pr => pr.UpdateProject(project), Times.Never);
+
+            updateResult.Should().NotBeNull();
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+            updateResult.Message.Should().Be(ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY);
+        }
     }
 }
