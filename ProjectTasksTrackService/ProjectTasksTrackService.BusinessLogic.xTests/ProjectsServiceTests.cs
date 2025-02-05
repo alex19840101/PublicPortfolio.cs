@@ -28,7 +28,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             CreateResult createResult = null;
             var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => createResult = await _projectsService.Create(project));
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
             Assert.NotNull(exception);
             Assert.Null(createResult);
             Assert.Equal(ErrorStrings.PROJECT_PARAM_NAME, exception.ParamName);
@@ -42,7 +42,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
 
             var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => createResult = await _projectsService.Create(project));
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
             exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ErrorStrings.PROJECT_PARAM_NAME);
             createResult.Should().BeNull();
             exception.ParamName.Should().Be(ErrorStrings.PROJECT_PARAM_NAME);
@@ -55,7 +55,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
 
             var createResult = await _projectsService.Create(project);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
             Assert.NotNull(createResult);
             Assert.Equal(ErrorStrings.PROJECT_CODE_SHOULD_NOT_BE_EMPTY, createResult.Message);
             Assert.Equal(System.Net.HttpStatusCode.BadRequest, createResult.StatusCode);
@@ -68,7 +68,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateCode: false);
             var createResult = await _projectsService.Create(project);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
             createResult.Should().NotBeNull();
             createResult.Message.Should().Be(ErrorStrings.PROJECT_CODE_SHOULD_NOT_BE_EMPTY);
             createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
@@ -82,7 +82,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
 
             var createResult = await _projectsService.Create(project);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
             Assert.NotNull(createResult);
             Assert.Equal(ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY, createResult.Message);
             Assert.Equal(System.Net.HttpStatusCode.BadRequest, createResult.StatusCode);
@@ -96,7 +96,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true);
             var createResult = await _projectsService.Create(project);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
             Assert.NotNull(createResult);
             Assert.Equal(ErrorStrings.PROJECT_ID_SHOULD_BE_ZERO, createResult.Message);
             Assert.Equal(System.Net.HttpStatusCode.BadRequest, createResult.StatusCode);
@@ -109,7 +109,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true);
             var createResult = await _projectsService.Create(project);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
             createResult.Should().NotBeNull();
             createResult.Message.Should().Be(ErrorStrings.PROJECT_ID_SHOULD_BE_ZERO);
             createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
@@ -122,7 +122,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateName: false);
             var createResult = await _projectsService.Create(project);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
             createResult.Should().NotBeNull();
             createResult.Message.Should().Be(ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY);
             createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
@@ -145,7 +145,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             Assert.Equal(expectedId, createResult.Id);
             Assert.Equal(System.Net.HttpStatusCode.Created, createResult.StatusCode);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Once);
         }
 
         [Fact]
@@ -164,7 +164,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             createResult.Id.Should().Be(expectedId);
             createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Once);
         }
 
         [Fact]
@@ -183,7 +183,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             Assert.Equal(expectedId, createResult.Id);
             Assert.Equal(System.Net.HttpStatusCode.Created, createResult.StatusCode);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Once);
         }
 
         [Fact]
@@ -202,7 +202,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             createResult.Id.Should().Be(expectedId);
             createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Once);
         }
 
         [Fact]
@@ -212,7 +212,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             ImportResult importResult = null;
             var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => importResult = await _projectsService.Import(projects));
 
-            _projectsRepositoryMock.Verify(repo => repo.Import(projects), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Import(projects), Times.Never);
             Assert.NotNull(exception);
             Assert.Null(importResult);
             Assert.Equal(ErrorStrings.PROJECTS_PARAM_NAME, exception.ParamName);
@@ -226,7 +226,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
 
             var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => importResult = await _projectsService.Import(projects));
 
-            _projectsRepositoryMock.Verify(repo => repo.Import(projects), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Import(projects), Times.Never);
             exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ErrorStrings.PROJECTS_PARAM_NAME);
             importResult.Should().BeNull();
             exception.ParamName.Should().Be(ErrorStrings.PROJECTS_PARAM_NAME);
@@ -238,7 +238,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             IEnumerable<Core.Project> projects = [];
             var importResult = await _projectsService.Import(projects);
 
-            _projectsRepositoryMock.Verify(repo => repo.Import(projects), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Import(projects), Times.Never);
             Assert.NotNull(importResult);
             Assert.Equal(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_BE_FILLED, importResult.Message);
             Assert.Equal(System.Net.HttpStatusCode.BadRequest, importResult.StatusCode);
@@ -250,7 +250,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             IEnumerable<Core.Project> projects = [];
             var importResult = await _projectsService.Import(projects);
 
-            _projectsRepositoryMock.Verify(repo => repo.Import(projects), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Import(projects), Times.Never);
             importResult.Should().NotBeNull();
             importResult.Message.Should().Be(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_BE_FILLED);
             importResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
@@ -267,7 +267,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             var importResult = await _projectsService.Import(projects);
 
             _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
-            _projectsRepositoryMock.Verify(repo => repo.Import(projects), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Import(projects), Times.Never);
             Assert.NotNull(importResult);
             Assert.Equal(ErrorStrings.ALREADY_IMPORTED, importResult.Message);
             Assert.Equal(0, importResult.ImportedCount);
@@ -307,7 +307,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             var importResult = await _projectsService.Import(projectToImport);
 
             _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
-            _projectsRepositoryMock.Verify(repo => repo.Import(projectToImport), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Import(projectToImport), Times.Never);
             Assert.NotNull(importResult);
             Assert.Equal(expectedMessage, importResult.Message);
             Assert.Equal(0, importResult.ImportedCount);

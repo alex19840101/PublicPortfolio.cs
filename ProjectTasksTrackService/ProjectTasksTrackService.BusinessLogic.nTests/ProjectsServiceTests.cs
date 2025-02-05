@@ -33,7 +33,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             CreateResult createResult = null;
             var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => createResult = await _projectsService.Create(project));
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
             Assert.That(exception != null);
             Assert.That(createResult, Is.EqualTo(null));
             Assert.That(exception.ParamName, Is.EqualTo(ErrorStrings.PROJECT_PARAM_NAME));
@@ -46,7 +46,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             CreateResult createResult = null;
             var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => createResult = await _projectsService.Create(project));
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
             exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ErrorStrings.PROJECT_PARAM_NAME);
             createResult.Should().BeNull();
             exception.ParamName.Should().Be(ErrorStrings.PROJECT_PARAM_NAME);
@@ -58,7 +58,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateCode: false);
             var createResult = await _projectsService.Create(project);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
             Assert.That(createResult != null);
             Assert.That(createResult.Message, Is.EqualTo(ErrorStrings.PROJECT_CODE_SHOULD_NOT_BE_EMPTY));
             Assert.That(createResult.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.BadRequest));
@@ -71,7 +71,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateCode: false);
             var createResult = await _projectsService.Create(project);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
             createResult.Should().NotBeNull();
             createResult.Message.Should().Be(ErrorStrings.PROJECT_CODE_SHOULD_NOT_BE_EMPTY);
             createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
@@ -84,7 +84,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateName: false);
             var createResult = await _projectsService.Create(project);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
             Assert.That(createResult != null);
             Assert.That(createResult.Message, Is.EqualTo(ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY));
             Assert.That(createResult.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.BadRequest));
@@ -97,7 +97,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateName: false);
             var createResult = await _projectsService.Create(project);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
             createResult.Should().NotBeNull();
             createResult.Message.Should().Be(ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY);
             createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
@@ -110,7 +110,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true);
             var createResult = await _projectsService.Create(project);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
             Assert.That(createResult != null);
             Assert.That(createResult.Message, Is.EqualTo(ErrorStrings.PROJECT_ID_SHOULD_BE_ZERO));
             Assert.That(createResult.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.BadRequest));
@@ -123,7 +123,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true);
             var createResult = await _projectsService.Create(project);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
             createResult.Should().NotBeNull();
             createResult.Message.Should().Be(ErrorStrings.PROJECT_ID_SHOULD_BE_ZERO);
             createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
@@ -146,7 +146,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             Assert.That(createResult.Id, Is.EqualTo(expectedId));
             Assert.That(createResult.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Created));
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Once);
         }
 
         [Test]
@@ -165,7 +165,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             createResult.Id.Should().Be(expectedId);
             createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Once);
         }
 
         [Test]
@@ -184,7 +184,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             Assert.That(createResult.Id, Is.EqualTo(expectedId));
             Assert.That(createResult.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.Created));
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Once);
         }
 
         [Test]
@@ -203,7 +203,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             createResult.Id.Should().Be(expectedId);
             createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
 
-            _projectsRepositoryMock.Verify(repo => repo.Add(project, false), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Once);
         }
 
         [Test]
@@ -213,7 +213,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             ImportResult importResult = null;
             var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => importResult = await _projectsService.Import(projects));
 
-            _projectsRepositoryMock.Verify(repo => repo.Import(projects), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Import(projects), Times.Never);
             Assert.That(exception != null);
             Assert.That(importResult, Is.EqualTo(null));
             Assert.That(exception.ParamName, Is.EqualTo(ErrorStrings.PROJECTS_PARAM_NAME));
@@ -226,7 +226,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             ImportResult importResult = null;
             var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => importResult = await _projectsService.Import(projects));
 
-            _projectsRepositoryMock.Verify(repo => repo.Import(projects), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Import(projects), Times.Never);
             exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ErrorStrings.PROJECTS_PARAM_NAME);
             importResult.Should().BeNull();
             exception.ParamName.Should().Be(ErrorStrings.PROJECTS_PARAM_NAME);
@@ -238,7 +238,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             IEnumerable<Core.Project> projects = [];
             var importResult = await _projectsService.Import(projects);
 
-            _projectsRepositoryMock.Verify(repo => repo.Import(projects), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Import(projects), Times.Never);
 
             Assert.That(importResult != null);
             Assert.That(importResult.Message, Is.EqualTo(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_BE_FILLED));
@@ -251,7 +251,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             IEnumerable<Core.Project> projects = [];
             var importResult = await _projectsService.Import(projects);
 
-            _projectsRepositoryMock.Verify(repo => repo.Import(projects), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Import(projects), Times.Never);
             importResult.Should().NotBeNull();
             importResult.Message.Should().Be(ErrorStrings.PROJECTS_LIST_TO_IMPORT_SHOULD_BE_FILLED);
             importResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
@@ -268,7 +268,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             var importResult = await _projectsService.Import(projects);
 
             _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
-            _projectsRepositoryMock.Verify(repo => repo.Import(projects), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Import(projects), Times.Never);
             Assert.That(importResult != null);
             Assert.That(importResult.Message, Is.EqualTo(ErrorStrings.ALREADY_IMPORTED));
             Assert.That(importResult.ImportedCount, Is.EqualTo(0));
@@ -311,7 +311,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             var importResult = await _projectsService.Import(projectToImport);
 
             _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
-            _projectsRepositoryMock.Verify(repo => repo.Import(projectToImport), Times.Never);
+            _projectsRepositoryMock.Verify(pr => pr.Import(projectToImport), Times.Never);
             Assert.That(importResult != null);
             Assert.That(importResult.Message, Is.EqualTo(expectedMessage));
             Assert.That(importResult.ImportedCount, Is.EqualTo(0));
