@@ -911,5 +911,41 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
             updateResult.Message.Should().Be(ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY);
         }
+
+
+        [TestMethod]
+        public async Task Update_ProjectIsValid_ShouldReturnUpdateResult_PROJECT_UPDATED()
+        {
+            var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true);
+
+            _projectsRepositoryMock.Setup(pr => pr.UpdateProject(project))
+                .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.PROJECT_UPDATED, StatusCode = System.Net.HttpStatusCode.OK });
+
+            var updateResult = await _projectsService.UpdateProject(project);
+
+            _projectsRepositoryMock.Verify(pr => pr.UpdateProject(project), Times.Once);
+
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
+            Assert.AreEqual(Core.ErrorStrings.PROJECT_UPDATED, updateResult.Message);
+        }
+
+        [TestMethod]
+        public async Task Update_ProjectIsValid_ShouldReturnUpdateResult_PROJECT_UPDATED_FluentAssertion()
+        {
+            var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true);
+
+            _projectsRepositoryMock.Setup(pr => pr.UpdateProject(project))
+                .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.PROJECT_UPDATED, StatusCode = System.Net.HttpStatusCode.OK });
+
+            var updateResult = await _projectsService.UpdateProject(project);
+
+
+            _projectsRepositoryMock.Verify(pr => pr.UpdateProject(project), Times.Once);
+
+            updateResult.Should().NotBeNull();
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+            updateResult.Message.Should().Be(Core.ErrorStrings.PROJECT_UPDATED);
+        }
     }
 }
