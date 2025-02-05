@@ -950,12 +950,46 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
 
             var updateResult = await _projectsService.UpdateProject(project);
 
-
             _projectsRepositoryMock.Verify(pr => pr.UpdateProject(project), Times.Once);
 
             updateResult.Should().NotBeNull();
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
             updateResult.Message.Should().Be(Core.ErrorStrings.PROJECT_UPDATED);
+        }
+
+
+        [Fact]
+        public async Task Update_ProjectIsActual_ShouldReturnUpdateResult_PROJECT_IS_ACTUAL()
+        {
+            var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true);
+
+            _projectsRepositoryMock.Setup(pr => pr.UpdateProject(project))
+                .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.PROJECT_IS_ACTUAL, StatusCode = System.Net.HttpStatusCode.OK });
+
+            var updateResult = await _projectsService.UpdateProject(project);
+
+            _projectsRepositoryMock.Verify(pr => pr.UpdateProject(project), Times.Once);
+
+            Assert.NotNull(updateResult);
+            Assert.Equal(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
+            Assert.Equal(Core.ErrorStrings.PROJECT_IS_ACTUAL, updateResult.Message);
+        }
+
+        [Fact]
+        public async Task Update_ProjectIsActual_ShouldReturnUpdateResult_PROJECT_IS_ACTUAL_FluentAssertion()
+        {
+            var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true);
+
+            _projectsRepositoryMock.Setup(pr => pr.UpdateProject(project))
+                .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.PROJECT_IS_ACTUAL, StatusCode = System.Net.HttpStatusCode.OK });
+
+            var updateResult = await _projectsService.UpdateProject(project);
+
+            _projectsRepositoryMock.Verify(pr => pr.UpdateProject(project), Times.Once);
+
+            updateResult.Should().NotBeNull();
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+            updateResult.Message.Should().Be(Core.ErrorStrings.PROJECT_IS_ACTUAL);
         }
     }
 }
