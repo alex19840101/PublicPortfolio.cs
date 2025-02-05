@@ -758,5 +758,41 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             project.Id.Should().Be(id);
             project.Should().Be(existingProject);
         }
+
+        [Test]
+        public async Task GetProject_NotExistingProjectById_ShouldReturnNull()
+        {
+            Project project = null;
+            int id = int.MinValue;
+            string codeSubStr = null;
+            string nameSubStr = null;
+
+            _projectsRepositoryMock.Setup(pr => pr.GetProjectById(id))
+                .ReturnsAsync(project);
+
+            project = await _projectsService.GetProject(id, codeSubStr, nameSubStr);
+
+            _projectsRepositoryMock.Verify(pr => pr.GetProjectById(id), Times.Once);
+
+            Assert.That(project == null);
+        }
+
+        [Test]
+        public async Task GetProject_NotExistingProjectById_ShouldReturnNull_FluentAssertion()
+        {
+            Project project = null;
+            int id = int.MinValue;
+            string codeSubStr = null;
+            string nameSubStr = null;
+
+            _projectsRepositoryMock.Setup(pr => pr.GetProjectById(id))
+                .ReturnsAsync(project);
+
+            project = await _projectsService.GetProject(id, codeSubStr, nameSubStr);
+
+            _projectsRepositoryMock.Verify(pr => pr.GetProjectById(id), Times.Once);
+
+            project.Should().BeNull();
+        }
     }
 }
