@@ -682,5 +682,34 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             deleteResult.Message.Should().Be(Core.ErrorStrings.OK);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
+
+
+        [Test]
+        public async Task GetProject_NULL_EMPTY_PRMS_ShouldThrowInvalidOperationException()
+        {
+            Project project = null;
+            int? id = null;
+            string codeSubStr = null;
+            string nameSubStr = null;
+            var exception = Assert.ThrowsAsync<InvalidOperationException>(async () => project = await _projectsService.GetProject(id, codeSubStr, nameSubStr));
+
+            Assert.That(exception != null);
+            Assert.That(project, Is.EqualTo(null));
+            Assert.That(exception.Message, Is.EqualTo($"{ErrorStrings.GET_PROJECT_CALLED_WITH_NULL_EMPTY_PRMS}"));
+        }
+
+        [Test]
+        public async Task GetProject_NULL_EMPTY_PRMS_ShouldThrowInvalidOperationException_FluentAssertion()
+        {
+            Project project = null;
+            int? id = null;
+            string codeSubStr = null;
+            string nameSubStr = null;
+
+            var exception = Assert.ThrowsAsync<InvalidOperationException>(async () => project = await _projectsService.GetProject(id, codeSubStr, nameSubStr));
+
+            project.Should().BeNull();
+            exception.Should().NotBeNull().And.Match<InvalidOperationException>(e => string.Equals(e.Message, $"{ErrorStrings.GET_PROJECT_CALLED_WITH_NULL_EMPTY_PRMS}"));
+        }
     }
 }
