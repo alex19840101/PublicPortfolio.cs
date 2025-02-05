@@ -863,5 +863,34 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             if (id != null) project.Id.Should().Be(id);
             project.Should().Be(existingProject);
         }
+
+
+        [Fact]
+        public async Task Update_CodeIsNullOrWhiteSpace_ShouldReturnUpdateResult_PROJECT_CODE_SHOULD_NOT_BE_EMPTY()
+        {
+            var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, generateCode: false);
+
+            var updateResult = await _projectsService.UpdateProject(project);
+
+            _projectsRepositoryMock.Verify(pr => pr.UpdateProject(project), Times.Never);
+
+            Assert.NotNull(updateResult);
+            Assert.Equal(System.Net.HttpStatusCode.BadRequest, updateResult.StatusCode);
+            Assert.Equal(ErrorStrings.PROJECT_CODE_SHOULD_NOT_BE_EMPTY, updateResult.Message);
+        }
+
+        [Fact]
+        public async Task Update_CodeIsNullOrWhiteSpace_ShouldReturnUpdateResult_PROJECT_CODE_SHOULD_NOT_BE_EMPTY_FluentAssertion()
+        {
+            var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true, generateCode: false);
+
+            var updateResult = await _projectsService.UpdateProject(project);
+
+            _projectsRepositoryMock.Verify(pr => pr.UpdateProject(project), Times.Never);
+
+            updateResult.Should().NotBeNull();
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+            updateResult.Message.Should().Be(ErrorStrings.PROJECT_CODE_SHOULD_NOT_BE_EMPTY);
+        }
     }
 }

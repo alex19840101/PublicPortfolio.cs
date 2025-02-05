@@ -114,7 +114,7 @@ namespace ProjectTasksTrackService.API.Controllers
             [Range(0, 100)] int limitCount = 100,
             bool ignoreCase = true)
         {
-            var projectsCollection = await _projectsService.GetProjects(codeSubStr, nameSubStr, skipCount, limitCount);
+            var projectsCollection = await _projectsService.GetProjects(codeSubStr, nameSubStr, skipCount, limitCount, ignoreCase);
 
             if (!projectsCollection.Any())
                 return [];

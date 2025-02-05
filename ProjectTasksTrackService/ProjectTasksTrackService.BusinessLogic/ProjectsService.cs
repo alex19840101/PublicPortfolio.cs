@@ -120,7 +120,7 @@ namespace ProjectTasksTrackService.BusinessLogic
             int limitCount = 100,
             bool ignoreCase = true)
         {
-            return await _projectsRepository.GetProjects(codeSubStr, nameSubStr, skipCount, limitCount);
+            return await _projectsRepository.GetProjects(codeSubStr, nameSubStr, skipCount, limitCount, ignoreCase);
         }
 
         public async Task<Project> GetProject(
