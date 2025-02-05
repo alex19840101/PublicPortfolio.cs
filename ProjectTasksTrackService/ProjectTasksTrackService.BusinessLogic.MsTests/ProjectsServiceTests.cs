@@ -633,5 +633,41 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             deleteResult.Message.Should().Be(Core.ErrorStrings.INVALID_SECRET_STRING);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
         }
+
+        [TestMethod]
+        public async Task DeleteProject_OK_ShouldReturnDeleteResult_OK()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            var projectSecretString = TestFixtures.TestFixtures.GenerateString();
+
+            _projectsRepositoryMock.Setup(pr => pr.DeleteProject(id, projectSecretString))
+                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.OK, Message = Core.ErrorStrings.OK });
+
+            var deleteResult = await _projectsService.DeleteProject(id, projectSecretString);
+
+            _projectsRepositoryMock.Verify(pr => pr.DeleteProject(id, projectSecretString), Times.Once);
+
+            Assert.IsNotNull(deleteResult);
+            Assert.AreEqual(Core.ErrorStrings.OK, deleteResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, deleteResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task DeleteProject_OK_ShouldReturnDeleteResult_OK_FluentAssertion()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            var projectSecretString = TestFixtures.TestFixtures.GenerateString();
+
+            _projectsRepositoryMock.Setup(pr => pr.DeleteProject(id, projectSecretString))
+                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.OK, Message = Core.ErrorStrings.OK });
+
+            var deleteResult = await _projectsService.DeleteProject(id, projectSecretString);
+
+            _projectsRepositoryMock.Verify(pr => pr.DeleteProject(id, projectSecretString), Times.Once);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(Core.ErrorStrings.OK);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+        }
     }
 }

@@ -639,5 +639,42 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             deleteResult.Message.Should().Be(Core.ErrorStrings.INVALID_SECRET_STRING);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
         }
+
+
+        [Fact]
+        public async Task DeleteProject_OK_ShouldReturnDeleteResult_OK()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            var projectSecretString = TestFixtures.TestFixtures.GenerateString();
+
+            _projectsRepositoryMock.Setup(pr => pr.DeleteProject(id, projectSecretString))
+                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.OK, Message = Core.ErrorStrings.OK });
+
+            var deleteResult = await _projectsService.DeleteProject(id, projectSecretString);
+
+            _projectsRepositoryMock.Verify(pr => pr.DeleteProject(id, projectSecretString), Times.Once);
+
+            Assert.NotNull(deleteResult);
+            Assert.Equal(Core.ErrorStrings.OK, deleteResult.Message);
+            Assert.Equal(System.Net.HttpStatusCode.OK, deleteResult.StatusCode);
+        }
+
+        [Fact]
+        public async Task DeleteProject_OK_ShouldReturnDeleteResult_OK_FluentAssertion()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            var projectSecretString = TestFixtures.TestFixtures.GenerateString();
+
+            _projectsRepositoryMock.Setup(pr => pr.DeleteProject(id, projectSecretString))
+                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.OK, Message = Core.ErrorStrings.INVALID_SECRET_STRING });
+
+            var deleteResult = await _projectsService.DeleteProject(id, projectSecretString);
+
+            _projectsRepositoryMock.Verify(pr => pr.DeleteProject(id, projectSecretString), Times.Once);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(Core.ErrorStrings.INVALID_SECRET_STRING);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+        }
     }
 }

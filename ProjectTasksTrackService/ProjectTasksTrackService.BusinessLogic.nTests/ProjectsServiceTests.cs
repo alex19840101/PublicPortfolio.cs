@@ -645,5 +645,42 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             deleteResult.Message.Should().Be(Core.ErrorStrings.INVALID_SECRET_STRING);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
         }
+
+
+        [Test]
+        public async Task DeleteProject_OK_ShouldReturnDeleteResult_OK()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            var projectSecretString = TestFixtures.TestFixtures.GenerateString();
+
+            _projectsRepositoryMock.Setup(pr => pr.DeleteProject(id, projectSecretString))
+                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.OK, Message = Core.ErrorStrings.OK });
+
+            var deleteResult = await _projectsService.DeleteProject(id, projectSecretString);
+
+            _projectsRepositoryMock.Verify(pr => pr.DeleteProject(id, projectSecretString), Times.Once);
+
+            Assert.That(deleteResult != null);
+            Assert.That(deleteResult.Message, Is.EqualTo(Core.ErrorStrings.OK));
+            Assert.That(deleteResult.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK));
+        }
+
+        [Test]
+        public async Task DeleteProject_OK_ShouldReturnDeleteResult_OK_FluentAssertion()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            var projectSecretString = TestFixtures.TestFixtures.GenerateString();
+
+            _projectsRepositoryMock.Setup(pr => pr.DeleteProject(id, projectSecretString))
+                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.OK, Message = Core.ErrorStrings.OK });
+
+            var deleteResult = await _projectsService.DeleteProject(id, projectSecretString);
+
+            _projectsRepositoryMock.Verify(pr => pr.DeleteProject(id, projectSecretString), Times.Once);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(Core.ErrorStrings.OK);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+        }
     }
 }
