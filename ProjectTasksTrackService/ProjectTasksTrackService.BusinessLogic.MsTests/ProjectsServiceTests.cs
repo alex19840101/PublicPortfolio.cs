@@ -75,7 +75,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task Create_ProjectWithoutCode_ShouldReturnCreateResult_PROJECT_NAME_SHOULD_NOT_BE_EMPTY_400()
+        public async Task Create_ProjectWithoutName_ShouldReturnCreateResult_PROJECT_NAME_SHOULD_NOT_BE_EMPTY_400()
         {
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateName: false);
             var createResult = await _projectsService.Create(project);
@@ -88,7 +88,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task Create_ProjectWithoutCode_ShouldReturnCreateResult_PROJECT_NAME_SHOULD_NOT_BE_EMPTY_400_Fluent()
+        public async Task Create_ProjectWithoutName_ShouldReturnCreateResult_PROJECT_NAME_SHOULD_NOT_BE_EMPTY_400_Fluent()
         {
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateName: false);
             var createResult = await _projectsService.Create(project);

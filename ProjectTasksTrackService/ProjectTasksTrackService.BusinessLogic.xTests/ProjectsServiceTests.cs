@@ -76,7 +76,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
         }
 
         [Fact]
-        public async Task Create_ProjectWithoutCode_ShouldReturnCreateResult_PROJECT_NAME_SHOULD_NOT_BE_EMPTY_400()
+        public async Task Create_ProjectWithoutName_ShouldReturnCreateResult_PROJECT_NAME_SHOULD_NOT_BE_EMPTY_400()
         {
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateName: false);
 
@@ -89,6 +89,18 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             Assert.Null(createResult.Code);
         }
 
+        [Fact]
+        public async Task Create_ProjectWithoutName_ShouldReturnCreateResult_PROJECT_NAME_SHOULD_NOT_BE_EMPTY_400_Fluent()
+        {
+            var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateName: false);
+            var createResult = await _projectsService.Create(project);
+
+            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
+            createResult.Should().NotBeNull();
+            createResult.Message.Should().Be(ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY);
+            createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+            createResult.Code.Should().BeNull();
+        }
 
         [Fact]
         public async Task Create_ProjectWithNotNullId_ShouldReturnCreateResult_PROJECT_ID_SHOULD_BE_ZERO_400()
@@ -112,19 +124,6 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
             createResult.Should().NotBeNull();
             createResult.Message.Should().Be(ErrorStrings.PROJECT_ID_SHOULD_BE_ZERO);
-            createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
-            createResult.Code.Should().BeNull();
-        }
-
-        [Fact]
-        public async Task Create_ProjectWithoutCode_ShouldReturnCreateResult_PROJECT_NAME_SHOULD_NOT_BE_EMPTY_400_Fluent()
-        {
-            var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateName: false);
-            var createResult = await _projectsService.Create(project);
-
-            _projectsRepositoryMock.Verify(pr => pr.Add(project, false), Times.Never);
-            createResult.Should().NotBeNull();
-            createResult.Message.Should().Be(ErrorStrings.PROJECT_NAME_SHOULD_NOT_BE_EMPTY);
             createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
             createResult.Code.Should().BeNull();
         }
