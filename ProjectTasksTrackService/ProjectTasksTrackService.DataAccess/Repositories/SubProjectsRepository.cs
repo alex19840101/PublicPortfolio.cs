@@ -105,11 +105,11 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
         }
 
         public async Task<ProjectSubDivision> GetProjectSubDivision(
-            int? projectId = null,
-            int? id = null,
-            string codeSubStr = null,
-            string nameSubStr = null,
-            bool ignoreCase = true)
+            int? projectId,
+            int? id,
+            string codeSubStr,
+            string nameSubStr,
+            bool ignoreCase)
         {
             if (string.IsNullOrWhiteSpace(codeSubStr) && string.IsNullOrWhiteSpace(nameSubStr))
                 return await GetProjectSubDivision(id.Value, projectId);
@@ -259,7 +259,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 return new UpdateResult(ErrorStrings.SUBDIVISION_NOT_FOUND, HttpStatusCode.NotFound);
 
             if (!sub.Code.Equals(entitySub.Code))
-                return new UpdateResult(ErrorStrings.CODE_SHOULD_BE_THE_SAME, HttpStatusCode.Conflict);
+                return new UpdateResult(ErrorStrings.SUBDIVISION_CODE_SHOULD_BE_THE_SAME, HttpStatusCode.Conflict);
 
             if (!sub.ProjectId.Equals(entitySub.ProjectId))
                 return new UpdateResult(ErrorStrings.SUBDIVISION_PROJECT_ID_SHOULD_BE_THE_SAME, HttpStatusCode.Conflict);

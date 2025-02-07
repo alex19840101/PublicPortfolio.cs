@@ -54,7 +54,7 @@ namespace ProjectTasksTrackService.BusinessLogic
 
         public async Task<ProjectSubDivision> GetSubDivision(int subDivisionId, int? projectId = null)
         {
-            return await _subProjectsRepository.GetProjectSubDivision(projectId, subDivisionId);
+            return await _subProjectsRepository.GetProjectSubDivision(subDivisionId, projectId);
         }
 
         public async Task<IEnumerable<ProjectSubDivision>> GetSubDivisions(
@@ -94,14 +94,29 @@ namespace ProjectTasksTrackService.BusinessLogic
             }
 
             if (conflictedIds.Any())
-                return new ImportResult { ImportedCount = 0, Message = $"{ErrorStrings.SUBPROJECTS_CONFLICTS}:{string.Join(",", conflictedIds)}" };
+                return new ImportResult
+                {
+                    ImportedCount = 0,
+                    Message = $"{ErrorStrings.SUBPROJECTS_CONFLICTS}:{string.Join(",", conflictedIds)}",
+                    StatusCode = System.Net.HttpStatusCode.Conflict
+                };
 
             if (!newSubsToImport.Any())
-                return new ImportResult { ImportedCount = 0, Message = ErrorStrings.ALREADY_IMPORTED };
+                return new ImportResult
+                {
+                    ImportedCount = 0,
+                    Message = ErrorStrings.ALREADY_IMPORTED,
+                    StatusCode = System.Net.HttpStatusCode.OK
+                };
 
             var importResult = await _subProjectsRepository.Import(newSubsToImport);
 
-            return new ImportResult { ImportedCount = importResult.ImportedCount, Message = ErrorStrings.IMPORTED };
+            return new ImportResult 
+            {
+                ImportedCount = importResult.ImportedCount,
+                Message = ErrorStrings.IMPORTED,
+                StatusCode = System.Net.HttpStatusCode.OK
+            };
         }
 
         public async Task<UpdateResult> UpdateSubDivision(ProjectSubDivision subproject)

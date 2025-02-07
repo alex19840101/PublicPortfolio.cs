@@ -18,6 +18,7 @@
         public const string IMPORTED = "Imported";
 
         public const string SUBPROJECT_PARAM_NAME = "subproject";
+        public const string SUBS_PARAM_NAME = "subs";
         //public const string SUBPROJECT_IS_NULL = "subproject is null";
         public const string SUBPROJECT_NULL_ERROR = "Value cannot be null. (Parameter 'subproject')";
         public const string SUBPROJECTS_LIST_TO_IMPORT_SHOULD_NOT_BE_NULL = "ProjectSubDivisions list to import should not be null";

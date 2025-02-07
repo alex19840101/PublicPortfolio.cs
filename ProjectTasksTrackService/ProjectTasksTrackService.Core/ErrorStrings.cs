@@ -14,6 +14,7 @@
         public const string SUBDIVISION_NOT_FOUND = "Subdivision not found";
         public const string SUBDIVISION_UPDATED = "Subdivision updated";
         public const string SUBDIVISION_IS_ACTUAL = "Subdivision is actual";
+        public const string SUBDIVISION_CODE_SHOULD_BE_THE_SAME = "Subdivision.Code should be the same";
         public const string MORE_THAN_ONE_SUBDIVISION_FOUND = "More than one subdivision found";
         public const string PARENT_PROJECT_NOT_FOUND = "Parent project by subdivision.projectId not found";
         public const string SUBDIVISION_PROJECT_ID_SHOULD_BE_THE_SAME = "Subdivision.ProjectId should be the same";

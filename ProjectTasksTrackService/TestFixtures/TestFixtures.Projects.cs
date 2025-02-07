@@ -7,7 +7,7 @@ using ProjectTasksTrackService.Core;
 
 namespace TestFixtures
 {
-    public class TestFixtures
+    public partial class TestFixtures
     {
         public static Project GetProjectFixtureWithAllFields(
             bool generateId = false,

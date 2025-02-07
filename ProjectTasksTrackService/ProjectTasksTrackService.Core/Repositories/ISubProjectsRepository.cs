@@ -10,29 +10,37 @@ namespace ProjectTasksTrackService.Core.Repositories
         Task<CreateResult> Add(ProjectSubDivision subDivision, bool trySetId = false);
         Task<ImportResult> Import(IEnumerable<ProjectSubDivision> subDivisions);
         Task<ProjectSubDivision> GetProjectSubDivision(
-            int? projectId = null,
-            int? id = null,
-            string codeSubStr = null,
-            string nameSubStr = null,
-            bool ignoreCase = true);
-        Task<ProjectSubDivision> GetProjectSubDivision(int subDivisionId, int? projectId = null);
+            int? projectId,
+            int? id,
+            string codeSubStr,
+            string nameSubStr,
+            bool ignoreCase);
+        Task<ProjectSubDivision> GetProjectSubDivision(int subDivisionId, int? projectId);
         Task<IEnumerable<ProjectSubDivision>> GetProjectSubDivisions(
-            int? projectId = null,
-            int? id = null,
-            string codeSubStr = null,
-            string nameSubStr = null,
-            int skipCount = 0,
-            int limitCount = 100,
-            bool ignoreCase = true);
+            int? projectId,
+            int? id,
+            string codeSubStr,
+            string nameSubStr,
+            int skipCount,
+            int limitCount,
+            bool ignoreCase);
 
         Task<IEnumerable<ProjectSubDivision>> GetAllProjectSubDivisions();
 
         Task<UpdateResult> UpdateSubDivision(ProjectSubDivision project);
-        Task<DeleteResult> DeleteSubDivision(int id, string projectSubDivionSecretString, int? projectId = null);
+
+        /// <summary>
+        /// Удаление подпроекта
+        /// </summary>
+        /// <param name="id"> id подпроекта </param>
+        /// <param name="projectSubDivionSecretString"> секретная строка для удаления подпроекта </param>
+        /// <param name="projectId"> (опциональный) (сделан обязательным из-за CS0854) </param>
+        /// <returns></returns>
+        Task<DeleteResult> DeleteSubDivision(int id, string projectSubDivionSecretString, int? projectId);
         Task<IEnumerable<ProjectSubDivision>> GetHotSubDivisions(
-            int? projectId = null,
-            DateTime? deadLine = null,
-            int skipCount = 0,
-            int limitCount = 100);
+            int? projectId,
+            DateTime? deadLine,
+            int skipCount,
+            int limitCount);
     }
 }
