@@ -53,13 +53,15 @@ namespace TestFixtures
                 doneDt: null);
         }
 
-        public static ProjectTask GetTaskFixtureWithRequiredFields(bool generateId = false)
+        public static ProjectTask GetTaskFixtureWithRequiredFields(
+            bool generateId = false,
+            bool generateCode = true)
         {
             var fixture = new Fixture();
 
             var id = generateId ? fixture.Create<int>() : 0;
             var projectId = fixture.Create<int>();
-            var code = fixture.Build<string>().Create();
+            var code = generateCode ? fixture.Build<string>().Create() : null;
             var name = fixture.Build<string>().Create();
 
             return new ProjectTask(
@@ -75,7 +77,7 @@ namespace TestFixtures
         /// Сгенерировать набор из 5+5 задач, с конфликтами ##1,3,5 ([0],[2],[4])
         /// </summary>
         /// <returns> List(ProjectTask) существующие_задачи, List(ProjectTask) импортируемые_задачи </returns>
-        public static (List<ProjectTask> existingTasks, List<ProjectTask> tasksImport) Simulate10SubTasksWithConflicts1_3_5_ToImport()
+        public static (List<ProjectTask> existingTasks, List<ProjectTask> tasksImport) Simulate10TasksWithConflicts1_3_5_ToImport()
         {
             List<int> excludeIds = new List<int>();
             var task1 = GetTaskFixtureWithAllFields(generateId: true, excludeIds: excludeIds);

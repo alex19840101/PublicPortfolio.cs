@@ -20,7 +20,7 @@ namespace ProjectTasksTrackService.BusinessLogic
         public async Task<ImportResult> Import(IEnumerable<ProjectTask> tasks)
         {
             if (tasks is null)
-                return new ImportResult(ErrorStrings.TASKS_LIST_TO_IMPORT_SHOULD_NOT_BE_NULL, System.Net.HttpStatusCode.BadRequest);
+                throw new ArgumentNullException(ErrorStrings.TASKS_PARAM_NAME);
 
             if (!tasks.Any())
                 return new ImportResult(ErrorStrings.TASKS_LIST_TO_IMPORT_SHOULD_BE_FILLED, System.Net.HttpStatusCode.BadRequest);
@@ -42,14 +42,32 @@ namespace ProjectTasksTrackService.BusinessLogic
             }
 
             if (conflictedIds.Any())
-                return new ImportResult { ImportedCount = 0, Message = $"{ErrorStrings.TASKS_CONFLICTS}:{string.Join(",", conflictedIds)}" };
+                return new ImportResult
+                {
+                    ImportedCount = 0,
+                    Message = $"{ErrorStrings.TASKS_CONFLICTS}:{string.Join(",", conflictedIds)}",
+                    StatusCode = System.Net.HttpStatusCode.Conflict
+                };
 
             if (!newTasksToImport.Any())
-                return new ImportResult { ImportedCount = 0, Message = ErrorStrings.ALREADY_IMPORTED };
+                return new ImportResult
+                {
+                    ImportedCount = 0,
+                    Message = ErrorStrings.ALREADY_IMPORTED,
+                    StatusCode = System.Net.HttpStatusCode.OK
+                };
 
             var importResult = await _tasksRepository.Import(newTasksToImport);
 
-            return new ImportResult { ImportedCount = importResult.ImportedCount, Message = ErrorStrings.IMPORTED };
+            if (importResult.StatusCode != System.Net.HttpStatusCode.OK)
+                throw new InvalidOperationException($"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK}: {importResult.StatusCode}. {importResult.Message}");
+
+            return new ImportResult
+            {
+                ImportedCount = importResult.ImportedCount,
+                Message = ErrorStrings.IMPORTED,
+                StatusCode = System.Net.HttpStatusCode.OK
+            };
         }
 
         public async Task<CreateResult> Create(ProjectTask task)
@@ -58,7 +76,7 @@ namespace ProjectTasksTrackService.BusinessLogic
                 throw new ArgumentNullException(ErrorStrings.TASK_PARAM_NAME);
 
             if (!string.IsNullOrWhiteSpace(task.Code))
-                return new CreateResult(ErrorStrings.TASK_CODE_SHOULD_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+                return new CreateResult(ErrorStrings.TASK_CODE_SHOULD_BE_EMPTY_IN_CREATE, System.Net.HttpStatusCode.BadRequest);
 
             if (string.IsNullOrWhiteSpace(task.Name))
                 return new CreateResult(ErrorStrings.TASK_NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
@@ -87,7 +105,7 @@ namespace ProjectTasksTrackService.BusinessLogic
 
             return tasks;
         }
-        public async Task<ProjectTask> GetTask(int taskId, int? projectId = null, int? subdivisionId = null)
+        public async Task<ProjectTask> GetTask(int taskId, int? projectId, int? subdivisionId)
         {
             return await _tasksRepository.GetTask(taskId, projectId, subdivisionId);
         }
@@ -118,7 +136,7 @@ namespace ProjectTasksTrackService.BusinessLogic
             if (string.IsNullOrWhiteSpace(task.Code))
                 return new UpdateResult
                 {
-                    Message = ErrorStrings.TASK_CODE_SHOULD_BE_THE_SAME,
+                    Message = ErrorStrings.TASK_CODE_SHOULD_NOT_BE_EMPTY,
                     StatusCode = System.Net.HttpStatusCode.BadRequest
                 };
 

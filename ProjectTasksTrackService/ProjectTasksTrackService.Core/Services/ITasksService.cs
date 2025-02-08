@@ -9,7 +9,7 @@ namespace ProjectTasksTrackService.Core.Services
     {
         Task<ImportResult> Import(IEnumerable<ProjectTask> tasks);
         Task<CreateResult> Create(ProjectTask project);
-        Task<ProjectTask> GetTask(int taskId, int? projectId = null, int? subdivisionId = null);
+        Task<ProjectTask> GetTask(int taskId, int? projectId, int? subdivisionId);
         Task<IEnumerable<ProjectTask>> GetHotTasks(
             int? projectId = null,
             int? subdivisionId = null,

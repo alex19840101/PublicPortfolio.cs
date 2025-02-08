@@ -123,7 +123,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             return tasks;
         }
 
-        public async Task<ProjectTask> GetTask(int taskId, int? projectId = null, int? subdivisionId = null)
+        public async Task<ProjectTask> GetTask(int taskId, int? projectId, int? subdivisionId)
         {
             var taskEntity = await GetTaskEntity(taskId, projectId, subdivisionId);
             if (taskEntity is null)
@@ -308,7 +308,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
                 return new UpdateResult(ErrorStrings.SUBDIVISION_NOT_FOUND, HttpStatusCode.NotFound);
 
             if (!task.Code.Equals(entityTask.Code))
-                return new UpdateResult(ErrorStrings.CODE_SHOULD_BE_THE_SAME, HttpStatusCode.Conflict);
+                return new UpdateResult(ErrorStrings.TASK_CODE_SHOULD_BE_THE_SAME, HttpStatusCode.Conflict);
 
             if (!task.ProjectId.Equals(entityTask.ProjectId))
                 return new UpdateResult(ErrorStrings.TASK_PROJECT_ID_SHOULD_BE_THE_SAME, HttpStatusCode.Conflict);
@@ -349,17 +349,17 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
         }
 
         
-        public async Task<DeleteResult> DeleteTask(int id, string projectSubDivisionSecretString, int? projectId, int? subdivisionId)
+        public async Task<DeleteResult> DeleteTask(int id, string taskSecretString, int? projectId, int? subdivisionId)
         {
             var taskEntity = await GetTaskEntity(id, projectId, subdivisionId);
 
             if (taskEntity is null)
                 return new DeleteResult(ErrorStrings.TASK_NOT_FOUND, HttpStatusCode.NotFound);
 
-            if (string.IsNullOrWhiteSpace(projectSubDivisionSecretString))
+            if (string.IsNullOrWhiteSpace(taskSecretString))
                 return new DeleteResult(ErrorStrings.EMPTY_OR_NULL_SECRET_STRING, HttpStatusCode.Forbidden);
 
-            if (!string.Equals(GetSecretString(taskEntity), projectSubDivisionSecretString))
+            if (!string.Equals(GetSecretString(taskEntity), taskSecretString))
                 return new DeleteResult(ErrorStrings.INVALID_SECRET_STRING, HttpStatusCode.Forbidden);
 
             _dbContext.ProjectTasks.Remove(taskEntity);

@@ -11,30 +11,30 @@ namespace ProjectTasksTrackService.Core.Repositories
         Task<CreateResult> Add(ProjectTask project, bool trySetId = false);
         Task<IEnumerable<ProjectTask>> GetAllTasks();
         Task<ProjectTask> GetTask(
-            int? projectId = null,
-            int? subdivisionId = null,
-            int? id = null,
-            string codeSubStr = null,
-            string nameSubStr = null,
-            bool ignoreCase = true);
-        Task<ProjectTask> GetTask(int taskId, int? projectId = null, int? subdivisionId = null);
+            int? projectId,
+            int? subdivisionId,
+            int? id,
+            string codeSubStr,
+            string nameSubStr,
+            bool ignoreCase);
+        Task<ProjectTask> GetTask(int taskId, int? projectId, int? subdivisionId);
         Task<IEnumerable<ProjectTask>> GetHotTasks(
-            int? projectId = null,
-            int? subdivisionId = null,
-            DateTime? deadLine = null,
-            int skipCount = 0,
-            int limitCount = 100);
+            int? projectId,
+            int? subdivisionId,
+            DateTime? deadLine,
+            int skipCount,
+            int limitCount);
         Task<IEnumerable<ProjectTask>> GetTasks(
-            int? projectId = null,
-            int? subdivisionId = null,
-            int? id = null,
-            string codeSubStr = null,
-            string nameSubStr = null,
-            int skipCount = 0,
-            int limitCount = 100,
-            bool ignoreCase = true);
+            int? projectId,
+            int? subdivisionId,
+            int? id,
+            string codeSubStr,
+            string nameSubStr,
+            int skipCount,
+            int limitCount,
+            bool ignoreCase);
 
         Task<UpdateResult> UpdateTask(ProjectTask task);
-        Task<DeleteResult> DeleteTask(int taskId, string taskSecretString, int? projectId = null, int? subdivisionId = null);
+        Task<DeleteResult> DeleteTask(int taskId, string taskSecretString, int? projectId, int? subdivisionId);
     }
 }

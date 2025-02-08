@@ -667,14 +667,14 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             var projectSecretString = TestFixtures.TestFixtures.GenerateString();
 
             _projectsRepositoryMock.Setup(pr => pr.DeleteProject(id, projectSecretString))
-                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.OK, Message = Core.ErrorStrings.INVALID_SECRET_STRING });
+                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.OK, Message = Core.ErrorStrings.OK });
 
             var deleteResult = await _projectsService.DeleteProject(id, projectSecretString);
 
             _projectsRepositoryMock.Verify(pr => pr.DeleteProject(id, projectSecretString), Times.Once);
 
             deleteResult.Should().NotBeNull();
-            deleteResult.Message.Should().Be(Core.ErrorStrings.INVALID_SECRET_STRING);
+            deleteResult.Message.Should().Be(Core.ErrorStrings.OK);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
 
