@@ -398,16 +398,16 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             var projects = TestFixtures.TestFixtures.GenerateProjectsList(3);
             List<Project> emptyProjectList = [];
             _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
-                .ReturnsAsync(projects);
+                .ReturnsAsync(emptyProjectList);
             var importResultExpectedMessage = Core.ErrorStrings.PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT;
-            _projectsRepositoryMock.Setup(pr => pr.Import(emptyProjectList))
+            _projectsRepositoryMock.Setup(pr => pr.Import(projects))
                 .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.BadRequest, Message = importResultExpectedMessage, ImportedCount = 0 });
 
             ImportResult importResult = null;
             var exception = Assert.ThrowsAsync<InvalidOperationException>(async () => importResult = await _projectsService.Import(projects));
 
             _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
-            _projectsRepositoryMock.Verify(pr => pr.Import(emptyProjectList), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Import(projects), Times.Once);
 
             Assert.That(exception != null);
             Assert.That(importResult, Is.EqualTo(null));
@@ -422,16 +422,16 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             List<Project> emptyProjectList = [];
 
             _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
-                .ReturnsAsync(projects);
+                .ReturnsAsync(emptyProjectList);
             var importResultExpectedMessage = Core.ErrorStrings.PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT;
-            _projectsRepositoryMock.Setup(pr => pr.Import(emptyProjectList))
+            _projectsRepositoryMock.Setup(pr => pr.Import(projects))
                 .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.BadRequest, Message = importResultExpectedMessage, ImportedCount = 0 });
 
             ImportResult importResult = null;
             var exception = Assert.ThrowsAsync<InvalidOperationException>(async () => importResult = await _projectsService.Import(projects));
 
             _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
-            _projectsRepositoryMock.Verify(pr => pr.Import(emptyProjectList), Times.Once);
+            _projectsRepositoryMock.Verify(pr => pr.Import(projects), Times.Once);
             importResult.Should().BeNull();
             exception.Should().NotBeNull().And.Match<InvalidOperationException>(e => string.Equals(e.Message, $"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK} ({importResult.StatusCode}). Message: ({importResultExpectedMessage})"));
         }

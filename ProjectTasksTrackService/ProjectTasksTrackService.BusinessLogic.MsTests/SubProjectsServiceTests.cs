@@ -229,7 +229,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var exception = await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => importResult = await _subProjectsService.Import(subs));
 
             _subProjectsRepositoryMock.Verify(sr => sr.Import(subs), Times.Never);
-            exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ErrorStrings.PROJECTS_PARAM_NAME);
+            exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ErrorStrings.SUBS_PARAM_NAME);
             importResult.Should().BeNull();
             exception.ParamName.Should().Be(ErrorStrings.SUBS_PARAM_NAME);
         }
@@ -345,20 +345,21 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var subs = TestFixtures.TestFixtures.GenerateSubProjectsList(3);
             List<ProjectSubDivision> emptySubsList = [];
             _subProjectsRepositoryMock.Setup(sr => sr.GetAllProjectSubDivisions())
-                .ReturnsAsync(subs);
-            var importResultExpectedMessage = Core.ErrorStrings.PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT;
-            _subProjectsRepositoryMock.Setup(sr => sr.Import(emptySubsList))
-                .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.BadRequest, Message = importResultExpectedMessage, ImportedCount = 0});
+                .ReturnsAsync(emptySubsList);
+            var importResultExpectedMessage =
+                $"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK}: {System.Net.HttpStatusCode.BadRequest}. {Core.ErrorStrings.SUBDIVISIONS_SHOULD_CONTAIN_AT_LEAST_1_SUBDIVISION}";
+            _subProjectsRepositoryMock.Setup(sr => sr.Import(subs))
+                .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.BadRequest, Message = importResultExpectedMessage, ImportedCount = 0 });
 
             ImportResult importResult = null;
             var exception = await Assert.ThrowsExceptionAsync<InvalidOperationException>(async () => importResult = await _subProjectsService.Import(subs));
 
             _subProjectsRepositoryMock.Verify(sr => sr.GetAllProjectSubDivisions(), Times.Once);
-            _subProjectsRepositoryMock.Verify(sr => sr.Import(emptySubsList), Times.Once);
+            _subProjectsRepositoryMock.Verify(sr => sr.Import(subs), Times.Once);
             
             Assert.IsNotNull(exception);
             Assert.IsNull(importResult);
-            Assert.AreEqual($"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK} ({importResult.StatusCode}). Message: ({importResultExpectedMessage})", exception.Message);
+            Assert.AreEqual(importResultExpectedMessage, exception.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, importResult.StatusCode);
         }
 
@@ -368,20 +369,21 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var subs = TestFixtures.TestFixtures.GenerateSubProjectsList(3);
             List<ProjectSubDivision> emptySubsList = [];
             _subProjectsRepositoryMock.Setup(sr => sr.GetAllProjectSubDivisions())
-                .ReturnsAsync(subs);
-            var importResultExpectedMessage = Core.ErrorStrings.PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT;
-            _subProjectsRepositoryMock.Setup(sr => sr.Import(emptySubsList))
+                .ReturnsAsync(emptySubsList);
+            var importResultExpectedMessage =
+                $"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK}: {System.Net.HttpStatusCode.BadRequest}. {Core.ErrorStrings.SUBDIVISIONS_SHOULD_CONTAIN_AT_LEAST_1_SUBDIVISION}";
+            _subProjectsRepositoryMock.Setup(sr => sr.Import(subs))
                 .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.BadRequest, Message = importResultExpectedMessage, ImportedCount = 0 });
 
             ImportResult importResult = null;
-            
+
             var exception = await Assert.ThrowsExceptionAsync<InvalidOperationException>(async () => importResult = await _subProjectsService.Import(subs));
 
             _subProjectsRepositoryMock.Verify(sr => sr.GetAllProjectSubDivisions(), Times.Once);
-            _subProjectsRepositoryMock.Verify(sr => sr.Import(emptySubsList), Times.Once);
+            _subProjectsRepositoryMock.Verify(sr => sr.Import(subs), Times.Once);
             importResult.Should().BeNull();
             exception.Should().NotBeNull().And.Match<InvalidOperationException>(
-                e => string.Equals(e.Message, $"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK} ({importResult.StatusCode}). Message: ({importResultExpectedMessage})"));
+                e => string.Equals(e.Message, importResultExpectedMessage));
         }
 
 

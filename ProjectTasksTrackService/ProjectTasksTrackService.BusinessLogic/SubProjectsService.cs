@@ -72,7 +72,7 @@ namespace ProjectTasksTrackService.BusinessLogic
         public async Task<ImportResult> Import(IEnumerable<ProjectSubDivision> subs)
         {
             if (subs is null)
-                return new ImportResult(ErrorStrings.SUBPROJECTS_LIST_TO_IMPORT_SHOULD_NOT_BE_NULL, System.Net.HttpStatusCode.BadRequest);
+                throw new ArgumentNullException(ErrorStrings.SUBS_PARAM_NAME);
 
             if (!subs.Any())
                 return new ImportResult(ErrorStrings.SUBPROJECTS_LIST_TO_IMPORT_SHOULD_BE_FILLED, System.Net.HttpStatusCode.BadRequest);
@@ -110,6 +110,9 @@ namespace ProjectTasksTrackService.BusinessLogic
                 };
 
             var importResult = await _subProjectsRepository.Import(newSubsToImport);
+
+            if (importResult.StatusCode != System.Net.HttpStatusCode.OK)
+                throw new InvalidOperationException($"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK}: {importResult.StatusCode}. {importResult.Message}");
 
             return new ImportResult 
             {
