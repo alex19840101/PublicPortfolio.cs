@@ -338,7 +338,8 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
 
             _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
                 .ReturnsAsync(emptyProjectList);
-            var importResultExpectedMessage = Core.ErrorStrings.PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT;
+            var importResultExpectedMessage =
+                $"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK}: {System.Net.HttpStatusCode.BadRequest}. {Core.ErrorStrings.PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT}";
             _projectsRepositoryMock.Setup(pr => pr.Import(projects))
                 .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.BadRequest, Message = importResultExpectedMessage, ImportedCount = 0});
 
@@ -361,7 +362,8 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
 
             _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
                 .ReturnsAsync(emptyProjectList);
-            var importResultExpectedMessage = Core.ErrorStrings.PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT;
+            var importResultExpectedMessage =
+                $"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK}: {System.Net.HttpStatusCode.BadRequest}. {Core.ErrorStrings.PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT}";
             _projectsRepositoryMock.Setup(pr => pr.Import(projects))
                 .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.BadRequest, Message = importResultExpectedMessage, ImportedCount = 0 });
 

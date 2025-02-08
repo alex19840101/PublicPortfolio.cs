@@ -80,7 +80,7 @@ namespace ProjectTasksTrackService.BusinessLogic
             var importResult = await _projectsRepository.Import(newProjectsToImport);
 
             if (importResult.StatusCode != System.Net.HttpStatusCode.OK)
-                throw new InvalidOperationException($"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK} ({importResult.StatusCode}). Message: ({importResult.Message})");
+                throw new InvalidOperationException($"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK}: {importResult.StatusCode}. {importResult.Message}");
 
             return new ImportResult
             {
