@@ -399,7 +399,9 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             List<Project> emptyProjectList = [];
             _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
                 .ReturnsAsync(emptyProjectList);
-            var importResultExpectedMessage = Core.ErrorStrings.PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT;
+            var importResultExpectedMessage =
+                $"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK}: {System.Net.HttpStatusCode.BadRequest}. {Core.ErrorStrings.PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT}";
+
             _projectsRepositoryMock.Setup(pr => pr.Import(projects))
                 .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.BadRequest, Message = importResultExpectedMessage, ImportedCount = 0 });
 
@@ -411,7 +413,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
 
             Assert.That(exception != null);
             Assert.That(importResult, Is.EqualTo(null));
-            Assert.That(exception.Message, Is.EqualTo($"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK} ({importResult.StatusCode}). Message: ({importResultExpectedMessage})"));
+            Assert.That(exception.Message, Is.EqualTo(importResultExpectedMessage));
             Assert.That(importResult.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.BadRequest));
         }
 
@@ -423,7 +425,9 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
 
             _projectsRepositoryMock.Setup(pr => pr.GetAllProjects())
                 .ReturnsAsync(emptyProjectList);
-            var importResultExpectedMessage = Core.ErrorStrings.PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT;
+            var importResultExpectedMessage =
+                $"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK}: {System.Net.HttpStatusCode.BadRequest}. {Core.ErrorStrings.PROJECTS_SHOULD_CONTAIN_AT_LEAST_1_PROJECT}";
+
             _projectsRepositoryMock.Setup(pr => pr.Import(projects))
                 .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.BadRequest, Message = importResultExpectedMessage, ImportedCount = 0 });
 
@@ -433,7 +437,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             _projectsRepositoryMock.Verify(pr => pr.GetAllProjects(), Times.Once);
             _projectsRepositoryMock.Verify(pr => pr.Import(projects), Times.Once);
             importResult.Should().BeNull();
-            exception.Should().NotBeNull().And.Match<InvalidOperationException>(e => string.Equals(e.Message, $"{ErrorStrings.IMPORT_RESULT_STATUS_CODE_IS_NOT_OK} ({importResult.StatusCode}). Message: ({importResultExpectedMessage})"));
+            exception.Should().NotBeNull().And.Match<InvalidOperationException>(e => string.Equals(e.Message, importResultExpectedMessage));
         }
 
         [Test]
