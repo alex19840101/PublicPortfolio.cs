@@ -570,7 +570,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
             var projectSecretString = TestFixtures.TestFixtures.GenerateString();
 
             _subProjectsRepositoryMock.Setup(sr => sr.DeleteSubDivision(id, projectSecretString, projectId))
-                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.NotFound, Message = Core.ErrorStrings.PROJECT_NOT_FOUND });
+                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.NotFound, Message = Core.ErrorStrings.SUBDIVISION_NOT_FOUND });
 
             var deleteResult = await _subProjectsService.DeleteSubDivision(id, projectSecretString, projectId);
 
@@ -722,7 +722,8 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
         public async Task GetSub_ExistingSubById_ShouldReturnSub(int id, int? projectId)
         {
             ProjectSubDivision sub = null;
-            var existingSub = TestFixtures.TestFixtures.GetSubProjectFixtureWithAllFields(setId: id, setProjectId: projectId.Value);
+            var setProjectId = projectId != null ? projectId.Value : 0;
+            var existingSub = TestFixtures.TestFixtures.GetSubProjectFixtureWithAllFields(setId: id, setProjectId: setProjectId);
             _subProjectsRepositoryMock.Setup(sr => sr.GetProjectSubDivision(id, projectId))
                 .ReturnsAsync(existingSub);
 
@@ -747,7 +748,8 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
         public async Task GetSub_ExistingSubById_ShouldReturnSub_FluentAssertion(int id, int? projectId)
         {
             ProjectSubDivision sub = null;
-            var existingSub = TestFixtures.TestFixtures.GetSubProjectFixtureWithAllFields(setId: id, setProjectId: projectId.Value);
+            var setProjectId = projectId != null ? projectId.Value : 0;
+            var existingSub = TestFixtures.TestFixtures.GetSubProjectFixtureWithAllFields(setId: id, setProjectId: setProjectId);
             _subProjectsRepositoryMock.Setup(sr => sr.GetProjectSubDivision(id, projectId))
                 .ReturnsAsync(existingSub);
 

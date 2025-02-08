@@ -544,7 +544,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             var projectSecretString = TestFixtures.TestFixtures.GenerateString();
 
             _subProjectsRepositoryMock.Setup(sr => sr.DeleteSubDivision(id, projectSecretString, projectId))
-                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.NotFound, Message = Core.ErrorStrings.PROJECT_NOT_FOUND });
+                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.NotFound, Message = Core.ErrorStrings.SUBDIVISION_NOT_FOUND });
 
             var deleteResult = await _subProjectsService.DeleteSubDivision(id, projectSecretString, projectId);
 
@@ -564,7 +564,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
             var projectSecretString = TestFixtures.TestFixtures.GenerateString();
 
             _subProjectsRepositoryMock.Setup(sr => sr.DeleteSubDivision(id, projectSecretString, projectId))
-                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.NotFound, Message = Core.ErrorStrings.PROJECT_NOT_FOUND });
+                .ReturnsAsync(new DeleteResult { StatusCode = System.Net.HttpStatusCode.NotFound, Message = Core.ErrorStrings.SUBDIVISION_NOT_FOUND });
 
             var deleteResult = await _subProjectsService.DeleteSubDivision(id, projectSecretString, projectId);
 
