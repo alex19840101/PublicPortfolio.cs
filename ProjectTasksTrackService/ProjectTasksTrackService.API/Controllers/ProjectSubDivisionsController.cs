@@ -174,6 +174,7 @@ namespace ProjectTasksTrackService.API.Controllers
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> UpdateSubDivision(ProjectSubDivisionDto subDivisionDto)
         {
             var updateResult = await _subProjectsService.UpdateSubDivision(ProjectSubDivision(subDivisionDto));

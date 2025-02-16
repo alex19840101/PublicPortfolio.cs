@@ -180,6 +180,7 @@ namespace ProjectTasksTrackService.API.Controllers
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> UpdateTask(TaskDto taskDto)
         {
             var updateResult = await _tasksService.UpdateTask(ProjectTask(taskDto));
