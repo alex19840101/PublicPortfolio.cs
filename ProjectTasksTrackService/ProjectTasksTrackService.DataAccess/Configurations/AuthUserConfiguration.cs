@@ -19,6 +19,7 @@ namespace ProjectTasksTrackService.DataAccess.Configurations
             builder.Property(t => t.UserName).HasField("_userName").HasMaxLength(MAX_NAME_LENGTH).IsRequired();
             builder.Property(t => t.Email).HasField("_email").HasMaxLength(MAX_NAME_LENGTH).IsRequired();
             builder.Property(t => t.PasswordHash).HasField("_passwordHash").HasMaxLength(MAX_NAME_LENGTH).IsRequired();
+            builder.Property(t => t.GranterId).HasField("_granterId");
 
             builder.Property(t => t.Nick).HasMaxLength(MAX_NAME_LENGTH);
             builder.Property(t => t.Phone).HasMaxLength(MAX_NAME_LENGTH);

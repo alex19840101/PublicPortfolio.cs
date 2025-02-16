@@ -12,13 +12,22 @@
         /// </summary>
         public string PasswordHash { get { return _passwordHash; } }
 
+        /// <summary>
+        /// Таймаут, минут
+        /// </summary>
+        public int? TimeoutMinutes { get { return _timeoutMinutes; } }
+
+
         private readonly string _login;
         private readonly string _passwordHash;
 
-        public LoginData(string login, string passwordHash)
+        private readonly int? _timeoutMinutes;
+
+        public LoginData(string login, string passwordHash, int? timeoutMinutes)
         {
             _login = login;
             _passwordHash = passwordHash;
+            _timeoutMinutes = timeoutMinutes;
         }
     }
 }

@@ -22,6 +22,7 @@ namespace ProjectTasksTrackService.API.Controllers
     {
         private readonly IAuthService _authService;
 
+        /// <summary> </summary>
         public AuthController(IAuthService authService)
         {
 
@@ -74,7 +75,7 @@ namespace ProjectTasksTrackService.API.Controllers
             };
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
         }
-
+        /*
         /// <summary> Выход пользователя из системы </summary>
         [HttpPost("api/v2/Auth/Logout")]
         [ProducesResponseType(typeof(AuthResponseDto), (int)HttpStatusCode.OK)]
@@ -97,7 +98,8 @@ namespace ProjectTasksTrackService.API.Controllers
                 Token = logoutResult.Token
             };
             return new ObjectResult(result) { StatusCode = StatusCodes.Status200OK };
-        }
+        }*/
+
         /// <summary>
         /// Предоставление (установка/сброс) роли аккаунту
         /// </summary>
@@ -122,6 +124,7 @@ namespace ProjectTasksTrackService.API.Controllers
         /// <summary>
         /// Обновление аккаунта
         /// </summary>
+        [HttpPost("api/v2/Auth/UpdateAccount")]
         [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Unauthorized)]
@@ -147,6 +150,7 @@ namespace ProjectTasksTrackService.API.Controllers
         [HttpDelete("api/v2/Auth/DeleteAccount")]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> DeleteAccount(DeleteAccountRequestDto request)
@@ -155,6 +159,10 @@ namespace ProjectTasksTrackService.API.Controllers
 
             if (deleteResult.StatusCode == HttpStatusCode.NotFound)
                 return NotFound(deleteResult);
+
+            if (deleteResult.StatusCode == HttpStatusCode.Unauthorized)
+                return new UnauthorizedObjectResult(new MessageResponseDto { Message = deleteResult.Message });
+
             if (deleteResult.StatusCode == HttpStatusCode.Forbidden)
                 return new ObjectResult(deleteResult) { StatusCode = StatusCodes.Status403Forbidden };
 
@@ -172,6 +180,7 @@ namespace ProjectTasksTrackService.API.Controllers
                 nick: request.Nick,
                 phone: request.Phone,
                 role: request.RequestedRole,
+                granterId: null,
                 createdDt: DateTime.Now,
                 lastUpdateDt: null);
 
@@ -190,7 +199,8 @@ namespace ProjectTasksTrackService.API.Controllers
         {
             return new LoginData(
                 login: request.Login,
-                passwordHash: GeneratePasswordHash(request.Password, request.Password));
+                passwordHash: GeneratePasswordHash(request.Password, request.Password),
+                timeoutMinutes: request.TimeoutMinutes);
         }
 
 

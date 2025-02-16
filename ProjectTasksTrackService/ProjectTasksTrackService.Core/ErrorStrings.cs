@@ -32,5 +32,14 @@
 
         public const string EMPTY_OR_NULL_SECRET_STRING = "Empty/null/space secret string";
         public const string INVALID_SECRET_STRING = "Invalid secret string";
+
+        public const string EMPTY_OR_NULL_PASSWORD_HASH = "Empty/null/space password hash";
+        public const string GRANTER_ID_NOT_FOUND = "granterId not found";
+        public const string USER_NOT_FOUND = "User not found";
+        public const string PASSWORD_HASH_MISMATCH = "Password(hash) mismatch";
+        public const string USER_UPDATED = "User updated";
+        public const string USER_IS_ACTUAL = "User is actual";
+        public const string LOGIN_MISMATCH = "Login mismatch";
+        public const string GRANTERLOGIN_MISMATCH = "GranterLogin mismatch";
     }
 }

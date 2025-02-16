@@ -14,5 +14,10 @@
         /// Пароль для входа*
         /// </summary>
         public string Password { get; set; }
+
+        /// <summary>
+        /// Пароль для входа*
+        /// </summary>
+        public int? TimeoutMinutes { get; set; }
     }
 }

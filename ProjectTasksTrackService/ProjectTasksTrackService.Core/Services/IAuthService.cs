@@ -10,7 +10,7 @@ namespace ProjectTasksTrackService.Core.Services
         Task<AuthResult> Login(LoginData loginData);
         Task<DeleteResult> DeleteAccount(DeleteAccountData deleteAccountData);
         Task<AuthResult> Logout(LogoutData logoutData);
-        Task<AuthResult> GrantRole(GrantRoleData grantRoleData);
-        Task<AuthResult> UpdateAccount(UpdateAccountData updateAccountData);
+        Task<UpdateResult> GrantRole(GrantRoleData grantRoleData);
+        Task<UpdateResult> UpdateAccount(UpdateAccountData updateAccountData);
     }
 }

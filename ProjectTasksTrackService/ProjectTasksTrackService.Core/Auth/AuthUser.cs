@@ -12,6 +12,7 @@ namespace ProjectTasksTrackService.Core.Auth
         public string Nick { get { return _nick; } }
         public string Phone { get { return _phone; } }
         public string Role { get { return _role; } }
+        public int? GranterId { get { return _granterId; } }
         public DateTime CreatedDt { get { return _createdDt; } }
         public DateTime? LastUpdateDt { get { return _lastUpdateDt; } }
 
@@ -23,6 +24,7 @@ namespace ProjectTasksTrackService.Core.Auth
         private string _nick;
         private string _phone;
         private string _role;
+        private int? _granterId;
         private readonly DateTime _createdDt;
         private DateTime? _lastUpdateDt;
 
@@ -35,6 +37,7 @@ namespace ProjectTasksTrackService.Core.Auth
             string nick,
             string phone,
             string role,
+            int? granterId,
             DateTime createdDt,
             DateTime? lastUpdateDt)
         {
@@ -46,6 +49,7 @@ namespace ProjectTasksTrackService.Core.Auth
             _nick = nick;
             _phone = phone;
             _role = role;
+            _granterId = granterId;
             _createdDt = createdDt;
             _lastUpdateDt = lastUpdateDt;
         }
@@ -57,6 +61,7 @@ namespace ProjectTasksTrackService.Core.Auth
         public void UpdateNick(string newNick) => _nick = newNick;
         public void UpdatePhone(string newPhone) => _phone = newPhone;
         public void UpdateRole(string newRole) => _role = newRole;
+        public void UpdateGranterId(int granterId) => _granterId = granterId;
         public void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
 
         public override bool Equals(object obj)
