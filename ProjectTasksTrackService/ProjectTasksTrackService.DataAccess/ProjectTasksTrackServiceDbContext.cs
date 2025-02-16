@@ -10,12 +10,15 @@ namespace ProjectTasksTrackService.DataAccess
         {
         }
 
+        
+        public DbSet<AuthUser> AuthUsers { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectSubDivision> ProjectSubDivisions { get; set; }
         public DbSet<ProjectTask> ProjectTasks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new AuthUserConfiguration());
             modelBuilder.ApplyConfiguration(new ProjectConfiguration());
             modelBuilder.ApplyConfiguration(new ProjectSubDivisionConfiguration());
             modelBuilder.ApplyConfiguration(new ProjectTaskConfiguration());
