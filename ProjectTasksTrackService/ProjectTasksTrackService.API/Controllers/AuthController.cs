@@ -191,7 +191,7 @@ namespace ProjectTasksTrackService.API.Controllers
                 string.IsNullOrWhiteSpace(password))
                 return null;
 
-            return new PasswordHasher<UserSecret>().HashPassword(new UserSecret(password), password);
+            return SHA256Hasher.GetHash(password);
         }
 
         [NonAction]

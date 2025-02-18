@@ -82,7 +82,7 @@ namespace ProjectTasksTrackService.BusinessLogic
 
             var token = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-            return new AuthResult(message: Core.ErrorStrings.OK, statusCode: System.Net.HttpStatusCode.Created, token: token);
+            return new AuthResult(id: user.Id, message: Core.ErrorStrings.OK, statusCode: System.Net.HttpStatusCode.Created, token: token);
         }
         public Task<AuthResult> Logout(LogoutData logoutData)
         {
