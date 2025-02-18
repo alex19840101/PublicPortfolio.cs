@@ -1,13 +1,18 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ProjectTasksTrackService.API;
 using ProjectTasksTrackService.BusinessLogic;
 using ProjectTasksTrackService.Core.Repositories;
 using ProjectTasksTrackService.Core.Services;
@@ -19,6 +24,26 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddAuthorization();
+
+const string KEY = "ProjectTasksTrackService:Auth/Key{)(ws;lkfj43";
+builder.Services.AddScoped<IAuthorizationHandler, RoleAuthorizationHandler>();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = "MyAuthServer",
+            ValidateAudience = true,
+            ValidAudience = "MyAuthClient",
+            ValidateLifetime = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(KEY)),
+            ValidateIssuerSigningKey = true
+        };
+    });
+builder.Services.AddAuthorization();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -101,6 +126,9 @@ builder.Services.AddSwaggerGen(c => // Register the Swagger generator, defining 
 
 
 var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 if (isDevelopment)

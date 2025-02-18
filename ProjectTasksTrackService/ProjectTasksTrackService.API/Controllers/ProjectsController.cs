@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTasksTrackService.API.Contracts.Dto;
@@ -164,10 +165,14 @@ namespace ProjectTasksTrackService.API.Controllers
         [HttpDelete("api/v2/Projects/DeleteProject")]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.NotFound)]
+        [Authorize(Roles = "admin, PM")]
         public async Task<IActionResult> DeleteProject(DeleteProjectRequestDto deleteProjectRequest)
         {
+            var token = HttpContext.Request.Headers.TryGetValue("Authorization", out var value).ToString();
+            
             var deleteResult = await _projectsService.DeleteProject(
                 deleteProjectRequest.Id,
                 deleteProjectRequest.ProjectSecretString);

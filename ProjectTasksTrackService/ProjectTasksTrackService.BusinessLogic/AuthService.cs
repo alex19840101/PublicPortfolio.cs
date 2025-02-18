@@ -71,7 +71,11 @@ namespace ProjectTasksTrackService.BusinessLogic
             if (!string.Equals(loginData.PasswordHash, user.PasswordHash))
                 return new AuthResult(message: Core.ErrorStrings.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Unauthorized);
 
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, loginData.Login)};
+            var claims = new List<Claim>
+            {
+                //new Claim(ClaimTypes.Name, loginData.Login),
+                new Claim(ClaimTypes.Role, user.Role)
+            };
 
             var jwt = new JwtSecurityToken(
                 issuer: ISSUER,

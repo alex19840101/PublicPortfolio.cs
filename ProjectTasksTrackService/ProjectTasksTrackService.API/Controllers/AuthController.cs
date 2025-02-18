@@ -2,7 +2,6 @@
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTasksTrackService.API.Contracts.Dto.Requests.Auth;
 using ProjectTasksTrackService.API.Contracts.Dto.Responses;
@@ -57,6 +56,7 @@ namespace ProjectTasksTrackService.API.Controllers
         [ProducesResponseType(typeof(AuthResponseDto), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(AuthResponseDto), (int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> Login(LoginRequestDto request)
         {
             var loginResult = await _authService.Login(LoginData(request));
@@ -66,6 +66,9 @@ namespace ProjectTasksTrackService.API.Controllers
 
             if (loginResult.StatusCode == HttpStatusCode.Unauthorized)
                 return new UnauthorizedObjectResult(new MessageResponseDto { Message = loginResult.Message });
+
+            if (loginResult.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(loginResult);
 
             var result = new AuthResponseDto
             {

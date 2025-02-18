@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTasksTrackService.API.Contracts.Dto;
@@ -192,8 +193,10 @@ namespace ProjectTasksTrackService.API.Controllers
         [HttpDelete("api/v2/SubDivisions/DeleteSubDivision")]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.NotFound)]
+        [Authorize(Roles = "admin, PM")]
         public async Task<IActionResult> DeleteSubDivision(DeleteProjectSubDivisionDto deleteSubProjectRequest)
         {
             var deleteResult = await _subProjectsService.DeleteSubDivision(
