@@ -1,10 +1,13 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,10 +27,33 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddAuthorization();
+//builder.Services.AddControllers(config =>
+//{
+//    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+//    config.Filters.Add(new AuthorizeFilter(policy));
+//});
+
+//builder.Services.AddAuthorizationBuilder()
+//    .AddPolicy(JwtBearerDefaults.AuthenticationScheme, new AuthorizationPolicyBuilder()
+//            .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+//            .RequireAuthenticatedUser().Build());
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy =>
+    {
+        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+        policy.RequireClaim(ClaimTypes.Role);
+    });
+});
+
+
 
 const string KEY = "ProjectTasksTrackService:Auth/Key{)(ws;lkfj43";
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<IAuthorizationHandler, RoleAuthorizationHandler>();
+//builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -42,7 +68,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true
         };
     });
-builder.Services.AddAuthorization();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -88,6 +113,11 @@ else
     });
 }
 
+builder.Services.AddDefaultIdentity<IdentityUser>(
+    options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<ProjectTasksTrackServiceDbContext>();
+
 #region -------------------------------Swagger-------------------------------
 const string URL = "https://github.com/alex19840101/PublicPortfolio.cs/compare/ProjectTasksTrackService";
 builder.Services.AddSwaggerGen(c => // Register the Swagger generator, defining 1 or more Swagger documents
@@ -127,9 +157,6 @@ builder.Services.AddSwaggerGen(c => // Register the Swagger generator, defining 
 
 var app = builder.Build();
 
-app.UseAuthentication();
-app.UseAuthorization();
-
 // Configure the HTTP request pipeline.
 if (isDevelopment)
 {
@@ -149,6 +176,7 @@ else
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -171,7 +171,7 @@ namespace ProjectTasksTrackService.API.Controllers
         [Authorize(Roles = "admin, PM")]
         public async Task<IActionResult> DeleteProject(DeleteProjectRequestDto deleteProjectRequest)
         {
-            var token = HttpContext.Request.Headers.TryGetValue("Authorization", out var value).ToString();
+            var authHeaderIsPresent = HttpContext.Request.Headers.TryGetValue("Authorization", out var value);
             
             var deleteResult = await _projectsService.DeleteProject(
                 deleteProjectRequest.Id,
