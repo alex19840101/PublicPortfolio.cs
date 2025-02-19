@@ -67,6 +67,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(KEY)),
             ValidateIssuerSigningKey = true
         };
+        options.IncludeErrorDetails = true;
+        options.SaveToken = true;
     });
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
