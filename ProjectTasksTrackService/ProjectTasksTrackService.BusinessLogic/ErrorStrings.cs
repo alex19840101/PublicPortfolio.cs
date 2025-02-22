@@ -52,5 +52,6 @@
         public const string GRANTROLEDATA_PARAM_NAME = "grantRoleData";
         public const string GRANTERLOGIN_SHOULD_NOT_BE_EMPTY = "GranterLogin should be not empty";
         public const string UPDATEACCOUNTDATA_PARAM_NAME = "updateAccountData";
+        public const string DELETEACCOUNTDATA_PARAM_NAME = "deleteAccountData";
     }
 }

@@ -119,10 +119,13 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
             if (authUserEntity is null)
                 return new UpdateResult(ErrorStrings.USER_NOT_FOUND, HttpStatusCode.NotFound);
 
+            if (!string.Equals(upd.PasswordHash, authUserEntity.PasswordHash))
+                return new UpdateResult(ErrorStrings.PASSWORD_HASH_MISMATCH, HttpStatusCode.Forbidden);
+
             if (!string.Equals(upd.Login, authUserEntity.Login)) authUserEntity.UpdateLogin(upd.Login);
             if (!string.Equals(upd.UserName, authUserEntity.UserName)) authUserEntity.UpdateName(upd.UserName);
             if (!string.Equals(upd.Email, authUserEntity.Email)) authUserEntity.UpdateEmail(upd.Email);
-            if (!string.Equals(upd.PasswordHash, authUserEntity.PasswordHash)) authUserEntity.UpdatePasswordHash(upd.PasswordHash);
+            if (!string.Equals(upd.NewPasswordHash, authUserEntity.PasswordHash)) authUserEntity.UpdatePasswordHash(upd.PasswordHash);
             if (!string.Equals(upd.Nick, authUserEntity.Nick)) authUserEntity.UpdateNick(upd.Nick);
             if (!string.Equals(upd.Phone, authUserEntity.Phone)) authUserEntity.UpdatePhone(upd.Phone);
             if (!string.Equals(upd.RequestedRole, authUserEntity.Role)) authUserEntity.UpdateRole(newRole: $"?{upd.RequestedRole}"); //? - запрошенная пользователем роль утверждается администратором

@@ -26,14 +26,19 @@
         public string Email { get; set; }
 
         /// <summary>
-        /// Пароль для входа*
+        /// Существующий пароль*
         /// </summary>
-        public string Password { get; set; }
-        
+        public string ExistingPassword { get; set; }
+
         /// <summary>
-        /// Пароль для входа (повторно)*
+        /// Новый пароль (если нужна смена пароля)
         /// </summary>
-        public string RepeatPassword { get; set; }
+        public string NewPassword { get; set; }
+
+        /// <summary>
+        /// Новый пароль (повторно)(если нужна смена пароля)
+        /// </summary>
+        public string RepeatNewPassword { get; set; }
 
         /// <summary>
         /// Ник

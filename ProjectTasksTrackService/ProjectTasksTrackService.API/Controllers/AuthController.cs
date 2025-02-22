@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectTasksTrackService.API.Contracts.Dto.Requests.Auth;
@@ -111,6 +112,8 @@ namespace ProjectTasksTrackService.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Unauthorized)]
+        [Authorize(Roles = "admin, PM")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GrantRole(GrantRoleRequestDto request)
         {
             var grantResult = await _authService.GrantRole(GrantRoleData(request));
@@ -156,6 +159,8 @@ namespace ProjectTasksTrackService.API.Controllers
         [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.NotFound)]
+        [Authorize(Roles = "admin, PM")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> DeleteAccount(DeleteAccountRequestDto request)
         {
             var deleteResult = await _authService.DeleteAccount(DeleteAccountData(request));
@@ -213,7 +218,7 @@ namespace ProjectTasksTrackService.API.Controllers
             return new DeleteAccountData(
                 id: request.Id,
                 login: request.Login,
-                passwordHash: GeneratePasswordHash(request.Password, request.Password),
+                passwordHash: GeneratePasswordHash(request.Password, request.RepeatPassword),
                 granterId: request.GranterId);
         }
 
@@ -245,7 +250,8 @@ namespace ProjectTasksTrackService.API.Controllers
                     login: requestDto.Login,
                     userName: requestDto.UserName,
                     email: requestDto.Email,
-                    passwordHash: GeneratePasswordHash(requestDto.Password, repeatPassword: requestDto.Password),
+                    passwordHash: GeneratePasswordHash(requestDto.ExistingPassword, repeatPassword: requestDto.ExistingPassword),
+                    newPasswordHash: requestDto.NewPassword != null ? GeneratePasswordHash(requestDto.NewPassword, repeatPassword: requestDto.RepeatNewPassword) : null,
                     nick: requestDto.Nick,
                     phone: requestDto.Phone,
                     requestedRole: requestDto.RequestedRole);

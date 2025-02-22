@@ -168,7 +168,13 @@ namespace ProjectTasksTrackService.BusinessLogic
         }
         public async Task<DeleteResult> DeleteAccount(DeleteAccountData deleteAccountData)
         {
-            throw new NotImplementedException();
+            if (deleteAccountData == null)
+                throw new ArgumentNullException(ErrorStrings.DELETEACCOUNTDATA_PARAM_NAME);
+
+            return await _authRepository.DeleteUser(
+                id: deleteAccountData.Id,
+                login: deleteAccountData.Login,
+                passwordHash: deleteAccountData.PasswordHash);
         }
 
         private static SymmetricSecurityKey GetSymmetricSecurityKey() =>

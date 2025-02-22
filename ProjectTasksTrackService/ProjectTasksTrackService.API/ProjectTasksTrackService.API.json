@@ -2690,11 +2690,15 @@
             "type": "string",
             "nullable": true
           },
-          "password": {
+          "existingPassword": {
             "type": "string",
             "nullable": true
           },
-          "repeatPassword": {
+          "newPassword": {
+            "type": "string",
+            "nullable": true
+          },
+          "repeatNewPassword": {
             "type": "string",
             "nullable": true
           },
