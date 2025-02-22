@@ -33,6 +33,7 @@
             _id = id;
             _login = login;
             _passwordHash = passwordHash;
+            _newRole = newRole;
             _granterId = granterId;
             _granterLogin = granterLogin;
         }

@@ -24,7 +24,7 @@
         }
       }
     },
-    "/api/Auth/api/v2/Auth/Register": {
+    "/ProjectTasksTrackService/api/v2/Auth/Register": {
       "post": {
         "tags": [
           "Auth"
@@ -78,7 +78,7 @@
         }
       }
     },
-    "/api/Auth/api/v2/Auth/Login": {
+    "/ProjectTasksTrackService/api/v2/Auth/Login": {
       "post": {
         "tags": [
           "Auth"
@@ -142,7 +142,7 @@
         }
       }
     },
-    "/api/Auth/api/v2/Auth/GrantRole": {
+    "/ProjectTasksTrackService/api/v2/Auth/GrantRole": {
       "post": {
         "tags": [
           "Auth"
@@ -206,7 +206,7 @@
         }
       }
     },
-    "/api/Auth/api/v2/Auth/UpdateAccount": {
+    "/ProjectTasksTrackService/api/v2/Auth/UpdateAccount": {
       "post": {
         "tags": [
           "Auth"
@@ -280,7 +280,7 @@
         }
       }
     },
-    "/api/Auth/api/v2/Auth/DeleteAccount": {
+    "/ProjectTasksTrackService/api/v2/Auth/DeleteAccount": {
       "delete": {
         "tags": [
           "Auth"

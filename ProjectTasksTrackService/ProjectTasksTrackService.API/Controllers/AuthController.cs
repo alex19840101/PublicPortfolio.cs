@@ -13,8 +13,8 @@ using ProjectTasksTrackService.Core.Services;
 namespace ProjectTasksTrackService.API.Controllers
 {
     /// <summary> Контроллер управления аутентификацией </summary>
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("ProjectTasksTrackService")]
     [Produces("application/json")]
     [Consumes("application/json")]
     public class AuthController : ControllerBase, IAuthAPI
