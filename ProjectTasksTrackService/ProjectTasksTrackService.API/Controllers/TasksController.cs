@@ -203,6 +203,7 @@ namespace ProjectTasksTrackService.API.Controllers
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.NotFound)]
         [Authorize(Roles = "admin, PM")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> DeleteTask(DeleteTaskRequestDto deleteProjectRequest)
         {
             var deleteResult = await _tasksService.DeleteTask(

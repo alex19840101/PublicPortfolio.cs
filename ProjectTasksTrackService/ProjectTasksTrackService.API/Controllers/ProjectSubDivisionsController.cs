@@ -197,6 +197,7 @@ namespace ProjectTasksTrackService.API.Controllers
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.NotFound)]
         [Authorize(Roles = "admin, PM")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> DeleteSubDivision(DeleteProjectSubDivisionDto deleteSubProjectRequest)
         {
             var deleteResult = await _subProjectsService.DeleteSubDivision(

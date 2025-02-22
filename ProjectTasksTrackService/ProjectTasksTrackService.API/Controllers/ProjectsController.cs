@@ -172,8 +172,6 @@ namespace ProjectTasksTrackService.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> DeleteProject(DeleteProjectRequestDto deleteProjectRequest)
         {
-            var authHeaderIsPresent = HttpContext.Request.Headers.TryGetValue("Authorization", out var value);
-            
             var deleteResult = await _projectsService.DeleteProject(
                 deleteProjectRequest.Id,
                 deleteProjectRequest.ProjectSecretString);
