@@ -168,7 +168,8 @@ namespace ProjectTasksTrackService.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.NotFound)]
-        //[Authorize(Roles = "admin, PM")]
+        [Authorize(Roles = "admin, PM")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> DeleteProject(DeleteProjectRequestDto deleteProjectRequest)
         {
             var authHeaderIsPresent = HttpContext.Request.Headers.TryGetValue("Authorization", out var value);
