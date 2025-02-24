@@ -51,6 +51,8 @@
         public const string LOGINDATA_PARAM_NAME = "loginData";
         public const string GRANTROLEDATA_PARAM_NAME = "grantRoleData";
         public const string GRANTERLOGIN_SHOULD_NOT_BE_EMPTY = "GranterLogin should be not empty";
+        public const string GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE = "GranterLogin should be not empty when GranterId is not null";
+        public const string GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE = "GranterLogin should be empty when GranterId is null";
         public const string UPDATEACCOUNTDATA_PARAM_NAME = "updateAccountData";
         public const string DELETEACCOUNTDATA_PARAM_NAME = "deleteAccountData";
     }

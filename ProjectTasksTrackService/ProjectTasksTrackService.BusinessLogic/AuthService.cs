@@ -118,10 +118,14 @@ namespace ProjectTasksTrackService.BusinessLogic
             AuthUser granter = await _authRepository.GetUser(grantRoleData.GranterId);
 
             if (granter is null)
-                return new UpdateResult(message: Core.ErrorStrings.USER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
+                return new UpdateResult(message: Core.ErrorStrings.GRANTER_ID_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
 
             if (!string.Equals(granter.Login, grantRoleData.GranterLogin))
                 return new UpdateResult(message: Core.ErrorStrings.GRANTERLOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
+
+            if (!string.Equals(granter.PasswordHash, grantRoleData.PasswordHash))
+                return new UpdateResult(message: Core.ErrorStrings.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
+
 
             var updateResult = await _authRepository.GrantRole(
                 id: grantRoleData.Id,
@@ -171,10 +175,48 @@ namespace ProjectTasksTrackService.BusinessLogic
             if (deleteAccountData == null)
                 throw new ArgumentNullException(ErrorStrings.DELETEACCOUNTDATA_PARAM_NAME);
 
-            return await _authRepository.DeleteUser(
-                id: deleteAccountData.Id,
-                login: deleteAccountData.Login,
-                passwordHash: deleteAccountData.PasswordHash);
+            if (string.IsNullOrWhiteSpace(deleteAccountData.Login))
+                return new DeleteResult(ErrorStrings.LOGIN_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            if (string.IsNullOrWhiteSpace(deleteAccountData.PasswordHash))
+                return new DeleteResult(ErrorStrings.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            var user = await _authRepository.GetUser(deleteAccountData.Id);
+
+            if (user is null)
+                return new DeleteResult(message: Core.ErrorStrings.USER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
+
+            if (!string.Equals(user.Login, deleteAccountData.Login))
+                return new DeleteResult(message: Core.ErrorStrings.LOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
+
+
+            if (deleteAccountData.GranterId != null)
+            {
+                if (string.IsNullOrWhiteSpace(deleteAccountData.GranterLogin))
+                    return new DeleteResult(ErrorStrings.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE, System.Net.HttpStatusCode.BadRequest);
+
+                AuthUser granter = await _authRepository.GetUser(deleteAccountData.GranterId.Value);
+
+                if (granter is null)
+                    return new DeleteResult(message: Core.ErrorStrings.GRANTER_ID_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
+
+                if (!string.Equals(granter.Login, deleteAccountData.GranterLogin))
+                    return new DeleteResult(message: Core.ErrorStrings.GRANTERLOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
+
+                if (!string.Equals(granter.PasswordHash, deleteAccountData.PasswordHash))
+                    return new DeleteResult(message: Core.ErrorStrings.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(deleteAccountData.GranterLogin))
+                    return new DeleteResult(ErrorStrings.GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE, System.Net.HttpStatusCode.BadRequest);
+
+
+                if (!string.Equals(user.PasswordHash, deleteAccountData.PasswordHash))
+                    return new DeleteResult(message: Core.ErrorStrings.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
+            }
+
+            return await _authRepository.DeleteUser(id: deleteAccountData.Id);
         }
 
         private static SymmetricSecurityKey GetSymmetricSecurityKey() =>

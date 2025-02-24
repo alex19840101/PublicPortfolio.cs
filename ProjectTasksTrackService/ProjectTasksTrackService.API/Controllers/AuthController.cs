@@ -79,6 +79,8 @@ namespace ProjectTasksTrackService.API.Controllers
             };
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
         }
+
+        #region Выход пользователя из системы
         /*
         /// <summary> Выход пользователя из системы </summary>
         [HttpPost("api/v2/Auth/Logout")]
@@ -103,6 +105,7 @@ namespace ProjectTasksTrackService.API.Controllers
             };
             return new ObjectResult(result) { StatusCode = StatusCodes.Status200OK };
         }*/
+        #endregion Выход пользователя из системы
 
         /// <summary>
         /// Предоставление (установка/сброс) роли аккаунту
@@ -159,8 +162,6 @@ namespace ProjectTasksTrackService.API.Controllers
         [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.NotFound)]
-        [Authorize(Roles = "admin, PM")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> DeleteAccount(DeleteAccountRequestDto request)
         {
             var deleteResult = await _authService.DeleteAccount(DeleteAccountData(request));
@@ -219,7 +220,8 @@ namespace ProjectTasksTrackService.API.Controllers
                 id: request.Id,
                 login: request.Login,
                 passwordHash: GeneratePasswordHash(request.Password, request.RepeatPassword),
-                granterId: request.GranterId);
+                granterId: request.GranterId,
+                granterLogin: request.GranterLogin);
         }
 
         [NonAction]

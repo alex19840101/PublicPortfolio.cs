@@ -50,18 +50,12 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
 
         }
 
-        public async Task<DeleteResult> DeleteUser(int id, string login, string passwordHash)
+        public async Task<DeleteResult> DeleteUser(int id)
         {
             var authUserEntity = await GetAuthUserEntity(id);
 
             if (authUserEntity is null)
                 return new DeleteResult(ErrorStrings.USER_NOT_FOUND, HttpStatusCode.NotFound);
-
-            if (string.IsNullOrWhiteSpace(passwordHash))
-                return new DeleteResult(ErrorStrings.EMPTY_OR_NULL_PASSWORD_HASH, HttpStatusCode.Unauthorized);
-
-            if (!string.Equals(passwordHash, authUserEntity.PasswordHash))
-                return new DeleteResult(ErrorStrings.PASSWORD_HASH_MISMATCH, HttpStatusCode.Forbidden);
 
             _dbContext.AuthUsers.Remove(authUserEntity);
             await _dbContext.SaveChangesAsync();
