@@ -1,5 +1,11 @@
-﻿namespace ProjectTasksTrackService.Core.Auth
+﻿using System;
+
+namespace ProjectTasksTrackService.Core.Auth
 {
+    /// <summary>
+    /// Logout не требуется для пет-проекта
+    /// </summary>
+    [Obsolete("Logout не требуется для пет-проекта")]
     public class LogoutData
     {
         /// <summary>

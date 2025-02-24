@@ -88,10 +88,12 @@ namespace ProjectTasksTrackService.BusinessLogic
 
             return new AuthResult(id: user.Id, message: Core.ErrorStrings.OK, statusCode: System.Net.HttpStatusCode.Created, token: token);
         }
-        public Task<AuthResult> Logout(LogoutData logoutData)
-        {
-            throw new NotImplementedException();
-        }
+        #region Logout не требуется для пет-проекта
+        //public Task<AuthResult> Logout(LogoutData logoutData)
+        //{
+        //    throw new NotImplementedException();
+        //}
+        #endregion Logout не требуется для пет-проекта
 
         public async Task<UpdateResult> GrantRole(GrantRoleData grantRoleData)
         {

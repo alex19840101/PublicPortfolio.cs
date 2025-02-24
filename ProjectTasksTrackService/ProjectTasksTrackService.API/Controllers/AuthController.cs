@@ -155,7 +155,7 @@ namespace ProjectTasksTrackService.API.Controllers
             return Ok(updateResult);
         }
 
-        /// <summary> Удаление аккаунта пользователя </summary>
+        /// <summary> Удаление аккаунта пользователя им самим или администратором </summary>
         [HttpDelete("api/v2/Auth/DeleteAccount")]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -224,13 +224,15 @@ namespace ProjectTasksTrackService.API.Controllers
                 granterLogin: request.GranterLogin);
         }
 
-        [NonAction]
-        private static LogoutData LogoutData(LogoutRequestDto request)
-        {
-            return new LogoutData(
-                login: request.Login,
-                id: request.Id);
-        }
+        #region Logout не требуется для пет-проекта
+        //[NonAction]
+        //private static LogoutData LogoutData(LogoutRequestDto request)
+        //{
+        //    return new LogoutData(
+        //        login: request.Login,
+        //        id: request.Id);
+        //}
+        #endregion Logout не требуется для пет-проекта
 
         [NonAction]
         private static GrantRoleData GrantRoleData(GrantRoleRequestDto requestDto)

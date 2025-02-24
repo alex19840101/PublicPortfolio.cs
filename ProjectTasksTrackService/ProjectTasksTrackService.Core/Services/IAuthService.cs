@@ -9,7 +9,7 @@ namespace ProjectTasksTrackService.Core.Services
         Task<AuthResult> Register(AuthUser authUser);
         Task<AuthResult> Login(LoginData loginData);
         Task<DeleteResult> DeleteAccount(DeleteAccountData deleteAccountData);
-        Task<AuthResult> Logout(LogoutData logoutData);
+        //Task<AuthResult> Logout(LogoutData logoutData);
         Task<UpdateResult> GrantRole(GrantRoleData grantRoleData);
         Task<UpdateResult> UpdateAccount(UpdateAccountData updateAccountData);
     }
