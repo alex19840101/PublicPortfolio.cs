@@ -40,7 +40,7 @@ namespace ProjectTasksTrackService.BusinessLogic
                 return new AuthResult(ErrorStrings.USERNAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
             if (string.IsNullOrWhiteSpace(authUser.Email))
-                return new AuthResult(ErrorStrings.USERNAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+                return new AuthResult(ErrorStrings.EMAIL_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
             if (string.IsNullOrWhiteSpace(authUser.PasswordHash))
                 return new AuthResult(ErrorStrings.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
