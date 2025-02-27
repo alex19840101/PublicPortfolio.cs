@@ -152,7 +152,7 @@ namespace ProjectTasksTrackService.BusinessLogic
             if (string.IsNullOrWhiteSpace(updateAccountData.UserName))
                 return new UpdateResult
                 {
-                    Message = ErrorStrings.TASK_NAME_SHOULD_NOT_BE_EMPTY,
+                    Message = ErrorStrings.USERNAME_SHOULD_NOT_BE_EMPTY,
                     StatusCode = System.Net.HttpStatusCode.BadRequest
                 };
 

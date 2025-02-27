@@ -422,7 +422,8 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             Assert.AreEqual(Core.ErrorStrings.OK, authResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.Created, authResult.StatusCode);
             Assert.IsNotNull(authResult.Id);
-            authResult.Id.Should().BeGreaterThan(0);
+            Assert.IsTrue(authResult.Id > 0);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(authResult.Token));
 
             _authRepositoryMock.Verify(pr => pr.GetUser(loginData.Login), Times.Once);
         }
@@ -442,13 +443,159 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             authResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
             authResult.Id.Should().NotBeNull();
             authResult.Id.Should().BeGreaterThan(0);
-
+            authResult.Token.Should().NotBeNullOrWhiteSpace();
             _authRepositoryMock.Verify(pr => pr.GetUser(loginData.Login), Times.Once);
         }
 
 
         //TODO: GrantRole tests
+        /*
+        GrantRole_GrantRoleDataIsNull_ShouldThrowArgumentNullException_FluentAssertion()
+        
+        if (grantRoleData == null)
+                throw new ArgumentNullException(ErrorStrings.GRANTROLEDATA_PARAM_NAME);
+
+        GrantRole_GrantRoleDataWithoutLogin_ShouldReturnUpdateResult_LOGIN_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+            if (string.IsNullOrWhiteSpace(grantRoleData.Login))
+                return new UpdateResult(ErrorStrings.LOGIN_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+        GrantRole_GrantRoleDataWithoutPasswordHash_ShouldReturnUpdateResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+
+            if (string.IsNullOrWhiteSpace(grantRoleData.PasswordHash))
+                return new UpdateResult(ErrorStrings.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+
+        GrantRole_GrantRoleDataWithoutGranterLogin_ShouldReturnUpdateResult_GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+            if (string.IsNullOrWhiteSpace(grantRoleData.GranterLogin))
+                return new UpdateResult(ErrorStrings.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            var user = await _authRepository.GetUser(grantRoleData.Id);
+
+        GrantRole_UserNotFound_ShouldReturnUpdateResult_USER_NOT_FOUND_404_FluentAssertion()
+            if (user is null)
+                return new UpdateResult(message: Core.ErrorStrings.USER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
+
+        GrantRole_LoginMismatch_ShouldReturnUpdateResult_LOGIN_MISMATCH_403_FluentAssertion()
+            if (!string.Equals(user.Login, grantRoleData.Login))
+                return new UpdateResult(message: Core.ErrorStrings.LOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
+
+            AuthUser granter = await _authRepository.GetUser(grantRoleData.GranterId);
+
+        GrantRole_GranterNotFound_ShouldReturnUpdateResult_GRANTER_ID_NOT_FOUND_404_FluentAssertion()
+            if (granter is null)
+                return new UpdateResult(message: Core.ErrorStrings.GRANTER_ID_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
+
+        GrantRole_GranterLoginMismatch_ShouldReturnUpdateResult_GRANTERLOGIN_MISMATCH_403_FluentAssertion()
+            if (!string.Equals(granter.Login, grantRoleData.GranterLogin))
+                return new UpdateResult(message: Core.ErrorStrings.GRANTERLOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
+        
+        GrantRole_GranterPasswordHashMismatch_ShouldReturnUpdateResult_PASSWORD_HASH_MISMATCH_403_FluentAssertion()
+            if (!string.Equals(granter.PasswordHash, grantRoleData.PasswordHash))
+                return new UpdateResult(message: Core.ErrorStrings.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
+        GrantRole_OK__ShouldReturnUpdateResult_OK_FluentAssertion()
+        ok
+         * */
+
+
         //TODO: UpdateAccount tests
+        /*
+        UpdateAccount_UpdateAccountDataIsNull_ShouldThrowArgumentNullException_FluentAssertion()
+        if (updateAccountData == null)
+                throw new ArgumentNullException(ErrorStrings.LOGINDATA_PARAM_NAME);
+
+
+        UpdateAccount_UpdateAccountDataWithoutLogin_ShouldReturnUpdateResult_LOGIN_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+            if (string.IsNullOrWhiteSpace(updateAccountData.Login))
+                return new UpdateResult
+                {
+                    Message = ErrorStrings.LOGIN_SHOULD_NOT_BE_EMPTY,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                };
+
+        UpdateAccount_UpdateAccountDataWithoutUserName_ShouldReturnUpdateResult_USERNAME_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+            if (string.IsNullOrWhiteSpace(updateAccountData.UserName))
+                return new UpdateResult
+                {
+                    Message = ErrorStrings.USERNAME_SHOULD_NOT_BE_EMPTY,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                };
+        UpdateAccount_UpdateAccountDataWithoutEmail_ShouldReturnUpdateResult_EMAIL_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+            if (string.IsNullOrWhiteSpace(updateAccountData.Email))
+                return new UpdateResult
+                {
+                    Message = ErrorStrings.EMAIL_SHOULD_NOT_BE_EMPTY,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                };
+        UpdateAccount_UpdateAccountDataWithoutPasswordHash_ShouldReturnUpdateResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+            if (string.IsNullOrWhiteSpace(updateAccountData.PasswordHash))
+                return new UpdateResult
+                {
+                    Message = ErrorStrings.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                };
+        UpdateAccount_ShouldReturnUpdateResult_OK_FluentAssertion()
+        ok
+         * */
         //TODO: DeleteAccount tests
+
+        /*
+         * DeleteAccount_DeleteAccountDataIsNull_ShouldThrowArgumentNullException_FluentAssertion()
+          if (deleteAccountData == null)
+                throw new ArgumentNullException(ErrorStrings.DELETEACCOUNTDATA_PARAM_NAME);
+
+        DeleteAccount_DeleteAccountDataWithoutLogin_ShouldReturnDeleteResult_LOGIN_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+            if (string.IsNullOrWhiteSpace(deleteAccountData.Login))
+                return new DeleteResult(ErrorStrings.LOGIN_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+        DeleteAccount_DeleteAccountDataWithoutPasswordHash_ShouldReturnDeleteResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+            if (string.IsNullOrWhiteSpace(deleteAccountData.PasswordHash))
+                return new DeleteResult(ErrorStrings.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            var user = await _authRepository.GetUser(deleteAccountData.Id);
+
+        DeleteAccount_UserNotFound_ShouldReturnDeleteResult_USER_NOT_FOUND_404_FluentAssertion()
+            if (user is null)
+                return new DeleteResult(message: Core.ErrorStrings.USER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
+
+        DeleteAccount_LoginMismatch_ShouldReturnDeleteResult_LOGIN_MISMATCH_403_FluentAssertion()
+            if (!string.Equals(user.Login, deleteAccountData.Login))
+                return new DeleteResult(message: Core.ErrorStrings.LOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
+
+        DeleteAccount_GranterIdWithoutGranterLogin_ShouldReturnDeleteResult_GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE_400_FluentAssertion()
+            if (deleteAccountData.GranterId != null)
+            {
+                if (string.IsNullOrWhiteSpace(deleteAccountData.GranterLogin))
+                    return new DeleteResult(ErrorStrings.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE, System.Net.HttpStatusCode.BadRequest);
+
+                AuthUser granter = await _authRepository.GetUser(deleteAccountData.GranterId.Value);
+
+
+        DeleteAccount_GranterNotFound_ShouldReturnDeleteResult_GRANTER_ID_NOT_FOUND_404_FluentAssertion()
+                if (granter is null)
+                    return new DeleteResult(message: Core.ErrorStrings.GRANTER_ID_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
+
+
+        DeleteAccount_GranterLoginMismatch_ShouldReturnDeleteResult_GRANTERLOGIN_MISMATCH_403_FluentAssertion()
+                if (!string.Equals(granter.Login, deleteAccountData.GranterLogin))
+                    return new DeleteResult(message: Core.ErrorStrings.GRANTERLOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
+
+         DeleteAccount_GranterPasswordHashMismatch_ShouldReturnDeleteResult_PASSWORD_HASH_MISMATCH_403_FluentAssertion()
+                if (!string.Equals(granter.PasswordHash, deleteAccountData.PasswordHash))
+                    return new DeleteResult(message: Core.ErrorStrings.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
+            }
+            else
+            {
+        DeleteAccount_GranterLoginWithoutGranterId_ShouldReturnDeleteResult_GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE_400_FluentAssertion()        
+        if (!string.IsNullOrWhiteSpace(deleteAccountData.GranterLogin))
+                    return new DeleteResult(ErrorStrings.GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE, System.Net.HttpStatusCode.BadRequest);
+
+        DeleteAccount_UserPasswordHashMismatch_ShouldReturnDeleteResult_PASSWORD_HASH_MISMATCH_403_FluentAssertion()
+                if (!string.Equals(user.PasswordHash, deleteAccountData.PasswordHash))
+                    return new DeleteResult(message: Core.ErrorStrings.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
+            }
+
+        DeleteAccount_ShouldReturnDeleteResult_OK_FluentAssertion()
+        ok
+         */
     }
 }
