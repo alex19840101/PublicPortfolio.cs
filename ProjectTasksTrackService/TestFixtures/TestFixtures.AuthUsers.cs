@@ -19,7 +19,8 @@ namespace TestFixtures
             bool generateRole = true,
             List<int> excludeIds = null,
             int setId = 0,
-            int? setGranterId = null)
+            int? setGranterId = null,
+            string passwordHash = null)
         {
             var fixture = new Fixture();
             var id = generateId ? fixture.Create<int>() : setId;
@@ -40,7 +41,7 @@ namespace TestFixtures
                 login: GenerateStringIfTrueElseReturnNull(generateLogin),
                 userName: GenerateStringIfTrueElseReturnNull(generateName),
                 email: GenerateStringIfTrueElseReturnNull(generateEmail),
-                passwordHash: GenerateStringIfTrueElseReturnNull(generatePasswordHash),
+                passwordHash: passwordHash ?? GenerateStringIfTrueElseReturnNull(generatePasswordHash),
                 nick: GenerateStringIfTrueElseReturnNull(generateNick),
                 phone: GenerateStringIfTrueElseReturnNull(generatePhone),
                 role: GenerateStringIfTrueElseReturnNull(generateRole),
@@ -58,19 +59,19 @@ namespace TestFixtures
             bool generateLogin = true,
             bool generateName = true,
             bool generateEmail = true,
-            bool generatePasswordHash = true)
+            bool generatePasswordHash = true,
+            string passwordHash = null)
         {
             var fixture = new Fixture();
 
             var id = generateId ? fixture.Create<int>() : 0;
-            var projectId = fixture.Create<int>();
             
             return new AuthUser(
                 id: id,
                 login: GenerateStringIfTrueElseReturnNull(generateLogin),
                 userName: GenerateStringIfTrueElseReturnNull(generateName),
                 email: GenerateStringIfTrueElseReturnNull(generateEmail),
-                passwordHash: GenerateStringIfTrueElseReturnNull(generatePasswordHash),
+                passwordHash: passwordHash ?? GenerateStringIfTrueElseReturnNull(generatePasswordHash),
                 nick: null,
                 phone: null,
                 role: null,
@@ -81,6 +82,36 @@ namespace TestFixtures
             //local
             string GenerateStringIfTrueElseReturnNull(bool flag) =>
                 flag == true ? fixture.Build<string>().Create() : null;
+        }
+
+        public static LoginData GetLoginDataWithRequiredFields()
+        {
+            var fixture = new Fixture();
+
+            return new LoginData(
+                login: fixture.Build<string>().Create(),
+                passwordHash: fixture.Build<string>().Create(),
+                timeoutMinutes: null);
+        }
+
+        public static LoginData GetLoginDataWithoutLogin()
+        {
+            var fixture = new Fixture();
+
+            return new LoginData(
+                login: null,
+                passwordHash: fixture.Build<string>().Create(),
+                timeoutMinutes: fixture.Create<int>());
+        }
+
+        public static LoginData GetLoginDataWithoutPasswordHash()
+        {
+            var fixture = new Fixture();
+
+            return new LoginData(
+                login: fixture.Build<string>().Create(),
+                passwordHash: null,
+                timeoutMinutes: fixture.Create<int>());
         }
     }
 }

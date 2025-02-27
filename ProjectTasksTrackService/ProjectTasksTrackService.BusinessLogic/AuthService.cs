@@ -74,7 +74,7 @@ namespace ProjectTasksTrackService.BusinessLogic
             var claims = new List<Claim>
             {
                 //new Claim(ClaimTypes.Name, loginData.Login),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Role, user.Role ?? string.Empty)
             };
 
             var jwt = new JwtSecurityToken(
