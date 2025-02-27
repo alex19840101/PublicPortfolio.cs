@@ -106,7 +106,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task Create_SubWithNotNullId_ShouldReturnCreateResult_SUBPROJECT_ID_SHOULD_BE_ZERO_400()
+        public async Task Create_SubWithNotZeroId_ShouldReturnCreateResult_SUBPROJECT_ID_SHOULD_BE_ZERO_400()
         {
             var sub = TestFixtures.TestFixtures.GetSubProjectFixtureWithAllFields(generateId: true);
             
@@ -121,7 +121,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task Create_SubWithNotNullId_ShouldReturnCreateResult_SUBPROJECT_ID_SHOULD_BE_ZERO_Fluent()
+        public async Task Create_SubWithNotZerorId_ShouldReturnCreateResult_SUBPROJECT_ID_SHOULD_BE_ZERO_Fluent()
         {
             var sub = TestFixtures.TestFixtures.GetSubProjectFixtureWithAllFields(generateId: true);
             var createResult = await _subProjectsService.Create(sub);

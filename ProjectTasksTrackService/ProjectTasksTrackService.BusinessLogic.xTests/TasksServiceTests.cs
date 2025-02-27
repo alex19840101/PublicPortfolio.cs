@@ -112,7 +112,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
 
 
         [Fact]
-        public async Task Create_TaskWithNotNullId_ShouldReturnCreateResult_TASK_ID_SHOULD_BE_ZERO_400()
+        public async Task Create_TaskWithNotZeroId_ShouldReturnCreateResult_TASK_ID_SHOULD_BE_ZERO_400()
         {
             var task = TestFixtures.TestFixtures.GetTaskFixtureWithAllFields(generateId: true, generateCode: false);
             var createResult = await _tasksService.Create(task);
@@ -125,7 +125,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
         }
 
         [Fact]
-        public async Task Create_TaskWithNotNullId_ShouldReturnCreateResult_TASK_ID_SHOULD_BE_ZERO_Fluent()
+        public async Task Create_TaskWithNotZeroId_ShouldReturnCreateResult_TASK_ID_SHOULD_BE_ZERO_Fluent()
         {
             var task = TestFixtures.TestFixtures.GetTaskFixtureWithAllFields(generateId: true, generateCode: false);
             var createResult = await _tasksService.Create(task);

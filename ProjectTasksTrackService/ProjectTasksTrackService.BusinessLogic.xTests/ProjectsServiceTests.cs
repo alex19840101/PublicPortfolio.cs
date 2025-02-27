@@ -103,7 +103,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
         }
 
         [Fact]
-        public async Task Create_ProjectWithNotNullId_ShouldReturnCreateResult_PROJECT_ID_SHOULD_BE_ZERO_400()
+        public async Task Create_ProjectWithNotZeroId_ShouldReturnCreateResult_PROJECT_ID_SHOULD_BE_ZERO_400()
         {
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true);
             var createResult = await _projectsService.Create(project);
@@ -116,7 +116,7 @@ namespace ProjectTasksTrackService.BusinessLogic.xTests
         }
 
         [Fact]
-        public async Task Create_ProjectWithNotNullId_ShouldReturnCreateResult_PROJECT_ID_SHOULD_BE_ZERO_Fluent()
+        public async Task Create_ProjectWithNotZeroId_ShouldReturnCreateResult_PROJECT_ID_SHOULD_BE_ZERO_Fluent()
         {
             var project = TestFixtures.TestFixtures.GetProjectFixtureWithAllFields(generateId: true);
             var createResult = await _projectsService.Create(project);
