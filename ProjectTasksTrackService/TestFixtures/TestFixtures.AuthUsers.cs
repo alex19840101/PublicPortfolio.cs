@@ -60,7 +60,8 @@ namespace TestFixtures
             bool generateName = true,
             bool generateEmail = true,
             bool generatePasswordHash = true,
-            string passwordHash = null)
+            string passwordHash = null,
+            string login = null)
         {
             var fixture = new Fixture();
 
@@ -68,7 +69,7 @@ namespace TestFixtures
             
             return new AuthUser(
                 id: id,
-                login: GenerateStringIfTrueElseReturnNull(generateLogin),
+                login: login ?? GenerateStringIfTrueElseReturnNull(generateLogin),
                 userName: GenerateStringIfTrueElseReturnNull(generateName),
                 email: GenerateStringIfTrueElseReturnNull(generateEmail),
                 passwordHash: passwordHash ?? GenerateStringIfTrueElseReturnNull(generatePasswordHash),
@@ -112,6 +113,44 @@ namespace TestFixtures
                 login: fixture.Build<string>().Create(),
                 passwordHash: null,
                 timeoutMinutes: fixture.Create<int>());
+        }
+
+        public static GrantRoleData GetGrantRoleDataFixtureWithAllFields(
+            bool generateId = true,
+            bool generateLogin = true,
+            bool generateGranterLogin = true,
+            bool generatePasswordHash = true,
+            bool generateRole = true,
+            List<int> excludeIds = null,
+            int setId = 0,
+            bool generateGranterId = true,
+            string passwordHash = null)
+        {
+            var fixture = new Fixture();
+            var id = generateId ? fixture.Create<int>() : setId;
+            var granterId = generateGranterId == true ? fixture.Create<int>() : 0;
+            if (generateId)
+            {
+                if (excludeIds != null && excludeIds.Any() && setId == 0)
+                {
+                    while (excludeIds.Contains(id))
+                        id = fixture.Create<int>();
+                }
+                excludeIds ??= new List<int>();
+                excludeIds.Add(id);
+            }
+
+            return new GrantRoleData(
+                id: id,
+                login: GenerateStringIfTrueElseReturnNull(generateLogin),
+                passwordHash: passwordHash ?? GenerateStringIfTrueElseReturnNull(generatePasswordHash),
+                newRole: GenerateStringIfTrueElseReturnNull(generateRole),
+                granterId: granterId,
+                granterLogin: GenerateStringIfTrueElseReturnNull(generateGranterLogin));
+
+            //local
+            string GenerateStringIfTrueElseReturnNull(bool flag) =>
+                flag == true ? fixture.Build<string>().Create() : null;
         }
     }
 }

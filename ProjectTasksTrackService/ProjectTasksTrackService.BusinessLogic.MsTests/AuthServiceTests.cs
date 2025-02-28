@@ -152,8 +152,6 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             authResult.Id.Should().BeNull();
         }
 
-        //TODO: Register tests
-
         [TestMethod]
         public async Task Register_AuthUserWithoutPasswordHash_ShouldReturnAuthResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400()
         {
@@ -448,53 +446,409 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         }
 
 
-        //TODO: GrantRole tests
-        /*
-        GrantRole_GrantRoleDataIsNull_ShouldThrowArgumentNullException_FluentAssertion()
-        
-        if (grantRoleData == null)
-                throw new ArgumentNullException(ErrorStrings.GRANTROLEDATA_PARAM_NAME);
+        [TestMethod]
+        public async Task GrantRole_GrantRoleDataIsNull_ShouldThrowArgumentNullException()
+        {
+            Core.Auth.GrantRoleData grantRoleData = null;
+            UpdateResult updateResult = null;
+            var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => updateResult = await _authService.GrantRole(grantRoleData));
+            var userId = TestFixtures.TestFixtures.GenerateId();
 
-        GrantRole_GrantRoleDataWithoutLogin_ShouldReturnUpdateResult_LOGIN_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
-            if (string.IsNullOrWhiteSpace(grantRoleData.Login))
-                return new UpdateResult(ErrorStrings.LOGIN_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+            _authRepositoryMock.Verify(ar => ar.GetUser(userId), Times.Never);
+            Assert.IsNotNull(exception);
+            Assert.IsNull(updateResult);
+            Assert.AreEqual(ErrorStrings.GRANTROLEDATA_PARAM_NAME, exception.ParamName);
+        }
 
-        GrantRole_GrantRoleDataWithoutPasswordHash_ShouldReturnUpdateResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+        [TestMethod]
+        public async Task GrantRole_GrantRoleDataIsNull_ShouldThrowArgumentNullException_FluentAssertion()
+        {
+            Core.Auth.GrantRoleData grantRoleData = null;
+            UpdateResult updateResult = null;
+            var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => updateResult = await _authService.GrantRole(grantRoleData));
+            var userId = TestFixtures.TestFixtures.GenerateId();
 
-            if (string.IsNullOrWhiteSpace(grantRoleData.PasswordHash))
-                return new UpdateResult(ErrorStrings.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+            _authRepositoryMock.Verify(ar => ar.GetUser(userId), Times.Never);
+
+            exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ErrorStrings.GRANTROLEDATA_PARAM_NAME);
+            updateResult.Should().BeNull();
+            exception.ParamName.Should().Be(ErrorStrings.GRANTROLEDATA_PARAM_NAME);
+        }
 
 
-        GrantRole_GrantRoleDataWithoutGranterLogin_ShouldReturnUpdateResult_GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
-            if (string.IsNullOrWhiteSpace(grantRoleData.GranterLogin))
-                return new UpdateResult(ErrorStrings.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+        [TestMethod]
+        public async Task GrantRole_GrantRoleDataWithoutLogin_ShouldReturnUpdateResult_LOGIN_SHOULD_NOT_BE_EMPTY_400()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields(generateLogin: false);
 
-            var user = await _authRepository.GetUser(grantRoleData.Id);
+            var updateResult = await _authService.GrantRole(grantRoleData);
 
-        GrantRole_UserNotFound_ShouldReturnUpdateResult_USER_NOT_FOUND_404_FluentAssertion()
-            if (user is null)
-                return new UpdateResult(message: Core.ErrorStrings.USER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(ErrorStrings.LOGIN_SHOULD_NOT_BE_EMPTY, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, updateResult.StatusCode);
 
-        GrantRole_LoginMismatch_ShouldReturnUpdateResult_LOGIN_MISMATCH_403_FluentAssertion()
-            if (!string.Equals(user.Login, grantRoleData.Login))
-                return new UpdateResult(message: Core.ErrorStrings.LOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Never);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
+        }
 
-            AuthUser granter = await _authRepository.GetUser(grantRoleData.GranterId);
+        [TestMethod]
+        public async Task GrantRole_GrantRoleDataWithoutLogin_ShouldReturnUpdateResult_LOGIN_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields(generateLogin: false);
 
-        GrantRole_GranterNotFound_ShouldReturnUpdateResult_GRANTER_ID_NOT_FOUND_404_FluentAssertion()
-            if (granter is null)
-                return new UpdateResult(message: Core.ErrorStrings.GRANTER_ID_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
+            var updateResult = await _authService.GrantRole(grantRoleData);
 
-        GrantRole_GranterLoginMismatch_ShouldReturnUpdateResult_GRANTERLOGIN_MISMATCH_403_FluentAssertion()
-            if (!string.Equals(granter.Login, grantRoleData.GranterLogin))
-                return new UpdateResult(message: Core.ErrorStrings.GRANTERLOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
-        
-        GrantRole_GranterPasswordHashMismatch_ShouldReturnUpdateResult_PASSWORD_HASH_MISMATCH_403_FluentAssertion()
-            if (!string.Equals(granter.PasswordHash, grantRoleData.PasswordHash))
-                return new UpdateResult(message: Core.ErrorStrings.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
-        GrantRole_OK__ShouldReturnUpdateResult_OK_FluentAssertion()
-        ok
-         * */
+            updateResult.Should().NotBeNull();
+            updateResult.Message.Should().Be(ErrorStrings.LOGIN_SHOULD_NOT_BE_EMPTY);
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Never);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
+        }
+
+
+        [TestMethod]
+        public async Task GrantRole_GrantRoleDataWithoutPasswordHash_ShouldReturnUpdateResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields(generatePasswordHash: false);
+
+            var updateResult = await _authService.GrantRole(grantRoleData);
+
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(ErrorStrings.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, updateResult.StatusCode);
+
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Never);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task GrantRole_GrantRoleDataWithoutPasswordHash_ShouldReturnUpdateResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields(generatePasswordHash: false);
+
+            var updateResult = await _authService.GrantRole(grantRoleData);
+
+            updateResult.Should().NotBeNull();
+            updateResult.Message.Should().Be(ErrorStrings.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY);
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Never);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
+        }
+
+
+        [TestMethod]
+        public async Task GrantRole_GrantRoleDataWithoutGranterLogin_ShouldReturnUpdateResult_GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_400()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields(generateGranterLogin: false);
+
+            var updateResult = await _authService.GrantRole(grantRoleData);
+
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(ErrorStrings.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, updateResult.StatusCode);
+
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Never);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task GrantRole_GrantRoleDataWithoutGranterLogin_ShouldReturnUpdateResult_GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields(generateGranterLogin: false);
+
+            var updateResult = await _authService.GrantRole(grantRoleData);
+
+            updateResult.Should().NotBeNull();
+            updateResult.Message.Should().Be(ErrorStrings.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY);
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Never);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
+        }
+
+
+        [TestMethod]
+        public async Task GrantRole_UserNotFound_ShouldReturnUpdateResult_USER_NOT_FOUND_404()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+
+            AuthUser authUser = null;
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+                .ReturnsAsync(authUser);
+
+            var updateResult = await _authService.GrantRole(grantRoleData);
+
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(Core.ErrorStrings.USER_NOT_FOUND, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.NotFound, updateResult.StatusCode);
+
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task GrantRole_UserNotFound_ShouldReturnUpdateResult_USER_NOT_FOUND_404_FluentAssertion()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+
+            AuthUser authUser = null;
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+                .ReturnsAsync(authUser);
+
+            var updateResult = await _authService.GrantRole(grantRoleData);
+
+            updateResult.Should().NotBeNull();
+            updateResult.Message.Should().Be(Core.ErrorStrings.USER_NOT_FOUND);
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
+        }
+
+
+        [TestMethod]
+        public async Task GrantRole_LoginMismatch_ShouldReturnUpdateResult_LOGIN_MISMATCH_403()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+
+            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+                .ReturnsAsync(authUser);
+
+            var updateResult = await _authService.GrantRole(grantRoleData);
+
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(Core.ErrorStrings.LOGIN_MISMATCH, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, updateResult.StatusCode);
+
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task GrantRole_LoginMismatch_ShouldReturnUpdateResult_LOGIN_MISMATCH_403_FluentAssertion()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+
+            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+                .ReturnsAsync(authUser);
+
+            var updateResult = await _authService.GrantRole(grantRoleData);
+
+            updateResult.Should().NotBeNull();
+            updateResult.Message.Should().Be(Core.ErrorStrings.LOGIN_MISMATCH);
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
+
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
+        }
+
+
+
+        [TestMethod]
+        public async Task GrantRole_GranterNotFound_ShouldReturnUpdateResult_GRANTER_ID_NOT_FOUND_404()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+
+            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+                .ReturnsAsync(authUser);
+
+            AuthUser granter = null;
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.GranterId))
+                .ReturnsAsync(granter);
+
+            var updateResult = await _authService.GrantRole(grantRoleData);
+
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(Core.ErrorStrings.GRANTER_ID_NOT_FOUND, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.NotFound, updateResult.StatusCode);
+
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.GranterId), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task GrantRole_GranterNotFound_ShouldReturnUpdateResult_GRANTER_ID_NOT_FOUND_404_FluentAssertion()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+
+            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+                .ReturnsAsync(authUser);
+
+            AuthUser granter = null;
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.GranterId))
+                .ReturnsAsync(granter);
+
+            var updateResult = await _authService.GrantRole(grantRoleData);
+
+            updateResult.Should().NotBeNull();
+            updateResult.Message.Should().Be(Core.ErrorStrings.GRANTER_ID_NOT_FOUND);
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.GranterId), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
+        }
+
+
+        [TestMethod]
+        public async Task GrantRole_GranterLoginMismatch_ShouldReturnUpdateResult_GRANTERLOGIN_MISMATCH_403_FluentAssertion()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+
+            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+                .ReturnsAsync(authUser);
+
+            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.GranterId))
+                .ReturnsAsync(granter);
+
+            var updateResult = await _authService.GrantRole(grantRoleData);
+
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(Core.ErrorStrings.GRANTERLOGIN_MISMATCH, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, updateResult.StatusCode);
+
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.GranterId), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task GrantRole_GranterLoginMismatch_ShouldReturnUpdateResult_GRANTERLOGIN_MISMATCH_403()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+
+            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+                .ReturnsAsync(authUser);
+
+            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.GranterId))
+                .ReturnsAsync(granter);
+
+            var updateResult = await _authService.GrantRole(grantRoleData);
+
+            updateResult.Should().NotBeNull();
+            updateResult.Message.Should().Be(Core.ErrorStrings.GRANTERLOGIN_MISMATCH);
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
+
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.GranterId), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
+        }
+
+
+        [TestMethod]
+        public async Task GrantRole_GranterPasswordHashMismatch_ShouldReturnUpdateResult_PASSWORD_HASH_MISMATCH_403()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+
+            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+                .ReturnsAsync(authUser);
+
+            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.GranterLogin);
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.GranterId))
+                .ReturnsAsync(granter);
+
+            var updateResult = await _authService.GrantRole(grantRoleData);
+
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(Core.ErrorStrings.PASSWORD_HASH_MISMATCH, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, updateResult.StatusCode);
+
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.GranterId), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task GrantRole_GranterPasswordHashMismatch_ShouldReturnUpdateResult_PASSWORD_HASH_MISMATCH_403_FluentAssertion()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+
+            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+                .ReturnsAsync(authUser);
+
+            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.GranterLogin);
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.GranterId))
+                .ReturnsAsync(granter);
+
+            var updateResult = await _authService.GrantRole(grantRoleData);
+
+            updateResult.Should().NotBeNull();
+            updateResult.Message.Should().Be(Core.ErrorStrings.PASSWORD_HASH_MISMATCH);
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
+
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.GranterId), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
+        }
+
+
+        [TestMethod]
+        public async Task GrantRole_Updated_ShouldReturnUpdateResult_USER_UPDATED_200()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+
+            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+                .ReturnsAsync(authUser);
+
+            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash, login: grantRoleData.GranterLogin);
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.GranterId))
+                .ReturnsAsync(granter);
+
+            _authRepositoryMock.Setup(pr => pr.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId))
+                .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.USER_UPDATED, StatusCode = System.Net.HttpStatusCode.OK });
+
+            var updateResult = await _authService.GrantRole(grantRoleData);
+
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(Core.ErrorStrings.USER_UPDATED, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
+
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.GranterId), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task GrantRole_Updated_ShouldReturnUpdateResult_USER_UPDATED_200_FluentAssertion()
+        {
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+
+            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+                .ReturnsAsync(authUser);
+
+            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash, login: grantRoleData.GranterLogin);
+            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.GranterId))
+                .ReturnsAsync(granter);
+
+            _authRepositoryMock.Setup(pr => pr.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId))
+                .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.USER_UPDATED, StatusCode = System.Net.HttpStatusCode.OK });
+
+            var updateResult = await _authService.GrantRole(grantRoleData);
+
+            updateResult.Should().NotBeNull();
+            updateResult.Message.Should().Be(Core.ErrorStrings.USER_UPDATED);
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.GranterId), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Once);
+        }
+
 
 
         //TODO: UpdateAccount tests
@@ -598,4 +952,4 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         ok
          */
     }
-}
+    }
