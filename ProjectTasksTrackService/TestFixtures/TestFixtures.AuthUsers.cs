@@ -152,5 +152,36 @@ namespace TestFixtures
             string GenerateStringIfTrueElseReturnNull(bool flag) =>
                 flag == true ? fixture.Build<string>().Create() : null;
         }
+
+        public static UpdateAccountData GetUpdateAccountDataFixtureWithRequiredFields(
+            bool generateId = true,
+            bool generateLogin = true,
+            bool generateName = true,
+            bool generateEmail = true,
+            bool generatePasswordHash = true,
+            bool generateNewPasswordHash = true,
+            string passwordHash = null,
+            string newPasswordHash = null,
+            string login = null)
+        {
+            var fixture = new Fixture();
+
+            var id = generateId ? fixture.Create<int>() : 0;
+
+            return new UpdateAccountData(
+                id: id,
+                login: login ?? GenerateStringIfTrueElseReturnNull(generateLogin),
+                userName: GenerateStringIfTrueElseReturnNull(generateName),
+                email: GenerateStringIfTrueElseReturnNull(generateEmail),
+                passwordHash: passwordHash ?? GenerateStringIfTrueElseReturnNull(generatePasswordHash),
+                newPasswordHash: newPasswordHash ?? GenerateStringIfTrueElseReturnNull(generateNewPasswordHash),
+                nick: null,
+                phone: null,
+                requestedRole: null);
+
+            //local
+            string GenerateStringIfTrueElseReturnNull(bool flag) =>
+                flag == true ? fixture.Build<string>().Create() : null;
+        }
     }
 }

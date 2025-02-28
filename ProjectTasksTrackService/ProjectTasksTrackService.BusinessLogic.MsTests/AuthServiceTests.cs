@@ -850,46 +850,189 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         }
 
 
+        [TestMethod]
+        public async Task UpdateAccount_UpdateAccountDataIsNull_ShouldThrowArgumentNullException()
+        {
+            Core.Auth.UpdateAccountData updateAccountData = null;
+            UpdateResult updateResult = null;
+            var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => updateResult = await _authService.UpdateAccount(updateAccountData));
 
-        //TODO: UpdateAccount tests
-        /*
-        UpdateAccount_UpdateAccountDataIsNull_ShouldThrowArgumentNullException_FluentAssertion()
-        if (updateAccountData == null)
-                throw new ArgumentNullException(ErrorStrings.LOGINDATA_PARAM_NAME);
+            _authRepositoryMock.Verify(ar => ar.UpdateUser(updateAccountData), Times.Never);
+            Assert.IsNotNull(exception);
+            Assert.IsNull(updateResult);
+            Assert.AreEqual(ErrorStrings.UPDATEACCOUNTDATA_PARAM_NAME, exception.ParamName);
+        }
+
+        [TestMethod]
+        public async Task UpdateAccount_UpdateAccountDataIsNull_ShouldThrowArgumentNullException_FluentAssertion()
+        {
+            Core.Auth.UpdateAccountData updateAccountData = null;
+            UpdateResult updateResult = null;
+            var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => updateResult = await _authService.UpdateAccount(updateAccountData));
+
+            _authRepositoryMock.Verify(ar => ar.UpdateUser(updateAccountData), Times.Never);
+            exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ErrorStrings.UPDATEACCOUNTDATA_PARAM_NAME);
+            updateResult.Should().BeNull();
+            exception.ParamName.Should().Be(ErrorStrings.UPDATEACCOUNTDATA_PARAM_NAME);
+        }
+
+        [TestMethod]
+        public async Task UpdateAccount_UpdateAccountDataWithoutLogin_ShouldReturnUpdateResult_LOGIN_SHOULD_NOT_BE_EMPTY_400()
+        {
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields(generateLogin: false);
+
+            var updateResult = await _authService.UpdateAccount(updateAccountData);
+
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(ErrorStrings.LOGIN_SHOULD_NOT_BE_EMPTY, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, updateResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task UpdateAccount_UpdateAccountDataWithoutLogin_ShouldReturnUpdateResult_LOGIN_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+        {
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields(generateLogin: false);
+
+            var updateResult = await _authService.UpdateAccount(updateAccountData);
+
+            updateResult.Should().NotBeNull();
+            updateResult.Message.Should().Be(ErrorStrings.LOGIN_SHOULD_NOT_BE_EMPTY);
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+        }
+
+        [TestMethod]
+        public async Task UpdateAccount_UpdateAccountDataWithoutUserName_ShouldReturnUpdateResult_USERNAME_SHOULD_NOT_BE_EMPTY_400()
+        {
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields(generateName: false);
+
+            var updateResult = await _authService.UpdateAccount(updateAccountData);
+
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(ErrorStrings.USERNAME_SHOULD_NOT_BE_EMPTY, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, updateResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task UpdateAccount_UpdateAccountDataWithoutUserName_ShouldReturnUpdateResult_USERNAME_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+        {
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields(generateName: false);
+
+            var updateResult = await _authService.UpdateAccount(updateAccountData);
+
+            updateResult.Should().NotBeNull();
+            updateResult.Message.Should().Be(ErrorStrings.USERNAME_SHOULD_NOT_BE_EMPTY);
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+        }
+
+        [TestMethod]
+        public async Task UpdateAccount_UpdateAccountDataWithoutEmail_ShouldReturnUpdateResult_EMAIL_SHOULD_NOT_BE_EMPTY_400()
+        {
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields(generateEmail: false);
+
+            var updateResult = await _authService.UpdateAccount(updateAccountData);
+
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(ErrorStrings.EMAIL_SHOULD_NOT_BE_EMPTY, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, updateResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task UpdateAccount_UpdateAccountDataWithoutEmail_ShouldReturnUpdateResult_EMAIL_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+        {
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields(generateEmail: false);
+
+            var updateResult = await _authService.UpdateAccount(updateAccountData);
+
+            updateResult.Should().NotBeNull();
+            updateResult.Message.Should().Be(ErrorStrings.EMAIL_SHOULD_NOT_BE_EMPTY);
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+        }
+
+        [TestMethod]
+        public async Task UpdateAccount_UpdateAccountDataWithoutPasswordHash_ShouldReturnUpdateResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400()
+        {
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields(generatePasswordHash: false);
+
+            var updateResult = await _authService.UpdateAccount(updateAccountData);
+
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(ErrorStrings.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, updateResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task UpdateAccount_UpdateAccountDataWithoutPasswordHash_ShouldReturnUpdateResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+        {
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields(generatePasswordHash: false);
+
+            var updateResult = await _authService.UpdateAccount(updateAccountData);
+
+            updateResult.Should().NotBeNull();
+            updateResult.Message.Should().Be(ErrorStrings.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY);
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+        }
+
+        [TestMethod]
+        public async Task UpdateAccount_UserIsActual_ShouldReturnUpdateResult_OK()
+        {
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields();
+
+            _authRepositoryMock.Setup(pr => pr.UpdateUser(updateAccountData))
+                .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.USER_IS_ACTUAL, StatusCode = System.Net.HttpStatusCode.OK });
+
+            var updateResult = await _authService.UpdateAccount(updateAccountData);
+
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(Core.ErrorStrings.USER_IS_ACTUAL, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task UpdateAccount_UserIsActual_ShouldReturnUpdateResult_OK_FluentAssertion()
+        {
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields();
+
+            _authRepositoryMock.Setup(pr => pr.UpdateUser(updateAccountData))
+                .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.USER_IS_ACTUAL, StatusCode = System.Net.HttpStatusCode.OK });
+
+            var updateResult = await _authService.UpdateAccount(updateAccountData);
+
+            updateResult.Should().NotBeNull();
+            updateResult.Message.Should().Be(Core.ErrorStrings.USER_IS_ACTUAL);
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+        }
 
 
-        UpdateAccount_UpdateAccountDataWithoutLogin_ShouldReturnUpdateResult_LOGIN_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
-            if (string.IsNullOrWhiteSpace(updateAccountData.Login))
-                return new UpdateResult
-                {
-                    Message = ErrorStrings.LOGIN_SHOULD_NOT_BE_EMPTY,
-                    StatusCode = System.Net.HttpStatusCode.BadRequest
-                };
+        [TestMethod]
+        public async Task UpdateAccount_UserUpdated_ShouldReturnUpdateResult_OK()
+        {
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields();
 
-        UpdateAccount_UpdateAccountDataWithoutUserName_ShouldReturnUpdateResult_USERNAME_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
-            if (string.IsNullOrWhiteSpace(updateAccountData.UserName))
-                return new UpdateResult
-                {
-                    Message = ErrorStrings.USERNAME_SHOULD_NOT_BE_EMPTY,
-                    StatusCode = System.Net.HttpStatusCode.BadRequest
-                };
-        UpdateAccount_UpdateAccountDataWithoutEmail_ShouldReturnUpdateResult_EMAIL_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
-            if (string.IsNullOrWhiteSpace(updateAccountData.Email))
-                return new UpdateResult
-                {
-                    Message = ErrorStrings.EMAIL_SHOULD_NOT_BE_EMPTY,
-                    StatusCode = System.Net.HttpStatusCode.BadRequest
-                };
-        UpdateAccount_UpdateAccountDataWithoutPasswordHash_ShouldReturnUpdateResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
-            if (string.IsNullOrWhiteSpace(updateAccountData.PasswordHash))
-                return new UpdateResult
-                {
-                    Message = ErrorStrings.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY,
-                    StatusCode = System.Net.HttpStatusCode.BadRequest
-                };
-        UpdateAccount_ShouldReturnUpdateResult_OK_FluentAssertion()
-        ok
-         * */
+            _authRepositoryMock.Setup(pr => pr.UpdateUser(updateAccountData))
+                .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.USER_UPDATED, StatusCode = System.Net.HttpStatusCode.OK });
+
+            var updateResult = await _authService.UpdateAccount(updateAccountData);
+
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(Core.ErrorStrings.USER_UPDATED, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task UpdateAccount_UserUpdated_ShouldReturnUpdateResult_OK_FluentAssertion()
+        {
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields();
+
+            _authRepositoryMock.Setup(pr => pr.UpdateUser(updateAccountData))
+                .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.USER_UPDATED, StatusCode = System.Net.HttpStatusCode.OK });
+
+            var updateResult = await _authService.UpdateAccount(updateAccountData);
+
+            updateResult.Should().NotBeNull();
+            updateResult.Message.Should().Be(Core.ErrorStrings.USER_UPDATED);
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+        }
+
         //TODO: DeleteAccount tests
 
         /*
@@ -952,4 +1095,4 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         ok
          */
     }
-    }
+}

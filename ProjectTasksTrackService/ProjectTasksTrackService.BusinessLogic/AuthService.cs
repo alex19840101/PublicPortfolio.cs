@@ -140,7 +140,7 @@ namespace ProjectTasksTrackService.BusinessLogic
         public async Task<UpdateResult> UpdateAccount(UpdateAccountData updateAccountData)
         {
             if (updateAccountData == null)
-                throw new ArgumentNullException(ErrorStrings.LOGINDATA_PARAM_NAME);
+                throw new ArgumentNullException(ErrorStrings.UPDATEACCOUNTDATA_PARAM_NAME);
 
             if (string.IsNullOrWhiteSpace(updateAccountData.Login))
                 return new UpdateResult
