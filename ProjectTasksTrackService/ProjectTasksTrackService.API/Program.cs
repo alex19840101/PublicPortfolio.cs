@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,16 +26,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-//builder.Services.AddControllers(config =>
-//{
-//    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-//    config.Filters.Add(new AuthorizeFilter(policy));
-//});
-
-//builder.Services.AddAuthorizationBuilder()
-//    .AddPolicy(JwtBearerDefaults.AuthenticationScheme, new AuthorizationPolicyBuilder()
-//            .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-//            .RequireAuthenticatedUser().Build());
 
 builder.Services.AddAuthorization(options =>
 {
@@ -47,13 +36,10 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
-
-
 const string KEY = "ProjectTasksTrackService:Auth/Key{)(ws;lkfj43";
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IAuthorizationHandler, RoleAuthorizationHandler>();
-//builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

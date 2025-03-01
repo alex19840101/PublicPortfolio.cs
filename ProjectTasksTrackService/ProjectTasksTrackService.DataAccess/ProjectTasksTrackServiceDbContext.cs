@@ -10,7 +10,6 @@ namespace ProjectTasksTrackService.DataAccess
         {
         }
 
-        
         public DbSet<AuthUser> AuthUsers { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectSubDivision> ProjectSubDivisions { get; set; }

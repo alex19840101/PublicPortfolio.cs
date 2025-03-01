@@ -10,6 +10,14 @@ namespace ProjectTasksTrackService.API
     /// </summary>
     public class RoleAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, LoginRequestDto>
     {
+        /// <summary>
+        /// Метод определенияя успешности авторизации по
+        /// https://learn.microsoft.com/ru-ru/dotnet/api/microsoft.aspnetcore.authorization.authorizationhandler-1.handlerequirementasync?view=aspnetcore-9.0#microsoft-aspnetcore-authorization-authorizationhandler-1-handlerequirementasync(microsoft-aspnetcore-authorization-authorizationhandlercontext-0)
+        /// </summary>
+        /// <param name="context"> AuthorizationHandlerContext-контекст авторизации</param>
+        /// <param name="requirement"> OperationAuthorizationRequirement-требование для оценки успешности авторизации </param>
+        /// <param name="resource"> ресурс </param>
+        /// <returns></returns>
         protected override Task HandleRequirementAsync(
             AuthorizationHandlerContext context,
             OperationAuthorizationRequirement requirement,
