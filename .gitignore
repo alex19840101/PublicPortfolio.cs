@@ -13,5 +13,6 @@
 .Debug.
 Web.Debug.config
 Web.Release.config
+**/.logs/
 
 /OAuth/.tools/linq2db.t4models
