@@ -479,7 +479,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_GrantRoleDataWithoutLogin_ShouldReturnUpdateResult_LOGIN_SHOULD_NOT_BE_EMPTY_400()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields(generateLogin: false);
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture(generateLogin: false);
 
             var updateResult = await _authService.GrantRole(grantRoleData);
 
@@ -494,7 +494,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_GrantRoleDataWithoutLogin_ShouldReturnUpdateResult_LOGIN_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields(generateLogin: false);
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture(generateLogin: false);
 
             var updateResult = await _authService.GrantRole(grantRoleData);
 
@@ -510,7 +510,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_GrantRoleDataWithoutPasswordHash_ShouldReturnUpdateResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields(generatePasswordHash: false);
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture(generatePasswordHash: false);
 
             var updateResult = await _authService.GrantRole(grantRoleData);
 
@@ -525,7 +525,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_GrantRoleDataWithoutPasswordHash_ShouldReturnUpdateResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields(generatePasswordHash: false);
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture(generatePasswordHash: false);
 
             var updateResult = await _authService.GrantRole(grantRoleData);
 
@@ -541,7 +541,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_GrantRoleDataWithoutGranterLogin_ShouldReturnUpdateResult_GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_400()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields(generateGranterLogin: false);
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture(generateGranterLogin: false);
 
             var updateResult = await _authService.GrantRole(grantRoleData);
 
@@ -556,7 +556,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_GrantRoleDataWithoutGranterLogin_ShouldReturnUpdateResult_GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields(generateGranterLogin: false);
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture(generateGranterLogin: false);
 
             var updateResult = await _authService.GrantRole(grantRoleData);
 
@@ -572,7 +572,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_UserNotFound_ShouldReturnUpdateResult_USER_NOT_FOUND_404()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = null;
             _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
@@ -591,7 +591,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_UserNotFound_ShouldReturnUpdateResult_USER_NOT_FOUND_404_FluentAssertion()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = null;
             _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
@@ -611,7 +611,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_LoginMismatch_ShouldReturnUpdateResult_LOGIN_MISMATCH_403()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
             _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
@@ -630,7 +630,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_LoginMismatch_ShouldReturnUpdateResult_LOGIN_MISMATCH_403_FluentAssertion()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
             _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
@@ -651,7 +651,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_GranterNotFound_ShouldReturnUpdateResult_GRANTER_ID_NOT_FOUND_404()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
             _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
@@ -675,7 +675,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_GranterNotFound_ShouldReturnUpdateResult_GRANTER_ID_NOT_FOUND_404_FluentAssertion()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
             _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
@@ -700,7 +700,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_GranterLoginMismatch_ShouldReturnUpdateResult_GRANTERLOGIN_MISMATCH_403_FluentAssertion()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
             _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
@@ -724,7 +724,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_GranterLoginMismatch_ShouldReturnUpdateResult_GRANTERLOGIN_MISMATCH_403()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
             _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
@@ -749,7 +749,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_GranterPasswordHashMismatch_ShouldReturnUpdateResult_PASSWORD_HASH_MISMATCH_403()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
             _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
@@ -773,7 +773,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_GranterPasswordHashMismatch_ShouldReturnUpdateResult_PASSWORD_HASH_MISMATCH_403_FluentAssertion()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
             _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
@@ -798,7 +798,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_Updated_ShouldReturnUpdateResult_USER_UPDATED_200()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
             _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
@@ -825,7 +825,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task GrantRole_Updated_ShouldReturnUpdateResult_USER_UPDATED_200_FluentAssertion()
         {
-            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixtureWithAllFields();
+            var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
             _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
@@ -879,7 +879,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task UpdateAccount_UpdateAccountDataWithoutLogin_ShouldReturnUpdateResult_LOGIN_SHOULD_NOT_BE_EMPTY_400()
         {
-            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields(generateLogin: false);
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture(generateLogin: false);
 
             var updateResult = await _authService.UpdateAccount(updateAccountData);
 
@@ -891,7 +891,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task UpdateAccount_UpdateAccountDataWithoutLogin_ShouldReturnUpdateResult_LOGIN_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
         {
-            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields(generateLogin: false);
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture(generateLogin: false);
 
             var updateResult = await _authService.UpdateAccount(updateAccountData);
 
@@ -903,7 +903,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task UpdateAccount_UpdateAccountDataWithoutUserName_ShouldReturnUpdateResult_USERNAME_SHOULD_NOT_BE_EMPTY_400()
         {
-            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields(generateName: false);
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture(generateName: false);
 
             var updateResult = await _authService.UpdateAccount(updateAccountData);
 
@@ -915,7 +915,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task UpdateAccount_UpdateAccountDataWithoutUserName_ShouldReturnUpdateResult_USERNAME_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
         {
-            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields(generateName: false);
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture(generateName: false);
 
             var updateResult = await _authService.UpdateAccount(updateAccountData);
 
@@ -927,7 +927,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task UpdateAccount_UpdateAccountDataWithoutEmail_ShouldReturnUpdateResult_EMAIL_SHOULD_NOT_BE_EMPTY_400()
         {
-            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields(generateEmail: false);
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture(generateEmail: false);
 
             var updateResult = await _authService.UpdateAccount(updateAccountData);
 
@@ -939,7 +939,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task UpdateAccount_UpdateAccountDataWithoutEmail_ShouldReturnUpdateResult_EMAIL_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
         {
-            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields(generateEmail: false);
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture(generateEmail: false);
 
             var updateResult = await _authService.UpdateAccount(updateAccountData);
 
@@ -951,7 +951,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task UpdateAccount_UpdateAccountDataWithoutPasswordHash_ShouldReturnUpdateResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400()
         {
-            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields(generatePasswordHash: false);
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture(generatePasswordHash: false);
 
             var updateResult = await _authService.UpdateAccount(updateAccountData);
 
@@ -963,7 +963,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task UpdateAccount_UpdateAccountDataWithoutPasswordHash_ShouldReturnUpdateResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
         {
-            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields(generatePasswordHash: false);
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture(generatePasswordHash: false);
 
             var updateResult = await _authService.UpdateAccount(updateAccountData);
 
@@ -975,7 +975,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task UpdateAccount_UserIsActual_ShouldReturnUpdateResult_OK()
         {
-            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields();
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture();
 
             _authRepositoryMock.Setup(pr => pr.UpdateUser(updateAccountData))
                 .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.USER_IS_ACTUAL, StatusCode = System.Net.HttpStatusCode.OK });
@@ -990,7 +990,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task UpdateAccount_UserIsActual_ShouldReturnUpdateResult_OK_FluentAssertion()
         {
-            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields();
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture();
 
             _authRepositoryMock.Setup(pr => pr.UpdateUser(updateAccountData))
                 .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.USER_IS_ACTUAL, StatusCode = System.Net.HttpStatusCode.OK });
@@ -1006,7 +1006,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task UpdateAccount_UserUpdated_ShouldReturnUpdateResult_OK()
         {
-            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields();
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture();
 
             _authRepositoryMock.Setup(pr => pr.UpdateUser(updateAccountData))
                 .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.USER_UPDATED, StatusCode = System.Net.HttpStatusCode.OK });
@@ -1021,7 +1021,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         [TestMethod]
         public async Task UpdateAccount_UserUpdated_ShouldReturnUpdateResult_OK_FluentAssertion()
         {
-            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixtureWithRequiredFields();
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture();
 
             _authRepositoryMock.Setup(pr => pr.UpdateUser(updateAccountData))
                 .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.USER_UPDATED, StatusCode = System.Net.HttpStatusCode.OK });
@@ -1035,25 +1035,159 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
 
         //TODO: DeleteAccount tests
 
+        [TestMethod]
+        public async Task DeleteAccount_DeleteAccountDataIsNull_ShouldThrowArgumentNullException()
+        {
+            Core.Auth.DeleteAccountData deleteAccountData = null;
+            DeleteResult deleteResult = null;
+            var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => deleteResult = await _authService.DeleteAccount(deleteAccountData));
+
+            Assert.IsNotNull(exception);
+            Assert.IsNull(deleteResult);
+            Assert.AreEqual(ErrorStrings.DELETEACCOUNTDATA_PARAM_NAME, exception.ParamName);
+        }
+
+        [TestMethod]
+        public async Task DeleteAccount_DeleteAccountDataIsNull_ShouldThrowArgumentNullException_FluentAssertion()
+        {
+            Core.Auth.DeleteAccountData deleteAccountData = null;
+            DeleteResult deleteResult = null;
+            var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => deleteResult = await _authService.DeleteAccount(deleteAccountData));
+
+            exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ErrorStrings.DELETEACCOUNTDATA_PARAM_NAME);
+            deleteResult.Should().BeNull();
+            exception.ParamName.Should().Be(ErrorStrings.DELETEACCOUNTDATA_PARAM_NAME);
+        }
+
+
+        [TestMethod]
+        public async Task DeleteAccount_DeleteAccountDataWithoutLogin_ShouldReturnDeleteResult_LOGIN_SHOULD_NOT_BE_EMPTY_400()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateLogin: false);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            Assert.IsNotNull(deleteResult);
+            Assert.AreEqual(ErrorStrings.LOGIN_SHOULD_NOT_BE_EMPTY, deleteResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, deleteResult.StatusCode);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task DeleteAccount_DeleteAccountDataWithoutLogin_ShouldReturnDeleteResult_LOGIN_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateLogin: false);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(ErrorStrings.LOGIN_SHOULD_NOT_BE_EMPTY);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
+
+
+        [TestMethod]
+        public async Task DeleteAccount_DeleteAccountDataWithoutPasswordHash_ShouldReturnDeleteResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generatePasswordHash: false);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            Assert.IsNotNull(deleteResult);
+            Assert.AreEqual(ErrorStrings.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, deleteResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, deleteResult.StatusCode);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task DeleteAccount_DeleteAccountDataWithoutPasswordHash_ShouldReturnDeleteResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generatePasswordHash: false);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(ErrorStrings.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
+
+
+        [TestMethod]
+        public async Task DeleteAccount_UserNotFound_ShouldReturnDeleteResult_USER_NOT_FOUND_404()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
+
+            AuthUser userToDelete = null;
+            _authRepositoryMock.Setup(pr => pr.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            Assert.IsNotNull(deleteResult);
+            Assert.AreEqual(Core.ErrorStrings.USER_NOT_FOUND, deleteResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.NotFound, deleteResult.StatusCode);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task DeleteAccount_UserNotFound_ShouldReturnDeleteResult_USER_NOT_FOUND_404_FluentAssertion()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
+
+            AuthUser userToDelete = null;
+            _authRepositoryMock.Setup(pr => pr.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(Core.ErrorStrings.USER_NOT_FOUND);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
+
+
+
+        [TestMethod]
+        public async Task DeleteAccount_LoginMismatch_ShouldReturnDeleteResult_LOGIN_MISMATCH_403()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
+
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(pr => pr.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            Assert.IsNotNull(deleteResult);
+            Assert.AreEqual(Core.ErrorStrings.LOGIN_MISMATCH, deleteResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, deleteResult.StatusCode);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task DeleteAccount_LoginMismatch_ShouldReturnDeleteResult_LOGIN_MISMATCH_403_FluentAssertion()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
+
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(pr => pr.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(Core.ErrorStrings.LOGIN_MISMATCH);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
         /*
-         * DeleteAccount_DeleteAccountDataIsNull_ShouldThrowArgumentNullException_FluentAssertion()
-          if (deleteAccountData == null)
-                throw new ArgumentNullException(ErrorStrings.DELETEACCOUNTDATA_PARAM_NAME);
-
-        DeleteAccount_DeleteAccountDataWithoutLogin_ShouldReturnDeleteResult_LOGIN_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
-            if (string.IsNullOrWhiteSpace(deleteAccountData.Login))
-                return new DeleteResult(ErrorStrings.LOGIN_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
-
-        DeleteAccount_DeleteAccountDataWithoutPasswordHash_ShouldReturnDeleteResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
-            if (string.IsNullOrWhiteSpace(deleteAccountData.PasswordHash))
-                return new DeleteResult(ErrorStrings.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
-
-            var user = await _authRepository.GetUser(deleteAccountData.Id);
-
-        DeleteAccount_UserNotFound_ShouldReturnDeleteResult_USER_NOT_FOUND_404_FluentAssertion()
-            if (user is null)
-                return new DeleteResult(message: Core.ErrorStrings.USER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
-
         DeleteAccount_LoginMismatch_ShouldReturnDeleteResult_LOGIN_MISMATCH_403_FluentAssertion()
             if (!string.Equals(user.Login, deleteAccountData.Login))
                 return new DeleteResult(message: Core.ErrorStrings.LOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);

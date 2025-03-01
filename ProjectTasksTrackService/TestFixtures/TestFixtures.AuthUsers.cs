@@ -115,7 +115,7 @@ namespace TestFixtures
                 timeoutMinutes: fixture.Create<int>());
         }
 
-        public static GrantRoleData GetGrantRoleDataFixtureWithAllFields(
+        public static GrantRoleData GetGrantRoleDataFixture(
             bool generateId = true,
             bool generateLogin = true,
             bool generateGranterLogin = true,
@@ -153,7 +153,7 @@ namespace TestFixtures
                 flag == true ? fixture.Build<string>().Create() : null;
         }
 
-        public static UpdateAccountData GetUpdateAccountDataFixtureWithRequiredFields(
+        public static UpdateAccountData GetUpdateAccountDataFixture(
             bool generateId = true,
             bool generateLogin = true,
             bool generateName = true,
@@ -178,6 +178,42 @@ namespace TestFixtures
                 nick: null,
                 phone: null,
                 requestedRole: null);
+
+            //local
+            string GenerateStringIfTrueElseReturnNull(bool flag) =>
+                flag == true ? fixture.Build<string>().Create() : null;
+        }
+
+
+        public static DeleteAccountData GetDeleteAccountDataFixture(
+            bool generateId = true,
+            bool generateLogin = true,
+            bool generateGranterLogin = false,
+            bool generatePasswordHash = true,
+            List<int> excludeIds = null,
+            int setId = 0,
+            bool generateGranterId = false,
+            string passwordHash = null)
+        {
+            var fixture = new Fixture();
+            var id = generateId ? fixture.Create<int>() : setId;
+            var granterId = generateGranterId == true ? fixture.Create<int>() : 0;
+            if (generateId)
+            {
+                if (excludeIds != null && excludeIds.Any() && setId == 0)
+                {
+                    while (excludeIds.Contains(id))
+                        id = fixture.Create<int>();
+                }
+                excludeIds ??= new List<int>();
+                excludeIds.Add(id);
+            }
+            return new DeleteAccountData(
+                id: id,
+                login: GenerateStringIfTrueElseReturnNull(generateLogin),
+                passwordHash: passwordHash ?? GenerateStringIfTrueElseReturnNull(generatePasswordHash),
+                granterId: granterId,
+                granterLogin: GenerateStringIfTrueElseReturnNull(generateGranterLogin));
 
             //local
             string GenerateStringIfTrueElseReturnNull(bool flag) =>
