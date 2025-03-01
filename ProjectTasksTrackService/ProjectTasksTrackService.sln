@@ -1,0 +1,84 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTasksTrackService.API", "ProjectTasksTrackService.API\ProjectTasksTrackService.API.csproj", "{FEF051A5-6A5B-46F5-8B2D-650C78872E55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTasksTrackService.BusinessLogic", "ProjectTasksTrackService.BusinessLogic\ProjectTasksTrackService.BusinessLogic.csproj", "{83C820A3-D40A-4712-A4C6-4E9F1D075319}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTasksTrackService.DataAccess", "ProjectTasksTrackService.DataAccess\ProjectTasksTrackService.DataAccess.csproj", "{F6174F8F-0CD5-4F03-8472-774E0C44C820}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTasksTrackService.Core", "ProjectTasksTrackService.Core\ProjectTasksTrackService.Core.csproj", "{129C8076-D281-4EFA-A143-4A3C307D984C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTasksTrackService.API.Contracts", "ProjectTasksTrackService.API.Contracts\ProjectTasksTrackService.API.Contracts.csproj", "{58DB9403-00A9-4BD9-AA20-54F6121BF090}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTasksTrackService.BusinessLogic.MsTests", "ProjectTasksTrackService.BusinessLogic.MsTests\ProjectTasksTrackService.BusinessLogic.MsTests.csproj", "{CA0ED127-55A0-4DBF-88D7-7A05F88881EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTasksTrackService.BusinessLogic.nTests", "ProjectTasksTrackService.BusinessLogic.nTests\ProjectTasksTrackService.BusinessLogic.nTests.csproj", "{742EC15B-3EE4-4CEB-879E-E2F33E149331}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectTasksTrackService.BusinessLogic.xTests", "ProjectTasksTrackService.BusinessLogic.xTests\ProjectTasksTrackService.BusinessLogic.xTests.csproj", "{FF29C24D-423E-434D-98BC-84358601AA34}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9E8389D5-7374-4674-A633-708575A944EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFixtures", "TestFixtures\TestFixtures.csproj", "{90A5F4D6-264D-40F9-8438-6EAE6FFF4728}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Contracts", "_Contracts", "{C35E6EE1-C122-4DD0-A39F-79068639D91A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{E836710C-7F57-406D-AA44-BAB55A33A910}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FEF051A5-6A5B-46F5-8B2D-650C78872E55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEF051A5-6A5B-46F5-8B2D-650C78872E55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEF051A5-6A5B-46F5-8B2D-650C78872E55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEF051A5-6A5B-46F5-8B2D-650C78872E55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83C820A3-D40A-4712-A4C6-4E9F1D075319}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83C820A3-D40A-4712-A4C6-4E9F1D075319}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83C820A3-D40A-4712-A4C6-4E9F1D075319}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83C820A3-D40A-4712-A4C6-4E9F1D075319}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6174F8F-0CD5-4F03-8472-774E0C44C820}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6174F8F-0CD5-4F03-8472-774E0C44C820}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6174F8F-0CD5-4F03-8472-774E0C44C820}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6174F8F-0CD5-4F03-8472-774E0C44C820}.Release|Any CPU.Build.0 = Release|Any CPU
+		{129C8076-D281-4EFA-A143-4A3C307D984C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{129C8076-D281-4EFA-A143-4A3C307D984C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{129C8076-D281-4EFA-A143-4A3C307D984C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{129C8076-D281-4EFA-A143-4A3C307D984C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58DB9403-00A9-4BD9-AA20-54F6121BF090}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58DB9403-00A9-4BD9-AA20-54F6121BF090}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58DB9403-00A9-4BD9-AA20-54F6121BF090}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58DB9403-00A9-4BD9-AA20-54F6121BF090}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA0ED127-55A0-4DBF-88D7-7A05F88881EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA0ED127-55A0-4DBF-88D7-7A05F88881EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA0ED127-55A0-4DBF-88D7-7A05F88881EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA0ED127-55A0-4DBF-88D7-7A05F88881EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{742EC15B-3EE4-4CEB-879E-E2F33E149331}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{742EC15B-3EE4-4CEB-879E-E2F33E149331}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{742EC15B-3EE4-4CEB-879E-E2F33E149331}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{742EC15B-3EE4-4CEB-879E-E2F33E149331}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF29C24D-423E-434D-98BC-84358601AA34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF29C24D-423E-434D-98BC-84358601AA34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF29C24D-423E-434D-98BC-84358601AA34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF29C24D-423E-434D-98BC-84358601AA34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90A5F4D6-264D-40F9-8438-6EAE6FFF4728}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90A5F4D6-264D-40F9-8438-6EAE6FFF4728}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90A5F4D6-264D-40F9-8438-6EAE6FFF4728}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90A5F4D6-264D-40F9-8438-6EAE6FFF4728}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FEF051A5-6A5B-46F5-8B2D-650C78872E55} = {E836710C-7F57-406D-AA44-BAB55A33A910}
+		{58DB9403-00A9-4BD9-AA20-54F6121BF090} = {C35E6EE1-C122-4DD0-A39F-79068639D91A}
+		{CA0ED127-55A0-4DBF-88D7-7A05F88881EF} = {9E8389D5-7374-4674-A633-708575A944EC}
+		{742EC15B-3EE4-4CEB-879E-E2F33E149331} = {9E8389D5-7374-4674-A633-708575A944EC}
+		{FF29C24D-423E-434D-98BC-84358601AA34} = {9E8389D5-7374-4674-A633-708575A944EC}
+		{90A5F4D6-264D-40F9-8438-6EAE6FFF4728} = {9E8389D5-7374-4674-A633-708575A944EC}
+	EndGlobalSection
+EndGlobal
