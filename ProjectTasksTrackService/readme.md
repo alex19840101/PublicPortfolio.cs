@@ -32,15 +32,22 @@ TestFixtures\
 ```
 
 ## **using stack:**
-**Platform:** .NET 9.0.
-**ORM:** EF Core.
-**DataBase**: PostgreSQL 17.
-**Unit Tests for Busines Logic services:**
+**- Platform:** .NET 9.0.
+
+**- ORM:** EF Core.
+
+**- DataBase**: PostgreSQL 17.
+
+**- Unit Tests for Busines Logic services:**
 - MsTest tests (AuthServiceTests, ProjectsServiceTests, SubProjectsServiceTests, TasksServiceTests);
 - Nunit tests (ProjectsServiceTests, SubProjectsServiceTests, TasksServiceTests);
 - XUnit tests (ProjectsServiceTests, SubProjectsServiceTests, TasksServiceTests);
 - using extra NuGet packages: Moq, AutoFixture, FluentAssertions (methods versions with FluentAssertions and without FluentAssertions).
-**Auth. (authentication and authorization):**
-- JWT-tokens + roles. Authorization required in Delete... methods.
-**Documentation**: Swagger (OpenAPI).
-**Logging**: Serilog (console, file).
+
+
+**- Auth. (authentication and authorization):**
+- JWT-tokens + roles. Authorization required in Delete... methods (DeleteProject, DeleteSubDivision, DeleteTask).
+
+**- Documentation**: Swagger (OpenAPI).
+
+**- Logging**: Serilog (console, file).
