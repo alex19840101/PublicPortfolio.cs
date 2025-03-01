@@ -34,7 +34,7 @@
         public const string INVALID_SECRET_STRING = "Invalid secret string";
 
         public const string EMPTY_OR_NULL_PASSWORD_HASH = "Empty/null/space password hash";
-        public const string GRANTER_ID_NOT_FOUND = "granterId not found";
+        public const string GRANTER_NOT_FOUND = "granter not found";
         public const string USER_NOT_FOUND = "User not found";
         public const string PASSWORD_HASH_MISMATCH = "Password(hash) mismatch";
         public const string USER_UPDATED = "User updated";

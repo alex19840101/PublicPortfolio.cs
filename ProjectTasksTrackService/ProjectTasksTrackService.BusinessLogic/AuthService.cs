@@ -120,7 +120,7 @@ namespace ProjectTasksTrackService.BusinessLogic
             AuthUser granter = await _authRepository.GetUser(grantRoleData.GranterId);
 
             if (granter is null)
-                return new UpdateResult(message: Core.ErrorStrings.GRANTER_ID_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
+                return new UpdateResult(message: Core.ErrorStrings.GRANTER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
 
             if (!string.Equals(granter.Login, grantRoleData.GranterLogin))
                 return new UpdateResult(message: Core.ErrorStrings.GRANTERLOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
@@ -183,6 +183,12 @@ namespace ProjectTasksTrackService.BusinessLogic
             if (string.IsNullOrWhiteSpace(deleteAccountData.PasswordHash))
                 return new DeleteResult(ErrorStrings.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
+            if (deleteAccountData.GranterId == null && !string.IsNullOrWhiteSpace(deleteAccountData.GranterLogin))
+                return new DeleteResult(ErrorStrings.GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE, System.Net.HttpStatusCode.BadRequest);
+
+            if (deleteAccountData.GranterId != null && string.IsNullOrWhiteSpace(deleteAccountData.GranterLogin))
+                return new DeleteResult(ErrorStrings.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE, System.Net.HttpStatusCode.BadRequest);
+
             var user = await _authRepository.GetUser(deleteAccountData.Id);
 
             if (user is null)
@@ -191,16 +197,12 @@ namespace ProjectTasksTrackService.BusinessLogic
             if (!string.Equals(user.Login, deleteAccountData.Login))
                 return new DeleteResult(message: Core.ErrorStrings.LOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
 
-
             if (deleteAccountData.GranterId != null)
             {
-                if (string.IsNullOrWhiteSpace(deleteAccountData.GranterLogin))
-                    return new DeleteResult(ErrorStrings.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE, System.Net.HttpStatusCode.BadRequest);
-
                 AuthUser granter = await _authRepository.GetUser(deleteAccountData.GranterId.Value);
 
                 if (granter is null)
-                    return new DeleteResult(message: Core.ErrorStrings.GRANTER_ID_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
+                    return new DeleteResult(message: Core.ErrorStrings.GRANTER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
 
                 if (!string.Equals(granter.Login, deleteAccountData.GranterLogin))
                     return new DeleteResult(message: Core.ErrorStrings.GRANTERLOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
@@ -210,10 +212,6 @@ namespace ProjectTasksTrackService.BusinessLogic
             }
             else
             {
-                if (!string.IsNullOrWhiteSpace(deleteAccountData.GranterLogin))
-                    return new DeleteResult(ErrorStrings.GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE, System.Net.HttpStatusCode.BadRequest);
-
-
                 if (!string.Equals(user.PasswordHash, deleteAccountData.PasswordHash))
                     return new DeleteResult(message: Core.ErrorStrings.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
             }

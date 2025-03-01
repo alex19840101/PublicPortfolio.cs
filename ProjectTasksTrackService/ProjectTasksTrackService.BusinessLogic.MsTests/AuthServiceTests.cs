@@ -185,7 +185,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
 
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
-            _authRepositoryMock.Setup(pr => pr.AddUser(authUser))
+            _authRepositoryMock.Setup(ar => ar.AddUser(authUser))
                 .ReturnsAsync(new AuthResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
             var registerResult = await _authService.Register(authUser);
@@ -193,7 +193,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             Assert.IsTrue(registerResult.Id > 0);
             Assert.AreEqual(expectedId, registerResult.Id);
             Assert.AreEqual(System.Net.HttpStatusCode.Created, registerResult.StatusCode);
-            _authRepositoryMock.Verify(pr => pr.AddUser(authUser), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.AddUser(authUser), Times.Once);
         }
 
         [TestMethod]
@@ -203,7 +203,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
 
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
-            _authRepositoryMock.Setup(pr => pr.AddUser(authUser))
+            _authRepositoryMock.Setup(ar => ar.AddUser(authUser))
                 .ReturnsAsync(new AuthResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
             var registerResult = await _authService.Register(authUser);
@@ -212,7 +212,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             registerResult.Id.Should().Be(expectedId);
             registerResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
 
-            _authRepositoryMock.Verify(pr => pr.AddUser(authUser), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.AddUser(authUser), Times.Once);
         }
 
         [TestMethod]
@@ -222,7 +222,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
 
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
-            _authRepositoryMock.Setup(pr => pr.AddUser(authUser))
+            _authRepositoryMock.Setup(ar => ar.AddUser(authUser))
                 .ReturnsAsync(new AuthResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
             var registerResult = await _authService.Register(authUser);
@@ -230,7 +230,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             Assert.IsTrue(registerResult.Id > 0);
             Assert.AreEqual(expectedId, registerResult.Id);
             Assert.AreEqual(System.Net.HttpStatusCode.Created, registerResult.StatusCode);
-            _authRepositoryMock.Verify(pr => pr.AddUser(authUser), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.AddUser(authUser), Times.Once);
         }
 
         [TestMethod]
@@ -240,7 +240,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
 
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
-            _authRepositoryMock.Setup(pr => pr.AddUser(authUser))
+            _authRepositoryMock.Setup(ar => ar.AddUser(authUser))
                             .ReturnsAsync(new AuthResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
             var createResult = await _authService.Register(authUser);
@@ -249,7 +249,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             createResult.Id.Should().Be(expectedId);
             createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
 
-            _authRepositoryMock.Verify(pr => pr.AddUser(authUser), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.AddUser(authUser), Times.Once);
         }
 
         [TestMethod]
@@ -338,7 +338,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
             AuthUser authUser = null;
-            _authRepositoryMock.Setup(pr => pr.GetUser(loginData.Login))
+            _authRepositoryMock.Setup(ar => ar.GetUser(loginData.Login))
                 .ReturnsAsync(authUser);
 
             var authResult = await _authService.Login(loginData);
@@ -348,7 +348,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, authResult.StatusCode);
             Assert.IsNull(authResult.Id);
 
-            _authRepositoryMock.Verify(pr => pr.GetUser(loginData.Login), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(loginData.Login), Times.Once);
         }
 
         [TestMethod]
@@ -356,7 +356,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
             AuthUser authUser = null;
-            _authRepositoryMock.Setup(pr => pr.GetUser(loginData.Login))
+            _authRepositoryMock.Setup(ar => ar.GetUser(loginData.Login))
                 .ReturnsAsync(authUser);
 
             var authResult = await _authService.Login(loginData);
@@ -366,7 +366,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             authResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
             authResult.Id.Should().BeNull();
 
-            _authRepositoryMock.Verify(pr => pr.GetUser(loginData.Login), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(loginData.Login), Times.Once);
         }
 
         [TestMethod]
@@ -374,7 +374,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields();
-            _authRepositoryMock.Setup(pr => pr.GetUser(loginData.Login))
+            _authRepositoryMock.Setup(ar => ar.GetUser(loginData.Login))
                 .ReturnsAsync(authUser);
 
             var authResult = await _authService.Login(loginData);
@@ -384,7 +384,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             Assert.AreEqual(System.Net.HttpStatusCode.Unauthorized, authResult.StatusCode);
             Assert.IsNull(authResult.Id);
 
-            _authRepositoryMock.Verify(pr => pr.GetUser(loginData.Login), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(loginData.Login), Times.Once);
         }
 
         [TestMethod]
@@ -392,7 +392,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields();
-            _authRepositoryMock.Setup(pr => pr.GetUser(loginData.Login))
+            _authRepositoryMock.Setup(ar => ar.GetUser(loginData.Login))
                 .ReturnsAsync(authUser);
 
             var authResult = await _authService.Login(loginData);
@@ -402,7 +402,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             authResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
             authResult.Id.Should().BeNull();
 
-            _authRepositoryMock.Verify(pr => pr.GetUser(loginData.Login), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(loginData.Login), Times.Once);
         }
 
 
@@ -411,7 +411,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(generateId: true, passwordHash: loginData.PasswordHash);
-            _authRepositoryMock.Setup(pr => pr.GetUser(loginData.Login))
+            _authRepositoryMock.Setup(ar => ar.GetUser(loginData.Login))
                 .ReturnsAsync(authUser);
 
             var authResult = await _authService.Login(loginData);
@@ -423,7 +423,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             Assert.IsTrue(authResult.Id > 0);
             Assert.IsFalse(string.IsNullOrWhiteSpace(authResult.Token));
 
-            _authRepositoryMock.Verify(pr => pr.GetUser(loginData.Login), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(loginData.Login), Times.Once);
         }
 
         [TestMethod]
@@ -431,7 +431,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(generateId: true, passwordHash: loginData.PasswordHash);
-            _authRepositoryMock.Setup(pr => pr.GetUser(loginData.Login))
+            _authRepositoryMock.Setup(ar => ar.GetUser(loginData.Login))
                 .ReturnsAsync(authUser);
 
             var authResult = await _authService.Login(loginData);
@@ -442,7 +442,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             authResult.Id.Should().NotBeNull();
             authResult.Id.Should().BeGreaterThan(0);
             authResult.Token.Should().NotBeNullOrWhiteSpace();
-            _authRepositoryMock.Verify(pr => pr.GetUser(loginData.Login), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(loginData.Login), Times.Once);
         }
 
 
@@ -575,7 +575,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = null;
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
                 .ReturnsAsync(authUser);
 
             var updateResult = await _authService.GrantRole(grantRoleData);
@@ -594,7 +594,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = null;
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
                 .ReturnsAsync(authUser);
 
             var updateResult = await _authService.GrantRole(grantRoleData);
@@ -614,7 +614,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
                 .ReturnsAsync(authUser);
 
             var updateResult = await _authService.GrantRole(grantRoleData);
@@ -633,7 +633,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
                 .ReturnsAsync(authUser);
 
             var updateResult = await _authService.GrantRole(grantRoleData);
@@ -649,22 +649,22 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
 
 
         [TestMethod]
-        public async Task GrantRole_GranterNotFound_ShouldReturnUpdateResult_GRANTER_ID_NOT_FOUND_404()
+        public async Task GrantRole_GranterNotFound_ShouldReturnUpdateResult_GRANTER_NOT_FOUND_404()
         {
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
                 .ReturnsAsync(authUser);
 
             AuthUser granter = null;
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.GranterId))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
             var updateResult = await _authService.GrantRole(grantRoleData);
 
             Assert.IsNotNull(updateResult);
-            Assert.AreEqual(Core.ErrorStrings.GRANTER_ID_NOT_FOUND, updateResult.Message);
+            Assert.AreEqual(Core.ErrorStrings.GRANTER_NOT_FOUND, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, updateResult.StatusCode);
 
             _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Once);
@@ -673,22 +673,22 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task GrantRole_GranterNotFound_ShouldReturnUpdateResult_GRANTER_ID_NOT_FOUND_404_FluentAssertion()
+        public async Task GrantRole_GranterNotFound_ShouldReturnUpdateResult_GRANTER_NOT_FOUND_404_FluentAssertion()
         {
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
                 .ReturnsAsync(authUser);
 
             AuthUser granter = null;
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.GranterId))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
             var updateResult = await _authService.GrantRole(grantRoleData);
 
             updateResult.Should().NotBeNull();
-            updateResult.Message.Should().Be(Core.ErrorStrings.GRANTER_ID_NOT_FOUND);
+            updateResult.Message.Should().Be(Core.ErrorStrings.GRANTER_NOT_FOUND);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
 
             _authRepositoryMock.Verify(ar => ar.GetUser(grantRoleData.Id), Times.Once);
@@ -703,11 +703,11 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
                 .ReturnsAsync(authUser);
 
             AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.GranterId))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
             var updateResult = await _authService.GrantRole(grantRoleData);
@@ -727,11 +727,11 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
                 .ReturnsAsync(authUser);
 
             AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.GranterId))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
             var updateResult = await _authService.GrantRole(grantRoleData);
@@ -752,11 +752,11 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
                 .ReturnsAsync(authUser);
 
             AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.GranterLogin);
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.GranterId))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
             var updateResult = await _authService.GrantRole(grantRoleData);
@@ -776,11 +776,11 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
                 .ReturnsAsync(authUser);
 
             AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.GranterLogin);
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.GranterId))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
             var updateResult = await _authService.GrantRole(grantRoleData);
@@ -801,14 +801,14 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
                 .ReturnsAsync(authUser);
 
             AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash, login: grantRoleData.GranterLogin);
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.GranterId))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
-            _authRepositoryMock.Setup(pr => pr.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId))
+            _authRepositoryMock.Setup(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId))
                 .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.USER_UPDATED, StatusCode = System.Net.HttpStatusCode.OK });
 
             var updateResult = await _authService.GrantRole(grantRoleData);
@@ -828,14 +828,14 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.Id))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
                 .ReturnsAsync(authUser);
 
             AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash, login: grantRoleData.GranterLogin);
-            _authRepositoryMock.Setup(pr => pr.GetUser(grantRoleData.GranterId))
+            _authRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
-            _authRepositoryMock.Setup(pr => pr.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId))
+            _authRepositoryMock.Setup(ar => ar.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId))
                 .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.USER_UPDATED, StatusCode = System.Net.HttpStatusCode.OK });
 
             var updateResult = await _authService.GrantRole(grantRoleData);
@@ -977,7 +977,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         {
             var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture();
 
-            _authRepositoryMock.Setup(pr => pr.UpdateUser(updateAccountData))
+            _authRepositoryMock.Setup(ar => ar.UpdateUser(updateAccountData))
                 .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.USER_IS_ACTUAL, StatusCode = System.Net.HttpStatusCode.OK });
 
             var updateResult = await _authService.UpdateAccount(updateAccountData);
@@ -992,7 +992,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         {
             var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture();
 
-            _authRepositoryMock.Setup(pr => pr.UpdateUser(updateAccountData))
+            _authRepositoryMock.Setup(ar => ar.UpdateUser(updateAccountData))
                 .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.USER_IS_ACTUAL, StatusCode = System.Net.HttpStatusCode.OK });
 
             var updateResult = await _authService.UpdateAccount(updateAccountData);
@@ -1008,7 +1008,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         {
             var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture();
 
-            _authRepositoryMock.Setup(pr => pr.UpdateUser(updateAccountData))
+            _authRepositoryMock.Setup(ar => ar.UpdateUser(updateAccountData))
                 .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.USER_UPDATED, StatusCode = System.Net.HttpStatusCode.OK });
 
             var updateResult = await _authService.UpdateAccount(updateAccountData);
@@ -1023,7 +1023,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         {
             var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture();
 
-            _authRepositoryMock.Setup(pr => pr.UpdateUser(updateAccountData))
+            _authRepositoryMock.Setup(ar => ar.UpdateUser(updateAccountData))
                 .ReturnsAsync(new UpdateResult { Message = Core.ErrorStrings.USER_UPDATED, StatusCode = System.Net.HttpStatusCode.OK });
 
             var updateResult = await _authService.UpdateAccount(updateAccountData);
@@ -1032,8 +1032,6 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             updateResult.Message.Should().Be(Core.ErrorStrings.USER_UPDATED);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
         }
-
-        //TODO: DeleteAccount tests
 
         [TestMethod]
         public async Task DeleteAccount_DeleteAccountDataIsNull_ShouldThrowArgumentNullException()
@@ -1120,7 +1118,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             AuthUser userToDelete = null;
-            _authRepositoryMock.Setup(pr => pr.GetUser(deleteAccountData.Id))
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _authService.DeleteAccount(deleteAccountData);
@@ -1138,7 +1136,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             AuthUser userToDelete = null;
-            _authRepositoryMock.Setup(pr => pr.GetUser(deleteAccountData.Id))
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _authService.DeleteAccount(deleteAccountData);
@@ -1158,7 +1156,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: deleteAccountData.PasswordHash);
-            _authRepositoryMock.Setup(pr => pr.GetUser(deleteAccountData.Id))
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _authService.DeleteAccount(deleteAccountData);
@@ -1176,7 +1174,7 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: deleteAccountData.PasswordHash);
-            _authRepositoryMock.Setup(pr => pr.GetUser(deleteAccountData.Id))
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _authService.DeleteAccount(deleteAccountData);
@@ -1187,46 +1185,390 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
             _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
             _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
         }
-        /*
-        DeleteAccount_LoginMismatch_ShouldReturnDeleteResult_LOGIN_MISMATCH_403_FluentAssertion()
-            if (!string.Equals(user.Login, deleteAccountData.Login))
-                return new DeleteResult(message: Core.ErrorStrings.LOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
 
-        DeleteAccount_GranterIdWithoutGranterLogin_ShouldReturnDeleteResult_GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE_400_FluentAssertion()
-            if (deleteAccountData.GranterId != null)
-            {
-                if (string.IsNullOrWhiteSpace(deleteAccountData.GranterLogin))
-                    return new DeleteResult(ErrorStrings.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE, System.Net.HttpStatusCode.BadRequest);
+        [TestMethod]
+        public async Task DeleteAccount_GranterIdWithoutGranterLogin_ShouldReturnDeleteResult_GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE_400()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true);
 
-                AuthUser granter = await _authRepository.GetUser(deleteAccountData.GranterId.Value);
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            Assert.IsNotNull(deleteResult);
+            Assert.AreEqual(ErrorStrings.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE, deleteResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, deleteResult.StatusCode);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Never);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task DeleteAccount_GranterIdWithoutGranterLogin_ShouldReturnDeleteResult_GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE_400_FluentAssertion()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true);
+
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(ErrorStrings.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Never);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
 
 
-        DeleteAccount_GranterNotFound_ShouldReturnDeleteResult_GRANTER_ID_NOT_FOUND_404_FluentAssertion()
-                if (granter is null)
-                    return new DeleteResult(message: Core.ErrorStrings.GRANTER_ID_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
+        [TestMethod]
+        public async Task DeleteAccount_GranterNotFound_ShouldReturnDeleteResult_GRANTER_NOT_FOUND_404()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
+
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                login: deleteAccountData.Login,
+                passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+            AuthUser granter = null;
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
+                .ReturnsAsync(granter);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            Assert.IsNotNull(deleteResult);
+            Assert.AreEqual(Core.ErrorStrings.GRANTER_NOT_FOUND, deleteResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.NotFound, deleteResult.StatusCode);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.GranterId.Value), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task DeleteAccount_GranterNotFound_ShouldReturnDeleteResult_GRANTER_NOT_FOUND_404_FluentAssertion()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
+
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                login: deleteAccountData.Login,
+                passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+            AuthUser granter = null;
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
+                .ReturnsAsync(granter);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(Core.ErrorStrings.GRANTER_NOT_FOUND);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.GranterId.Value), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
 
 
-        DeleteAccount_GranterLoginMismatch_ShouldReturnDeleteResult_GRANTERLOGIN_MISMATCH_403_FluentAssertion()
-                if (!string.Equals(granter.Login, deleteAccountData.GranterLogin))
-                    return new DeleteResult(message: Core.ErrorStrings.GRANTERLOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
+        [TestMethod]
+        public async Task DeleteAccount_GranterLoginMismatch_ShouldReturnDeleteResult_GRANTERLOGIN_MISMATCH_403()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
 
-         DeleteAccount_GranterPasswordHashMismatch_ShouldReturnDeleteResult_PASSWORD_HASH_MISMATCH_403_FluentAssertion()
-                if (!string.Equals(granter.PasswordHash, deleteAccountData.PasswordHash))
-                    return new DeleteResult(message: Core.ErrorStrings.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
-            }
-            else
-            {
-        DeleteAccount_GranterLoginWithoutGranterId_ShouldReturnDeleteResult_GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE_400_FluentAssertion()        
-        if (!string.IsNullOrWhiteSpace(deleteAccountData.GranterLogin))
-                    return new DeleteResult(ErrorStrings.GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE, System.Net.HttpStatusCode.BadRequest);
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                generateId: true,
+                login: deleteAccountData.Login,
+                passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                generateId: true, passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
+                .ReturnsAsync(granter);
 
-        DeleteAccount_UserPasswordHashMismatch_ShouldReturnDeleteResult_PASSWORD_HASH_MISMATCH_403_FluentAssertion()
-                if (!string.Equals(user.PasswordHash, deleteAccountData.PasswordHash))
-                    return new DeleteResult(message: Core.ErrorStrings.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
-            }
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
 
-        DeleteAccount_ShouldReturnDeleteResult_OK_FluentAssertion()
-        ok
-         */
+            Assert.IsNotNull(deleteResult);
+            Assert.AreEqual(Core.ErrorStrings.GRANTERLOGIN_MISMATCH, deleteResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, deleteResult.StatusCode);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.GranterId.Value), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task DeleteAccount_GranterLoginMismatch_ShouldReturnDeleteResult_GRANTERLOGIN_MISMATCH_403_FluentAssertion()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
+
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                generateId: true,
+                login: deleteAccountData.Login,
+                passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                generateId: true, passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
+                .ReturnsAsync(granter);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(Core.ErrorStrings.GRANTERLOGIN_MISMATCH);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.GranterId.Value), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
+
+
+        [TestMethod]
+        public async Task DeleteAccount_GranterPasswordHashMismatch_ShouldReturnDeleteResult_PASSWORD_HASH_MISMATCH_403()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
+
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                generateId: true,
+                login: deleteAccountData.Login,
+                passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                generateId: true, login: deleteAccountData.GranterLogin);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
+                .ReturnsAsync(granter);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            Assert.IsNotNull(deleteResult);
+            Assert.AreEqual(Core.ErrorStrings.PASSWORD_HASH_MISMATCH, deleteResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, deleteResult.StatusCode);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.GranterId.Value), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task DeleteAccount_GranterPasswordHashMismatch_ShouldReturnDeleteResult_PASSWORD_HASH_MISMATCH_403_FluentAssertion()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
+
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                generateId: true,
+                login: deleteAccountData.Login,
+                passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                generateId: true, login: deleteAccountData.GranterLogin);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
+                .ReturnsAsync(granter);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(Core.ErrorStrings.PASSWORD_HASH_MISMATCH);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.GranterId.Value), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
+
+
+        [TestMethod]
+        public async Task DeleteAccount_GranterLoginWithoutGranterId_ShouldReturnDeleteResult_GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE_400()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterLogin: true);
+
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                generateId: true,
+                login: deleteAccountData.Login,
+                passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
+            int ZERO_GRANTER_ID = 0;
+            _authRepositoryMock.Setup(ar => ar.GetUser(ZERO_GRANTER_ID))
+                .ReturnsAsync(granter);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            Assert.IsNotNull(deleteResult);
+            Assert.AreEqual(ErrorStrings.GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE, deleteResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, deleteResult.StatusCode);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Never);
+            _authRepositoryMock.Verify(ar => ar.GetUser(ZERO_GRANTER_ID), Times.Never);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task DeleteAccount_GranterLoginWithoutGranterId_ShouldReturnDeleteResult_GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE_400_FluentAssertion()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterLogin: true);
+
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                generateId: true,
+                login: deleteAccountData.Login,
+                passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
+            int ZERO_GRANTER_ID = 0;
+            _authRepositoryMock.Setup(ar => ar.GetUser(ZERO_GRANTER_ID))
+                .ReturnsAsync(granter);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(ErrorStrings.GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Never);
+            _authRepositoryMock.Verify(ar => ar.GetUser(ZERO_GRANTER_ID), Times.Never);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
+
+
+        [TestMethod]
+        public async Task DeleteAccount_UserPasswordHashMismatch_ShouldReturnDeleteResult_PASSWORD_HASH_MISMATCH_403()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
+
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: deleteAccountData.Login);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            Assert.IsNotNull(deleteResult);
+            Assert.AreEqual(Core.ErrorStrings.PASSWORD_HASH_MISMATCH, deleteResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, deleteResult.StatusCode);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task DeleteAccount_UserPasswordHashMismatch_ShouldReturnDeleteResult_PASSWORD_HASH_MISMATCH_403_FluentAssertion()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
+
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: deleteAccountData.Login);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(Core.ErrorStrings.PASSWORD_HASH_MISMATCH);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task DeleteAccount_SuccessDeleteByUser_ShouldReturnDeleteResult_OK()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
+
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+
+            _authRepositoryMock.Setup(ar => ar.DeleteUser(deleteAccountData.Id))
+                .ReturnsAsync(new DeleteResult { Message = Core.ErrorStrings.OK, StatusCode = System.Net.HttpStatusCode.OK });
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            Assert.IsNotNull(deleteResult);
+            Assert.AreEqual(Core.ErrorStrings.OK, deleteResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, deleteResult.StatusCode);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task DeleteAccount_SuccessDeleteByUser_ShouldReturnDeleteResult_OK_FluentAssertion()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
+
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+
+            _authRepositoryMock.Setup(ar => ar.DeleteUser(deleteAccountData.Id))
+                .ReturnsAsync(new DeleteResult { Message = Core.ErrorStrings.OK, StatusCode = System.Net.HttpStatusCode.OK });
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(Core.ErrorStrings.OK);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Once);
+        }
+
+
+        [TestMethod]
+        public async Task DeleteAccount_SuccessDeleteByGranter_ShouldReturnDeleteResult_OK()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
+
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                generateId: true,
+                login: deleteAccountData.Login,
+                passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+
+            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
+                .ReturnsAsync(granter);
+
+            _authRepositoryMock.Setup(ar => ar.DeleteUser(deleteAccountData.Id))
+                .ReturnsAsync(new DeleteResult { Message = Core.ErrorStrings.OK, StatusCode = System.Net.HttpStatusCode.OK });
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            Assert.IsNotNull(deleteResult);
+            Assert.AreEqual(Core.ErrorStrings.OK, deleteResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, deleteResult.StatusCode);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.GranterId.Value), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task DeleteAccount_SuccessDeleteByGranter_ShouldReturnDeleteResult_OK_FluentAssertion()
+        {
+            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
+
+            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                generateId: true,
+                login: deleteAccountData.Login);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+                .ReturnsAsync(userToDelete);
+            
+            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+                generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
+            _authRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
+                .ReturnsAsync(granter);
+
+            _authRepositoryMock.Setup(ar => ar.DeleteUser(deleteAccountData.Id))
+                .ReturnsAsync(new DeleteResult { Message = Core.ErrorStrings.OK, StatusCode = System.Net.HttpStatusCode.OK });
+
+            var deleteResult = await _authService.DeleteAccount(deleteAccountData);
+
+            deleteResult.Should().NotBeNull();
+            deleteResult.Message.Should().Be(Core.ErrorStrings.OK);
+            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.GranterId.Value), Times.Once);
+            _authRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Once);
+        }
     }
 }

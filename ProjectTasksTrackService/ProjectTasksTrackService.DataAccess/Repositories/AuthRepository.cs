@@ -85,7 +85,7 @@ namespace ProjectTasksTrackService.DataAccess.Repositories
         {
             var granterUserEntity = await GetAuthUserEntity(granterId);
             if (granterUserEntity is null)
-                return new UpdateResult(ErrorStrings.GRANTER_ID_NOT_FOUND, HttpStatusCode.Unauthorized);
+                return new UpdateResult(ErrorStrings.GRANTER_NOT_FOUND, HttpStatusCode.Unauthorized);
 
             var query = _dbContext.AuthUsers.Where(u => u.Id == id);
             var authUserEntity = await query.SingleOrDefaultAsync();

@@ -197,7 +197,7 @@ namespace TestFixtures
         {
             var fixture = new Fixture();
             var id = generateId ? fixture.Create<int>() : setId;
-            var granterId = generateGranterId == true ? fixture.Create<int>() : 0;
+            var granterId = generateGranterId == true ? fixture.Create<int?>() : null;
             if (generateId)
             {
                 if (excludeIds != null && excludeIds.Any() && setId == 0)
