@@ -1,0 +1,6 @@
+@LiteAuthService_HostAddress = http://localhost:5065
+
+GET {{LiteAuthService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
