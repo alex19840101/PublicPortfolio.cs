@@ -366,10 +366,12 @@
             "nullable": true
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -400,10 +402,12 @@
             "format": "int32"
           },
           "code": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "secretString": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -415,13 +419,16 @@
             "format": "int32"
           },
           "login": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "repeatPassword": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "granterId": {
             "type": "integer",
@@ -429,7 +436,8 @@
             "nullable": true
           },
           "granterLogin": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -452,20 +460,24 @@
             "format": "int32"
           },
           "login": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "newRole": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "granterId": {
             "type": "integer",
             "format": "int32"
           },
           "granterLogin": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -476,10 +488,12 @@
         "type": "object",
         "properties": {
           "login": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "timeoutMinutes": {
             "type": "integer",
@@ -492,7 +506,8 @@
         "type": "object",
         "properties": {
           "message": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -526,28 +541,36 @@
         "type": "object",
         "properties": {
           "login": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "userName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "repeatPassword": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "nick": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "phone": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "requestedRole": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -559,31 +582,40 @@
             "format": "int32"
           },
           "login": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "userName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "existingPassword": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "newPassword": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "repeatNewPassword": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "nick": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "phone": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "requestedRole": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       }
