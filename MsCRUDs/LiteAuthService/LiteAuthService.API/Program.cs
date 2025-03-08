@@ -6,7 +6,6 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -91,17 +90,13 @@ try
         //настройки подключения к БД
     }
 
-    builder.Services.AddDefaultIdentity<IdentityUser>(
-        options => options.SignIn.RequireConfirmedAccount = true)
-        .AddRoles<IdentityRole>();
-
     #region -------------------------------Swagger-------------------------------
     const string URL = "https://github.com/alex19840101/PublicPortfolio.cs/compare/MsCRUDs";
     builder.Services.AddSwaggerGen(c => // Register the Swagger generator, defining 1 or more Swagger documents
     {
         c.SwaggerDoc("v1", new OpenApiInfo
         {
-            Version = "v2",
+            Version = "v1",
             Title = SERVICE_NAME,
             Description = $"{SERVICE_NAME} Web API v1",
             TermsOfService = new Uri(URL),
@@ -142,7 +137,7 @@ try
         app.UseSwagger();
         app.UseSwaggerUI(options =>
         {
-            options.SwaggerEndpoint("../swagger/v2/swagger.json", $"{SERVICE_NAME} API v1");
+            options.SwaggerEndpoint("../swagger/v1/swagger.json", $"{SERVICE_NAME} API v1");
         });
     }
     else
