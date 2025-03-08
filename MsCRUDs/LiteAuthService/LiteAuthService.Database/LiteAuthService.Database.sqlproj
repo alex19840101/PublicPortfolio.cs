@@ -60,5 +60,6 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="AuthUsers.sql" />
+    <Build Include="AuthUsers.CreateDB.sql" />
   </ItemGroup>
 </Project>
