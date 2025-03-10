@@ -11,6 +11,7 @@
 		<OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
 		<OpenApiDocumentsDirectory>$(MSBuildProjectDirectory)</OpenApiDocumentsDirectory>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<UserSecretsId>875ef138-b4d1-46dc-a6dc-7c962a50d846</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
