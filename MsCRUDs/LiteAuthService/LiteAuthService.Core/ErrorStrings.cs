@@ -24,7 +24,7 @@
         public const string GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE = "GranterLogin should be empty when GranterId is null";
         public const string UPDATEACCOUNTDATA_PARAM_NAME = "updateAccountData";
         public const string DELETEACCOUNTDATA_PARAM_NAME = "deleteAccountData";
-
+        public const string AFFECTED_DELETED_ROWS_COUNT_SHOULD_BE_ONE = "Affected(deleted) rows count should be equal 1.Affected:";
         public const string OK = "OK";
     }
 }

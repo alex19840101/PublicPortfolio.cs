@@ -66,19 +66,35 @@ namespace LiteAuthService.DataAccess
             };
         }
 
-        public Task<DeleteResult> DeleteUser(int id)
+        public async Task<DeleteResult> DeleteUser(int id)
         {
-            throw new NotImplementedException();
+            var sql = @"DELETE FROM AuthUsers WHERE Id = @id";
+            var dp = new DynamicParameters(new { id });
+            var affectedRowsCount = await _dapperSqlExecutor.ExecuteAsync(sql, dp);
+            if (affectedRowsCount != 1)
+                throw new InvalidOperationException($"{Core.ErrorStrings.AFFECTED_DELETED_ROWS_COUNT_SHOULD_BE_ONE}{affectedRowsCount}");
+
+            return new DeleteResult(Core.ErrorStrings.OK, HttpStatusCode.OK);
         }
 
-        public Task<AuthUser> GetUser(int id)
+        public async Task<AuthUser> GetUser(int id)
         {
-            throw new NotImplementedException();
+            var sql = @"SELECT u.* FROM AuthUsers u WHERE u.Id = @id";
+            var dp = new DynamicParameters(new { id });
+
+            var authUser = (await _dapperSqlExecutor.QueryAsync<AuthUser>(sql, dp)).SingleOrDefault();
+            
+            return authUser;
         }
 
-        public Task<AuthUser> GetUser(string login)
+        public async Task<AuthUser> GetUser(string login)
         {
-            throw new NotImplementedException();
+            var sql = @"SELECT u.* FROM AuthUsers u WHERE u.Login = @login";
+            var dp = new DynamicParameters(new { login });
+
+            var authUser = (await _dapperSqlExecutor.QueryAsync<AuthUser>(sql, dp)).SingleOrDefault();
+
+            return authUser;
         }
 
         public Task<UpdateResult> GrantRole(int id, string role, int granterId)

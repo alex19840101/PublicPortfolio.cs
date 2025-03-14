@@ -29,7 +29,7 @@ public class AuthController : ControllerBase, IAuthAPI
     }
 
     /// <summary> Регистрация пользователя </summary>
-    [HttpPost("api/v2/Auth/Register")]
+    [HttpPost("api/v1/Auth/Register")]
     [ProducesResponseType(typeof(CreateResponseDto), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.Conflict)]
@@ -52,7 +52,7 @@ public class AuthController : ControllerBase, IAuthAPI
     }
 
     /// <summary> Вход пользователя в систему </summary>
-    [HttpPost("api/v2/Auth/Login")]
+    [HttpPost("api/v1/Auth/Login")]
     [ProducesResponseType(typeof(AuthResponseDto), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.Unauthorized)]
@@ -82,7 +82,7 @@ public class AuthController : ControllerBase, IAuthAPI
     #region Выход пользователя из системы
     /*
     /// <summary> Выход пользователя из системы </summary>
-    [HttpPost("api/v2/Auth/Logout")]
+    [HttpPost("api/v1/Auth/Logout")]
     [ProducesResponseType(typeof(AuthResponseDto), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.Unauthorized)]
@@ -109,7 +109,7 @@ public class AuthController : ControllerBase, IAuthAPI
     /// <summary>
     /// Предоставление (установка/сброс) роли аккаунту
     /// </summary>
-    [HttpPost("api/v2/Auth/GrantRole")]
+    [HttpPost("api/v1/Auth/GrantRole")]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.NotFound)]
@@ -132,7 +132,7 @@ public class AuthController : ControllerBase, IAuthAPI
     /// <summary>
     /// Обновление аккаунта
     /// </summary>
-    [HttpPost("api/v2/Auth/UpdateAccount")]
+    [HttpPost("api/v1/Auth/UpdateAccount")]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Unauthorized)]
@@ -155,7 +155,7 @@ public class AuthController : ControllerBase, IAuthAPI
     }
 
     /// <summary> Удаление аккаунта пользователя им самим или администратором </summary>
-    [HttpDelete("api/v2/Auth/DeleteAccount")]
+    [HttpDelete("api/v1/Auth/DeleteAccount")]
     [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Unauthorized)]
