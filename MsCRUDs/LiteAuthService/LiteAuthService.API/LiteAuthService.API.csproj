@@ -30,7 +30,9 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\LiteAuthService.API.Contracts\LiteAuthService.API.Contracts.csproj" />
+	  <ProjectReference Include="..\LiteAuthService.BusinessLogic\LiteAuthService.BusinessLogic.csproj" />
 	  <ProjectReference Include="..\LiteAuthService.Core\LiteAuthService.Core.csproj" />
+	  <ProjectReference Include="..\LiteAuthService.DataAccess\LiteAuthService.DataAccess.csproj" />
 	</ItemGroup>
 
 </Project>

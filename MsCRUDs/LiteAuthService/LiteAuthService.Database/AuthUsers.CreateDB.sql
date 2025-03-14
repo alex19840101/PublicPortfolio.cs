@@ -1,1 +1,1 @@
-﻿CREATE DATABASE AuthUsers
+﻿-- CREATE DATABASE AuthUsers

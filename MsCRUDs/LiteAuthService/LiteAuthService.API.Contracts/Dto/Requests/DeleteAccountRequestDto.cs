@@ -1,4 +1,4 @@
-﻿namespace LiteAuthService.API.Contracts.Dto.Requests.Auth
+﻿namespace LiteAuthService.API.Contracts.Dto.Requests
 {
     /// <summary>
     /// Запрос на удаление аккаунта

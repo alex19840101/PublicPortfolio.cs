@@ -62,4 +62,7 @@
     <Build Include="AuthUsers.sql" />
     <Build Include="AuthUsers.CreateDB.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="LiteAuthService.Database.refactorlog" />
+  </ItemGroup>
 </Project>

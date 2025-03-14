@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using LiteAuthService.API.Contracts.Dto.Requests.Auth;
+using LiteAuthService.API.Contracts.Dto.Requests;
 
 namespace LiteAuthService.API.Contracts.Interfaces
 {

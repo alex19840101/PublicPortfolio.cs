@@ -3,6 +3,12 @@ using System.IO;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using LiteAuthService.BusinessLogic;
+using LiteAuthService.Core.Repositories;
+using LiteAuthService.Core.Services;
+using LiteAuthService.DataAccess;
+using LiteAuthService.DataAccess.Implementation;
+using LiteAuthService.DataAccess.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -18,6 +24,7 @@ using Serilog.Templates;
 using Serilog.Templates.Themes;
 
 const string SERVICE_NAME = $"MsCRUDs.LiteAuthService";
+const string DEVELOPER = "Shapovalov Alexey";
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -33,7 +40,7 @@ try
     builder.Configuration
         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
         .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
-    string dataBaseConnectionStr = builder.Configuration.GetConnectionString(SERVICE_NAME);
+    string dataBaseConnectionStr = builder.Configuration.GetConnectionString("localdb");
 
     // Add services to the container.
     builder.Services.AddSerilog((services, loggerConfiguration) => loggerConfiguration
@@ -46,37 +53,45 @@ try
 
     builder.Services.AddControllers();
 
-    builder.Services.AddAuthorization(options =>
-    {
-        options.AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy =>
+    builder.Services.AddAuthorizationBuilder()
+        .AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy =>
         {
             policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
             policy.RequireClaim(ClaimTypes.Role);
         });
-    });
 
     builder.Services.AddHttpContextAccessor();
 
     //builder.Services.AddScoped<IAuthorizationHandler, RoleAuthorizationHandler>();
+    var tokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["JWT:Issuer"],
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["JWT:Audience"],
+        ValidateLifetime = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(builder.Configuration["JWT:KEY"])),
+        ValidateIssuerSigningKey = true
+    };
+
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
-            options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidIssuer = builder.Configuration["JWT:Issuer"],
-                ValidateAudience = true,
-                ValidAudience = builder.Configuration["JWT:Audience"],
-                ValidateLifetime = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(builder.Configuration["JWT:KEY"])),
-                ValidateIssuerSigningKey = true
-            };
+            options.TokenValidationParameters = tokenValidationParameters;
             options.IncludeErrorDetails = true;
             options.SaveToken = true;
         });
 
     // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
     builder.Services.AddOpenApi();
+
+    builder.Services.AddScoped<IDapperAsyncExecutor>(src => new DapperSqlExecutor(dataBaseConnectionStr));
+
+    builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
+    builder.Services.AddScoped<IAuthService>(src => new AuthService(
+        src.GetRequiredService<IAuthRepository>(),
+                    tokenValidationParameters));
 
     var isDevelopment = env.IsDevelopment();
 
@@ -101,13 +116,13 @@ try
             TermsOfService = new Uri(URL),
             Contact = new OpenApiContact
             {
-                Name = "Shapovalov Alexey",
+                Name = DEVELOPER,
                 Email = string.Empty,
                 Url = new Uri(URL),
             },
             License = new OpenApiLicense
             {
-                Name = "Shapovalov Alexey",
+                Name = DEVELOPER,
                 Url = new Uri(URL),
             }
         });

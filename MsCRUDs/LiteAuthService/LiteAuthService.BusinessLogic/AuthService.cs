@@ -13,18 +13,20 @@ using LiteAuthService.Core.Services;
 
 namespace LiteAuthService.BusinessLogic
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
         private readonly IAuthRepository _authRepository;
+        private readonly TokenValidationParameters _tokenValidationParameters;
 
-        private readonly string _jwtIssuer = "MyAuthServer";
-        private readonly string _jwtAudience = "MyAuthClient";
-        private readonly string _jwtKey = "ProjectTasksTrackService:Auth/Key{)(ws;lkfj43";
+        //private readonly string _jwtIssuer = "MyAuthServer";
+        //private readonly string _jwtAudience = "MyAuthClient";
+        //private readonly string _jwtKey = "ProjectTasksTrackService:Auth/Key{)(ws;lkfj43";
         private const int LOGIN_DEFAULT_TIMEOUT = 60;
 
-        public AuthService(IAuthRepository authRepository)
+        public AuthService(IAuthRepository authRepository, TokenValidationParameters tokenValidationParameters)
         {
             _authRepository = authRepository;
+            _tokenValidationParameters = tokenValidationParameters;
         }
 
         public async Task<AuthResult> Register(AuthUser authUser)
@@ -80,8 +82,8 @@ namespace LiteAuthService.BusinessLogic
             };
 
             var jwt = new JwtSecurityToken(
-                issuer: _jwtIssuer,
-                audience: _jwtAudience,
+                issuer: _tokenValidationParameters.ValidIssuer,
+                audience: _tokenValidationParameters.ValidAudience,
                 claims: claims,
                 expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(loginData.TimeoutMinutes ?? LOGIN_DEFAULT_TIMEOUT)),
                 signingCredentials: new SigningCredentials(key: GetSymmetricSecurityKey(), algorithm: SecurityAlgorithms.HmacSha256));
@@ -222,6 +224,6 @@ namespace LiteAuthService.BusinessLogic
         }
 
         private SymmetricSecurityKey GetSymmetricSecurityKey() =>
-            new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(_jwtKey));
+            new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(_tokenValidationParameters.IssuerSigningKey.ToString()));
     }
 }

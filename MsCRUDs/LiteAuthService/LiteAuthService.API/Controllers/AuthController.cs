@@ -1,7 +1,7 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using LiteAuthService.API.Contracts.Dto.Requests.Auth;
+using LiteAuthService.API.Contracts.Dto.Requests;
 using LiteAuthService.API.Contracts.Dto.Responses;
 using LiteAuthService.API.Contracts.Interfaces;
 using LiteAuthService.Core.Auth;

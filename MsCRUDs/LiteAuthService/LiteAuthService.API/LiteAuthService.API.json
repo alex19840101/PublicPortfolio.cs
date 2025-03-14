@@ -384,13 +384,15 @@
             "nullable": true
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "statusCode": {
             "$ref": "#/components/schemas/HttpStatusCode"
           },
           "token": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -445,7 +447,8 @@
         "type": "object",
         "properties": {
           "message": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "statusCode": {
             "$ref": "#/components/schemas/HttpStatusCode"
