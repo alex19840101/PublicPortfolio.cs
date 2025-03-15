@@ -19,6 +19,7 @@ namespace LiteAuthService.BusinessLogic.MsTests
         public AuthServiceTests()
         {
             _authRepositoryMock = new Mock<IAuthRepository>();
+            string key = "JWT:KEY";
             _authService = new AuthService(_authRepositoryMock.Object, new Microsoft.IdentityModel.Tokens.TokenValidationParameters
             {
                 ValidateIssuer = true,
@@ -26,9 +27,9 @@ namespace LiteAuthService.BusinessLogic.MsTests
                 ValidateAudience = true,
                 ValidAudience = "JWT:Audience",
                 ValidateLifetime = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes("JWT:KEY")),
+                IssuerSigningKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(key)),
                 ValidateIssuerSigningKey = true
-            });
+            }, key);
         }
 
         [TestMethod]

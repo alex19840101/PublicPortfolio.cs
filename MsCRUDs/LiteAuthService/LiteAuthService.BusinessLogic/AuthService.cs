@@ -17,16 +17,14 @@ namespace LiteAuthService.BusinessLogic
     {
         private readonly IAuthRepository _authRepository;
         private readonly TokenValidationParameters _tokenValidationParameters;
-
-        //private readonly string _jwtIssuer = "MyAuthServer";
-        //private readonly string _jwtAudience = "MyAuthClient";
-        //private readonly string _jwtKey = "ProjectTasksTrackService:Auth/Key{)(ws;lkfj43";
+        private readonly string _key;
         private const int LOGIN_DEFAULT_TIMEOUT = 60;
 
-        public AuthService(IAuthRepository authRepository, TokenValidationParameters tokenValidationParameters)
+        public AuthService(IAuthRepository authRepository, TokenValidationParameters tokenValidationParameters, string key)
         {
             _authRepository = authRepository;
             _tokenValidationParameters = tokenValidationParameters;
+            _key = key;
         }
 
         public async Task<AuthResult> Register(AuthUser authUser)
@@ -239,6 +237,6 @@ namespace LiteAuthService.BusinessLogic
         }
 
         private SymmetricSecurityKey GetSymmetricSecurityKey() =>
-            new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(_tokenValidationParameters.IssuerSigningKey.ToString()));
+            new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(_key));
     }
 }

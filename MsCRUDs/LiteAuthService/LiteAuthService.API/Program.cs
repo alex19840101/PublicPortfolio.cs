@@ -92,7 +92,8 @@ try
 
     builder.Services.AddScoped<IAuthService>(src => new AuthService(
         src.GetRequiredService<IAuthRepository>(),
-                    tokenValidationParameters));
+                    tokenValidationParameters,
+                    key: builder.Configuration["JWT:KEY"]));
 
     var isDevelopment = env.IsDevelopment();
 
