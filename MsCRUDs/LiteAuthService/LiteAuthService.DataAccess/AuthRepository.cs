@@ -129,34 +129,31 @@ namespace LiteAuthService.DataAccess
             if (!string.Equals(upd.Phone, authUser.Phone))          { authUser.UpdatePhone(upd.Phone); update = true; }
             if (!string.Equals(upd.RequestedRole, authUser.Role))   { authUser.UpdateRole(newRole: $"?{upd.RequestedRole}"); update = true; } //? - запрошенная пользователем роль утверждается администратором
 
-            if (update)
+            if (!update)
+                return new UpdateResult(Core.ErrorStrings.USER_IS_ACTUAL, HttpStatusCode.OK);
+            
+            authUser.UpdateLastUpdateDt(DateTime.Now.ToUniversalTime());
+
+            var sql = @"UPDATE AuthUsers SET Login = @login, UserName = @userName, Email = @email, PasswordHash = @passwordHash, Role = @role,
+                Nick = @nick,
+                Phone = @phone,
+                LastUpdateDt = GETDATE()";
+            var dp = new DynamicParameters(new
             {
-                authUser.UpdateLastUpdateDt(DateTime.Now.ToUniversalTime());
+                @login = authUser.Login,
+                @userName = authUser.UserName,
+                @email = authUser.Email,
+                @passwordHash = authUser.PasswordHash,
+                @nick = authUser.Nick,
+                @phone = authUser.Phone,
+                @role = authUser.Role,
+                @lastUpdateDt = DateTime.Now
+            });
+            var affectedRowsCount = await _dapperSqlExecutor.ExecuteAsync(sql, dp);
+            if (affectedRowsCount != 1)
+                throw new InvalidOperationException($"{Core.ErrorStrings.AFFECTED_UPDATED_ROWS_COUNT_SHOULD_BE_ONE}{affectedRowsCount}");
 
-                var sql = @"UPDATE AuthUsers SET Login = @login, UserName = @userName, Email = @email, PasswordHash = @passwordHash, Role = @role,
-                    Nick = @nick,
-                    Phone = @phone,
-                    LastUpdateDt = GETDATE()";
-                var dp = new DynamicParameters(new
-                {
-                    @login = authUser.Login,
-                    @userName = authUser.UserName,
-                    @email = authUser.Email,
-                    @passwordHash = authUser.PasswordHash,
-                    @nick = authUser.Nick,
-                    @phone = authUser.Phone,
-                    @role = authUser.Role,
-                    @lastUpdateDt = DateTime.Now
-                });
-                var affectedRowsCount = await _dapperSqlExecutor.ExecuteAsync(sql, dp);
-                if (affectedRowsCount != 1)
-                    throw new InvalidOperationException($"{Core.ErrorStrings.AFFECTED_UPDATED_ROWS_COUNT_SHOULD_BE_ONE}{affectedRowsCount}");
-
-
-                return new UpdateResult(Core.ErrorStrings.USER_UPDATED, HttpStatusCode.OK);
-            }
-
-            return new UpdateResult(Core.ErrorStrings.USER_IS_ACTUAL, HttpStatusCode.OK);
+            return new UpdateResult(Core.ErrorStrings.USER_UPDATED, HttpStatusCode.OK);
         }
     }
 }
