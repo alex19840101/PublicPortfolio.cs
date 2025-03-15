@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using LiteAuthService.API;
 using LiteAuthService.BusinessLogic;
 using LiteAuthService.Core.Repositories;
 using LiteAuthService.Core.Services;
@@ -62,7 +63,7 @@ try
 
     builder.Services.AddHttpContextAccessor();
 
-    //builder.Services.AddScoped<IAuthorizationHandler, RoleAuthorizationHandler>();
+    builder.Services.AddScoped<IAuthorizationHandler, RoleAuthorizationHandler>();
     var tokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
     {
         ValidateIssuer = true,

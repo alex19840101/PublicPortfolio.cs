@@ -97,9 +97,15 @@ namespace LiteAuthService.DataAccess
             return authUser;
         }
 
-        public Task<UpdateResult> GrantRole(int id, string role, int granterId)
+        public async Task<UpdateResult> GrantRole(int id, string role, int granterId)
         {
-            throw new NotImplementedException();
+            var sql = @"UPDATE AuthUsers SET Role = @role, GranterId = @granterId, LastUpdateDt = ";
+            var dp = new DynamicParameters(new { role, granterId });
+            var affectedRowsCount = await _dapperSqlExecutor.ExecuteAsync(sql, dp);
+            if (affectedRowsCount != 1)
+                throw new InvalidOperationException($"{Core.ErrorStrings.AFFECTED_UPDATED_ROWS_COUNT_SHOULD_BE_ONE}{affectedRowsCount}");
+            
+            return new UpdateResult(Core.ErrorStrings.USER_UPDATED, HttpStatusCode.OK);
         }
 
         public Task<UpdateResult> UpdateUser(UpdateAccountData authUser)
