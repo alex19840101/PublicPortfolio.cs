@@ -114,7 +114,7 @@ public class AuthController : ControllerBase, IAuthAPI
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Unauthorized)]
-    [Authorize(Roles = "admin, PM")]
+    [Authorize(Roles = "admin")]
     [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<IActionResult> GrantRole(GrantRoleRequestDto request)
     {
