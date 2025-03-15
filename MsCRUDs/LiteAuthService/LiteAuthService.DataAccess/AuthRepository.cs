@@ -99,7 +99,7 @@ namespace LiteAuthService.DataAccess
 
         public async Task<UpdateResult> GrantRole(int id, string role, int granterId)
         {
-            var sql = @"UPDATE AuthUsers SET Role = @role, GranterId = @granterId, LastUpdateDt = ";
+            var sql = @"UPDATE AuthUsers SET Role = @role, GranterId = @granterId, LastUpdateDt = GETDATE()";
             var dp = new DynamicParameters(new { role, granterId });
             var affectedRowsCount = await _dapperSqlExecutor.ExecuteAsync(sql, dp);
             if (affectedRowsCount != 1)
@@ -108,9 +108,55 @@ namespace LiteAuthService.DataAccess
             return new UpdateResult(Core.ErrorStrings.USER_UPDATED, HttpStatusCode.OK);
         }
 
-        public Task<UpdateResult> UpdateUser(UpdateAccountData authUser)
+        public async Task<UpdateResult> UpdateUser(UpdateAccountData upd)
         {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(upd);
+
+            var authUser = await GetUser(upd.Id);
+
+            if (authUser is null)
+                return new UpdateResult(Core.ErrorStrings.USER_NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (!string.Equals(upd.PasswordHash, authUser.PasswordHash))
+                return new UpdateResult(Core.ErrorStrings.PASSWORD_HASH_MISMATCH, HttpStatusCode.Forbidden);
+            
+            bool update = false;
+            if (!string.Equals(upd.Login, authUser.Login))          { authUser.UpdateLogin(upd.Login); update = true; }
+            if (!string.Equals(upd.UserName, authUser.UserName))    { authUser.UpdateName(upd.UserName); update = true; }
+            if (!string.Equals(upd.Email, authUser.Email))          { authUser.UpdateEmail(upd.Email); update = true; }
+            if (!string.Equals(upd.NewPasswordHash, authUser.PasswordHash)) { authUser.UpdatePasswordHash(upd.PasswordHash); update = true; }
+            if (!string.Equals(upd.Nick, authUser.Nick))            { authUser.UpdateNick(upd.Nick); update = true; }
+            if (!string.Equals(upd.Phone, authUser.Phone))          { authUser.UpdatePhone(upd.Phone); update = true; }
+            if (!string.Equals(upd.RequestedRole, authUser.Role))   { authUser.UpdateRole(newRole: $"?{upd.RequestedRole}"); update = true; } //? - запрошенная пользователем роль утверждается администратором
+
+            if (update)
+            {
+                authUser.UpdateLastUpdateDt(DateTime.Now.ToUniversalTime());
+
+                var sql = @"UPDATE AuthUsers SET Login = @login, UserName = @userName, Email = @email, PasswordHash = @passwordHash, Role = @role,
+                    Nick = @nick,
+                    Phone = @phone,
+                    LastUpdateDt = GETDATE()";
+                var dp = new DynamicParameters(new
+                {
+                    @login = authUser.Login,
+                    @userName = authUser.UserName,
+                    @email = authUser.Email,
+                    @passwordHash = authUser.PasswordHash,
+                    @nick = authUser.Nick,
+                    @phone = authUser.Phone,
+                    @role = authUser.Role,
+                    @lastUpdateDt = DateTime.Now
+                });
+                var affectedRowsCount = await _dapperSqlExecutor.ExecuteAsync(sql, dp);
+                if (affectedRowsCount != 1)
+                    throw new InvalidOperationException($"{Core.ErrorStrings.AFFECTED_UPDATED_ROWS_COUNT_SHOULD_BE_ONE}{affectedRowsCount}");
+
+
+                return new UpdateResult(Core.ErrorStrings.USER_UPDATED, HttpStatusCode.OK);
+            }
+
+            return new UpdateResult(Core.ErrorStrings.USER_IS_ACTUAL, HttpStatusCode.OK);
         }
     }
 }
