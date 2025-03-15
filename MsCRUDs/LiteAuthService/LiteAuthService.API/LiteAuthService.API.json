@@ -24,7 +24,7 @@
         }
       }
     },
-    "/Auth/api/v2/Auth/Register": {
+    "/Auth/api/v1/Register": {
       "post": {
         "tags": [
           "Auth"
@@ -78,7 +78,7 @@
         }
       }
     },
-    "/Auth/api/v2/Auth/Login": {
+    "/Auth/api/v1/Login": {
       "post": {
         "tags": [
           "Auth"
@@ -142,7 +142,7 @@
         }
       }
     },
-    "/Auth/api/v2/Auth/GrantRole": {
+    "/Auth/api/v1/GrantRole": {
       "post": {
         "tags": [
           "Auth"
@@ -206,7 +206,7 @@
         }
       }
     },
-    "/Auth/api/v2/Auth/UpdateAccount": {
+    "/Auth/api/v1/UpdateAccount": {
       "post": {
         "tags": [
           "Auth"
@@ -280,7 +280,7 @@
         }
       }
     },
-    "/Auth/api/v2/Auth/DeleteAccount": {
+    "/Auth/api/v1/DeleteAccount": {
       "delete": {
         "tags": [
           "Auth"
@@ -347,6 +347,123 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/DeleteResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Auth/api/v1/Admin/GetUserInfoById": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserInfoResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Auth/api/v1/Admin/GetUserInfoByLogin": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "name": "login",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserInfoResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponseDto"
                 }
               }
             }
@@ -617,6 +734,35 @@
             "nullable": true
           },
           "requestedRole": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UserInfoResponseDto": {
+        "type": "object",
+        "properties": {
+          "login": {
+            "type": "string",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "nick": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "role": {
             "type": "string",
             "nullable": true
           }

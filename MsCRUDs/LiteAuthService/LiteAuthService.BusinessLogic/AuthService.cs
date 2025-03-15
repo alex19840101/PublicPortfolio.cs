@@ -222,6 +222,18 @@ namespace LiteAuthService.BusinessLogic
 
             return await _authRepository.DeleteUser(id: deleteAccountData.Id);
         }
+        public async Task<AuthUser> GetUserInfo(int id)
+        {
+            var user = await _authRepository.GetUser(id);
+
+            return user;
+        }
+        public async Task<AuthUser> GetUserInfo(string login)
+        {
+            var user = await _authRepository.GetUser(login);
+
+            return user;
+        }
 
         private SymmetricSecurityKey GetSymmetricSecurityKey() =>
             new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(_tokenValidationParameters.IssuerSigningKey.ToString()));

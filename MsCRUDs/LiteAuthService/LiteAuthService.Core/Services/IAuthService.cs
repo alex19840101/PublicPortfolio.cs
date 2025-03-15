@@ -12,5 +12,7 @@ namespace LiteAuthService.Core.Services
         //Task<AuthResult> Logout(LogoutData logoutData);
         Task<UpdateResult> GrantRole(GrantRoleData grantRoleData);
         Task<UpdateResult> UpdateAccount(UpdateAccountData updateAccountData);
+        Task<AuthUser> GetUserInfo(int id);
+        Task<AuthUser> GetUserInfo(string login);
     }
 }
