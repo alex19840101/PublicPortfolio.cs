@@ -74,6 +74,16 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponseDto"
+                }
+              }
+            }
           }
         }
       }
@@ -520,11 +530,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "code": {
-            "type": "string",
-            "nullable": true
-          },
-          "secretString": {
+          "message": {
             "type": "string",
             "nullable": true
           }
@@ -742,6 +748,10 @@
       "UserInfoResponseDto": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "login": {
             "type": "string",
             "nullable": true

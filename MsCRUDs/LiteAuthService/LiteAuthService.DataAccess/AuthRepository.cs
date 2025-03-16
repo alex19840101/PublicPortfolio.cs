@@ -57,7 +57,7 @@ namespace LiteAuthService.DataAccess
 
             var addedUser = (await _dapperSqlExecutor.QueryAsync<AuthUser>(sql, dp)).SingleOrDefault();
             if (addedUser is null)
-                throw new ArgumentNullException(nameof(addedUser));
+                return new AuthResult($"Error: {addedUser} is null", HttpStatusCode.InternalServerError);
             
             return new AuthResult
             {

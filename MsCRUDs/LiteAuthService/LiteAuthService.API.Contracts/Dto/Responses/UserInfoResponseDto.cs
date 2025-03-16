@@ -12,6 +12,11 @@ namespace LiteAuthService.API.Contracts.Dto.Responses
     public class UserInfoResponseDto
     {
         /// <summary>
+        /// Уникальный id аккаунта*
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Логин (уникальное имя аккаунта)*
         /// </summary>
         public string Login { get; set; }

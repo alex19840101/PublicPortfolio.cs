@@ -9,6 +9,7 @@ using LiteAuthService.Core.Results;
 using LiteAuthService.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LiteAuthService.API.Controllers;
@@ -33,6 +34,7 @@ public class AuthController : ControllerBase, IAuthAPI
     [ProducesResponseType(typeof(CreateResponseDto), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.Conflict)]
+    [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> Register(RegisterRequestDto request)
     {
         var registerResult = await _authService.Register(AuthUser(request));
@@ -43,9 +45,13 @@ public class AuthController : ControllerBase, IAuthAPI
         if (registerResult.StatusCode == HttpStatusCode.Conflict)
             return new ConflictObjectResult(new MessageResponseDto { Message = registerResult.Message });
 
+        if (registerResult.StatusCode != HttpStatusCode.Created)
+            return new ObjectResult(new MessageResponseDto { Message = registerResult.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
+
         var result = new CreateResponseDto
         {
-            Id = registerResult.Id.Value
+            Id = registerResult.Id.Value,
+            Message = registerResult.Message,
         };
         return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
 
@@ -219,7 +225,7 @@ public class AuthController : ControllerBase, IAuthAPI
             id: 0,
             login: request.Login,
             userName: request.UserName,
-            email: request.UserName,
+            email: request.Email,
             passwordHash: GeneratePasswordHash(request.Password, request.RepeatPassword),
             nick: request.Nick,
             phone: request.Phone,
@@ -300,6 +306,7 @@ public class AuthController : ControllerBase, IAuthAPI
     private static UserInfoResponseDto UserInfoResponseDto(AuthUser authUser) =>
         new UserInfoResponseDto
         {
+            Id = authUser.Id,
             Login = authUser.Login,
             UserName = authUser.UserName,
             Email = authUser.Email,

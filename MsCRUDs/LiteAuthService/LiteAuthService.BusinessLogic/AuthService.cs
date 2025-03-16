@@ -49,6 +49,15 @@ namespace LiteAuthService.BusinessLogic
 
             authUser.UpdateRole(newRole: $"?{authUser.Role}"); //? - запрошенная пользователем роль утверждается администратором
 
+            var existingUser = await _authRepository.GetUser(authUser.Login);
+            if (existingUser != null)
+            {
+                if (!existingUser.IsEqualIgnoreIdAndDt(authUser))
+                    return new AuthResult(ErrorStrings.CONFLICT, System.Net.HttpStatusCode.Conflict);
+
+                return new AuthResult(ErrorStrings.ALREADY_EXISTS, System.Net.HttpStatusCode.Created, id: existingUser.Id);
+            }
+
             var registerResult = await _authRepository.AddUser(authUser);
 
             return registerResult;

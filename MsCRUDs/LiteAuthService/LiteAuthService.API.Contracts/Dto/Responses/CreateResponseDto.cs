@@ -5,13 +5,8 @@
     {
         /// <summary> Числовой идентификатор - номер </summary>
         public int Id { get; set; }
-        
-        /// <summary> Код ((проекта/подпроекта)) </summary>
-        public string Code { get; set; }
 
-        /// <summary>
-        /// Секретная строка для удаления
-        /// </summary>
-        public string SecretString { get; set; }
+        /// <summary> Сообщение о результате выполнения запроса </summary>
+        public string Message { get; set; }
     }
 }

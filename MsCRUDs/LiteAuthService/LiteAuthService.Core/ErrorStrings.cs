@@ -26,6 +26,8 @@
         public const string DELETEACCOUNTDATA_PARAM_NAME = "deleteAccountData";
         public const string AFFECTED_DELETED_ROWS_COUNT_SHOULD_BE_ONE = "Affected(deleted) rows count should be equal 1.Affected:";
         public const string AFFECTED_UPDATED_ROWS_COUNT_SHOULD_BE_ONE = "Affected(updated) rows count should be equal 1.Affected:";
+        public const string CONFLICT = "Conflict with existing AuthUser";
+        public const string ALREADY_EXISTS = "AuthUser is already existing";
         public const string OK = "OK";
     }
 }
