@@ -19,7 +19,7 @@ namespace LiteAuthService.BusinessLogic.MsTests
         public AuthServiceTests()
         {
             _authRepositoryMock = new Mock<IAuthRepository>();
-            string key = "JWT:KEY";
+            string key = "JWT:KEY.The encryption algorithm 'HS256' requires a key size of at least '128' bits";
             _authService = new AuthService(_authRepositoryMock.Object, new Microsoft.IdentityModel.Tokens.TokenValidationParameters
             {
                 ValidateIssuer = true,
