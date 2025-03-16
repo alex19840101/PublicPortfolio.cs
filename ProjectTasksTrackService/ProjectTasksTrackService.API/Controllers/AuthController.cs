@@ -184,7 +184,7 @@ namespace ProjectTasksTrackService.API.Controllers
                 id: 0,
                 login: request.Login,
                 userName: request.UserName,
-                email: request.UserName,
+                email: request.Email,
                 passwordHash: GeneratePasswordHash(request.Password, request.RepeatPassword),
                 nick: request.Nick,
                 phone: request.Phone,
