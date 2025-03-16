@@ -22,7 +22,6 @@ LiteAuthService.Core\
 LiteAuthService.DataAccess\
 LiteAuthService.Database\
 TestFixtures\
-TestFixtures\
 ```
 
 ## **using stack:**
