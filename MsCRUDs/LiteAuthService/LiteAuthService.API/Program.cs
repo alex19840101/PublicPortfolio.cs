@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -96,15 +95,6 @@ try
                     key: builder.Configuration["JWT:KEY"]));
 
     var isDevelopment = env.IsDevelopment();
-
-    if (isDevelopment)
-    {
-        //develop-настройки подключения к БД
-    }
-    else
-    {
-        //настройки подключения к БД
-    }
 
     #region -------------------------------Swagger-------------------------------
     const string URL = "https://github.com/alex19840101/PublicPortfolio.cs/compare/MsCRUDs";

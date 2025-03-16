@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LiteAuthService.API.Contracts.Dto.Responses
+﻿namespace LiteAuthService.API.Contracts.Dto.Responses
 {
     /// <summary>
     /// Класс ответа с информацией о пользователе
