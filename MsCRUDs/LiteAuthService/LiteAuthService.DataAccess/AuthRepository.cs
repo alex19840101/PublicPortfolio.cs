@@ -99,8 +99,8 @@ namespace LiteAuthService.DataAccess
 
         public async Task<UpdateResult> GrantRole(int id, string role, int granterId)
         {
-            var sql = @"UPDATE AuthUsers SET Role = @role, GranterId = @granterId, LastUpdateDt = GETDATE()";
-            var dp = new DynamicParameters(new { role, granterId });
+            var sql = @"UPDATE AuthUsers SET Role = @role, GranterId = @granterId, LastUpdateDt = GETDATE() WHERE Id = @id";
+            var dp = new DynamicParameters(new { role, granterId, id });
             var affectedRowsCount = await _dapperSqlExecutor.ExecuteAsync(sql, dp);
             if (affectedRowsCount != 1)
                 throw new InvalidOperationException($"{Core.ErrorStrings.AFFECTED_UPDATED_ROWS_COUNT_SHOULD_BE_ONE}{affectedRowsCount}");
@@ -137,9 +137,11 @@ namespace LiteAuthService.DataAccess
             var sql = @"UPDATE AuthUsers SET Login = @login, UserName = @userName, Email = @email, PasswordHash = @passwordHash, Role = @role,
                 Nick = @nick,
                 Phone = @phone,
-                LastUpdateDt = GETDATE()";
+                LastUpdateDt = GETDATE()
+                WHERE Id = @id";
             var dp = new DynamicParameters(new
             {
+                @id = authUser.Id,
                 @login = authUser.Login,
                 @userName = authUser.UserName,
                 @email = authUser.Email,
