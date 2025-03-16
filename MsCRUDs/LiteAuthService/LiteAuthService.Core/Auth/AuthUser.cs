@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ProjectTasksTrackService.Core.Auth
+namespace LiteAuthService.Core.Auth
 {
     public class AuthUser
     {
@@ -77,6 +77,28 @@ namespace ProjectTasksTrackService.Core.Auth
                 !string.Equals(comparedAuthUser.Role, _role) ||
                 comparedAuthUser.CreatedDt != _createdDt ||
                 comparedAuthUser.LastUpdateDt != _lastUpdateDt)
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Проверка на равенство (существующему AuthUser) с игнорированием:
+        /// <para> - Id (Id до момента регистрации не определен, как бы равен нулю),</para>
+        /// <para> - CreatedDt, LastUpdateDt - не важны для сравнения</para>
+        /// <para> - Role - не важны для сравнения при проверке факта регистрации (bool checkRole = false) </para>
+        /// </summary>
+        /// <param name="comparedAuthUser"> AuthUser для сравнения </param>
+        /// <returns></returns>
+        public bool IsEqualIgnoreIdAndDt(AuthUser comparedAuthUser, bool checkRole = false)
+        {
+            if (!string.Equals(comparedAuthUser.Login, _login) ||
+                !string.Equals(comparedAuthUser.UserName, _userName) ||
+                !string.Equals(comparedAuthUser.Email, _email) ||
+                !string.Equals(comparedAuthUser.PasswordHash, _passwordHash) ||
+                !string.Equals(comparedAuthUser.Nick, _nick) ||
+                !string.Equals(comparedAuthUser.Phone, _phone) ||
+                (checkRole && !string.Equals(comparedAuthUser.Role, _role)))
                 return false;
 
             return true;
