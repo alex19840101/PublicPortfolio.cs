@@ -131,9 +131,9 @@ try
 
     #region -------------------------------Swagger-------------------------------
     const string URL = "https://github.com/alex19840101/PublicPortfolio.cs/compare/MsCRUDs";
-    builder.Services.AddSwaggerGen(c => // Register the Swagger generator, defining 1 or more Swagger documents
+    builder.Services.AddSwaggerGen(options => // Register the Swagger generator, defining 1 or more Swagger documents
     {
-        c.SwaggerDoc("v1", new OpenApiInfo
+        options.SwaggerDoc("v1", new OpenApiInfo
         {
             Version = "v1",
             Title = SERVICE_NAME,
@@ -151,17 +151,30 @@ try
                 Url = new Uri(URL),
             }
         });
-        //c.OperationFilter<SwaggerCustomFilters.AuthHeaderFilter>();
+
+        options.AddSecurityDefinition($"AuthToken v1",
+                    new OpenApiSecurityScheme
+                    {
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.Http,
+                        BearerFormat = "JWT",
+                        Scheme = "bearer",
+                        Name = "Authorization",
+                        Description = "Authorization token"
+                    });
+
+
+        //options.OperationFilter<SwaggerCustomFilters.AuthHeaderFilter>();
 
         // Set the comments path for the Swagger JSON and UI.
         var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
         var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-        c.IncludeXmlComments(xmlPath);
+        options.IncludeXmlComments(xmlPath);
         xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.Contracts.xml";
         xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-        c.IncludeXmlComments(xmlPath);
-        c.CustomSchemaIds(x => x.FullName);
-        c.GeneratePolymorphicSchemas();
+        options.IncludeXmlComments(xmlPath);
+        options.CustomSchemaIds(x => x.FullName);
+        options.GeneratePolymorphicSchemas();
     });
     builder.Services.AddApiVersioning(
                         options =>

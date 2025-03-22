@@ -12,7 +12,6 @@ namespace NewsFeedSystem.API.Controllers
 {
     [ApiController]
     [Asp.Versioning.ApiVersion(1.0)]
-    [Asp.Versioning.ApiVersion(2.0)]
     [Route("api/v{version:apiVersion}/[controller]/[action]")]
     [Produces("application/json")]
     [Consumes("application/json")]
