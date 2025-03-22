@@ -1,4 +1,4 @@
-﻿namespace NewsFeedSystem.API.Contracts.Auth.Responses
+﻿namespace NewsFeedSystem.API.Contracts.Responses
 {
     /// <summary>
     /// Класс ответа с сообщением о предупреждении/ошибке

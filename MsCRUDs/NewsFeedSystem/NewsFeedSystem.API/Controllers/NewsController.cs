@@ -1,14 +1,21 @@
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using NewsFeedSystem.API.Contracts.Responses;
 using NewsFeedSystem.Contracts.Interfaces;
 using NewsFeedSystem.Contracts.Requests;
+using NewsFeedSystem.Core.Results;
 
 namespace NewsFeedSystem.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Asp.Versioning.ApiVersion(1.0)]
+    [Asp.Versioning.ApiVersion(2.0)]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
     public class NewsController : ControllerBase, INewsAPI
     {
         private readonly ILogger<NewsController> _logger;
@@ -19,6 +26,8 @@ namespace NewsFeedSystem.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(CreateResponseDto), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Create(CreateNewsRequestDto request)
         {
             throw new NotImplementedException();
@@ -43,6 +52,9 @@ namespace NewsFeedSystem.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> Update(UpdateNewsRequestDto request)
         {
             throw new NotImplementedException();

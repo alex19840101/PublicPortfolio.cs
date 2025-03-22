@@ -1,21 +1,24 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using NewsFeedSystem.Core.Auth;
-using NewsFeedSystem.Core.Results;
-using NewsFeedSystem.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NewsFeedSystem.API.Contracts.Auth.Requests;
 using NewsFeedSystem.API.Contracts.Auth.Responses;
 using NewsFeedSystem.API.Contracts.Interfaces;
+using NewsFeedSystem.API.Contracts.Responses;
+using NewsFeedSystem.Core.Auth;
+using NewsFeedSystem.Core.Results;
+using NewsFeedSystem.Core.Services;
 
 namespace NewsFeedSystem.API.Controllers;
 
 /// <summary> Контроллер управления аутентификацией </summary>
 [ApiController]
-[Route("[controller]")]
+[Asp.Versioning.ApiVersion(1.0)]
+[Asp.Versioning.ApiVersion(2.0)]
+[Route("api/v{version:apiVersion}/[controller]/[action]")]
 [Produces("application/json")]
 [Consumes("application/json")]
 public class AuthController : ControllerBase, IAuthAPI
@@ -29,7 +32,7 @@ public class AuthController : ControllerBase, IAuthAPI
     }
 
     /// <summary> Регистрация пользователя </summary>
-    [HttpPost("api/v1/Register")]
+    [HttpPost]
     [ProducesResponseType(typeof(CreateResponseDto), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.Conflict)]
@@ -57,7 +60,7 @@ public class AuthController : ControllerBase, IAuthAPI
     }
 
     /// <summary> Вход пользователя в систему </summary>
-    [HttpPost("api/v1/Login")]
+    [HttpPost]
     [ProducesResponseType(typeof(AuthResponseDto), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.Unauthorized)]
@@ -114,7 +117,7 @@ public class AuthController : ControllerBase, IAuthAPI
     /// <summary>
     /// Предоставление (установка/сброс) роли аккаунту
     /// </summary>
-    [HttpPost("api/v1/GrantRole")]
+    [HttpPost]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.NotFound)]
@@ -137,7 +140,7 @@ public class AuthController : ControllerBase, IAuthAPI
     /// <summary>
     /// Обновление аккаунта
     /// </summary>
-    [HttpPost("api/v1/UpdateAccount")]
+    [HttpPost]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Unauthorized)]
@@ -160,7 +163,7 @@ public class AuthController : ControllerBase, IAuthAPI
     }
 
     /// <summary> Удаление аккаунта пользователя им самим или администратором </summary>
-    [HttpDelete("api/v1/DeleteAccount")]
+    [HttpDelete]
     [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Unauthorized)]
@@ -183,7 +186,7 @@ public class AuthController : ControllerBase, IAuthAPI
     }
 
     /// <summary> Получение информации о пользователе по Id (для администраторов) </summary>
-    [HttpGet("api/v1/Admin/GetUserInfoById")]
+    [HttpGet]
     [ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
@@ -201,7 +204,7 @@ public class AuthController : ControllerBase, IAuthAPI
     }
 
     /// <summary> Получение информации о пользователе по логину (для администраторов) </summary>
-    [HttpGet("api/v1/Admin/GetUserInfoByLogin")]
+    [HttpGet]
     [ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]

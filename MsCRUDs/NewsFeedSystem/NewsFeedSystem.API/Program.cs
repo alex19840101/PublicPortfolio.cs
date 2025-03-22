@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -21,12 +22,11 @@ using NewsFeedSystem.Core.Services;
 using NewsFeedSystem.DataAccess;
 using NewsFeedSystem.DataAccess.Repositories;
 using Serilog;
-using Serilog.Events;
 using Serilog.Templates;
 using Serilog.Templates.Themes;
 
-const string SERVICE_NAME = $"MsCRUDs.NewsFeedSystem";
 const string DEVELOPER = "Shapovalov Alexey";
+const string SERVICE_NAME = $"NewsFeedSystem";
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -163,6 +163,32 @@ try
         c.CustomSchemaIds(x => x.FullName);
         c.GeneratePolymorphicSchemas();
     });
+    builder.Services.AddApiVersioning(
+                        options =>
+                        {
+                            // reporting api versions will return the headers
+                            // "api-supported-versions" and "api-deprecated-versions"
+                            options.ReportApiVersions = true;
+
+                            options.Policies.Sunset(0.9)
+                                            .Effective(DateTimeOffset.Now.AddDays(60))
+                                            .Link("policy.html")
+                                                .Title("Versioning Policy")
+                                                .Type("text/html");
+                        })
+                    .AddMvc()
+                    .AddApiExplorer(
+                        options =>
+                        {
+                            // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
+                            // note: the specified format code will format the version as "'v'major[.minor][-status]"
+                            options.GroupNameFormat = "'v'VVV";
+
+                            // note: this option is only necessary when versioning by url segment. the SubstitutionFormat
+                            // can also be used to control the format of the API version in route templates
+                            options.SubstituteApiVersionInUrl = true;
+                        });
+
     #endregion -------------------------------Swagger-------------------------------
 
 
@@ -176,7 +202,7 @@ try
         app.UseSwagger();
         app.UseSwaggerUI(options =>
         {
-            options.SwaggerEndpoint("../swagger/v1/swagger.json", "NewsFeedSystem API v1");
+            options.SwaggerEndpoint("../swagger/v1/swagger.json", $"{SERVICE_NAME} API v1");
         });
     }
     else

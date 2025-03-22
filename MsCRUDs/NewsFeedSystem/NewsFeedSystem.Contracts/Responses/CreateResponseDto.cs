@@ -1,4 +1,4 @@
-﻿namespace NewsFeedSystem.API.Contracts.Auth.Responses
+﻿namespace NewsFeedSystem.API.Contracts.Responses
 {
     /// <summary> Класс ответа на запрос /Create </summary>
     public class CreateResponseDto
