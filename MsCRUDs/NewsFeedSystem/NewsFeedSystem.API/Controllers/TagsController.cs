@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -8,6 +8,7 @@ using NewsFeedSystem.API.Contracts.Responses;
 using NewsFeedSystem.API.Contracts.Interfaces;
 using NewsFeedSystem.API.Contracts.Requests;
 using NewsFeedSystem.Core.Results;
+using NewsFeedSystem.API.Contracts;
 
 namespace NewsFeedSystem.API.Controllers
 {
@@ -16,11 +17,11 @@ namespace NewsFeedSystem.API.Controllers
     [Route("api/v{version:apiVersion}/[controller]/[action]")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    public class NewsController : ControllerBase, INewsAPI
+    public class TagsController : ControllerBase, ITagsAPI
     {
-        private readonly ILogger<NewsController> _logger;
+        private readonly ILogger<TagsController> _logger;
 
-        public NewsController(ILogger<NewsController> logger)
+        public TagsController(ILogger<TagsController> logger)
         {
             _logger = logger;
         }
@@ -28,38 +29,34 @@ namespace NewsFeedSystem.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(CreateResponseDto), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Create(CreateNewsRequestDto request)
+        public Task<IActionResult> Create(TagDto request)
         {
-            _logger.LogInformation(0, @"Create request {version:apiVersion}", 1);
             throw new NotImplementedException();
         }
 
+
+        /// <summary>
+        /// Удаление тега
+        /// </summary>
+        /// <param name="tagId"> Id тега </param>
+        /// <returns></returns>
         [HttpDelete]
-        public async Task<IActionResult> Delete(int newsId)
+        [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.NotFound)]
+        public Task<IActionResult> Delete(int tagId)
         {
             throw new NotImplementedException();
         }
-
         [HttpGet]
-        public async Task<IActionResult> Read(int newsId)
+        public Task<IActionResult> Get(int tagId)
         {
             throw new NotImplementedException();
         }
-
         [HttpGet]
-        public async Task<IActionResult> ReadHeadlines(int? maxNewsId, int? minNewsId)
-        {
-            throw new NotImplementedException();
-        }
-
-        [HttpGet]
-        public async Task<IEnumerable<HeadLineDto>> ReadHeadlinesByTag(int tagId, int minNewsId)
-        {
-            throw new NotImplementedException();
-        }
-
-        [HttpGet]
-        public async Task<IEnumerable<HeadLineDto>> ReadHeadlinesByTopic(int topicId, int minNewsId)
+        public Task<IEnumerable<TagDto>> GetTags(int? maxTagId, int? minTagId)
         {
             throw new NotImplementedException();
         }
@@ -68,7 +65,7 @@ namespace NewsFeedSystem.API.Controllers
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> Update(UpdateNewsRequestDto request)
+        public Task<IActionResult> Update(TagDto request)
         {
             throw new NotImplementedException();
         }

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace NewsFeedSystem.Contracts.Requests
+namespace NewsFeedSystem.API.Contracts.Requests
 {
     /// <summary>
     /// Запрос на обновление новости
-    /// </su
+    /// </summary>
     public class UpdateNewsRequestDto
     {
         /// <summary>
@@ -35,11 +35,11 @@ namespace NewsFeedSystem.Contracts.Requests
         /// <summary>
         /// Тэги
         /// </summary>
-        public List<string> Tags { get; set; } = [];
+        public List<int> Tags { get; set; } = [];
 
         /// <summary>
         /// Темы
         /// </summary>
-        public List<string> Topics { get; set; } = [];
+        public List<int> Topics { get; set; } = [];
     }
 }

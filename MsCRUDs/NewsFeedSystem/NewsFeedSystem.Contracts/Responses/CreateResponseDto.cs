@@ -7,6 +7,6 @@
         public int Id { get; set; }
 
         /// <summary> Сообщение о результате выполнения запроса </summary>
-        public string Message { get; set; }
+        public string Message { get; set; } = default!;
     }
 }

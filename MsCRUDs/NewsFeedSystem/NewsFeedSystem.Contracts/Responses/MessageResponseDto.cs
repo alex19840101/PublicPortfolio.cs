@@ -8,6 +8,6 @@
         /// <summary>
         /// Сообщение о предупреждении/ошибке
         /// </summary>
-        public string Message { get; set; }
+        public string Message { get; set; } = default!;
     }
 }
