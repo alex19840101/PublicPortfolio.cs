@@ -192,7 +192,7 @@ public class AuthController : ControllerBase, IAuthAPI
     [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.NotFound)]
     [Authorize(Roles = "admin")]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    public async Task<IActionResult> GetUserInfoById(int id)
+    public async Task<IActionResult> GetUserInfoById(uint id)
     {
         var authUser = await _authService.GetUserInfo(id);
 

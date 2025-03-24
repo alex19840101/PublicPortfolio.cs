@@ -46,17 +46,17 @@ namespace NewsFeedSystem.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.NotFound)]
-        public Task<IActionResult> Delete(int tagId)
+        public Task<IActionResult> Delete(uint tagId)
         {
             throw new NotImplementedException();
         }
         [HttpGet]
-        public Task<IActionResult> Get(int tagId)
+        public Task<IActionResult> Get(uint tagId)
         {
             throw new NotImplementedException();
         }
         [HttpGet]
-        public Task<IEnumerable<TagDto>> GetTags(int? maxTagId, int? minTagId)
+        public Task<IEnumerable<TagDto>> GetTags(uint? maxTagId, uint? minTagId)
         {
             throw new NotImplementedException();
         }

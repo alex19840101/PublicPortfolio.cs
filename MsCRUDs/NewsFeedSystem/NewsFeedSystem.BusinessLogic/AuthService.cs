@@ -229,7 +229,7 @@ namespace NewsFeedSystem.BusinessLogic
 
             return await _authRepository.DeleteUser(id: deleteAccountData.Id);
         }
-        public async Task<AuthUser> GetUserInfo(int id)
+        public async Task<AuthUser> GetUserInfo(uint id)
         {
             var user = await _authRepository.GetUser(id);
 

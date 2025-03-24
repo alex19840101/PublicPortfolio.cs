@@ -19,7 +19,7 @@ namespace NewsFeedSystem.API.Contracts.Interfaces
         /// </summary>
         /// <param name="topicId"> Id темы </param>
         /// <returns></returns>
-        Task<IActionResult> Get(int topicId);
+        Task<IActionResult> Get(uint topicId);
 
         /// <summary>
         /// Получение тем
@@ -27,7 +27,7 @@ namespace NewsFeedSystem.API.Contracts.Interfaces
         /// <param name="maxTopicId"> Максимальный Id темы </param>
         /// <param name="minTopicId"> Минимальный Id темы </param>
         /// <returns></returns>
-        Task<IEnumerable<TopicDto>> GetTopics(int? maxTopicId, int? minTopicId);
+        Task<IEnumerable<TopicDto>> GetTopics(uint? maxTopicId, uint? minTopicId);
 
         /// <summary>
         /// Обновление темы
@@ -41,6 +41,6 @@ namespace NewsFeedSystem.API.Contracts.Interfaces
         /// </summary>
         /// <param name="topicId"> Id темы </param>
         /// <returns></returns>
-        Task<IActionResult> Delete(int topicId);
+        Task<IActionResult> Delete(uint topicId);
     }
 }

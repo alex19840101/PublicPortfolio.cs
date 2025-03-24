@@ -4,7 +4,7 @@
     public class AuthResponseDto
     {
         /// <summary> Числовой идентификатор - id пользователя </summary>
-        public int? Id { get; set; }
+        public uint? Id { get; set; }
 
         /// <summary> Токен </summary>
         public string Token { get; set; }

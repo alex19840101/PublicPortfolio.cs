@@ -8,7 +8,7 @@ namespace TestFixtures
 {
     public class TestFixtures
     {
-        public static int GenerateId() => new Fixture().Create<int>();
+        public static uint GenerateId() => new Fixture().Create<uint>();
 
         public static AuthUser GetAuthUserFixtureWithAllFields(
                     bool generateId = false,
@@ -19,22 +19,22 @@ namespace TestFixtures
                     bool generateNick = true,
                     bool generatePhone = true,
                     bool generateRole = true,
-                    List<int> excludeIds = null,
-                    int setId = 0,
-                    int? setGranterId = null,
+                    List<uint> excludeIds = null,
+                    uint setId = 0,
+                    uint? setGranterId = null,
                     string passwordHash = null)
         {
             var fixture = new Fixture();
-            var id = generateId ? fixture.Create<int>() : setId;
-            var granterId = setGranterId != null ? fixture.Create<int>() : setGranterId;
+            var id = generateId ? fixture.Create<uint>() : setId;
+            var granterId = setGranterId != null ? fixture.Create<uint>() : setGranterId;
             if (generateId)
             {
                 if (excludeIds != null && excludeIds.Any() && setId == 0)
                 {
                     while (excludeIds.Contains(id))
-                        id = fixture.Create<int>();
+                        id = fixture.Create<uint>();
                 }
-                excludeIds ??= new List<int>();
+                excludeIds ??= new List<uint>();
                 excludeIds.Add(id);
             }
 
@@ -67,7 +67,7 @@ namespace TestFixtures
         {
             var fixture = new Fixture();
 
-            var id = generateId ? fixture.Create<int>() : 0;
+            var id = generateId ? fixture.Create<uint>() : 0;
 
             return new AuthUser(
                 id: id,
@@ -123,22 +123,22 @@ namespace TestFixtures
             bool generateGranterLogin = true,
             bool generatePasswordHash = true,
             bool generateRole = true,
-            List<int> excludeIds = null,
-            int setId = 0,
+            List<uint> excludeIds = null,
+            uint setId = 0,
             bool generateGranterId = true,
             string passwordHash = null)
         {
             var fixture = new Fixture();
-            var id = generateId ? fixture.Create<int>() : setId;
-            var granterId = generateGranterId == true ? fixture.Create<int>() : 0;
+            var id = generateId ? fixture.Create<uint>() : setId;
+            var granterId = generateGranterId == true ? fixture.Create<uint>() : 0;
             if (generateId)
             {
                 if (excludeIds != null && excludeIds.Any() && setId == 0)
                 {
                     while (excludeIds.Contains(id))
-                        id = fixture.Create<int>();
+                        id = fixture.Create<uint>();
                 }
-                excludeIds ??= new List<int>();
+                excludeIds ??= new List<uint>();
                 excludeIds.Add(id);
             }
 
@@ -192,22 +192,22 @@ namespace TestFixtures
             bool generateLogin = true,
             bool generateGranterLogin = false,
             bool generatePasswordHash = true,
-            List<int> excludeIds = null,
-            int setId = 0,
+            List<uint> excludeIds = null,
+            uint setId = 0,
             bool generateGranterId = false,
             string passwordHash = null)
         {
             var fixture = new Fixture();
-            var id = generateId ? fixture.Create<int>() : setId;
-            var granterId = generateGranterId == true ? fixture.Create<int?>() : null;
+            var id = generateId ? fixture.Create<uint>() : setId;
+            var granterId = generateGranterId == true ? fixture.Create<uint?>() : null;
             if (generateId)
             {
                 if (excludeIds != null && excludeIds.Any() && setId == 0)
                 {
                     while (excludeIds.Contains(id))
-                        id = fixture.Create<int>();
+                        id = fixture.Create<uint>();
                 }
-                excludeIds ??= new List<int>();
+                excludeIds ??= new List<uint>();
                 excludeIds.Add(id);
             }
             return new DeleteAccountData(

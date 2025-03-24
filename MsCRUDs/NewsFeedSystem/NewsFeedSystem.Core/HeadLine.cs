@@ -8,7 +8,7 @@ namespace NewsFeedSystem.Core
         /// <summary>
         /// Id новостного поста, заголовка
         /// </summary>
-        public int Id { get { return _id; } }
+        public uint Id { get { return _id; } }
 
         /// <summary>
         /// Заголовок
@@ -26,16 +26,15 @@ namespace NewsFeedSystem.Core
         public List<int> Topics { get { return _topics; } }
         public DateTime Created { get { return _created; } }
 
-        private readonly int _id;
+        private readonly uint _id;
         private string _headLine = default!;
         private List<int> _tags = default!;
         private List<int> _topics = default!;
         private readonly DateTime _created;
 
         public HeadLine(
-            int id,
+            uint id,
             string headLine,
-            string? url,
             List<int> tags,
             List<int> topics,
             DateTime created)

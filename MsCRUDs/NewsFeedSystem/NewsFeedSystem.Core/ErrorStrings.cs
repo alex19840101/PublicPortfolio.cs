@@ -2,6 +2,9 @@
 {
     public class ErrorStrings
     {
+        public const string OK = "OK";
+        
+        //AuthUser
         public const string EMPTY_OR_NULL_PASSWORD_HASH = "Empty/null/space password hash";
         public const string GRANTER_NOT_FOUND = "granter not found";
         public const string USER_NOT_FOUND = "User not found";
@@ -24,10 +27,12 @@
         public const string GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE = "GranterLogin should be empty when GranterId is null";
         public const string UPDATEACCOUNTDATA_PARAM_NAME = "updateAccountData";
         public const string DELETEACCOUNTDATA_PARAM_NAME = "deleteAccountData";
-        public const string AFFECTED_DELETED_ROWS_COUNT_SHOULD_BE_ONE = "Affected(deleted) rows count should be equal 1.Affected:";
-        public const string AFFECTED_UPDATED_ROWS_COUNT_SHOULD_BE_ONE = "Affected(updated) rows count should be equal 1.Affected:";
         public const string CONFLICT = "Conflict with existing AuthUser";
         public const string ALREADY_EXISTS = "AuthUser is already existing";
-        public const string OK = "OK";
+        
+        //News
+        public const string NEWSPOST_RARAM_NAME = "newsPost";
+        public const string HEADLINE_SHOULD_NOT_BE_EMPTY = "Headline field should be not empty";
+        public const string TEXT_SHOULD_NOT_BE_EMPTY = "Text field should be not empty";
     }
 }

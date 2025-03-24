@@ -10,7 +10,7 @@ namespace NewsFeedSystem.API.Contracts.Requests
         /// <summary>
         /// Id новости
         /// </summary>
-        public int Id { get; set; }
+        public uint Id { get; set; }
 
         /// <summary>
         /// Заголовок
@@ -35,11 +35,11 @@ namespace NewsFeedSystem.API.Contracts.Requests
         /// <summary>
         /// Тэги
         /// </summary>
-        public List<int> Tags { get; set; } = [];
+        public List<uint> Tags { get; set; } = [];
 
         /// <summary>
         /// Темы
         /// </summary>
-        public List<int> Topics { get; set; } = [];
+        public List<uint> Topics { get; set; } = [];
     }
 }

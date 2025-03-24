@@ -35,7 +35,7 @@ namespace NewsFeedSystem.API.Controllers
         }
 
         [HttpGet]
-        public Task<IActionResult> Get(int topicId)
+        public Task<IActionResult> Get(uint topicId)
         {
             throw new NotImplementedException();
         }
@@ -44,7 +44,7 @@ namespace NewsFeedSystem.API.Controllers
         [ProducesResponseType(typeof(TopicDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [HttpGet]
-        public Task<IEnumerable<TopicDto>> GetTopics(int? maxTopicId, int? minTopicId)
+        public Task<IEnumerable<TopicDto>> GetTopics(uint? maxTopicId, uint? minTopicId)
         {
             throw new NotImplementedException();
         }
@@ -69,7 +69,7 @@ namespace NewsFeedSystem.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.NotFound)]
-        public Task<IActionResult> Delete(int topicId)
+        public Task<IActionResult> Delete(uint topicId)
         {
             throw new NotImplementedException();
         }

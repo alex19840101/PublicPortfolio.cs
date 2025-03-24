@@ -1,10 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using NewsFeedSystem.Core.Results;
 
 namespace NewsFeedSystem.Core.Repositories
 {
     public interface ITagsRepository
     {
+        Task<CreateResult> Create(Tag request);
+        Task<Tag> Get(uint tagId);
+        Task<IEnumerable<Tag>> GetTags(uint? maxTagId, uint? minTagId);
+        Task<UpdateResult> Update(Tag request);
+        Task<DeleteResult> Delete(uint tagId);
     }
 }

@@ -5,7 +5,7 @@ namespace NewsFeedSystem.Core.Results
     public class AuthResult
     {
         /// <summary> Идентификатор пользователя </summary>
-        public int? Id { get; set; }
+        public uint? Id { get; set; }
 
         /// <summary> Сообщение о результате выполнения запроса </summary>
         public string Message { get; set; }
@@ -18,7 +18,7 @@ namespace NewsFeedSystem.Core.Results
 
         public AuthResult(string message,
             HttpStatusCode statusCode,
-            int? id = null,
+            uint? id = null,
             string token = null)
         {
             Message = message;

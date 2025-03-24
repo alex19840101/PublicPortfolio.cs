@@ -8,7 +8,7 @@
         /// <summary>
         /// Id пользователя*
         /// </summary>
-        public int Id { get; set; }
+        public uint Id { get; set; }
 
         /// <summary>
         /// Логин (уникальное имя аккаунта)*
@@ -28,7 +28,7 @@
         /// <summary>
         /// Id администратора (если удаление администратором)
         /// </summary>
-        public int? GranterId { get; set; }
+        public uint? GranterId { get; set; }
 
         /// <summary>
         /// Логин (уникальное имя аккаунта) администратора (если удаление администратором)*

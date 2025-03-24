@@ -35,31 +35,31 @@ namespace NewsFeedSystem.API.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(int newsId)
+        public async Task<IActionResult> Delete(uint newsId)
         {
             throw new NotImplementedException();
         }
 
         [HttpGet]
-        public async Task<IActionResult> Read(int newsId)
+        public async Task<IActionResult> Read(uint newsId)
         {
             throw new NotImplementedException();
         }
 
         [HttpGet]
-        public async Task<IActionResult> ReadHeadlines(int? maxNewsId, int? minNewsId)
+        public async Task<IActionResult> ReadHeadlines(uint? maxNewsId, uint? minNewsId)
         {
             throw new NotImplementedException();
         }
 
         [HttpGet]
-        public async Task<IEnumerable<HeadLineDto>> ReadHeadlinesByTag(int tagId, int minNewsId)
+        public async Task<IEnumerable<HeadLineDto>> ReadHeadlinesByTag(uint tagId, uint minNewsId)
         {
             throw new NotImplementedException();
         }
 
         [HttpGet]
-        public async Task<IEnumerable<HeadLineDto>> ReadHeadlinesByTopic(int topicId, int minNewsId)
+        public async Task<IEnumerable<HeadLineDto>> ReadHeadlinesByTopic(uint topicId, uint minNewsId)
         {
             throw new NotImplementedException();
         }

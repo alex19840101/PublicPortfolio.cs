@@ -48,7 +48,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
 
         }
 
-        public async Task<DeleteResult> DeleteUser(int id)
+        public async Task<DeleteResult> DeleteUser(uint id)
         {
             var authUserEntity = await GetAuthUserEntity(id);
 
@@ -61,7 +61,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
             return new DeleteResult(ErrorStrings.OK, HttpStatusCode.OK);
         }
 
-        public async Task<AuthUser> GetUser(int id)
+        public async Task<AuthUser> GetUser(uint id)
         {
             var authUserEntity = await GetAuthUserEntity(id);
             if (authUserEntity is null)
@@ -79,7 +79,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
             return AuthUser(authUserEntity);
         }
 
-        public async Task<UpdateResult> GrantRole(int id, string role, int granterId)
+        public async Task<UpdateResult> GrantRole(uint id, string role, uint granterId)
         {
             var granterUserEntity = await GetAuthUserEntity(granterId);
             if (granterUserEntity is null)
@@ -132,7 +132,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
             return new UpdateResult(ErrorStrings.USER_IS_ACTUAL, HttpStatusCode.OK);
         }
 
-        private async Task<Entities.AuthUser> GetAuthUserEntity(int id)
+        private async Task<Entities.AuthUser> GetAuthUserEntity(uint id)
         {
             var query = _dbContext.AuthUsers.AsNoTracking().Where(u => u.Id == id);
             var authUserEntity = await query.SingleOrDefaultAsync();

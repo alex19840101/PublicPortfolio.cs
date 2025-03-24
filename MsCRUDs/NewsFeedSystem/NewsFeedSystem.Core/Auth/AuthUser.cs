@@ -4,7 +4,7 @@ namespace NewsFeedSystem.Core.Auth
 {
     public class AuthUser
     {
-        public int Id { get { return _id; } }
+        public uint Id { get { return _id; } }
         public string Login { get { return _login; } }
         public string UserName { get { return _userName; } }
         public string Email { get { return _email; } }
@@ -12,11 +12,11 @@ namespace NewsFeedSystem.Core.Auth
         public string Nick { get { return _nick; } }
         public string Phone { get { return _phone; } }
         public string Role { get { return _role; } }
-        public int? GranterId { get { return _granterId; } }
+        public uint? GranterId { get { return _granterId; } }
         public DateTime CreatedDt { get { return _createdDt; } }
         public DateTime? LastUpdateDt { get { return _lastUpdateDt; } }
 
-        private readonly int _id;
+        private readonly uint _id;
         private string _login;
         private string _userName;
         private string _email;
@@ -24,12 +24,12 @@ namespace NewsFeedSystem.Core.Auth
         private string _nick;
         private string _phone;
         private string _role;
-        private int? _granterId;
+        private uint? _granterId;
         private readonly DateTime _createdDt;
         private DateTime? _lastUpdateDt;
 
         public AuthUser(
-            int id,
+            uint id,
             string login,
             string userName,
             string email,
@@ -37,7 +37,7 @@ namespace NewsFeedSystem.Core.Auth
             string nick,
             string phone,
             string role,
-            int? granterId,
+            uint? granterId,
             DateTime createdDt,
             DateTime? lastUpdateDt)
         {
@@ -61,7 +61,7 @@ namespace NewsFeedSystem.Core.Auth
         public void UpdateNick(string newNick) => _nick = newNick;
         public void UpdatePhone(string newPhone) => _phone = newPhone;
         public void UpdateRole(string newRole) => _role = newRole;
-        public void UpdateGranterId(int granterId) => _granterId = granterId;
+        public void UpdateGranterId(uint granterId) => _granterId = granterId;
         public void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
 
         public override bool Equals(object obj)

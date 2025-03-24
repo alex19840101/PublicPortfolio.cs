@@ -7,12 +7,12 @@ namespace NewsFeedSystem.Core.Services
     public interface INewsService
     {
         Task<CreateResult> Create(NewsPost newsPost);
-        Task<NewsPost> Read(int newsId);
-        Task<IEnumerable<HeadLine>> ReadHeadlines(int? maxNewsId, int? minNewsId);
-        Task<IEnumerable<HeadLine>> ReadHeadlinesByTag(int tagId, int minNewsId);
-        Task<IEnumerable<HeadLine>> ReadHeadlinesByTopic(int topicId, int minNewsId);
+        Task<NewsPost> Read(uint newsId);
+        Task<IEnumerable<HeadLine>> ReadHeadlines(uint? maxNewsId, uint? minNewsId);
+        Task<IEnumerable<HeadLine>> ReadHeadlinesByTag(uint tagId, uint minNewsId);
+        Task<IEnumerable<HeadLine>> ReadHeadlinesByTopic(uint topicId, uint minNewsId);
         
         Task<UpdateResult> Update(NewsPost newsPost);
-        Task<DeleteResult> DeleteNewsPost(int newsId);
+        Task<DeleteResult> DeleteNewsPost(uint newsId);
     }
 }

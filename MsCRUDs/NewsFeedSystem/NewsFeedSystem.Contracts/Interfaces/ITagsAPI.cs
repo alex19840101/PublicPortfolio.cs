@@ -22,7 +22,7 @@ namespace NewsFeedSystem.API.Contracts.Interfaces
         /// </summary>
         /// <param name="tagId"> Id тега </param>
         /// <returns></returns>
-        Task<IActionResult> Get(int tagId);
+        Task<IActionResult> Get(uint tagId);
 
         /// <summary>
         /// Получение тегов
@@ -30,7 +30,7 @@ namespace NewsFeedSystem.API.Contracts.Interfaces
         /// <param name="maxTagId"> Максимальный Id тега </param>
         /// <param name="minTagId"> Минимальный Id тега </param>
         /// <returns></returns>
-        Task<IEnumerable<TagDto>> GetTags(int? maxTagId, int? minTagId);
+        Task<IEnumerable<TagDto>> GetTags(uint? maxTagId, uint? minTagId);
 
         /// <summary>
         /// Обновление тега
@@ -44,6 +44,6 @@ namespace NewsFeedSystem.API.Contracts.Interfaces
         /// </summary>
         /// <param name="tagId"> Id тега </param>
         /// <returns></returns>
-        Task<IActionResult> Delete(int tagId);
+        Task<IActionResult> Delete(uint tagId);
     }
 }

@@ -11,7 +11,7 @@ namespace NewsFeedSystem.API.Contracts.Responses
         /// <summary>
         /// Id новостного поста, заголовка
         /// </summary>
-        public int Id { get; set; }
+        public uint Id { get; set; }
 
         /// <summary>
         /// Заголовок
@@ -21,12 +21,12 @@ namespace NewsFeedSystem.API.Contracts.Responses
         /// <summary>
         /// Id тэгов
         /// </summary>
-        public List<int> Tags { get; set; } = default!;
+        public List<uint> Tags { get; set; } = default!;
 
         /// <summary>
         /// Id тем
         /// </summary>
-        public List<int> Topics { get; set; } = default!;
+        public List<uint> Topics { get; set; } = default!;
 
         /// <summary>
         /// Дата и время публикации новостного поста

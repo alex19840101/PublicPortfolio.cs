@@ -11,7 +11,7 @@ namespace NewsFeedSystem.API.Contracts.Responses
         /// <summary>
         /// Id новостного поста, заголовка
         /// </summary>
-        public int Id { get; set; }
+        public uint Id { get; set; }
 
         /// <summary>
         /// Заголовок

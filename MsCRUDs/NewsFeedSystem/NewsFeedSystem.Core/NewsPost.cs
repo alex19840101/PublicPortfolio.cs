@@ -8,7 +8,7 @@ namespace NewsFeedSystem.Core
         /// <summary>
         /// Id новостного поста
         /// </summary>
-        public int Id { get { return _id; } }
+        public uint Id { get { return _id; } }
 
         /// <summary>
         /// Заголовок
@@ -42,7 +42,7 @@ namespace NewsFeedSystem.Core
         public DateTime Created { get { return _created; } }
         public DateTime? Updated { get { return _updated; } }
 
-        private readonly int _id;
+        private readonly uint _id;
         private string _headLine = default!;
         private string _text = default!;
         private string? _url;
@@ -53,7 +53,7 @@ namespace NewsFeedSystem.Core
         private DateTime? _updated;
 
         public NewsPost(
-            int id,
+            uint id,
             string headLine,
             string text,
             string? url,

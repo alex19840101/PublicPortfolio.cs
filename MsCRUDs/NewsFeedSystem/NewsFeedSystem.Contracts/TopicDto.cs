@@ -8,7 +8,7 @@
         /// <summary>
         /// Id темы (при создании не указывается)
         /// </summary>
-        public int? Id { get; set; }
+        public uint? Id { get; set; }
 
         /// <summary>
         /// Тема

@@ -1401,7 +1401,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
                 .ReturnsAsync(userToDelete);
             AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
                 generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
-            int ZERO_GRANTER_ID = 0;
+            uint ZERO_GRANTER_ID = 0;
             _authRepositoryMock.Setup(ar => ar.GetUser(ZERO_GRANTER_ID))
                 .ReturnsAsync(granter);
 
@@ -1428,7 +1428,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
                 .ReturnsAsync(userToDelete);
             AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
                 generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
-            int ZERO_GRANTER_ID = 0;
+            uint ZERO_GRANTER_ID = 0;
             _authRepositoryMock.Setup(ar => ar.GetUser(ZERO_GRANTER_ID))
                 .ReturnsAsync(granter);
 
