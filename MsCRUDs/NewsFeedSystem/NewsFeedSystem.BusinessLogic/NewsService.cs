@@ -43,7 +43,7 @@ namespace NewsFeedSystem.BusinessLogic
             return await _newsRepository.Read(newsId);
         }
 
-        public async Task<IEnumerable<HeadLine>> ReadHeadlines(uint? maxNewsId, uint? minNewsId)
+        public async Task<IEnumerable<HeadLine>> ReadHeadlines(uint? minNewsId, uint? maxNewsId)
         {
             return await _newsRepository.ReadHeadlines(maxNewsId, minNewsId);
         }

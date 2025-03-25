@@ -28,10 +28,10 @@ namespace NewsFeedSystem.API.Contracts.Interfaces
         /// <summary>
         /// Получение тегов
         /// </summary>
-        /// <param name="maxTagId"> Максимальный Id тега </param>
         /// <param name="minTagId"> Минимальный Id тега </param>
+        /// <param name="maxTagId"> Максимальный Id тега </param>
         /// <returns></returns>
-        Task<IEnumerable<TagDto>> GetTags(uint? maxTagId, uint? minTagId);
+        Task<IEnumerable<TagDto>> GetTags(uint? minTagId, uint? maxTagId = null);
 
         /// <summary>
         /// Обновление тега

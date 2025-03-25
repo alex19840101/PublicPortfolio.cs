@@ -26,10 +26,10 @@ namespace NewsFeedSystem.API.Contracts.Interfaces
         /// <summary>
         /// Получение новостных постов
         /// </summary>
-        /// <param name="maxNewsId"> Максимальный Id новостного поста </param>
         /// <param name="minNewsId"> Минимальный Id новостного поста </param>
+        /// <param name="maxNewsId"> Максимальный Id новостного поста </param>
         /// <returns></returns>
-        Task<IActionResult> ReadHeadlines(uint? maxNewsId, uint? minNewsId);
+        Task<IActionResult> ReadHeadlines(uint? minNewsId, uint? maxNewsId = null);
 
         /// <summary>
         /// Получение заголовков новостных постов по Id тега

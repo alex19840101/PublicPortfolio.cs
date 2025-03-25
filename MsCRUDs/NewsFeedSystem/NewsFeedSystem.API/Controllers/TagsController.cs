@@ -56,7 +56,7 @@ namespace NewsFeedSystem.API.Controllers
             throw new NotImplementedException();
         }
         [HttpGet]
-        public Task<IEnumerable<TagDto>> GetTags(uint? maxTagId, uint? minTagId)
+        public Task<IEnumerable<TagDto>> GetTags(uint? minTagId, uint? maxTagId = null)
         {
             throw new NotImplementedException();
         }

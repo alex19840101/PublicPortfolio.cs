@@ -8,7 +8,7 @@ namespace NewsFeedSystem.Core.Services
     {
         Task<CreateResult> Create(NewsPost newsPost);
         Task<NewsPost> Read(uint newsId);
-        Task<IEnumerable<HeadLine>> ReadHeadlines(uint? maxNewsId, uint? minNewsId);
+        Task<IEnumerable<HeadLine>> ReadHeadlines(uint? minNewsId, uint? maxNewsId);
         Task<IEnumerable<HeadLine>> ReadHeadlinesByTag(uint tagId, uint minNewsId);
         Task<IEnumerable<HeadLine>> ReadHeadlinesByTopic(uint topicId, uint minNewsId);
         

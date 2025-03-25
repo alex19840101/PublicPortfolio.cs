@@ -8,7 +8,7 @@ namespace NewsFeedSystem.Core.Repositories
     {
         Task<CreateResult> Create(Tag tag);
         Task<Tag> Get(uint tagId);
-        Task<IEnumerable<Tag>> GetTags(uint? maxTagId, uint? minTagId);
+        Task<IEnumerable<Tag>> GetTags(uint? minTagId, uint? maxTagId);
         Task<UpdateResult> Update(Tag tag);
         Task<DeleteResult> Delete(uint tagId);
     }

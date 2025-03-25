@@ -26,7 +26,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Tag>> GetTags(uint? maxTagId, uint? minTagId)
+        public async Task<IEnumerable<Tag>> GetTags(uint? minTagId, uint? maxTagId)
         {
             throw new NotImplementedException();
         }

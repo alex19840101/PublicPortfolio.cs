@@ -26,7 +26,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Topic>> GetTopics(uint? maxTopicId, uint? minTopicId)
+        public async Task<IEnumerable<Topic>> GetTopics(uint? minTopicId, uint? maxTopicId)
         {
             throw new NotImplementedException();
         }

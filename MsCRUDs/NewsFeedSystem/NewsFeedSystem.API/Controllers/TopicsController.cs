@@ -44,7 +44,7 @@ namespace NewsFeedSystem.API.Controllers
         [ProducesResponseType(typeof(TopicDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [HttpGet]
-        public Task<IEnumerable<TopicDto>> GetTopics(uint? maxTopicId, uint? minTopicId)
+        public Task<IEnumerable<TopicDto>> GetTopics(uint? minTopicId, uint? maxTopicId = null)
         {
             throw new NotImplementedException();
         }

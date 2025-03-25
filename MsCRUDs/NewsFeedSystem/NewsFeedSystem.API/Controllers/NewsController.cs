@@ -47,7 +47,7 @@ namespace NewsFeedSystem.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ReadHeadlines(uint? maxNewsId, uint? minNewsId)
+        public async Task<IActionResult> ReadHeadlines(uint? minNewsId, uint? maxNewsId = null)
         {
             throw new NotImplementedException();
         }

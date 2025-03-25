@@ -26,7 +26,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<HeadLine>> ReadHeadlines(uint? maxNewsId, uint? minNewsId)
+        public async Task<IEnumerable<HeadLine>> ReadHeadlines(uint? minNewsId, uint? maxNewsId)
         {
             throw new NotImplementedException();
         }

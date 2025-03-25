@@ -25,10 +25,10 @@ namespace NewsFeedSystem.API.Contracts.Interfaces
         /// <summary>
         /// Получение тем
         /// </summary>
-        /// <param name="maxTopicId"> Максимальный Id темы </param>
         /// <param name="minTopicId"> Минимальный Id темы </param>
+        /// <param name="maxTopicId"> Максимальный Id темы </param>
         /// <returns></returns>
-        Task<IEnumerable<TopicDto>> GetTopics(uint? maxTopicId, uint? minTopicId);
+        Task<IEnumerable<TopicDto>> GetTopics(uint? minTopicId, uint? maxTopicId = null);
 
         /// <summary>
         /// Обновление темы
