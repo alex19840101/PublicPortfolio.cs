@@ -46,9 +46,15 @@ namespace NewsFeedSystem.BusinessLogic
             return await _tagsRepository.GetTags(maxTagId, minTagId);
         }
 
-        public async Task<UpdateResult> Update(Tag request)
+        public async Task<UpdateResult> Update(Tag tag)
         {
-            throw new NotImplementedException();
+            if (tag == null)
+                throw new ArgumentNullException(ErrorStrings.TAG_RARAM_NAME);
+
+            if (string.IsNullOrWhiteSpace(tag.Name))
+                return new UpdateResult(ErrorStrings.TAG_NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            return await _tagsRepository.Update(tag);
         }
     }
 }

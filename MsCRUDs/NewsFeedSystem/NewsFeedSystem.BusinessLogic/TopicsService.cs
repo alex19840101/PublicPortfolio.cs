@@ -46,9 +46,15 @@ namespace NewsFeedSystem.BusinessLogic
             return await _topicsRepository.GetTopics(maxTopicId, minTopicId);
         }
 
-        public async Task<UpdateResult> Update(Topic request)
+        public async Task<UpdateResult> Update(Topic topic)
         {
-            throw new NotImplementedException();
+            if (topic == null)
+                throw new ArgumentNullException(ErrorStrings.TOPIC_RARAM_NAME);
+
+            if (string.IsNullOrWhiteSpace(topic.Name))
+                return new UpdateResult(ErrorStrings.TOPIC_NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            return await _topicsRepository.Update(topic);
         }
     }
 }
