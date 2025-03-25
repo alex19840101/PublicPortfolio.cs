@@ -17,24 +17,33 @@ namespace NewsFeedSystem.BusinessLogic
         {
             _tagsRepository = tagsRepository;
         }
-        public async Task<CreateResult> Create(Tag request)
+        public async Task<CreateResult> Create(Tag tag)
         {
-            throw new NotImplementedException();
+            if (tag == null)
+                throw new ArgumentNullException(ErrorStrings.TAG_RARAM_NAME);
+
+            if (string.IsNullOrWhiteSpace(tag.Name))
+                return new CreateResult(ErrorStrings.TAG_NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+
+            var createResult = await _tagsRepository.Create(tag);
+
+            return createResult;
         }
 
         public async Task<DeleteResult> Delete(uint tagId)
         {
-            throw new NotImplementedException();
+            return await _tagsRepository.Delete(tagId);
         }
 
         public async Task<Tag> Get(uint tagId)
         {
-            throw new NotImplementedException();
+            return await _tagsRepository.Get(tagId);
         }
 
         public async Task<IEnumerable<Tag>> GetTags(uint? maxTagId, uint? minTagId)
         {
-            throw new NotImplementedException();
+            return await _tagsRepository.GetTags(maxTagId, minTagId);
         }
 
         public async Task<UpdateResult> Update(Tag request)

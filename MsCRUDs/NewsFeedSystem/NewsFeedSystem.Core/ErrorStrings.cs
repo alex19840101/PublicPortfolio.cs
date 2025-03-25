@@ -34,5 +34,13 @@
         public const string NEWSPOST_RARAM_NAME = "newsPost";
         public const string HEADLINE_SHOULD_NOT_BE_EMPTY = "Headline field should be not empty";
         public const string TEXT_SHOULD_NOT_BE_EMPTY = "Text field should be not empty";
+
+        //Tags
+        public const string TAG_RARAM_NAME = "tag";
+        public const string TAG_NAME_SHOULD_NOT_BE_EMPTY = "Tag.Name field should be not empty";
+
+                //Topics
+        public const string TOPIC_RARAM_NAME = "topic";
+        public const string TOPIC_NAME_SHOULD_NOT_BE_EMPTY = "Topic.Name field should be not empty";
     }
 }

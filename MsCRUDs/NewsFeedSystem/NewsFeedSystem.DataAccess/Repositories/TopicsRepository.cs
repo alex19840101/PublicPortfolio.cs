@@ -11,7 +11,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
 {
     public class TopicsRepository : ITopicsRepository
     {
-        public async Task<CreateResult> Create(Topic request)
+        public async Task<CreateResult> Create(Topic topic)
         {
             throw new NotImplementedException();
         }
@@ -31,7 +31,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<UpdateResult> Update(Topic request)
+        public async Task<UpdateResult> Update(Topic topic)
         {
             throw new NotImplementedException();
         }

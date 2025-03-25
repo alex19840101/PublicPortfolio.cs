@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using NewsFeedSystem.API.Contracts.Requests;
 
 namespace NewsFeedSystem.API.Contracts.Interfaces
 {
@@ -15,7 +16,7 @@ namespace NewsFeedSystem.API.Contracts.Interfaces
         /// </summary>
         /// <param name="request"> Запрос на создание тега </param>
         /// <returns></returns>
-        Task<IActionResult> Create(TagDto request);
+        Task<IActionResult> Create(CreateTagRequestDto request);
 
         /// <summary>
         /// Получение тега

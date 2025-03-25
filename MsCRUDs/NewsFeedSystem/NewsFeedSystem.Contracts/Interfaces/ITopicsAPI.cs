@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using NewsFeedSystem.API.Contracts.Requests;
 
 namespace NewsFeedSystem.API.Contracts.Interfaces
 {
@@ -12,7 +13,7 @@ namespace NewsFeedSystem.API.Contracts.Interfaces
         /// </summary>
         /// <param name="request"> Запрос на создание темы </param>
         /// <returns></returns>
-        Task<IActionResult> Create(TopicDto request);
+        Task<IActionResult> Create(CreateTopicRequestDto request);
 
         /// <summary>
         /// Получение темы

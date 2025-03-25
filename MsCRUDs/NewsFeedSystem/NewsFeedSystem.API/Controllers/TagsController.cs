@@ -29,7 +29,7 @@ namespace NewsFeedSystem.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(CreateResponseDto), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
-        public Task<IActionResult> Create(TagDto request)
+        public Task<IActionResult> Create(CreateTagRequestDto request)
         {
             throw new NotImplementedException();
         }

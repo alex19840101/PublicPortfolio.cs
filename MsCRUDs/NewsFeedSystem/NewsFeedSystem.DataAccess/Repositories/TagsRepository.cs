@@ -11,7 +11,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
 {
     public class TagsRepository : ITagsRepository
     {
-        public async Task<CreateResult> Create(Tag request)
+        public async Task<CreateResult> Create(Tag tag)
         {
             throw new NotImplementedException();
         }
@@ -31,7 +31,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<UpdateResult> Update(Tag request)
+        public async Task<UpdateResult> Update(Tag tag)
         {
             throw new NotImplementedException();
         }
