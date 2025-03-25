@@ -86,14 +86,14 @@ try
                     tokenValidationParameters,
                     key: builder.Configuration["JWT:KEY"]));
 
-    //builder.Services.AddScoped<INewsRepository, NewsRepository>();
-    //builder.Services.AddScoped<INewsService, NewsService>();
+    builder.Services.AddScoped<INewsRepository, NewsRepository>();
+    builder.Services.AddScoped<INewsService, NewsService>();
 
-    //builder.Services.AddScoped<ITagsRepository, TagsRepository>();
-    //builder.Services.AddScoped<ITagsService, TagsService>();
+    builder.Services.AddScoped<ITagsRepository, TagsRepository>();
+    builder.Services.AddScoped<ITagsService, TagsService>();
 
-    //builder.Services.AddScoped<ITopicsRepository, TopicsRepository>();
-    //builder.Services.AddScoped<ITopicsService, TopicsService>();
+    builder.Services.AddScoped<ITopicsRepository, TopicsRepository>();
+    builder.Services.AddScoped<ITopicsService, TopicsService>();
 
     IHostEnvironment env = builder.Environment;
 
