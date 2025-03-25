@@ -24,12 +24,12 @@ namespace NewsFeedSystem.API.Contracts.Interfaces
         Task<IActionResult> GetNewsPost(uint newsId);
 
         /// <summary>
-        /// Получение новостных постов
+        /// Получение заголовков новостных постов
         /// </summary>
         /// <param name="minNewsId"> Минимальный Id новостного поста </param>
         /// <param name="maxNewsId"> Максимальный Id новостного поста </param>
         /// <returns></returns>
-        Task<IActionResult> GetHeadlines(uint? minNewsId, uint? maxNewsId = null);
+        Task<IEnumerable<HeadLineDto>> GetHeadlines(uint? minNewsId, uint? maxNewsId = null);
 
         /// <summary>
         /// Получение заголовков новостных постов по Id тега

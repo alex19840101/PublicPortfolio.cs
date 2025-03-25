@@ -164,12 +164,12 @@ namespace NewsFeedSystem.DataAccess.Repositories
 
         private static IEnumerable<HeadLine> GetHeadlines(IEnumerable<News> entityNewsLst)
         {
-            return entityNewsLst.Select(n => new HeadLine(
-                        id: n.Id,
-                        headLine: n.Headline,
-                        tags: n.Tags,
-                        topics: n.Topics,
-                        created: n.Created));
+            return entityNewsLst.Select(news => new HeadLine(
+                        id: news.Id,
+                        headLine: news.Headline,
+                        tags: news.Tags,
+                        topics: news.Topics,
+                        created: news.Created));
         }
     }
 }

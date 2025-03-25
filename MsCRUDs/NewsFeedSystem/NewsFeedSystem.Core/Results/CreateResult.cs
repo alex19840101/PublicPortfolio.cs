@@ -8,7 +8,7 @@ namespace NewsFeedSystem.Core.Results
         public uint? Id { get; set; }
 
         /// <summary> Сообщение о результате выполнения запроса Create </summary>
-        public string? Message { get; set; }
+        public string Message { get; set; }
 
 
         public HttpStatusCode StatusCode { get; set; }

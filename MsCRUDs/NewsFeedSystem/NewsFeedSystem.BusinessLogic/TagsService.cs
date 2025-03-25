@@ -36,7 +36,7 @@ namespace NewsFeedSystem.BusinessLogic
             return await _tagsRepository.Delete(tagId);
         }
 
-        public async Task<Tag> Get(uint tagId)
+        public async Task<Tag?> Get(uint tagId)
         {
             return await _tagsRepository.Get(tagId);
         }

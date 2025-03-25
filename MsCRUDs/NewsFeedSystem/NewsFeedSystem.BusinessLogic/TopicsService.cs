@@ -36,7 +36,7 @@ namespace NewsFeedSystem.BusinessLogic
             return await _topicsRepository.Delete(topicId);
         }
 
-        public async Task<Topic> Get(uint topicId)
+        public async Task<Topic?> Get(uint topicId)
         {
             return await _topicsRepository.Get(topicId);
         }

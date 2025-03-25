@@ -9,9 +9,16 @@ using NewsFeedSystem.API.Contracts.Interfaces;
 using NewsFeedSystem.API.Contracts.Requests;
 using NewsFeedSystem.Core.Results;
 using NewsFeedSystem.API.Contracts;
+using NewsFeedSystem.Core.Services;
+using Microsoft.AspNetCore.Http;
+using NewsFeedSystem.API.Extensions;
+using Microsoft.AspNetCore.Authorization;
+using NewsFeedSystem.Core;
+using System.Linq;
 
 namespace NewsFeedSystem.API.Controllers
 {
+    /// <summary> Контроллер управления темами </summary>
     [ApiController]
     [Asp.Versioning.ApiVersion(1.0)]
     [Route("api/v{version:apiVersion}/[controller]/[action]")]
@@ -19,43 +26,99 @@ namespace NewsFeedSystem.API.Controllers
     [Consumes("application/json")]
     public class TopicsController : ControllerBase, ITopicsAPI
     {
+        private readonly ITopicsService _topicsService;
         private readonly ILogger<TopicsController> _logger;
 
-        public TopicsController(ILogger<TopicsController> logger)
+        public TopicsController(ITopicsService topicsService,
+            ILogger<TopicsController> logger)
         {
+            _topicsService = topicsService;
             _logger = logger;
         }
 
+
+        /// <summary>
+        /// Создание новостной темы
+        /// </summary>
+        /// <param name="createTopicRequestDto"> Запрос на создание темы </param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(CreateResponseDto), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
-        public Task<IActionResult> Create(CreateTopicRequestDto request)
+        public async Task<IActionResult> Create(CreateTopicRequestDto createTopicRequestDto)
         {
-            throw new NotImplementedException();
+            var createResult = await _topicsService.Create(new Core.Topic(id: 0, name: createTopicRequestDto.Topic));
+
+            if (createResult.StatusCode == HttpStatusCode.BadRequest)
+                return new BadRequestObjectResult(new ProblemDetails { Title = createResult.Message });
+
+            if (createResult.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(new MessageResponseDto { Message = createResult.Message });
+
+            if (createResult.StatusCode == HttpStatusCode.Conflict)
+                return new ConflictObjectResult(new MessageResponseDto { Message = createResult.Message });
+
+            var result = new CreateResponseDto
+            {
+                Id = createResult.Id.Value,
+            };
+            return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
         }
 
+        
+        /// <summary> Получение темы </summary>
+        /// <param name="topicId"> Id темы </param>
+        /// <returns></returns>
         [HttpGet]
-        public Task<IActionResult> Get(uint topicId)
-        {
-            throw new NotImplementedException();
-        }
-
-
         [ProducesResponseType(typeof(TopicDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
-        [HttpGet]
-        public Task<IEnumerable<TopicDto>> GetTopics(uint? minTopicId, uint? maxTopicId = null)
+        [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Get(uint topicId)
         {
-            throw new NotImplementedException();
+            var topic = await _topicsService.Get(topicId);
+
+            if (topic is null)
+                return NotFound(new MessageResponseDto { Message = ErrorStrings.NEWS_NOT_FOUND });
+
+            return Ok(topic.GetTopicDto());
         }
 
+        /// <summary>
+        ///  Получение тем
+        /// </summary>
+        /// <param name="minTopicId"> Минимальный Id темы </param>
+        /// <param name="maxTopicId"> Максимальный Id темы </param>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(TopicDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        public async Task<IEnumerable<TopicDto>> GetTopics(uint? minTopicId, uint? maxTopicId = null)
+        {
+            var topicsCollection = await _topicsService.GetTopics(minTopicId, maxTopicId);
+
+            if (!topicsCollection.Any())
+                return [];
+
+            return topicsCollection.GetTopicDtos();
+        }
+
+        /// <summary>
+        /// Обновление темы
+        /// </summary>
+        /// <param name="topicDto"> Запрос на обновление темы </param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.NotFound)]
-        public Task<IActionResult> Update(TopicDto request)
+        public async Task<IActionResult> Update(TopicDto topicDto)
         {
-            throw new NotImplementedException();
+            var updateResult = await _topicsService.Update(topicDto.GetTopic());
+
+            if (updateResult.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(updateResult);
+
+            return Ok(updateResult);
         }
 
         /// <summary>
@@ -69,9 +132,18 @@ namespace NewsFeedSystem.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.NotFound)]
-        public Task<IActionResult> Delete(uint topicId)
+        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> Delete(uint topicId)
         {
-            throw new NotImplementedException();
+            var deleteResult = await _topicsService.Delete(topicId);
+
+            if (deleteResult.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(deleteResult);
+            if (deleteResult.StatusCode == HttpStatusCode.Forbidden)
+                return new ObjectResult(deleteResult) { StatusCode = StatusCodes.Status403Forbidden };
+
+            return Ok(deleteResult);
         }
     }
 }
