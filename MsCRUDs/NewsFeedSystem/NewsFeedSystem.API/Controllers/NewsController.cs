@@ -41,25 +41,25 @@ namespace NewsFeedSystem.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Read(uint newsId)
+        public async Task<IActionResult> GetNewsPost(uint newsId)
         {
             throw new NotImplementedException();
         }
 
         [HttpGet]
-        public async Task<IActionResult> ReadHeadlines(uint? minNewsId, uint? maxNewsId = null)
+        public async Task<IActionResult> GetHeadlines(uint? minNewsId, uint? maxNewsId = null)
         {
             throw new NotImplementedException();
         }
 
         [HttpGet]
-        public async Task<IEnumerable<HeadLineDto>> ReadHeadlinesByTag(uint tagId, uint minNewsId)
+        public async Task<IEnumerable<HeadLineDto>> GetHeadlinesByTag(uint tagId, uint minNewsId)
         {
             throw new NotImplementedException();
         }
 
         [HttpGet]
-        public async Task<IEnumerable<HeadLineDto>> ReadHeadlinesByTopic(uint topicId, uint minNewsId)
+        public async Task<IEnumerable<HeadLineDto>> GetHeadlinesByTopic(uint topicId, uint minNewsId)
         {
             throw new NotImplementedException();
         }

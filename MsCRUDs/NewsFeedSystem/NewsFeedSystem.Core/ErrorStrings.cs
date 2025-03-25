@@ -34,13 +34,21 @@
         public const string NEWSPOST_RARAM_NAME = "newsPost";
         public const string HEADLINE_SHOULD_NOT_BE_EMPTY = "Headline field should be not empty";
         public const string TEXT_SHOULD_NOT_BE_EMPTY = "Text field should be not empty";
+        public const string NEWS_NOT_FOUND = "News post not found";
+        public const string NEWS_UPDATED = "News post updated";
+        public const string NEWS_IS_ACTUAL = "News post is actual";
 
         //Tags
         public const string TAG_RARAM_NAME = "tag";
         public const string TAG_NAME_SHOULD_NOT_BE_EMPTY = "Tag.Name field should be not empty";
+        public const string TAG_UPDATED = "Tag updated";
+        public const string TAG_IS_ACTUAL = "Tag is actual";
 
-                //Topics
+        //Topics
         public const string TOPIC_RARAM_NAME = "topic";
         public const string TOPIC_NAME_SHOULD_NOT_BE_EMPTY = "Topic.Name field should be not empty";
+        public const string TOPIC_NOT_FOUND = "Topic not found";
+        public const string TOPIC_UPDATED = "Topic updated";
+        public const string TOPIC_IS_ACTUAL = "Topic is actual";
     }
 }

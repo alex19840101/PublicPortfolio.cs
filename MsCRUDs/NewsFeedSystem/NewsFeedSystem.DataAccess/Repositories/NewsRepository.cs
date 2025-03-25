@@ -1,49 +1,175 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Linq.Expressions;
+using System.Net;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NewsFeedSystem.Core;
 using NewsFeedSystem.Core.Repositories;
 using NewsFeedSystem.Core.Results;
+using NewsFeedSystem.DataAccess.Entities;
 
 namespace NewsFeedSystem.DataAccess.Repositories
 {
     public class NewsRepository : INewsRepository
     {
+        private readonly NewsFeedSystemDbContext _dbContext;
+        const int LIMIT_COUNT = 10;
+
+        public NewsRepository(NewsFeedSystemDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public async Task<CreateResult> Create(NewsPost newsPost)
         {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(newsPost);
+            var newNewsEntity = News.NewsEntity(newsPost);
+
+            await _dbContext.AddAsync(newNewsEntity);
+            await _dbContext.SaveChangesAsync();
+
+            await _dbContext.Entry(newNewsEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id
+            return new CreateResult
+            {
+                Id = newNewsEntity.Id,
+                StatusCode = HttpStatusCode.Created
+            };
         }
 
         public async Task<DeleteResult> DeleteNewsPost(uint newsId)
         {
-            throw new NotImplementedException();
+            var entityNews = await _dbContext.News
+                .AsNoTracking()
+                .SingleOrDefaultAsync(n => n.Id == newsId);
+
+            if (entityNews is null)
+                return new DeleteResult(ErrorStrings.NEWS_NOT_FOUND, HttpStatusCode.NotFound);
+
+            _dbContext.News.Remove(entityNews);
+            await _dbContext.SaveChangesAsync();
+
+            return new DeleteResult(ErrorStrings.OK, HttpStatusCode.OK);
         }
 
-        public async Task<NewsPost> Read(uint newsId)
+        public async Task<NewsPost?> Get(uint newsId)
         {
-            throw new NotImplementedException();
+            var entityNews = await _dbContext.News
+                .AsNoTracking()
+                .SingleOrDefaultAsync(n => n.Id == newsId);
+
+            if (entityNews is null)
+                return null;
+
+            return entityNews.GetCoreNewsPost();
         }
 
-        public async Task<IEnumerable<HeadLine>> ReadHeadlines(uint? minNewsId, uint? maxNewsId)
+        public async Task<IEnumerable<HeadLine>> GetHeadlines(uint? minNewsId, uint? maxNewsId)
         {
-            throw new NotImplementedException();
+            List<News> entityNewsLst;
+            var query = _dbContext.News.AsNoTracking();
+            if (minNewsId == null && maxNewsId == null)
+            {
+                entityNewsLst = await query.TakeLast(LIMIT_COUNT).ToListAsync();
+
+                if (entityNewsLst.Count == 0)
+                    return [];
+
+                return GetHeadlines(entityNewsLst);
+            }
+            Expression<Func<News, bool>> expressionForMinNewsId = 
+                n => n.Id >= minNewsId;
+
+            if (maxNewsId == null)
+            {
+                entityNewsLst = await query.Where(expressionForMinNewsId).TakeLast(LIMIT_COUNT).ToListAsync();
+                if (entityNewsLst.Count == 0)
+                    return [];
+
+                return GetHeadlines(entityNewsLst);
+            }
+
+            Expression<Func<News, bool>> expressionForMaxNewsId =
+                n => n.Id <= maxNewsId;
+
+            if (minNewsId != null)
+                query = query.Where(expressionForMinNewsId);
+
+            entityNewsLst = await query.Where(expressionForMaxNewsId).TakeLast(LIMIT_COUNT).ToListAsync();
+            if (entityNewsLst.Count == 0)
+                return [];
+
+            return GetHeadlines(entityNewsLst);
         }
 
-        public async Task<IEnumerable<HeadLine>> ReadHeadlinesByTag(uint tagId, uint minNewsId)
+        public async Task<IEnumerable<HeadLine>> GetHeadlinesByTag(uint tagId, uint minNewsId)
         {
-            throw new NotImplementedException();
+            var entityNewsLst = await _dbContext.News
+                .AsNoTracking()
+                .Where(n => n.Id >= minNewsId && n.Tags.Contains(tagId))
+                .TakeLast(LIMIT_COUNT)
+                .ToListAsync();
+
+            return GetHeadlines(entityNewsLst);
         }
 
         public async Task<IEnumerable<HeadLine>> ReadHeadlinesByTopic(uint topicId, uint minNewsId)
         {
-            throw new NotImplementedException();
+            var entityNewsLst = await _dbContext.News
+                .AsNoTracking()
+                .Where(n => n.Id >= minNewsId && n.Topics.Contains(topicId))
+                .TakeLast(LIMIT_COUNT)
+                .ToListAsync();
+
+            return GetHeadlines(entityNewsLst);
         }
 
         public async Task<UpdateResult> Update(NewsPost newsPost)
         {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(newsPost);
+
+            var entityNews = await _dbContext.News
+                .SingleOrDefaultAsync(n => n.Id == newsPost.Id);
+
+            if (entityNews is null)
+                return new UpdateResult(ErrorStrings.NEWS_NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (!string.Equals(newsPost.Headline, entityNews.Headline)) entityNews.UpdateHeadline(newsPost.Headline);
+            if (!string.Equals(newsPost.Text, entityNews.Text)) entityNews.UpdateText(newsPost.Text);
+            
+            if (!string.Equals(newsPost.URL, entityNews.URL)) entityNews.UpdateUrl(newsPost.URL);
+            if (!string.Equals(newsPost.Author, entityNews.Author)) entityNews.UpdateAuthor(newsPost.Author);
+
+            if (!newsPost.Topics.SequenceEqual(entityNews.Topics))
+                entityNews.UpdateTopics(newsPost.Topics);
+
+            if (!newsPost.Tags.SequenceEqual(entityNews.Tags))
+                entityNews.UpdateTags(newsPost.Tags);
+
+            if (newsPost.Created != entityNews.Created)
+                entityNews.UpdateCreated(newsPost.Created);
+
+            if (newsPost.Updated != entityNews.Updated)
+                entityNews.UpdateLastUpdateDt(newsPost.Updated);
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                entityNews.UpdateLastUpdateDt(DateTime.Now);
+                await _dbContext.SaveChangesAsync();
+                return new UpdateResult(ErrorStrings.NEWS_UPDATED, HttpStatusCode.OK);
+            }
+            return new UpdateResult(ErrorStrings.NEWS_IS_ACTUAL, HttpStatusCode.OK);
+        }
+
+        private static IEnumerable<HeadLine> GetHeadlines(IEnumerable<News> entityNewsLst)
+        {
+            return entityNewsLst.Select(n => new HeadLine(
+                        id: n.Id,
+                        headLine: n.Headline,
+                        tags: n.Tags,
+                        topics: n.Topics,
+                        created: n.Created));
         }
     }
 }

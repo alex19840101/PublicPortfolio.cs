@@ -21,7 +21,7 @@ namespace NewsFeedSystem.API.Contracts.Interfaces
         /// </summary>
         /// <param name="newsId"> Id новостного поста </param>
         /// <returns></returns>
-        Task<IActionResult> Read(uint newsId);
+        Task<IActionResult> GetNewsPost(uint newsId);
 
         /// <summary>
         /// Получение новостных постов
@@ -29,7 +29,7 @@ namespace NewsFeedSystem.API.Contracts.Interfaces
         /// <param name="minNewsId"> Минимальный Id новостного поста </param>
         /// <param name="maxNewsId"> Максимальный Id новостного поста </param>
         /// <returns></returns>
-        Task<IActionResult> ReadHeadlines(uint? minNewsId, uint? maxNewsId = null);
+        Task<IActionResult> GetHeadlines(uint? minNewsId, uint? maxNewsId = null);
 
         /// <summary>
         /// Получение заголовков новостных постов по Id тега
@@ -37,7 +37,7 @@ namespace NewsFeedSystem.API.Contracts.Interfaces
         /// <param name="tagId"> Id тега </param>
         /// <param name="minNewsId"> Минимальный Id новостного поста </param>
         /// <returns></returns>
-        Task<IEnumerable<HeadLineDto>> ReadHeadlinesByTag(uint tagId, uint minNewsId);
+        Task<IEnumerable<HeadLineDto>> GetHeadlinesByTag(uint tagId, uint minNewsId);
 
         /// <summary>
         /// Получение заголовков новостных постов по Id темы
@@ -45,7 +45,7 @@ namespace NewsFeedSystem.API.Contracts.Interfaces
         /// <param name="topicId"> Id темы </param>
         /// <param name="minNewsId"> Минимальный Id новостного поста </param>
         /// <returns></returns>
-        Task<IEnumerable<HeadLineDto>> ReadHeadlinesByTopic(uint topicId, uint minNewsId);
+        Task<IEnumerable<HeadLineDto>> GetHeadlinesByTopic(uint topicId, uint minNewsId);
 
         /// <summary>
         /// Обновление новостного поста

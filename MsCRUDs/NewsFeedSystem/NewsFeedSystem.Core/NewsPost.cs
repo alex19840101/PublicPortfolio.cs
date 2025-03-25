@@ -33,12 +33,12 @@ namespace NewsFeedSystem.Core
         /// <summary>
         /// Тэги
         /// </summary>
-        public List<int> Tags { get { return _tags; } }
+        public List<uint> Tags { get { return _tags; } }
 
         /// <summary>
         /// Темы
         /// </summary>
-        public List<int> Topics { get { return _topics; } }
+        public List<uint> Topics { get { return _topics; } }
         public DateTime Created { get { return _created; } }
         public DateTime? Updated { get { return _updated; } }
 
@@ -47,9 +47,9 @@ namespace NewsFeedSystem.Core
         private string _text = default!;
         private string? _url;
         private string? _author;
-        private List<int> _tags = default!;
-        private List<int> _topics = default!;
-        private readonly DateTime _created;
+        private List<uint> _tags = default!;
+        private List<uint> _topics = default!;
+        private DateTime _created;
         private DateTime? _updated;
 
         public NewsPost(
@@ -58,8 +58,8 @@ namespace NewsFeedSystem.Core
             string text,
             string? url,
             string? author,
-            List<int> tags,
-            List<int> topics,
+            List<uint> tags,
+            List<uint> topics,
             DateTime created,
             DateTime? updated)
         {
@@ -73,5 +73,14 @@ namespace NewsFeedSystem.Core
             _created = created;
             _updated = updated;
         }
+
+        public void UpdateHeadline(string newHeadline) => _headLine = newHeadline;
+        public void UpdateText(string newText) => _text = newText;
+        public void UpdateUrl(string? newUrl) => _url = newUrl;
+        public void UpdateAuthor(string? newAuthor) => _author = newAuthor;
+        public void UpdateTags(List<uint> tags) => _tags = tags;
+        public void UpdateTopics(List<uint> topics) => _topics = topics;
+        public void UpdateCreated(DateTime created) => _created = created;
+        public void UpdateLastUpdateDt(DateTime? updated) => _updated = updated;
     }
 }

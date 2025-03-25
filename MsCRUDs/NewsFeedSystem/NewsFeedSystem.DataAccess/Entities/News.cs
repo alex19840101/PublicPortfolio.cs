@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NewsFeedSystem.Core;
 
 namespace NewsFeedSystem.DataAccess.Entities
 {
@@ -36,12 +37,12 @@ namespace NewsFeedSystem.DataAccess.Entities
         /// <summary>
         /// Тэги
         /// </summary>
-        public List<int> Tags { get { return _tags; } }
+        public List<uint> Tags { get { return _tags; } }
 
         /// <summary>
         /// Темы
         /// </summary>
-        public List<int> Topics { get { return _topics; } }
+        public List<uint> Topics { get { return _topics; } }
         public DateTime Created { get { return _created; } }
         public DateTime? Updated { get { return _updated; } }
 
@@ -50,9 +51,9 @@ namespace NewsFeedSystem.DataAccess.Entities
         private string _text = default!;
         private string? _url;
         private string? _author;
-        private List<int> _tags = default!;
-        private List<int> _topics = default!;
-        private readonly DateTime _created;
+        private List<uint> _tags = default!;
+        private List<uint> _topics = default!;
+        private DateTime _created;
         private DateTime? _updated;
 
         public News(
@@ -61,8 +62,8 @@ namespace NewsFeedSystem.DataAccess.Entities
             string text,
             string? url,
             string? author,
-            List<int> tags,
-            List<int> topics,
+            List<uint> tags,
+            List<uint> topics,
             DateTime created,
             DateTime? updated)
         {
@@ -76,5 +77,38 @@ namespace NewsFeedSystem.DataAccess.Entities
             _created = created;
             _updated = updated;
         }
+
+        public static News NewsEntity(NewsPost newsPost)
+            => new(
+                id: newsPost.Id,
+                headLine: newsPost.Headline,
+                text: newsPost.Text,
+                url: newsPost.URL,
+                author: newsPost.Author,
+                tags: newsPost.Tags,
+                topics: newsPost.Topics,
+                created: newsPost.Created,
+                updated: newsPost.Updated);
+
+        public NewsPost GetCoreNewsPost()
+            => new(
+                id: _id,
+                headLine: _headLine,
+                text: _text,
+                url: _url,
+                author: _author,
+                tags: _tags,
+                topics: _topics,
+                created: _created,
+                updated: _updated);
+
+        public void UpdateHeadline(string newHeadline) => _headLine = newHeadline;
+        public void UpdateText(string newText) => _text = newText;
+        public void UpdateUrl(string? newUrl) => _url = newUrl;
+        public void UpdateAuthor(string? newAuthor) => _author = newAuthor;
+        public void UpdateTags(List<uint> tags) => _tags = tags;
+        public void UpdateTopics(List<uint> topics) => _topics = topics;
+        public void UpdateCreated(DateTime created) => _created = created;
+        public void UpdateLastUpdateDt(DateTime? updated) => _updated = updated;
     }
 }

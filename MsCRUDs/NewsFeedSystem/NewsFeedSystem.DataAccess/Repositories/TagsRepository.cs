@@ -1,39 +1,135 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NewsFeedSystem.Core;
 using NewsFeedSystem.Core.Repositories;
 using NewsFeedSystem.Core.Results;
+using NewsFeedSystem.DataAccess.Entities;
 
 namespace NewsFeedSystem.DataAccess.Repositories
 {
     public class TagsRepository : ITagsRepository
     {
-        public async Task<CreateResult> Create(Tag tag)
+        private readonly NewsFeedSystemDbContext _dbContext;
+        const int LIMIT_COUNT = 100;
+
+        public TagsRepository(NewsFeedSystemDbContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
+        }
+
+        public async Task<CreateResult> Create(Core.Tag tag)
+        {
+            ArgumentNullException.ThrowIfNull(tag);
+
+            var newTagEntity = Entities.Tag.TagEntity(tag);
+
+            await _dbContext.AddAsync(newTagEntity);
+            await _dbContext.SaveChangesAsync();
+
+            await _dbContext.Entry(newTagEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id
+            return new CreateResult
+            {
+                Id = newTagEntity.Id,
+                StatusCode = HttpStatusCode.Created
+            };
         }
 
         public async Task<DeleteResult> Delete(uint tagId)
         {
-            throw new NotImplementedException();
+            var entityTag = await _dbContext.Tags
+            .AsNoTracking()
+            .SingleOrDefaultAsync(t => t.Id == tagId);
+
+            if (entityTag is null)
+                return new DeleteResult(ErrorStrings.TOPIC_NOT_FOUND, HttpStatusCode.NotFound);
+
+            _dbContext.Tags.Remove(entityTag);
+            await _dbContext.SaveChangesAsync();
+
+            return new DeleteResult(ErrorStrings.OK, HttpStatusCode.OK);
         }
 
-        public async Task<Tag> Get(uint tagId)
+        public async Task<Core.Tag?> Get(uint tagId)
         {
-            throw new NotImplementedException();
+            var entityTag = await _dbContext.Tags
+                .AsNoTracking()
+                .SingleOrDefaultAsync(t => t.Id == tagId);
+
+            if (entityTag is null)
+                return null;
+
+            return entityTag.GetCoreTag();
         }
 
-        public async Task<IEnumerable<Tag>> GetTags(uint? minTagId, uint? maxTagId)
+        public async Task<IEnumerable<Core.Tag>> GetTags(uint? minTagId, uint? maxTagId)
         {
-            throw new NotImplementedException();
+            List<Entities.Tag> entityTagsLst;
+            var query = _dbContext.Tags.AsNoTracking();
+            if (minTagId == null && maxTagId == null)
+            {
+                entityTagsLst = await query.TakeLast(LIMIT_COUNT).ToListAsync();
+
+                if (entityTagsLst.Count == 0)
+                    return [];
+
+                return GetTags(entityTagsLst);
+            }
+            Expression<Func<Entities.Tag, bool>> expressionForMinTagId =
+                t => t.Id >= minTagId;
+
+            if (maxTagId == null)
+            {
+                entityTagsLst = await query.Where(expressionForMinTagId).TakeLast(LIMIT_COUNT).ToListAsync();
+                if (entityTagsLst.Count == 0)
+                    return [];
+
+                return GetTags(entityTagsLst);
+            }
+
+            Expression<Func<Entities.Tag, bool>> expressionForMaxTagId =
+                t => t.Id <= maxTagId;
+
+            if (minTagId != null)
+                query = query.Where(expressionForMinTagId);
+
+            entityTagsLst = await query.Where(expressionForMaxTagId).TakeLast(LIMIT_COUNT).ToListAsync();
+            if (entityTagsLst.Count == 0)
+                return [];
+
+            return GetTags(entityTagsLst);
         }
 
-        public async Task<UpdateResult> Update(Tag tag)
+        public async Task<UpdateResult> Update(Core.Tag tag)
         {
-            throw new NotImplementedException();
+            ArgumentNullException.ThrowIfNull(tag);
+
+            var entityTag = await _dbContext.Tags
+                .SingleOrDefaultAsync(t => t.Id == tag.Id);
+
+            if (entityTag is null)
+                return new UpdateResult(ErrorStrings.NEWS_NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (!string.Equals(tag.Name, entityTag.Name)) entityTag.UpdateTagName(tag.Name);
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                await _dbContext.SaveChangesAsync();
+                return new UpdateResult(ErrorStrings.TAG_UPDATED, HttpStatusCode.OK);
+            }
+            return new UpdateResult(ErrorStrings.TAG_IS_ACTUAL, HttpStatusCode.OK);
+        }
+
+        private static IEnumerable<Core.Tag> GetTags(IEnumerable<Entities.Tag> entityTagsLst)
+        {
+            return entityTagsLst.Select(t => new Core.Tag(
+                        id: t.Id,
+                        name: t.Name));
         }
     }
 }

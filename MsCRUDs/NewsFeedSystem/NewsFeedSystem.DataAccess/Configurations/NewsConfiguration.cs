@@ -18,21 +18,21 @@ namespace NewsFeedSystem.DataAccess.Configurations
 
         public void Configure(EntityTypeBuilder<News> builder)
         {
-            builder.HasKey(t => t.Id);
+            builder.HasKey(n => n.Id);
            
-            builder.Property(t => t.Id).HasField("_id");
-            builder.Property(t => t.Headline).HasField("_headLine").HasMaxLength(MAX_NAME_LENGTH).IsRequired();
-            builder.Property(t => t.Text).HasField("_text").HasMaxLength(MAX_TEXT_LENGTH).IsRequired();
+            builder.Property(n => n.Id).HasField("_id");
+            builder.Property(n => n.Headline).HasField("_headLine").HasMaxLength(MAX_NAME_LENGTH).IsRequired();
+            builder.Property(n => n.Text).HasField("_text").HasMaxLength(MAX_TEXT_LENGTH).IsRequired();
 
-            builder.Property(t => t.URL).HasField("_url").HasMaxLength(MAX_URL_LENGTH);
-            builder.Property(t => t.Author).HasField("_author").HasMaxLength(MAX_URL_LENGTH);
+            builder.Property(n => n.URL).HasField("_url").HasMaxLength(MAX_URL_LENGTH);
+            builder.Property(n => n.Author).HasField("_author").HasMaxLength(MAX_URL_LENGTH);
             
             
-            builder.Property(t => t.Tags).HasField("_tags").IsRequired();
-            builder.Property(t => t.Tags).HasField("_topics").IsRequired();
+            builder.Property(n => n.Tags).HasField("_tags").IsRequired();
+            builder.Property(n => n.Tags).HasField("_topics").IsRequired();
 
-            builder.Property(t => t.Created).HasMaxLength(DATETIME_LENGTH).IsRequired();
-            builder.Property(t => t.Updated).HasMaxLength(DATETIME_LENGTH);
+            builder.Property(n => n.Created).HasMaxLength(DATETIME_LENGTH).IsRequired();
+            builder.Property(n => n.Updated).HasMaxLength(DATETIME_LENGTH);
 
             //TODO: связи NewsConfiguration
         }

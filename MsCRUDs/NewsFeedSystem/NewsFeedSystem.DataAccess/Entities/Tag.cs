@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NewsFeedSystem.DataAccess.Entities
+﻿namespace NewsFeedSystem.DataAccess.Entities
 {
     public class Tag
     {
@@ -13,7 +7,7 @@ namespace NewsFeedSystem.DataAccess.Entities
         public string Name { get { return _name; } }
 
         private readonly uint _id;
-        private readonly string _name = default!;
+        private string _name = default!;
 
         public Tag(
             uint id,
@@ -22,5 +16,17 @@ namespace NewsFeedSystem.DataAccess.Entities
             _id = id;
             _name = name;
         }
+
+        public static Tag TagEntity(Core.Tag tag) =>
+            new(
+                id:  tag.Id,
+                name: tag.Name);
+
+        public Core.Tag GetCoreTag()
+            => new(
+                id: _id,
+                name: _name);
+
+        public void UpdateTagName(string newTagName) => _name = newTagName;
     }
 }

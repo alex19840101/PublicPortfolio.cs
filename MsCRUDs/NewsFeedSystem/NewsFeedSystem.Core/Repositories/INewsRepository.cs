@@ -7,9 +7,9 @@ namespace NewsFeedSystem.Core.Repositories
     public interface INewsRepository
     {
         Task<CreateResult> Create(NewsPost newsPost);
-        Task<NewsPost> Read(uint newsId);
-        Task<IEnumerable<HeadLine>> ReadHeadlines(uint? minNewsId, uint? maxNewsId);
-        Task<IEnumerable<HeadLine>> ReadHeadlinesByTag(uint tagId, uint minNewsId);
+        Task<NewsPost?> Get(uint newsId);
+        Task<IEnumerable<HeadLine>> GetHeadlines(uint? minNewsId, uint? maxNewsId);
+        Task<IEnumerable<HeadLine>> GetHeadlinesByTag(uint tagId, uint minNewsId);
         Task<IEnumerable<HeadLine>> ReadHeadlinesByTopic(uint topicId, uint minNewsId);
 
         Task<UpdateResult> Update(NewsPost newsPost);

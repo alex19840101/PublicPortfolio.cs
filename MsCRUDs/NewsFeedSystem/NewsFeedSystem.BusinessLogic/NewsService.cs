@@ -38,22 +38,22 @@ namespace NewsFeedSystem.BusinessLogic
             return await _newsRepository.DeleteNewsPost(newsId);
         }
 
-        public async Task<NewsPost> Read(uint newsId)
+        public async Task<NewsPost> Get(uint newsId)
         {
-            return await _newsRepository.Read(newsId);
+            return await _newsRepository.Get(newsId);
         }
 
-        public async Task<IEnumerable<HeadLine>> ReadHeadlines(uint? minNewsId, uint? maxNewsId)
+        public async Task<IEnumerable<HeadLine>> GetHeadlines(uint? minNewsId, uint? maxNewsId)
         {
-            return await _newsRepository.ReadHeadlines(maxNewsId, minNewsId);
+            return await _newsRepository.GetHeadlines(maxNewsId, minNewsId);
         }
 
-        public async Task<IEnumerable<HeadLine>> ReadHeadlinesByTag(uint tagId, uint minNewsId)
+        public async Task<IEnumerable<HeadLine>> GetHeadlinesByTag(uint tagId, uint minNewsId)
         {
-            return await _newsRepository.ReadHeadlinesByTag(tagId, minNewsId);
+            return await _newsRepository.GetHeadlinesByTag(tagId, minNewsId);
         }
 
-        public async Task<IEnumerable<HeadLine>> ReadHeadlinesByTopic(uint topicId, uint minNewsId)
+        public async Task<IEnumerable<HeadLine>> GetHeadlinesByTopic(uint topicId, uint minNewsId)
         {
             return await _newsRepository.ReadHeadlinesByTopic(topicId, minNewsId);
         }
