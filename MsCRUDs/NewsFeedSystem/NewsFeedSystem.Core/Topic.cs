@@ -18,5 +18,9 @@
         }
 
         public void UpdateTopicName(string newTopicName) => _name = newTopicName;
+        public override string ToString()
+        {
+            return $"{_id} {_name}";
+        }
     }
 }

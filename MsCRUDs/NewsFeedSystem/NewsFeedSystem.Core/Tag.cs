@@ -18,5 +18,10 @@
         }
 
         public void UpdateTagName(string newTagName) => _name = newTagName;
+
+        public override string ToString()
+        {
+            return $"{_id} {_name}";
+        }
     }
 }

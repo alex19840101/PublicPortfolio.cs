@@ -45,5 +45,10 @@ namespace NewsFeedSystem.Core
             _topics = topics;
             _created = created;
         }
+
+        public override string ToString()
+        {
+            return $"{_id} {_headLine}";
+        }
     }
 }

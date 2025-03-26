@@ -110,5 +110,10 @@ namespace NewsFeedSystem.DataAccess.Entities
         public void UpdateTopics(List<uint> topics) => _topics = topics;
         public void UpdateCreated(DateTime created) => _created = created;
         public void UpdateLastUpdateDt(DateTime? updated) => _updated = updated;
+
+        public override string ToString()
+        {
+            return $"{_id} {_headLine}";
+        }
     }
 }
