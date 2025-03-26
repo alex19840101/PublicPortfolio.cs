@@ -15,11 +15,14 @@ namespace NewsFeedSystem.DataAccess.Repositories
     public class NewsRepository : INewsRepository
     {
         private readonly NewsFeedSystemDbContext _dbContext;
+        private readonly ICacheService _cacheService;
         const int LIMIT_COUNT = 10;
 
-        public NewsRepository(NewsFeedSystemDbContext dbContext)
+        public NewsRepository(NewsFeedSystemDbContext dbContext,
+            ICacheService cacheService)
         {
             _dbContext = dbContext;
+            _cacheService = cacheService;
         }
 
         public async Task<CreateResult> Create(NewsPost newsPost)
@@ -55,6 +58,13 @@ namespace NewsFeedSystem.DataAccess.Repositories
 
         public async Task<NewsPost?> Get(uint newsId)
         {
+            var cachedNewsPost = _cacheService.Get<NewsPost>(newsId.ToString());
+
+            if (cachedNewsPost != null)
+            {
+                return cachedNewsPost;
+            }
+            
             var entityNews = await _dbContext.News
                 .AsNoTracking()
                 .SingleOrDefaultAsync(n => n.Id == newsId);
@@ -62,7 +72,11 @@ namespace NewsFeedSystem.DataAccess.Repositories
             if (entityNews is null)
                 return null;
 
-            return entityNews.GetCoreNewsPost();
+            var newsPost = entityNews.GetCoreNewsPost();
+
+            _cacheService.Set<NewsPost>(newsId.ToString(), newsPost);
+
+            return newsPost;
         }
 
         public async Task<IEnumerable<HeadLine>> GetHeadlines(uint? minNewsId, uint? maxNewsId)

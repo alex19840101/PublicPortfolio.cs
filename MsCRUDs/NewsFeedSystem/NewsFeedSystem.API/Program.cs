@@ -86,6 +86,13 @@ try
                     tokenValidationParameters,
                     key: builder.Configuration["JWT:KEY"]));
 
+    builder.Services.AddSingleton<ICacheService, CacheService>();
+
+    builder.Services.AddStackExchangeRedisCache(options =>
+    {
+        options.Configuration = $"{builder.Configuration.GetValue<string>("Redis:Server")}:{builder.Configuration.GetValue<int>("Redis:Port")}";
+    });
+
     builder.Services.AddScoped<INewsRepository, NewsRepository>();
     builder.Services.AddScoped<INewsService, NewsService>();
 
