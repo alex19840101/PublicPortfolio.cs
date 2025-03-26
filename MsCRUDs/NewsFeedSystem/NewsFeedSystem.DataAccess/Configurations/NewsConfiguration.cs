@@ -34,7 +34,14 @@ namespace NewsFeedSystem.DataAccess.Configurations
             builder.Property(n => n.Created).HasMaxLength(DATETIME_LENGTH).IsRequired();
             builder.Property(n => n.Updated).HasMaxLength(DATETIME_LENGTH);
 
-            //TODO: связи NewsConfiguration
+            //Многие ко многим(жесткие проверки и связи в БД избыточны в пет - проекте):
+            //builder.HasMany(news => news.Tags)
+            //    .WithMany(tag => tag.News)
+            //    .UsingEntity(tn => tn.ToTable("NewsTags"));
+
+            //builder.HasMany(news => news.Tags)
+            //    .WithMany(topic => topic.News)
+            //    .UsingEntity(tn => tn.ToTable("NewsTopics"));
         }
     }
 }

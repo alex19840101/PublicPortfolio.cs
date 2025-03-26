@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace NewsFeedSystem.DataAccess.Entities
         /// <summary>
         /// Id новостного поста
         /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public uint Id { get { return _id; } }
 
         /// <summary>
@@ -45,6 +47,14 @@ namespace NewsFeedSystem.DataAccess.Entities
         public List<uint> Topics { get { return _topics; } }
         public DateTime Created { get { return _created; } }
         public DateTime? Updated { get { return _updated; } }
+
+
+        // Многие ко многим (жесткие проверки и связи в БД избыточны в данном пет-проекте):
+        // /// <summary> Навигационное свойство -> теги </summary>
+        // public ICollection<Tag> Tags { get; set; } = [];
+        // /// <summary> Навигационное свойство -> темы </summary>
+        // public ICollection<Topic> Topics { get; set; } = [];
+        
 
         private readonly uint _id;
         private string _headLine = default!;

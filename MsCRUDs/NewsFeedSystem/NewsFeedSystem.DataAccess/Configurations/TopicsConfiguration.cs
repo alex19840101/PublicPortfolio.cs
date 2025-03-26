@@ -20,7 +20,11 @@ namespace NewsFeedSystem.DataAccess.Configurations
             builder.Property(t => t.Id).HasField("_id");
             builder.Property(t => t.Name).HasField("_name").HasMaxLength(MAX_NAME_LENGTH).IsRequired();
 
-            //TODO: связи TopicsConfiguration
+            /* Многие ко многим (жесткие проверки и связи в БД избыточны в данном пет-проекте):
+            builder.HasMany(t => t.News)
+                .WithMany(news => news.Topics)
+                .UsingEntity(tn => tn.ToTable("NewsTopics"));
+            */
         }
     }
 }
