@@ -19,7 +19,7 @@ namespace NewsFeedSystem.DataAccess.Entities
         /// <summary>
         /// Заголовок
         /// </summary>
-        public string Headline { get { return _headLine; } }
+        public string Headline { get { return _headline; } }
 
         /// <summary>
         /// Текст новости
@@ -29,7 +29,7 @@ namespace NewsFeedSystem.DataAccess.Entities
         /// <summary>
         /// Гиперссылка
         /// </summary>
-        public string? URL { get { return _url; } }
+        public string? Url { get { return _url; } }
 
         /// <summary>
         /// Автор
@@ -57,7 +57,7 @@ namespace NewsFeedSystem.DataAccess.Entities
         
 
         private readonly uint _id;
-        private string _headLine = default!;
+        private string _headline = default!;
         private string _text = default!;
         private string? _url;
         private string? _author;
@@ -68,7 +68,7 @@ namespace NewsFeedSystem.DataAccess.Entities
 
         public News(
             uint id,
-            string headLine,
+            string headline,
             string text,
             string? url,
             string? author,
@@ -78,7 +78,7 @@ namespace NewsFeedSystem.DataAccess.Entities
             DateTime? updated)
         {
             _id = id;
-            _headLine = headLine;
+            _headline = headline;
             _text = text;
             _url = url;
             _author = author;
@@ -91,7 +91,7 @@ namespace NewsFeedSystem.DataAccess.Entities
         public static News NewsEntity(NewsPost newsPost)
             => new(
                 id: newsPost.Id,
-                headLine: newsPost.Headline,
+                headline: newsPost.Headline,
                 text: newsPost.Text,
                 url: newsPost.URL,
                 author: newsPost.Author,
@@ -103,7 +103,7 @@ namespace NewsFeedSystem.DataAccess.Entities
         public NewsPost GetCoreNewsPost()
             => new(
                 id: _id,
-                headLine: _headLine,
+                headLine: _headline,
                 text: _text,
                 url: _url,
                 author: _author,
@@ -112,7 +112,7 @@ namespace NewsFeedSystem.DataAccess.Entities
                 created: _created,
                 updated: _updated);
 
-        public void UpdateHeadline(string newHeadline) => _headLine = newHeadline;
+        public void UpdateHeadline(string newHeadline) => _headline = newHeadline;
         public void UpdateText(string newText) => _text = newText;
         public void UpdateUrl(string? newUrl) => _url = newUrl;
         public void UpdateAuthor(string? newAuthor) => _author = newAuthor;
@@ -123,7 +123,7 @@ namespace NewsFeedSystem.DataAccess.Entities
 
         public override string ToString()
         {
-            return $"{_id} {_headLine}";
+            return $"{_id} {_headline}";
         }
     }
 }

@@ -84,7 +84,7 @@ try
     builder.Services.AddScoped<IAuthService>(src => new AuthService(
         src.GetRequiredService<IAuthRepository>(),
                     tokenValidationParameters,
-                    key: builder.Configuration["JWT:KEY"]));
+                    key: builder.Configuration["JWT:KEY"]!));
 
     builder.Services.AddSingleton<ICacheService, CacheService>();
 
@@ -107,7 +107,7 @@ try
     builder.Configuration
         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
         .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
-    string dataBaseConnectionStr = builder.Configuration.GetConnectionString("NewsFeedSystemDb");
+    string dataBaseConnectionStr = builder.Configuration.GetConnectionString("localdb")!;
 
     var isDevelopment = env.IsDevelopment();
 

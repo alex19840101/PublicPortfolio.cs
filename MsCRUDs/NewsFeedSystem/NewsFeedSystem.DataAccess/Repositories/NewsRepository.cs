@@ -152,7 +152,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
             if (!string.Equals(newsPost.Headline, entityNews.Headline)) entityNews.UpdateHeadline(newsPost.Headline);
             if (!string.Equals(newsPost.Text, entityNews.Text)) entityNews.UpdateText(newsPost.Text);
             
-            if (!string.Equals(newsPost.URL, entityNews.URL)) entityNews.UpdateUrl(newsPost.URL);
+            if (!string.Equals(newsPost.URL, entityNews.Url)) entityNews.UpdateUrl(newsPost.URL);
             if (!string.Equals(newsPost.Author, entityNews.Author)) entityNews.UpdateAuthor(newsPost.Author);
 
             if (!newsPost.Topics.SequenceEqual(entityNews.Topics))
