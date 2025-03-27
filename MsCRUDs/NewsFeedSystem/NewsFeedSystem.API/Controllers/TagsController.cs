@@ -59,7 +59,8 @@ namespace NewsFeedSystem.API.Controllers
 
             var result = new CreateResponseDto
             {
-                Id = createResult.Id.Value,
+                Id = createResult!.Id!.Value,
+                Message = createResult.Message
             };
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
         }
