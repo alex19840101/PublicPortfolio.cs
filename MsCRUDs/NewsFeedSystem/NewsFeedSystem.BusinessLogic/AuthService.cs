@@ -99,12 +99,6 @@ namespace NewsFeedSystem.BusinessLogic
 
             return new AuthResult(id: user.Id, message: ErrorStrings.OK, statusCode: System.Net.HttpStatusCode.Created, token: token);
         }
-        #region Logout не требуется для пет-проекта
-        //public Task<AuthResult> Logout(LogoutData logoutData)
-        //{
-        //    throw new NotImplementedException();
-        //}
-        #endregion Logout не требуется для пет-проекта
 
         public async Task<UpdateResult> GrantRole(GrantRoleData grantRoleData)
         {

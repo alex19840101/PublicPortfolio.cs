@@ -17,7 +17,7 @@ namespace NewsFeedSystem.DataAccess.Configurations
         {
             builder.HasKey(t => t.Id);
 
-            builder.Property(t => t.Id).HasField("_id");
+            builder.Property(t => t.Id).HasField("_id").HasColumnType("int");
             builder.Property(t => t.Name).HasField("_name").HasMaxLength(MAX_NAME_LENGTH).IsRequired();
 
             //Многие ко многим (жесткие проверки и связи в БД избыточны в пет-проекте):

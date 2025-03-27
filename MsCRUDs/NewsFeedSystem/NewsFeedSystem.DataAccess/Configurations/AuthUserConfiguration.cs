@@ -14,12 +14,12 @@ namespace NewsFeedSystem.DataAccess.Configurations
             builder.HasKey(t => t.Id);
             builder.HasAlternateKey(p => p.Login);
 
-            builder.Property(t => t.Id).HasField("_id");
+            builder.Property(t => t.Id).HasField("_id").HasColumnType("int");
             builder.Property(t => t.Login).HasField("_login").HasMaxLength(MAX_NAME_LENGTH).IsRequired();
             builder.Property(t => t.UserName).HasField("_userName").HasMaxLength(MAX_NAME_LENGTH).IsRequired();
             builder.Property(t => t.Email).HasField("_email").HasMaxLength(MAX_NAME_LENGTH).IsRequired();
             builder.Property(t => t.PasswordHash).HasField("_passwordHash").HasMaxLength(MAX_NAME_LENGTH).IsRequired();
-            builder.Property(t => t.GranterId).HasField("_granterId");
+            builder.Property(t => t.GranterId).HasField("_granterId").HasColumnType("int"); ;
 
             builder.Property(t => t.Nick).HasMaxLength(MAX_NAME_LENGTH);
             builder.Property(t => t.Phone).HasMaxLength(MAX_NAME_LENGTH);

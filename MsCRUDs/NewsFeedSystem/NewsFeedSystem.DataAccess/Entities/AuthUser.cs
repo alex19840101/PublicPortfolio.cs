@@ -11,9 +11,9 @@ namespace NewsFeedSystem.DataAccess.Entities
         public string UserName { get { return _userName; } }
         public string Email { get { return _email; } }
         public string PasswordHash { get { return _passwordHash; } }
-        public string Nick { get { return _nick; } }
-        public string Phone { get { return _phone; } }
-        public string Role { get { return _role; } }
+        public string? Nick { get { return _nick; } }
+        public string? Phone { get { return _phone; } }
+        public string? Role { get { return _role; } }
         public uint? GranterId{ get { return _granterId; } }
         public DateTime CreatedDt { get { return _createdDt; } }
         public DateTime? LastUpdateDt { get { return _lastUpdateDt; } }
@@ -23,9 +23,9 @@ namespace NewsFeedSystem.DataAccess.Entities
         private string _userName;
         private string _email;
         private string _passwordHash;
-        private string _nick;
-        private string _phone;
-        private string _role;
+        private string? _nick;
+        private string? _phone;
+        private string? _role;
         private uint? _granterId;
         private readonly DateTime _createdDt;
         private DateTime? _lastUpdateDt;
@@ -36,9 +36,9 @@ namespace NewsFeedSystem.DataAccess.Entities
             string userName,
             string email,
             string passwordHash,
-            string nick,
-            string phone,
-            string role,
+            string? nick,
+            string? phone,
+            string? role,
             uint? granterId,
             DateTime createdDt,
             DateTime? lastUpdateDt)
@@ -60,9 +60,9 @@ namespace NewsFeedSystem.DataAccess.Entities
         public void UpdateName(string newUserName) => _userName = newUserName;
         public void UpdateEmail(string newEmail) => _email = newEmail;
         public void UpdatePasswordHash(string newPasswordHash) => _passwordHash = newPasswordHash;
-        public void UpdateNick(string newNick) => _nick = newNick;
-        public void UpdatePhone(string newPhone) => _phone = newPhone;
-        public void UpdateRole(string newRole) => _role = newRole;
+        public void UpdateNick(string? newNick) => _nick = newNick;
+        public void UpdatePhone(string? newPhone) => _phone = newPhone;
+        public void UpdateRole(string? newRole) => _role = newRole;
         public void UpdateGranterId(uint granterId) => _granterId = granterId;
         public void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
 

@@ -8,31 +8,31 @@
         /// <summary>
         /// Id пользователя*
         /// </summary>
-        public uint Id { get; set; }
+        public required uint Id { get; set; }
 
         /// <summary>
         /// Логин (уникальное имя аккаунта) пользователя*
         /// </summary>
-        public string Login { get; set; }
+        public required string Login { get; set; }
 
         /// <summary>
         /// Роль
         /// </summary>
-        public string NewRole { get; set; }
+        public string? NewRole { get; set; }
 
         /// <summary>
         /// Id администратора*
         /// </summary>
-        public uint GranterId { get; set; }
+        public required uint GranterId { get; set; }
 
         /// <summary>
         /// Логин (уникальное имя аккаунта) администратора*
         /// </summary>
-        public string GranterLogin { get; set; }
+        public required string GranterLogin { get; set; }
 
         /// <summary>
         /// Пароль администратора
         /// </summary>
-        public string Password { get; set; }
+        public required string Password { get; set; }
     }
 }

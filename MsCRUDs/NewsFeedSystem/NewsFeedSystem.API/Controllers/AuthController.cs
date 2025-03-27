@@ -86,33 +86,6 @@ public class AuthController : ControllerBase, IAuthAPI
         return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
     }
 
-    #region Выход пользователя из системы
-    /*
-    /// <summary> Выход пользователя из системы </summary>
-    [HttpPost("api/v1/Logout")]
-    [ProducesResponseType(typeof(AuthResponseDto), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType(typeof(MessageResponseDto), (int)HttpStatusCode.Unauthorized)]
-    public async Task<IActionResult> Logout(LogoutRequestDto request)
-    {
-        var logoutResult = await _authService.Logout(LogoutData(request));
-
-        if (logoutResult.StatusCode == HttpStatusCode.BadRequest)
-            return new BadRequestObjectResult(new ProblemDetails { Title = logoutResult.Message });
-
-        if (logoutResult.StatusCode == HttpStatusCode.Unauthorized)
-            return new UnauthorizedObjectResult(new MessageResponseDto { Message = logoutResult.Message });
-
-        var result = new AuthResponseDto
-        {
-            Id = logoutResult.Id.Value,
-            Message = logoutResult.Message,
-            Token = logoutResult.Token
-        };
-        return new ObjectResult(result) { StatusCode = StatusCodes.Status200OK };
-    }*/
-    #endregion Выход пользователя из системы
-
     /// <summary>
     /// Предоставление (установка/сброс) роли аккаунту
     /// </summary>

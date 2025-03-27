@@ -20,7 +20,7 @@ namespace NewsFeedSystem.DataAccess.Configurations
         {
             builder.HasKey(n => n.Id);
            
-            builder.Property(n => n.Id).HasField("_id");
+            builder.Property(n => n.Id).HasField("_id").HasColumnType("int");
             builder.Property(n => n.Headline).HasField("_headline").HasMaxLength(MAX_NAME_LENGTH).IsRequired();
             builder.Property(n => n.Text).HasField("_text").HasMaxLength(MAX_TEXT_LENGTH).IsRequired();
 
