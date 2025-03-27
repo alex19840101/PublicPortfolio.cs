@@ -30,11 +30,11 @@ namespace NewsFeedSystem.API.Contracts.Requests
         /// <summary>
         /// Тэги
         /// </summary>
-        public List<uint> Tags { get; set; } = [];
+        public required List<uint> Tags { get; set; } = [];
 
         /// <summary>
         /// Темы
         /// </summary>
-        public List<uint> Topics { get; set; } = [];
+        public required List<uint> Topics { get; set; } = [];
     }
 }

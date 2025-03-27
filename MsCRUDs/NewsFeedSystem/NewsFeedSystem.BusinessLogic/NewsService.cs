@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using NewsFeedSystem.Core;
 using NewsFeedSystem.Core.Repositories;
@@ -27,6 +28,12 @@ namespace NewsFeedSystem.BusinessLogic
 
             if (string.IsNullOrWhiteSpace(newsPost.Text))
                 return new CreateResult(ErrorStrings.TEXT_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            if (newsPost.Tags == null || !newsPost.Tags.Any())
+                return new CreateResult(ErrorStrings.TAGS_SHOULD_NOT_BE_NULL_OR_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            if (newsPost.Topics == null || !newsPost.Topics.Any())
+                return new CreateResult(ErrorStrings.TOPICS_SHOULD_NOT_BE_NULL_OR_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
             var createResult = await _newsRepository.Create(newsPost);
 
