@@ -89,7 +89,7 @@ public class AuthController : ControllerBase, IAuthAPI
     /// <summary>
     /// Предоставление (установка/сброс) роли аккаунту
     /// </summary>
-    [HttpPost]
+    [HttpPatch]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.NotFound)]
