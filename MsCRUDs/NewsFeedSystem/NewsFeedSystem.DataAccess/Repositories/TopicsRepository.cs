@@ -68,36 +68,17 @@ namespace NewsFeedSystem.DataAccess.Repositories
 
         public async Task<IEnumerable<Topic>> GetTopics(uint? minTopicId, uint? maxTopicId)
         {
-            List<Entities.Topic> entityTopicsLst;
-            var query = _dbContext.Topics.AsNoTracking();
-            if (minTopicId == null && maxTopicId == null)
-            {
-                entityTopicsLst = await query.TakeLast(LIMIT_COUNT).ToListAsync();
-
-                if (entityTopicsLst.Count == 0)
-                    return [];
-
-                return GetTopics(entityTopicsLst);
-            }
-            Expression<Func<Entities.Topic, bool>> expressionForMinTopicId =
-                t => t.Id >= minTopicId;
-
             if (maxTopicId == null)
             {
-                entityTopicsLst = await query.Where(expressionForMinTopicId).TakeLast(LIMIT_COUNT).ToListAsync();
-                if (entityTopicsLst.Count == 0)
-                    return [];
-
-                return GetTopics(entityTopicsLst);
+                maxTopicId = await _dbContext.Topics.AsNoTracking().MaxAsync(t=> t.Id);
+                minTopicId ??= maxTopicId > LIMIT_COUNT ? maxTopicId - LIMIT_COUNT : 1;
             }
 
-            Expression<Func<Entities.Topic, bool>> expressionForMaxTopicId =
-                t => t.Id <= maxTopicId;
+            minTopicId ??= maxTopicId - LIMIT_COUNT;
 
-            if (minTopicId != null)
-                query = query.Where(expressionForMinTopicId);
+            List<Entities.Topic> entityTopicsLst = await _dbContext.Topics.AsNoTracking()
+                .Where(t => t.Id >= minTopicId && t.Id <= maxTopicId).ToListAsync();
 
-            entityTopicsLst = await query.Where(expressionForMaxTopicId).TakeLast(LIMIT_COUNT).ToListAsync();
             if (entityTopicsLst.Count == 0)
                 return [];
 

@@ -69,36 +69,17 @@ namespace NewsFeedSystem.DataAccess.Repositories
 
         public async Task<IEnumerable<Core.Tag>> GetTags(uint? minTagId, uint? maxTagId)
         {
-            List<Entities.Tag> entityTagsLst;
-            var query = _dbContext.Tags.AsNoTracking();
-            if (minTagId == null && maxTagId == null)
-            {
-                entityTagsLst = await query.TakeLast(LIMIT_COUNT).ToListAsync();
-
-                if (entityTagsLst.Count == 0)
-                    return [];
-
-                return GetTags(entityTagsLst);
-            }
-            Expression<Func<Entities.Tag, bool>> expressionForMinTagId =
-                t => t.Id >= minTagId;
-
             if (maxTagId == null)
             {
-                entityTagsLst = await query.Where(expressionForMinTagId).TakeLast(LIMIT_COUNT).ToListAsync();
-                if (entityTagsLst.Count == 0)
-                    return [];
-
-                return GetTags(entityTagsLst);
+                maxTagId = await _dbContext.Tags.AsNoTracking().MaxAsync(t => t.Id);
+                minTagId ??= maxTagId > LIMIT_COUNT ? maxTagId - LIMIT_COUNT : 1;
             }
 
-            Expression<Func<Entities.Tag, bool>> expressionForMaxTagId =
-                t => t.Id <= maxTagId;
+            minTagId ??= maxTagId - LIMIT_COUNT;
+            
+            List<Entities.Tag> entityTagsLst = await _dbContext.Tags.AsNoTracking()
+                .Where(t => t.Id >= minTagId && t.Id <= maxTagId).ToListAsync();
 
-            if (minTagId != null)
-                query = query.Where(expressionForMinTagId);
-
-            entityTagsLst = await query.Where(expressionForMaxTagId).TakeLast(LIMIT_COUNT).ToListAsync();
             if (entityTagsLst.Count == 0)
                 return [];
 

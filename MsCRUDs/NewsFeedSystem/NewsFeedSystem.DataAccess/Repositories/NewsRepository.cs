@@ -81,36 +81,17 @@ namespace NewsFeedSystem.DataAccess.Repositories
 
         public async Task<IEnumerable<HeadLine>> GetHeadlines(uint? minNewsId, uint? maxNewsId)
         {
-            List<News> entityNewsLst;
-            var query = _dbContext.News.AsNoTracking();
-            if (minNewsId == null && maxNewsId == null)
-            {
-                entityNewsLst = await query.TakeLast(LIMIT_COUNT).ToListAsync();
-
-                if (entityNewsLst.Count == 0)
-                    return [];
-
-                return GetHeadlines(entityNewsLst);
-            }
-            Expression<Func<News, bool>> expressionForMinNewsId = 
-                n => n.Id >= minNewsId;
-
             if (maxNewsId == null)
             {
-                entityNewsLst = await query.Where(expressionForMinNewsId).TakeLast(LIMIT_COUNT).ToListAsync();
-                if (entityNewsLst.Count == 0)
-                    return [];
-
-                return GetHeadlines(entityNewsLst);
+                maxNewsId = await _dbContext.News.AsNoTracking().MaxAsync(n => n.Id);
+                minNewsId ??= maxNewsId > LIMIT_COUNT ? maxNewsId - LIMIT_COUNT : 1;
             }
 
-            Expression<Func<News, bool>> expressionForMaxNewsId =
-                n => n.Id <= maxNewsId;
+            minNewsId ??= maxNewsId - LIMIT_COUNT;
 
-            if (minNewsId != null)
-                query = query.Where(expressionForMinNewsId);
+            List<News> entityNewsLst = await _dbContext.News.AsNoTracking()
+                .Where(n => n.Id >= minNewsId && n.Id <= maxNewsId).ToListAsync();
 
-            entityNewsLst = await query.Where(expressionForMaxNewsId).TakeLast(LIMIT_COUNT).ToListAsync();
             if (entityNewsLst.Count == 0)
                 return [];
 
@@ -119,24 +100,58 @@ namespace NewsFeedSystem.DataAccess.Repositories
 
         public async Task<IEnumerable<HeadLine>> GetHeadlinesByTag(uint tagId, uint minNewsId)
         {
-            var entityNewsLst = await _dbContext.News
-                .AsNoTracking()
-                .Where(n => n.Id >= minNewsId && n.Tags.Contains(tagId))
-                .TakeLast(LIMIT_COUNT)
-                .ToListAsync();
+            try
+            {
+                uint maxNewsId = await _dbContext.News.AsNoTracking()
+                .Where(n => n.Tags.Contains(tagId)).MaxAsync(n => n.Id);
 
-            return GetHeadlines(entityNewsLst);
+                var entityNewsLst = await _dbContext.News
+                    .AsNoTracking()
+                    .Where(n => n.Id >= minNewsId && n.Id <= maxNewsId && n.Tags.Contains(tagId))
+                    .ToListAsync();
+
+                return GetHeadlines(entityNewsLst);
+            }
+            catch (InvalidOperationException ex)
+            {
+                if (string.Equals(ex.Message, "Sequence contains no elements."))
+                    return [];
+
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
+            
         }
 
         public async Task<IEnumerable<HeadLine>> ReadHeadlinesByTopic(uint topicId, uint minNewsId)
         {
-            var entityNewsLst = await _dbContext.News
-                .AsNoTracking()
-                .Where(n => n.Id >= minNewsId && n.Topics.Contains(topicId))
-                .TakeLast(LIMIT_COUNT)
-                .ToListAsync();
+            try
+            {
+                uint maxNewsId = await _dbContext.News.AsNoTracking()
+                    .Where(n => n.Topics.Contains(topicId)).MaxAsync(n => n.Id);
 
-            return GetHeadlines(entityNewsLst);
+                var entityNewsLst = await _dbContext.News
+                    .AsNoTracking()
+                    .Where(n => n.Id >= minNewsId && n.Id <= maxNewsId && n.Topics.Contains(topicId))
+                    .ToListAsync();
+
+                return GetHeadlines(entityNewsLst);
+            }
+            catch (InvalidOperationException ex)
+            {
+                if (string.Equals(ex.Message, "Sequence contains no elements."))
+                    return [];
+
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task<UpdateResult> Update(NewsPost newsPost)
