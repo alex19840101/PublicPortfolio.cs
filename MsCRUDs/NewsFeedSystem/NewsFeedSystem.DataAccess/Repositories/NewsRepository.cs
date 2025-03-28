@@ -123,8 +123,6 @@ namespace NewsFeedSystem.DataAccess.Repositories
             {
                 throw;
             }
-            
-            
         }
 
         public async Task<IEnumerable<HeadLine>> ReadHeadlinesByTopic(uint topicId, uint minNewsId)
@@ -175,9 +173,6 @@ namespace NewsFeedSystem.DataAccess.Repositories
 
             if (!newsPost.Tags.SequenceEqual(entityNews.Tags))
                 entityNews.UpdateTags(newsPost.Tags);
-
-            if (newsPost.Created != entityNews.Created)
-                entityNews.UpdateCreated(newsPost.Created);
 
             if (newsPost.Updated != entityNews.Updated)
                 entityNews.UpdateLastUpdateDt(newsPost.Updated);

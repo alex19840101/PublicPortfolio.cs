@@ -43,7 +43,7 @@ namespace NewsFeedSystem.BusinessLogic
 
         public async Task<IEnumerable<Tag>> GetTags(uint? minTagId, uint? maxTagId)
         {
-            return await _tagsRepository.GetTags(maxTagId, minTagId);
+            return await _tagsRepository.GetTags(minTagId, maxTagId);
         }
 
         public async Task<UpdateResult> Update(Tag tag)

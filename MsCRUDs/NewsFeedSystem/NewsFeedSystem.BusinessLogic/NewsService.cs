@@ -52,7 +52,7 @@ namespace NewsFeedSystem.BusinessLogic
 
         public async Task<IEnumerable<HeadLine>> GetHeadlines(uint? minNewsId, uint? maxNewsId)
         {
-            return await _newsRepository.GetHeadlines(maxNewsId, minNewsId);
+            return await _newsRepository.GetHeadlines(minNewsId, maxNewsId);
         }
 
         public async Task<IEnumerable<HeadLine>> GetHeadlinesByTag(uint tagId, uint minNewsId)

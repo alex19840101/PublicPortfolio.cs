@@ -43,7 +43,7 @@ namespace NewsFeedSystem.BusinessLogic
 
         public async Task<IEnumerable<Topic>> GetTopics(uint? minTopicId, uint? maxTopicId)
         {
-            return await _topicsRepository.GetTopics(maxTopicId, minTopicId);
+            return await _topicsRepository.GetTopics(minTopicId, maxTopicId);
         }
 
         public async Task<UpdateResult> Update(Topic topic)

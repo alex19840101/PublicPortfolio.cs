@@ -8,6 +8,9 @@ using NewsFeedSystem.Core;
 
 namespace NewsFeedSystem.API.Extensions
 {
+    /// <summary>
+    /// Класс расширений моделей. Методы маппинга моделей
+    /// </summary>
     public static class ModelsExtensions
     {
         /// <summary>
@@ -38,6 +41,12 @@ namespace NewsFeedSystem.API.Extensions
             topics: headLine.Topics
         );
 
+        /// <summary>
+        /// Маппинг NewsPostDto - Core.NewsPost
+        /// </summary>
+        /// <param name="newsPostDto"></param>
+        /// <returns></returns>
+
         public static NewsPost GetNewsPost(this NewsPostDto newsPostDto) => new NewsPost(
             id: newsPostDto.Id,
             headLine: newsPostDto.Headline,
@@ -48,6 +57,12 @@ namespace NewsFeedSystem.API.Extensions
             topics: newsPostDto.Topics,
             created: newsPostDto.Created,
             updated: newsPostDto.Updated);
+
+        /// <summary>
+        /// Маппинг Core.NewsPost - NewsPostDto
+        /// </summary>
+        /// <param name="newsPost"></param>
+        /// <returns></returns>
 
         public static NewsPostDto GetNewsPostDto(this NewsPost newsPost) => new NewsPostDto
         {
@@ -63,29 +78,56 @@ namespace NewsFeedSystem.API.Extensions
         };
 
 
+        /// <summary>
+        /// Маппинг TagDto - Core.Tag
+        /// </summary>
+        /// <param name="tagDto"></param>
+        /// <returns></returns>
         public static Tag GetTag(this TagDto tagDto) => new Tag
         (
             id: (uint)tagDto.Id!,
             name: tagDto.Tag
         );
 
+        /// <summary>
+        /// Маппинг Core.Tag - TagDto
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
         public static TagDto GetTagDto(this Tag tag) => new TagDto
         {
             Id = tag.Id,
             Tag = tag.Name
         };
 
+        /// <summary>
+        /// Маппинг TopicDto - Core.Topic
+        /// </summary>
+        /// <param name="topicDto"></param>
+        /// <returns></returns>
         public static Topic GetTopic(this TopicDto topicDto) => new Topic
         (
             id: (uint)topicDto.Id!,
             name: topicDto.Topic
         );
 
+
+        /// <summary>
+        /// Маппинг Core.Topic - TopicDto
+        /// </summary>
+        /// <param name="topic"></param>
+        /// <returns></returns>
         public static TopicDto GetTopicDto(this Topic topic) => new TopicDto
         {
             Id = topic.Id,
             Topic = topic.Name
         };
+
+        /// <summary>
+        /// Маппинг CreateNewsRequestDto - Core.NewsPost
+        /// </summary>
+        /// <param name="createNewsRequestDto"></param>
+        /// <returns></returns>
 
         public static NewsPost GetNewsPostForCreate(this CreateNewsRequestDto createNewsRequestDto) => new NewsPost(
             id: 0,
@@ -97,6 +139,12 @@ namespace NewsFeedSystem.API.Extensions
             topics: createNewsRequestDto.Topics,
             created: DateTime.Now,
             updated: DateTime.Now);
+
+        /// <summary>
+        /// Маппинг IEnumerable(HeadLine) - IEnumerable(HeadLineDto)
+        /// </summary>
+        /// <param name="headlinesLst"></param>
+        /// <returns></returns>
 
         public static IEnumerable<HeadLineDto> GetHeadlineDtos(this IEnumerable<HeadLine> headlinesLst)
         {
@@ -110,8 +158,13 @@ namespace NewsFeedSystem.API.Extensions
             });
         }
 
+        /// <summary>
+        /// Маппинг UpdateNewsRequestDto - NewsPost
+        /// </summary>
+        /// <param name="updateNewsRequestDto"></param>
+        /// <returns></returns>
         public static NewsPost GetNewsPostForUpdate(this UpdateNewsRequestDto updateNewsRequestDto) => new NewsPost(
-            id: 0,
+            id: updateNewsRequestDto.Id,
             headLine: updateNewsRequestDto.Headline,
             text: updateNewsRequestDto.Text,
             url: updateNewsRequestDto.URL,
@@ -121,7 +174,11 @@ namespace NewsFeedSystem.API.Extensions
             created: DateTime.Now,
             updated: DateTime.Now);
 
-
+        /// <summary>
+        /// Маппинг IEnumerable(Core.Tag) - IEnumerable(TagDto)
+        /// </summary>
+        /// <param name="tagsLst"></param>
+        /// <returns></returns>
         public static IEnumerable<TagDto> GetTagDtos(this IEnumerable<Tag> tagsLst)
         {
             return tagsLst.Select(t => new TagDto
@@ -130,6 +187,12 @@ namespace NewsFeedSystem.API.Extensions
                 Tag = t.Name
             });
         }
+
+        /// <summary>
+        /// Маппинг IEnumerable(Core.Topic) - IEnumerable(TopicDto)
+        /// </summary>
+        /// <param name="topicsLst"></param>
+        /// <returns></returns>
 
         public static IEnumerable<TopicDto> GetTopicDtos(this IEnumerable<Topic> topicsLst)
         {
