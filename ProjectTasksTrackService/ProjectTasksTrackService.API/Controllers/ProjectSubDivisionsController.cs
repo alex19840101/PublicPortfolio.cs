@@ -171,7 +171,7 @@ namespace ProjectTasksTrackService.API.Controllers
         }
 
         /// <summary> Обновление подпроекта </summary>
-        [HttpPost("api/v2/SubDivisions/UpdateSubDivision")]
+        [HttpPatch("api/v2/SubDivisions/UpdateSubDivision")]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.NotFound)]
