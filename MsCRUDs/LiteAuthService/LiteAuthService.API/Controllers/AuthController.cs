@@ -114,7 +114,7 @@ public class AuthController : ControllerBase, IAuthAPI
     /// <summary>
     /// Предоставление (установка/сброс) роли аккаунту
     /// </summary>
-    [HttpPost("api/v1/GrantRole")]
+    [HttpPatch("api/v1/GrantRole")]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.NotFound)]
