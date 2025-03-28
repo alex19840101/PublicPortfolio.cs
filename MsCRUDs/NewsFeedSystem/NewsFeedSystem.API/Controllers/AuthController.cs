@@ -112,7 +112,7 @@ public class AuthController : ControllerBase, IAuthAPI
     /// <summary>
     /// Обновление аккаунта
     /// </summary>
-    [HttpPost]
+    [HttpPatch]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Unauthorized)]

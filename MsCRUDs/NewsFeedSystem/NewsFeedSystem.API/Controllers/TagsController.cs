@@ -136,7 +136,7 @@ namespace NewsFeedSystem.API.Controllers
         /// </summary>
         /// <param name="tagDto"> Запрос на обновление тега </param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPatch]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.NotFound)]

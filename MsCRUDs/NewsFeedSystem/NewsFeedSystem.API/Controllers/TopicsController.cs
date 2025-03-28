@@ -110,7 +110,7 @@ namespace NewsFeedSystem.API.Controllers
         /// </summary>
         /// <param name="topicDto"> Запрос на обновление темы </param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPatch]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.NotFound)]

@@ -164,7 +164,7 @@ namespace NewsFeedSystem.API.Controllers
         /// </summary>
         /// <param name="request"> Запрос на обновление новостного поста </param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPatch]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.NotFound)]
