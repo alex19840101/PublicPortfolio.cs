@@ -29,6 +29,7 @@ namespace NewsFeedSystem.API.Controllers
         private readonly ITagsService _tagsService;
         private readonly ILogger<TagsController> _logger;
 
+        /// <summary> Конструктор контроллера управления тегами </summary>
         public TagsController(ITagsService tagsService,
             ILogger<TagsController> logger)
         {
@@ -62,6 +63,7 @@ namespace NewsFeedSystem.API.Controllers
                 Id = createResult!.Id!.Value,
                 Message = createResult.Message
             };
+            _logger.LogInformation((EventId)(int)result!.Id!, @"added Tag {result.Id}", result!.Id!);
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
         }
 

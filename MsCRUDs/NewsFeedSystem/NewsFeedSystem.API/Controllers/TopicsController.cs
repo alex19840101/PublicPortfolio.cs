@@ -29,6 +29,7 @@ namespace NewsFeedSystem.API.Controllers
         private readonly ITopicsService _topicsService;
         private readonly ILogger<TopicsController> _logger;
 
+        /// <summary> Конструктор контроллера управления темами </summary>
         public TopicsController(ITopicsService topicsService,
             ILogger<TopicsController> logger)
         {
@@ -63,6 +64,7 @@ namespace NewsFeedSystem.API.Controllers
                 Id = createResult!.Id!.Value,
                 Message = createResult.Message
             };
+            _logger.LogInformation((EventId)(int)result!.Id!, @"added Topic {result.Id}", result!.Id!);
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
         }
 

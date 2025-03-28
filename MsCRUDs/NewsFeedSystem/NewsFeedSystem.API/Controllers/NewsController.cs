@@ -17,7 +17,7 @@ using NewsFeedSystem.Core.Services;
 
 namespace NewsFeedSystem.API.Controllers
 {
-    /// <summary> Контроллер управления новостными постами </summary>
+    /// <summary> РљРѕРЅС‚СЂРѕР»Р»РµСЂ СѓРїСЂР°РІР»РµРЅРёСЏ РЅРѕРІРѕСЃС‚РЅС‹РјРё РїРѕСЃС‚Р°РјРё </summary>
     [ApiController]
     [Asp.Versioning.ApiVersion(1.0)]
     [Route("api/v{version:apiVersion}/[controller]/[action]")]
@@ -28,6 +28,7 @@ namespace NewsFeedSystem.API.Controllers
         private readonly ILogger<NewsController> _logger;
         private readonly INewsService _newsService;
 
+        /// <summary> РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРЅС‚СЂРѕР»Р»РµСЂР° СѓРїСЂР°РІР»РµРЅРёСЏ РЅРѕРІРѕСЃС‚РЅС‹РјРё РїРѕСЃС‚Р°РјРё </summary>
         public NewsController(INewsService newsService,
             ILogger<NewsController> logger)
         {
@@ -36,18 +37,16 @@ namespace NewsFeedSystem.API.Controllers
         }
 
         /// <summary>
-        /// Создание новостного поста
+        /// РЎРѕР·РґР°РЅРёРµ РЅРѕРІРѕСЃС‚РЅРѕРіРѕ РїРѕСЃС‚Р°
         /// </summary>
-        /// <param name="createTagRequestDto"> Запрос на создание новостного поста</param>
+        /// <param name="createNewsRequestDto"> Р—Р°РїСЂРѕСЃ РЅР° СЃРѕР·РґР°РЅРёРµ РЅРѕРІРѕСЃС‚РЅРѕРіРѕ РїРѕСЃС‚Р° </param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(CreateResponseDto), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Create(CreateNewsRequestDto createTagRequestDto)
+        public async Task<IActionResult> Create(CreateNewsRequestDto createNewsRequestDto)
         {
-            _logger.LogInformation(0, @"Create request {version:apiVersion}", 1);
-
-            var createResult = await _newsService.Create(createTagRequestDto.GetNewsPostForCreate());
+            var createResult = await _newsService.Create(createNewsRequestDto.GetNewsPostForCreate());
 
             if (createResult.StatusCode == HttpStatusCode.BadRequest)
                 return new BadRequestObjectResult(new ProblemDetails { Title = createResult.Message });
@@ -63,10 +62,13 @@ namespace NewsFeedSystem.API.Controllers
                 Id = createResult!.Id!.Value,
                 Message = createResult.Message
             };
+
+            _logger.LogInformation((EventId)(int)result!.Id!, @"added NewsPost {result.Id}", result!.Id!);
+
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
         }
 
-        /// <summary> Удаление новостного поста </summary>
+        /// <summary> РЈРґР°Р»РµРЅРёРµ РЅРѕРІРѕСЃС‚РЅРѕРіРѕ РїРѕСЃС‚Р° </summary>
         [HttpDelete]
         [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -87,7 +89,7 @@ namespace NewsFeedSystem.API.Controllers
             return Ok(deleteResult);
         }
 
-        /// <summary> Получение новостного поста </summary>
+        /// <summary> РџРѕР»СѓС‡РµРЅРёРµ РЅРѕРІРѕСЃС‚РЅРѕРіРѕ РїРѕСЃС‚Р° </summary>
         [HttpGet]
         [ProducesResponseType(typeof(NewsPostDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -103,10 +105,10 @@ namespace NewsFeedSystem.API.Controllers
         }
 
         /// <summary>
-        /// Получение заголовков новостных постов
+        /// РџРѕР»СѓС‡РµРЅРёРµ Р·Р°РіРѕР»РѕРІРєРѕРІ РЅРѕРІРѕСЃС‚РЅС‹С… РїРѕСЃС‚РѕРІ
         /// </summary>
-        /// <param name="minNewsId"> Минимальный Id новостного поста </param>
-        /// <param name="maxNewsId"> Максимальный Id новостного поста </param>
+        /// <param name="minNewsId"> РњРёРЅРёРјР°Р»СЊРЅС‹Р№ Id РЅРѕРІРѕСЃС‚РЅРѕРіРѕ РїРѕСЃС‚Р° </param>
+        /// <param name="maxNewsId"> РњР°РєСЃРёРјР°Р»СЊРЅС‹Р№ Id РЅРѕРІРѕСЃС‚РЅРѕРіРѕ РїРѕСЃС‚Р° </param>
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<HeadLineDto>), (int)HttpStatusCode.OK)]
@@ -122,10 +124,10 @@ namespace NewsFeedSystem.API.Controllers
         }
 
         /// <summary>
-        /// Получение заголовков новостных постов
+        /// РџРѕР»СѓС‡РµРЅРёРµ Р·Р°РіРѕР»РѕРІРєРѕРІ РЅРѕРІРѕСЃС‚РЅС‹С… РїРѕСЃС‚РѕРІ
         /// </summary>
-        /// <param name="tagId"> Id тега </param>
-        /// <param name="minNewsId"> Минимальный Id новостного поста </param>
+        /// <param name="tagId"> Id С‚РµРіР° </param>
+        /// <param name="minNewsId"> РњРёРЅРёРјР°Р»СЊРЅС‹Р№ Id РЅРѕРІРѕСЃС‚РЅРѕРіРѕ РїРѕСЃС‚Р° </param>
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<HeadLineDto>), (int)HttpStatusCode.OK)]
@@ -141,10 +143,10 @@ namespace NewsFeedSystem.API.Controllers
         }
 
         /// <summary>
-        /// Получение заголовков новостных постов по Id темы
+        /// РџРѕР»СѓС‡РµРЅРёРµ Р·Р°РіРѕР»РѕРІРєРѕРІ РЅРѕРІРѕСЃС‚РЅС‹С… РїРѕСЃС‚РѕРІ РїРѕ Id С‚РµРјС‹
         /// </summary>
-        /// <param name="topicId"> Id темы </param>
-        /// <param name="minNewsId"> Минимальный Id новостного поста </param>
+        /// <param name="topicId"> Id С‚РµРјС‹ </param>
+        /// <param name="minNewsId"> РњРёРЅРёРјР°Р»СЊРЅС‹Р№ Id РЅРѕРІРѕСЃС‚РЅРѕРіРѕ РїРѕСЃС‚Р° </param>
         /// <returns></returns>
         [HttpGet]
         public async Task<IEnumerable<HeadLineDto>> GetHeadlinesByTopic(uint topicId, uint minNewsId)
@@ -158,9 +160,9 @@ namespace NewsFeedSystem.API.Controllers
         }
 
         /// <summary>
-        /// Обновление новостного поста
+        /// РћР±РЅРѕРІР»РµРЅРёРµ РЅРѕРІРѕСЃС‚РЅРѕРіРѕ РїРѕСЃС‚Р°
         /// </summary>
-        /// <param name="request"> Запрос на обновление новостного поста </param>
+        /// <param name="request"> Р—Р°РїСЂРѕСЃ РЅР° РѕР±РЅРѕРІР»РµРЅРёРµ РЅРѕРІРѕСЃС‚РЅРѕРіРѕ РїРѕСЃС‚Р° </param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.OK)]
