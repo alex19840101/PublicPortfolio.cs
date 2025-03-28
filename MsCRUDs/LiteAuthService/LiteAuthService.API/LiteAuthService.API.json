@@ -217,7 +217,7 @@
       }
     },
     "/Auth/api/v1/UpdateAccount": {
-      "post": {
+      "patch": {
         "tags": [
           "Auth"
         ],
