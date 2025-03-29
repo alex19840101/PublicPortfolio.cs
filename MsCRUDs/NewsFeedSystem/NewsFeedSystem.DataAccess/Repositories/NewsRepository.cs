@@ -34,6 +34,8 @@ namespace NewsFeedSystem.DataAccess.Repositories
             await _dbContext.SaveChangesAsync();
 
             await _dbContext.Entry(newNewsEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id
+
+            _cacheService.Set<NewsPost>(newNewsEntity.Id.ToString(), newsPost);
             return new CreateResult
             {
                 Id = newNewsEntity.Id,
@@ -181,6 +183,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
             {
                 entityNews.UpdateLastUpdateDt(DateTime.Now);
                 await _dbContext.SaveChangesAsync();
+                _cacheService.Set<NewsPost>(newsPost.Id.ToString(), newsPost);
                 return new UpdateResult(ErrorStrings.NEWS_UPDATED, HttpStatusCode.OK);
             }
             return new UpdateResult(ErrorStrings.NEWS_IS_ACTUAL, HttpStatusCode.OK);
