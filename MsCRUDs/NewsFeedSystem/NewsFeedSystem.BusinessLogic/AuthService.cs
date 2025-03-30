@@ -232,7 +232,7 @@ namespace NewsFeedSystem.BusinessLogic
         public async Task<AuthUser> GetUserInfo(string login)
         {
             if (string.IsNullOrWhiteSpace(login))
-                return null; //throw new ArgumentNullException(ErrorStrings.LOGIN_SHOULD_NOT_BE_EMPTY);
+                return default!; //throw new ArgumentNullException(ErrorStrings.LOGIN_SHOULD_NOT_BE_EMPTY);
 
             var user = await _authRepository.GetUser(login);
 

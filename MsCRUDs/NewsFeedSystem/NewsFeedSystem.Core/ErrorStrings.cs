@@ -34,8 +34,8 @@
         public const string NEWSPOST_RARAM_NAME = "newsPost";
         public const string HEADLINE_SHOULD_NOT_BE_EMPTY = "Headline field should be not empty";
         public const string TEXT_SHOULD_NOT_BE_EMPTY = "Text field should be not empty";
-        public const string TAGS_SHOULD_NOT_BE_NULL_OR_EMPTY = "Tags field should be not be null or empty";
-        public const string TOPICS_SHOULD_NOT_BE_NULL_OR_EMPTY = "Topics field should be not be null or empty";
+        public const string TAGS_SHOULD_NOT_BE_NULL_OR_EMPTY = "Tags list should be not be null or empty";
+        public const string TOPICS_SHOULD_NOT_BE_NULL_OR_EMPTY = "Topics list should be not be null or empty";
         public const string NEWS_NOT_FOUND = "News post not found";
         public const string NEWS_UPDATED = "News post updated";
         public const string NEWS_IS_ACTUAL = "News post is actual";

@@ -6,7 +6,7 @@ using NewsFeedSystem.Core.Auth;
 
 namespace TestFixtures
 {
-    public class TestFixtures
+    public partial class TestFixtures
     {
         public static uint GenerateId() => new Fixture().Create<uint>();
 
