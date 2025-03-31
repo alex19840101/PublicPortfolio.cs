@@ -992,6 +992,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
 
             var updateResult = await _authService.UpdateAccount(updateAccountData);
 
+            _authRepositoryMock.Verify(ar => ar.UpdateUser(updateAccountData), Times.Once);
             Assert.IsNotNull(updateResult);
             Assert.AreEqual(Core.ErrorStrings.USER_IS_ACTUAL, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
@@ -1007,6 +1008,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
 
             var updateResult = await _authService.UpdateAccount(updateAccountData);
 
+            _authRepositoryMock.Verify(ar => ar.UpdateUser(updateAccountData), Times.Once);
             updateResult.Should().NotBeNull();
             updateResult.Message.Should().Be(Core.ErrorStrings.USER_IS_ACTUAL);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
@@ -1023,6 +1025,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
 
             var updateResult = await _authService.UpdateAccount(updateAccountData);
 
+            _authRepositoryMock.Verify(ar => ar.UpdateUser(updateAccountData), Times.Once);
             Assert.IsNotNull(updateResult);
             Assert.AreEqual(Core.ErrorStrings.USER_UPDATED, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
@@ -1038,6 +1041,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
 
             var updateResult = await _authService.UpdateAccount(updateAccountData);
 
+            _authRepositoryMock.Verify(ar => ar.UpdateUser(updateAccountData), Times.Once);
             updateResult.Should().NotBeNull();
             updateResult.Message.Should().Be(Core.ErrorStrings.USER_UPDATED);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
