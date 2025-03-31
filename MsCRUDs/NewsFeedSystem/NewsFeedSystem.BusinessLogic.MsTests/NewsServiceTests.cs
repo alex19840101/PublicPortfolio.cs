@@ -342,6 +342,26 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
         }
 
         [TestMethod]
+        public async Task Update_NewsPostNotFound_ShouldReturn_NEWS_NOT_FOUND()
+        {
+            NewsPost newsPost = TestFixtures.TestFixtures.GetNewsPostFixtureWithRequiredFields();
+
+            _newsRepositoryMock.Setup(nr => nr.Update(newsPost))
+                .ReturnsAsync(new UpdateResult
+                {
+                    Message = Core.ErrorStrings.NEWS_NOT_FOUND,
+                    StatusCode = System.Net.HttpStatusCode.NotFound
+                });
+
+            var updateResult = await _newsService.Update(newsPost);
+
+            _newsRepositoryMock.Verify(nr => nr.Update(newsPost), Times.Once);
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(Core.ErrorStrings.NEWS_NOT_FOUND, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.NotFound, updateResult.StatusCode);
+        }
+
+        [TestMethod]
         public async Task Update_NewsPostIsValidAndUpdated_ShouldReturnOk()
         {
             NewsPost newsPost = TestFixtures.TestFixtures.GetNewsPostFixtureWithRequiredFields();

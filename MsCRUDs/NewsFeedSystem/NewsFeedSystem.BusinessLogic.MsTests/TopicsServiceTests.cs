@@ -173,9 +173,96 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task UpdateTest()
+        public async Task Update_TagIsNull_ShouldThrowArgumentNullException()
         {
-            throw new NotImplementedException();
+            Topic topic = null;
+            UpdateResult updateResult = null;
+            var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => updateResult = await _topicsService.Update(topic!));
+
+            _topicsRepositoryMock.Verify(tr => tr.Update(topic!), Times.Never);
+            Assert.IsNotNull(exception);
+            Assert.IsNull(updateResult);
+            Assert.AreEqual(ErrorStrings.TOPIC_RARAM_NAME, exception.ParamName);
+        }
+
+        [DataTestMethod]
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" ")]
+        public async Task Update_TopicNameIsNullOrWhiteSpace_ShouldReturnCreateResult_TOPIC_NAME_SHOULD_NOT_BE_EMPTY(string topicName)
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            var topic = new Topic(id: id, name: topicName);
+
+            var createResult = await _topicsService.Update(topic);
+            _topicsRepositoryMock.Verify(tr => tr.Update(topic!), Times.Never);
+
+            Assert.IsNotNull(createResult);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, createResult.StatusCode);
+            Assert.AreEqual(ErrorStrings.TOPIC_NAME_SHOULD_NOT_BE_EMPTY, createResult.Message);
+        }
+
+        [TestMethod]
+        public async Task Update_TopicNotFound_ShouldReturn_TOPIC_NOT_FOUND()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            string topicName = TestFixtures.TestFixtures.GenerateString();
+            var topic = new Topic(id: id, name: topicName);
+            _topicsRepositoryMock.Setup(tr => tr.Update(topic))
+               .ReturnsAsync(new UpdateResult
+               {
+                   Message = Core.ErrorStrings.TOPIC_NOT_FOUND,
+                   StatusCode = System.Net.HttpStatusCode.NotFound
+               });
+
+            var updateResult = await _topicsService.Update(topic);
+            
+            _topicsRepositoryMock.Verify(tr => tr.Update(topic!), Times.Once);
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(System.Net.HttpStatusCode.NotFound, updateResult.StatusCode);
+            Assert.AreEqual(ErrorStrings.TOPIC_NOT_FOUND, updateResult.Message);
+        }
+
+        [TestMethod]
+        public async Task Update_TopicIsActual_ShouldReturn_TOPIC_IS_ACTUAL()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            string topicName = TestFixtures.TestFixtures.GenerateString();
+            var topic = new Topic(id: id, name: topicName);
+            _topicsRepositoryMock.Setup(tr => tr.Update(topic))
+               .ReturnsAsync(new UpdateResult
+               {
+                   Message = Core.ErrorStrings.TOPIC_IS_ACTUAL,
+                   StatusCode = System.Net.HttpStatusCode.OK
+               });
+
+            var updateResult = await _topicsService.Update(topic);
+
+            _topicsRepositoryMock.Verify(tr => tr.Update(topic!), Times.Once);
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
+            Assert.AreEqual(ErrorStrings.TOPIC_IS_ACTUAL, updateResult.Message);
+        }
+
+        [TestMethod]
+        public async Task Update_TopicIsUpdated_ShouldReturn_TOPIC_UPDATED()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            string topicName = TestFixtures.TestFixtures.GenerateString();
+            var topic = new Topic(id: id, name: topicName);
+            _topicsRepositoryMock.Setup(tr => tr.Update(topic))
+               .ReturnsAsync(new UpdateResult
+               {
+                   Message = Core.ErrorStrings.TOPIC_UPDATED,
+                   StatusCode = System.Net.HttpStatusCode.OK
+               });
+
+            var updateResult = await _topicsService.Update(topic);
+
+            _topicsRepositoryMock.Verify(tr => tr.Update(topic!), Times.Once);
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
+            Assert.AreEqual(ErrorStrings.TOPIC_UPDATED, updateResult.Message);
         }
     }
 }

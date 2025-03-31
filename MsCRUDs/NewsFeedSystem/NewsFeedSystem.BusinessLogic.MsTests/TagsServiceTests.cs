@@ -48,7 +48,6 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
             Assert.IsNotNull(createResult);
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, createResult.StatusCode);
             Assert.AreEqual(ErrorStrings.TAG_NAME_SHOULD_NOT_BE_EMPTY, createResult.Message);
-
         }
 
         [TestMethod]
@@ -175,9 +174,96 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task UpdateTest()
+        public async Task Update_TagIsNull_ShouldThrowArgumentNullException()
         {
-            throw new NotImplementedException();
+            Tag tag = null;
+            UpdateResult updateResult = null;
+            var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => updateResult = await _tagsService.Update(tag!));
+
+            _tagsRepositoryMock.Verify(tr => tr.Update(tag!), Times.Never);
+            Assert.IsNotNull(exception);
+            Assert.IsNull(updateResult);
+            Assert.AreEqual(ErrorStrings.TAG_RARAM_NAME, exception.ParamName);
+        }
+
+        [DataTestMethod]
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" ")]
+        public async Task Update_TagNameIsNullOrWhiteSpace_ShouldReturnCreateResult_TAG_NAME_SHOULD_NOT_BE_EMPTY(string tagName)
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            var tag = new Tag(id: id, name: tagName);
+
+            var createResult = await _tagsService.Update(tag);
+            _tagsRepositoryMock.Verify(tr => tr.Update(tag!), Times.Never);
+
+            Assert.IsNotNull(createResult);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, createResult.StatusCode);
+            Assert.AreEqual(ErrorStrings.TAG_NAME_SHOULD_NOT_BE_EMPTY, createResult.Message);
+        }
+
+        [TestMethod]
+        public async Task Update_TagNotFound_ShouldReturn_TAG_NOT_FOUND()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            string tagName = TestFixtures.TestFixtures.GenerateString();
+            var tag = new Tag(id: id, name: tagName);
+            _tagsRepositoryMock.Setup(tr => tr.Update(tag))
+               .ReturnsAsync(new UpdateResult
+               {
+                   Message = Core.ErrorStrings.TOPIC_NOT_FOUND,
+                   StatusCode = System.Net.HttpStatusCode.NotFound
+               });
+
+            var updateResult = await _tagsService.Update(tag);
+
+            _tagsRepositoryMock.Verify(tr => tr.Update(tag!), Times.Once);
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(System.Net.HttpStatusCode.NotFound, updateResult.StatusCode);
+            Assert.AreEqual(ErrorStrings.TOPIC_NOT_FOUND, updateResult.Message);
+        }
+
+        [TestMethod]
+        public async Task Update_TagIsActual_ShouldReturn_TAG_IS_ACTUAL()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            string tagName = TestFixtures.TestFixtures.GenerateString();
+            var tag = new Tag(id: id, name: tagName);
+            _tagsRepositoryMock.Setup(tr => tr.Update(tag))
+               .ReturnsAsync(new UpdateResult
+               {
+                   Message = Core.ErrorStrings.TAG_IS_ACTUAL,
+                   StatusCode = System.Net.HttpStatusCode.OK
+               });
+
+            var updateResult = await _tagsService.Update(tag);
+
+            _tagsRepositoryMock.Verify(tr => tr.Update(tag!), Times.Once);
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
+            Assert.AreEqual(ErrorStrings.TAG_IS_ACTUAL, updateResult.Message);
+        }
+
+        [TestMethod]
+        public async Task Update_TagIsUpdated_ShouldReturn_TAG_UPDATED()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+            string tagName = TestFixtures.TestFixtures.GenerateString();
+            var tag = new Tag(id: id, name: tagName);
+            _tagsRepositoryMock.Setup(tr => tr.Update(tag))
+               .ReturnsAsync(new UpdateResult
+               {
+                   Message = Core.ErrorStrings.TAG_UPDATED,
+                   StatusCode = System.Net.HttpStatusCode.OK
+               });
+
+            var updateResult = await _tagsService.Update(tag);
+
+            _tagsRepositoryMock.Verify(tr => tr.Update(tag!), Times.Once);
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
+            Assert.AreEqual(ErrorStrings.TAG_UPDATED, updateResult.Message);
         }
     }
 }
