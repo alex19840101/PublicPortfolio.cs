@@ -17,11 +17,6 @@ namespace NewsFeedSystem.API.Contracts.Interfaces
         /// </summary>
         Task<IActionResult> Login(LoginRequestDto request);
 
-        ///// <summary>
-        ///// Выход из системы
-        ///// </summary>
-        //Task<IActionResult> Logout(LogoutRequestDto request);
-        
         /// <summary>
         /// Обновление аккаунта
         /// </summary>

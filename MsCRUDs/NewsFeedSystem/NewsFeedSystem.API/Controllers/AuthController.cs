@@ -79,7 +79,7 @@ public class AuthController : ControllerBase, IAuthAPI
 
         var result = new AuthResponseDto
         {
-            Id = loginResult.Id.Value,
+            Id = loginResult!.Id!.Value,
             Message = loginResult.Message,
             Token = loginResult.Token
         };

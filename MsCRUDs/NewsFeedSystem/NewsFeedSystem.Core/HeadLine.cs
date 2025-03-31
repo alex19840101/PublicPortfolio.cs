@@ -50,5 +50,10 @@ namespace NewsFeedSystem.Core
         {
             return $"{_id} {_headLine}";
         }
+
+        public void UpdateHeadline(string newHeadline) => _headLine = newHeadline;
+        public void UpdateTags(List<uint> tags) => _tags = tags;
+        public void UpdateTopics(List<uint> topics) => _topics = topics;
+
     }
 }

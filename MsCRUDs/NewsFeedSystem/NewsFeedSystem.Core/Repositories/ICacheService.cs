@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace NewsFeedSystem.Core.Repositories
+﻿namespace NewsFeedSystem.Core.Repositories
 {
     /// <summary> Интерфейс кэш-сервиса </summary>
     public interface ICacheService

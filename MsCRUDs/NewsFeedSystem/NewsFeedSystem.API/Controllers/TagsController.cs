@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using NewsFeedSystem.API.Contracts.Responses;
+using NewsFeedSystem.API.Contracts;
 using NewsFeedSystem.API.Contracts.Interfaces;
 using NewsFeedSystem.API.Contracts.Requests;
-using NewsFeedSystem.Core.Results;
-using NewsFeedSystem.API.Contracts;
-using NewsFeedSystem.Core.Services;
-using Microsoft.AspNetCore.Http;
+using NewsFeedSystem.API.Contracts.Responses;
 using NewsFeedSystem.API.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using NewsFeedSystem.Core;
-using System.Linq;
+using NewsFeedSystem.Core.Results;
+using NewsFeedSystem.Core.Services;
 
 namespace NewsFeedSystem.API.Controllers
 {

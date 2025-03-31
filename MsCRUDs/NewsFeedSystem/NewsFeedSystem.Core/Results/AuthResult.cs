@@ -8,10 +8,10 @@ namespace NewsFeedSystem.Core.Results
         public uint? Id { get; set; }
 
         /// <summary> Сообщение о результате выполнения запроса </summary>
-        public string Message { get; set; }
+        public string Message { get; set; } = default!;
 
         public HttpStatusCode StatusCode { get; set; }
-        public string Token { get; set; }
+        public string? Token { get; set; }
 
         public AuthResult()
         { }
@@ -19,7 +19,7 @@ namespace NewsFeedSystem.Core.Results
         public AuthResult(string message,
             HttpStatusCode statusCode,
             uint? id = null,
-            string token = null)
+            string? token = null)
         {
             Message = message;
             StatusCode = statusCode;

@@ -7,11 +7,11 @@
         public uint? Id { get; set; }
 
         /// <summary> Токен </summary>
-        public string Token { get; set; }
+        public string? Token { get; set; }
 
         /// <summary>
         /// Сообщение
         /// </summary>
-        public string Message { get; set; }
+        public string Message { get; set; } = default!;
     }
 }
