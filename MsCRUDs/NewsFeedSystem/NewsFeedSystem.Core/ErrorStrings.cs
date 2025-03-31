@@ -43,6 +43,7 @@
         //Tags
         public const string TAG_RARAM_NAME = "tag";
         public const string TAG_NAME_SHOULD_NOT_BE_EMPTY = "Tag.Name field should be not empty";
+        public const string TAG_NOT_FOUND = "Tag not found";
         public const string TAG_UPDATED = "Tag updated";
         public const string TAG_IS_ACTUAL = "Tag is actual";
 

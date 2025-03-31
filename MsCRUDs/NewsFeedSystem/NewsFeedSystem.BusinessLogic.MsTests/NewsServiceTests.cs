@@ -4,9 +4,6 @@ using Moq;
 using NewsFeedSystem.Core;
 using NewsFeedSystem.Core.Repositories;
 using NewsFeedSystem.Core.Results;
-using System.Text;
-using AutoFixture;
-using System.Collections.Generic;
 
 namespace NewsFeedSystem.BusinessLogic.MsTests
 {

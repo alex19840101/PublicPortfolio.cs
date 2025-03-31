@@ -20,7 +20,7 @@ namespace NewsFeedSystem.BusinessLogic
         public async Task<CreateResult> Create(Topic topic)
         {
             if (topic == null)
-                throw new ArgumentNullException(ErrorStrings.TAG_RARAM_NAME);
+                throw new ArgumentNullException(ErrorStrings.TOPIC_RARAM_NAME);
 
             if (string.IsNullOrWhiteSpace(topic.Name))
                 return new CreateResult(ErrorStrings.TOPIC_NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);

@@ -21,44 +21,114 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public void Create_TopicIsNull_ShouldThrowArgumentNullException()
+        public async Task Create_TopicIsNull_ShouldThrowArgumentNullException()
         {
-            throw new NotImplementedException(); //TODO: Create_TopicIsNull_ShouldThrowArgumentNullException()
+            Topic topic = null;
+            CreateResult createResult = null;
+            var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => createResult = await _topicsService.Create(topic!));
+
+            _topicsRepositoryMock.Verify(tr => tr.Create(topic!), Times.Never);
+            Assert.IsNotNull(exception);
+            Assert.IsNull(createResult);
+            Assert.AreEqual(ErrorStrings.TOPIC_RARAM_NAME, exception.ParamName);
         }
 
 
-        [TestMethod]
-        public void Create_TopicNameIsNullOrWhiteSpace_ShouldReturnCreateResult_TOPIC_NAME_SHOULD_NOT_BE_EMPTY()
+        [DataTestMethod]
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" ")]
+        public async Task Create_TopicNameIsNullOrWhiteSpace_ShouldReturnCreateResult_TOPIC_NAME_SHOULD_NOT_BE_EMPTY(string topicName)
         {
-            throw new NotImplementedException(); //TODO: Create_TopicNameIsNullOrWhiteSpace_ShouldReturnCreateResult_TOPIC_NAME_SHOULD_NOT_BE_EMPTY
+            var topic = new Topic(id: 0, name: topicName);
+
+            var createResult = await _topicsService.Create(topic);
+            _topicsRepositoryMock.Verify(tr => tr.Create(topic!), Times.Never);
+
+            Assert.IsNotNull(createResult);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, createResult.StatusCode);
+            Assert.AreEqual(ErrorStrings.TOPIC_NAME_SHOULD_NOT_BE_EMPTY, createResult.Message);
         }
 
         [TestMethod]
-        public void Create_TopicIsValid_ShouldReturnOk()
+        public async Task Create_TopicIsValid_ShouldReturnOk()
         {
-            throw new NotImplementedException(); //TODO: Create_TagIsValid_ShouldReturnOk
+            string topicName = TestFixtures.TestFixtures.GenerateString();
+            var topic = new Topic(id: 0, name: topicName);
+
+            var expectedId = TestFixtures.TestFixtures.GenerateId();
+
+            _topicsRepositoryMock.Setup(nr => nr.Create(topic))
+                .ReturnsAsync(new CreateResult
+                {
+                    Id = expectedId,
+                    StatusCode = System.Net.HttpStatusCode.Created
+                });
+
+            var createResult = await _topicsService.Create(topic);
+
+            Assert.IsTrue(createResult.Id > 0);
+            Assert.AreEqual(expectedId, createResult.Id);
+            Assert.AreEqual(System.Net.HttpStatusCode.Created, createResult.StatusCode);
+            _topicsRepositoryMock.Verify(nr => nr.Create(topic), Times.Once);
         }
 
         [TestMethod]
-        public void DeleteTest()
+        public async Task Delete_NotFound_ShouldReturnDeleteResult_TOPIC_NOT_FOUND()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+
+            _topicsRepositoryMock.Setup(nr => nr.Delete(id))
+                .ReturnsAsync(new DeleteResult
+                {
+                    StatusCode = System.Net.HttpStatusCode.NotFound,
+                    Message = Core.ErrorStrings.TOPIC_NOT_FOUND
+                });
+
+            var deleteResult = await _topicsService.Delete(id);
+
+            _topicsRepositoryMock.Verify(nr => nr.Delete(id), Times.Once);
+
+            Assert.IsNotNull(deleteResult);
+            Assert.AreEqual(Core.ErrorStrings.TOPIC_NOT_FOUND, deleteResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.NotFound, deleteResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task Delete_OK_ShouldReturnDeleteResult_OK()
+        {
+            var id = TestFixtures.TestFixtures.GenerateId();
+
+            _topicsRepositoryMock.Setup(nr => nr.Delete(id))
+                .ReturnsAsync(new DeleteResult
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    Message = Core.ErrorStrings.OK
+                });
+
+            var deleteResult = await _topicsService.Delete(id);
+
+            _topicsRepositoryMock.Verify(nr => nr.Delete(id), Times.Once);
+
+            Assert.IsNotNull(deleteResult);
+            Assert.AreEqual(Core.ErrorStrings.OK, deleteResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, deleteResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task GetTest()
         {
             throw new NotImplementedException();
         }
 
         [TestMethod]
-        public void GetTest()
+        public async Task GetTopicsTest()
         {
             throw new NotImplementedException();
         }
 
         [TestMethod]
-        public void GetTopicsTest()
-        {
-            throw new NotImplementedException();
-        }
-
-        [TestMethod]
-        public void UpdateTest()
+        public async Task UpdateTest()
         {
             throw new NotImplementedException();
         }

@@ -8,8 +8,6 @@ namespace TestFixtures
 {
     public partial class TestFixtures
     {
-        public static uint GenerateId() => new Fixture().Create<uint>();
-
         public static AuthUser GetAuthUserFixtureWithAllFields(
                     bool generateId = false,
                     bool generateLogin = true,
