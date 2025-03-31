@@ -127,7 +127,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
             }
         }
 
-        public async Task<IEnumerable<HeadLine>> ReadHeadlinesByTopic(uint topicId, uint minNewsId)
+        public async Task<IEnumerable<HeadLine>> GetHeadlinesByTopic(uint topicId, uint minNewsId)
         {
             try
             {

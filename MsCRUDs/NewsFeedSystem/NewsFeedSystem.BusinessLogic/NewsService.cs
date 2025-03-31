@@ -52,6 +52,9 @@ namespace NewsFeedSystem.BusinessLogic
 
         public async Task<IEnumerable<HeadLine>> GetHeadlines(uint? minNewsId, uint? maxNewsId)
         {
+            if (minNewsId > maxNewsId)
+                return new List<HeadLine>();
+
             return await _newsRepository.GetHeadlines(minNewsId, maxNewsId);
         }
 
@@ -62,7 +65,7 @@ namespace NewsFeedSystem.BusinessLogic
 
         public async Task<IEnumerable<HeadLine>> GetHeadlinesByTopic(uint topicId, uint minNewsId)
         {
-            return await _newsRepository.ReadHeadlinesByTopic(topicId, minNewsId);
+            return await _newsRepository.GetHeadlinesByTopic(topicId, minNewsId);
         }
 
         public async Task<UpdateResult> Update(NewsPost newsPost)

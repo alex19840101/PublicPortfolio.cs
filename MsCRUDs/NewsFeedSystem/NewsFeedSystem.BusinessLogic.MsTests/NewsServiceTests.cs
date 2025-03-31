@@ -238,22 +238,45 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
             Assert.AreEqual(existingPost, newsPost);
         }
 
-        [TestMethod]
-        public async Task GetHeadlines()
+        [DataTestMethod]
+        [DataRow(null, null)]
+        [DataRow(null, 100500)]
+        [DataRow(100500, null)]
+        [DataRow(100500, 100500)]
+        [DataRow(1, 100)]
+        public async Task GetHeadlines_ShouldCallGetHeadlinesMethodOfRepository(int? minNewsId, int? maxNewsId)
         {
-            throw new NotImplementedException(); //TODO: GetHeadlines()
+            var result = await _newsService.GetHeadlines((uint?)minNewsId, (uint?)maxNewsId);
+            _newsRepositoryMock.Verify(nr => nr.GetHeadlines((uint?)minNewsId, (uint?)maxNewsId), Times.Once);
+        }
+
+        [DataTestMethod]
+        [DataRow(100501, 100500)]
+        [DataRow(2, 1)]
+        public async Task GetHeadlines_MinNewsIdMoreThanMaxNewsId_ShouldReturnEmptyList(int? minNewsId, int? maxNewsId)
+        {
+            var result = await _newsService.GetHeadlines((uint?)minNewsId, (uint?)maxNewsId);
+            _newsRepositoryMock.Verify(nr => nr.GetHeadlines((uint?)minNewsId, (uint?)maxNewsId), Times.Never);
         }
 
         [TestMethod]
         public async Task GetHeadlinesByTag()
         {
-            throw new NotImplementedException(); //TODO: GetHeadlinesByTag()
+            var tagId = TestFixtures.TestFixtures.GenerateId();
+            var minNewsId = TestFixtures.TestFixtures.GenerateId();
+
+            var result = await _newsService.GetHeadlinesByTag(tagId, minNewsId);
+            _newsRepositoryMock.Verify(nr => nr.GetHeadlinesByTag(tagId, minNewsId), Times.Once);
         }
 
         [TestMethod]
         public async Task GetHeadlinesByTopic()
         {
-            throw new NotImplementedException();  //TODO: GetHeadlinesByTopic()
+            var topicId = TestFixtures.TestFixtures.GenerateId();
+            var minNewsId = TestFixtures.TestFixtures.GenerateId();
+
+            var result = await _newsService.GetHeadlinesByTopic(topicId, minNewsId);
+            _newsRepositoryMock.Verify(nr => nr.GetHeadlinesByTopic(topicId, minNewsId), Times.Once);
         }
 
         [TestMethod]
