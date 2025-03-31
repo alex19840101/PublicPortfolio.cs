@@ -43,6 +43,9 @@ namespace NewsFeedSystem.BusinessLogic
 
         public async Task<IEnumerable<Topic>> GetTopics(uint? minTopicId, uint? maxTopicId)
         {
+            if (minTopicId > maxTopicId)
+                return new List<Topic>();
+
             return await _topicsRepository.GetTopics(minTopicId, maxTopicId);
         }
 

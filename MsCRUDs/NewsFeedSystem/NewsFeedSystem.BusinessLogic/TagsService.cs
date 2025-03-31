@@ -43,6 +43,9 @@ namespace NewsFeedSystem.BusinessLogic
 
         public async Task<IEnumerable<Tag>> GetTags(uint? minTagId, uint? maxTagId)
         {
+            if (minTagId > maxTagId)
+                return new List<Tag>();
+
             return await _tagsRepository.GetTags(minTagId, maxTagId);
         }
 

@@ -58,7 +58,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
 
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
-            _topicsRepositoryMock.Setup(nr => nr.Create(topic))
+            _topicsRepositoryMock.Setup(tr => tr.Create(topic))
                 .ReturnsAsync(new CreateResult
                 {
                     Id = expectedId,
@@ -70,7 +70,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
             Assert.IsTrue(createResult.Id > 0);
             Assert.AreEqual(expectedId, createResult.Id);
             Assert.AreEqual(System.Net.HttpStatusCode.Created, createResult.StatusCode);
-            _topicsRepositoryMock.Verify(nr => nr.Create(topic), Times.Once);
+            _topicsRepositoryMock.Verify(tr => tr.Create(topic), Times.Once);
         }
 
         [TestMethod]
@@ -78,7 +78,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
         {
             var id = TestFixtures.TestFixtures.GenerateId();
 
-            _topicsRepositoryMock.Setup(nr => nr.Delete(id))
+            _topicsRepositoryMock.Setup(tr => tr.Delete(id))
                 .ReturnsAsync(new DeleteResult
                 {
                     StatusCode = System.Net.HttpStatusCode.NotFound,
@@ -87,7 +87,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
 
             var deleteResult = await _topicsService.Delete(id);
 
-            _topicsRepositoryMock.Verify(nr => nr.Delete(id), Times.Once);
+            _topicsRepositoryMock.Verify(tr => tr.Delete(id), Times.Once);
 
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(Core.ErrorStrings.TOPIC_NOT_FOUND, deleteResult.Message);
@@ -99,7 +99,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
         {
             var id = TestFixtures.TestFixtures.GenerateId();
 
-            _topicsRepositoryMock.Setup(nr => nr.Delete(id))
+            _topicsRepositoryMock.Setup(tr => tr.Delete(id))
                 .ReturnsAsync(new DeleteResult
                 {
                     StatusCode = System.Net.HttpStatusCode.OK,
@@ -108,7 +108,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
 
             var deleteResult = await _topicsService.Delete(id);
 
-            _topicsRepositoryMock.Verify(nr => nr.Delete(id), Times.Once);
+            _topicsRepositoryMock.Verify(tr => tr.Delete(id), Times.Once);
 
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(Core.ErrorStrings.OK, deleteResult.Message);
@@ -116,15 +116,60 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task GetTest()
+        public async Task Get_ExistingTopic_ShouldReturnTopic()
         {
-            throw new NotImplementedException();
+            string topicName = TestFixtures.TestFixtures.GenerateString();
+            var id = TestFixtures.TestFixtures.GenerateId();
+            var existingTopic = new Topic(id: id, name: topicName);
+
+            _topicsRepositoryMock.Setup(tr => tr.Get(id))
+                .ReturnsAsync(existingTopic);
+
+            var resultTopic = await _topicsService.Get(id);
+
+            _topicsRepositoryMock.Verify(tr => tr.Get(id), Times.Once);
+
+            Assert.IsNotNull(resultTopic);
+            Assert.AreEqual(id, resultTopic.Id);
+            Assert.AreEqual(existingTopic, resultTopic);
         }
 
         [TestMethod]
-        public async Task GetTopicsTest()
+        public async Task Get_NotExistingTopic_ShouldReturnNull()
         {
-            throw new NotImplementedException();
+            var id = TestFixtures.TestFixtures.GenerateId();
+            Topic notExistingTopic = null;
+            _topicsRepositoryMock.Setup(tr => tr.Get(id))
+                .ReturnsAsync(notExistingTopic);
+
+            var resultTopic = await _topicsService.Get(id);
+
+            _topicsRepositoryMock.Verify(tr => tr.Get(id), Times.Once);
+
+            Assert.IsNull(resultTopic);
+            Assert.AreEqual(notExistingTopic, resultTopic);
+        }
+
+        [DataTestMethod]
+        [DataRow(100501, 100500)]
+        [DataRow(2, 1)]
+        public async Task GetTopics_MinTopicIdMoreThanMaxTopicId_ShouldReturnEmptyList(int? minTopicId, int? maxTopicId)
+        {
+            var result = await _topicsService.GetTopics((uint?)minTopicId, (uint?)maxTopicId);
+            _topicsRepositoryMock.Verify(tr => tr.GetTopics((uint?)minTopicId, (uint?)maxTopicId), Times.Never);
+        }
+
+
+        [DataTestMethod]
+        [DataRow(null, null)]
+        [DataRow(null, 100500)]
+        [DataRow(100500, null)]
+        [DataRow(100500, 100500)]
+        [DataRow(1, 100)]
+        public async Task GetTopics_ShouldCallGetTopicsMethodOfRepository(int? minTopicId, int? maxTopicId)
+        {
+            var result = await _topicsService.GetTopics((uint?)minTopicId, (uint?)maxTopicId);
+            _topicsRepositoryMock.Verify(tr => tr.GetTopics((uint?)minTopicId, (uint?)maxTopicId), Times.Once);
         }
 
         [TestMethod]

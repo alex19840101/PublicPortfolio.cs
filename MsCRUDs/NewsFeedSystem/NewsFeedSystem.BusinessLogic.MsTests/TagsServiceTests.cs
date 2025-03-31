@@ -59,7 +59,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
 
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
-            _tagsRepositoryMock.Setup(nr => nr.Create(tag))
+            _tagsRepositoryMock.Setup(tr => tr.Create(tag))
                 .ReturnsAsync(new CreateResult
                 {
                     Id = expectedId,
@@ -71,7 +71,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
             Assert.IsTrue(createResult.Id > 0);
             Assert.AreEqual(expectedId, createResult.Id);
             Assert.AreEqual(System.Net.HttpStatusCode.Created, createResult.StatusCode);
-            _tagsRepositoryMock.Verify(nr => nr.Create(tag), Times.Once);
+            _tagsRepositoryMock.Verify(tr => tr.Create(tag), Times.Once);
         }
 
 
@@ -80,7 +80,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
         {
             var id = TestFixtures.TestFixtures.GenerateId();
 
-            _tagsRepositoryMock.Setup(nr => nr.Delete(id))
+            _tagsRepositoryMock.Setup(tr => tr.Delete(id))
                 .ReturnsAsync(new DeleteResult
                 {
                     StatusCode = System.Net.HttpStatusCode.NotFound,
@@ -89,7 +89,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
 
             var deleteResult = await _tagsService.Delete(id);
 
-            _tagsRepositoryMock.Verify(nr => nr.Delete(id), Times.Once);
+            _tagsRepositoryMock.Verify(tr => tr.Delete(id), Times.Once);
 
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(Core.ErrorStrings.TAG_NOT_FOUND, deleteResult.Message);
@@ -101,7 +101,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
         {
             var id = TestFixtures.TestFixtures.GenerateId();
 
-            _tagsRepositoryMock.Setup(nr => nr.Delete(id))
+            _tagsRepositoryMock.Setup(tr => tr.Delete(id))
                 .ReturnsAsync(new DeleteResult
                 {
                     StatusCode = System.Net.HttpStatusCode.OK,
@@ -110,7 +110,7 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
 
             var deleteResult = await _tagsService.Delete(id);
 
-            _tagsRepositoryMock.Verify(nr => nr.Delete(id), Times.Once);
+            _tagsRepositoryMock.Verify(tr => tr.Delete(id), Times.Once);
 
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(Core.ErrorStrings.OK, deleteResult.Message);
@@ -118,15 +118,60 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task GetTest()
+        public async Task Get_ExistingTag_ShouldReturnTag()
         {
-            throw new NotImplementedException();
+            string tagName = TestFixtures.TestFixtures.GenerateString();
+            var id = TestFixtures.TestFixtures.GenerateId();
+            var existingTag = new Tag(id: id, name: tagName);
+
+            _tagsRepositoryMock.Setup(tr => tr.Get(id))
+                .ReturnsAsync(existingTag);
+
+            var resultTag = await _tagsService.Get(id);
+
+            _tagsRepositoryMock.Verify(tr => tr.Get(id), Times.Once);
+
+            Assert.IsNotNull(resultTag);
+            Assert.AreEqual(id, resultTag.Id);
+            Assert.AreEqual(existingTag, resultTag);
         }
 
         [TestMethod]
-        public async Task GetTagsTest()
+        public async Task Get_ExistingTag_ShouldReturnNull()
         {
-            throw new NotImplementedException();
+            var id = TestFixtures.TestFixtures.GenerateId();
+            Tag notExistingTag = null;
+
+            _tagsRepositoryMock.Setup(tr => tr.Get(id))
+                .ReturnsAsync(notExistingTag);
+
+            var resultTag = await _tagsService.Get(id);
+
+            _tagsRepositoryMock.Verify(tr => tr.Get(id), Times.Once);
+
+            Assert.IsNull(resultTag);
+            Assert.AreEqual(notExistingTag, resultTag);
+        }
+
+        [DataTestMethod]
+        [DataRow(100501, 100500)]
+        [DataRow(2, 1)]
+        public async Task GetTags_MinTagIdMoreThanMaxTagId_ShouldReturnEmptyList(int? minTagId, int? maxTagId)
+        {
+            var result = await _tagsService.GetTags((uint?)minTagId, (uint?)maxTagId);
+            _tagsRepositoryMock.Verify(tr => tr.GetTags((uint?)minTagId, (uint?)maxTagId), Times.Never);
+        }
+
+        [DataTestMethod]
+        [DataRow(null, null)]
+        [DataRow(null, 100500)]
+        [DataRow(100500, null)]
+        [DataRow(100500, 100500)]
+        [DataRow(1, 100)]
+        public async Task GetTags_ShouldCallGetTagsMethodOfRepository(int? minTagId, int? maxTagId)
+        {
+            var result = await _tagsService.GetTags((uint?)minTagId, (uint?)maxTagId);
+            _tagsRepositoryMock.Verify(tr => tr.GetTags((uint?)minTagId, (uint?)maxTagId), Times.Once);
         }
 
         [TestMethod]
