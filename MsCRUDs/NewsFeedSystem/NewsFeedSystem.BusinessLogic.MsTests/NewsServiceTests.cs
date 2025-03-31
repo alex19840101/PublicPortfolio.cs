@@ -282,31 +282,133 @@ namespace NewsFeedSystem.BusinessLogic.MsTests
         [TestMethod]
         public async Task Update_NewsPostIsNull_ShouldThrowArgumentNullException()
         {
-            throw new NotImplementedException(); //TODO: Update_NewsPostIsNull_ShouldThrowArgumentNullException()
+            NewsPost newsPost = null;
+            UpdateResult updateResult = null;
+            var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => updateResult = await _newsService.Update(newsPost!));
+
+            _newsRepositoryMock.Verify(nr => nr.Update(newsPost!), Times.Never);
+            Assert.IsNotNull(exception);
+            Assert.IsNull(updateResult);
+            Assert.AreEqual(ErrorStrings.NEWSPOST_RARAM_NAME, exception.ParamName);
+        }
+
+        [DataTestMethod]
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" ")]
+        public async Task Update_HeadlineIsNullOrWhiteSpace_ShouldReturnCreateResult_HEADLINE_SHOULD_NOT_BE_EMPTY_400(string headline)
+        {
+            NewsPost newsPost = TestFixtures.TestFixtures.GetNewsPostFixtureWithAllFields(generateHeadline: false, headline: headline);
+            var updateResult = await _newsService.Update(newsPost);
+
+            _newsRepositoryMock.Verify(nr => nr.Update(newsPost), Times.Never);
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, updateResult.StatusCode);
+            Assert.AreEqual(ErrorStrings.HEADLINE_SHOULD_NOT_BE_EMPTY, updateResult.Message);
+        }
+
+        [DataTestMethod]
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" ")]
+        public async Task Update_TextIsNullOrWhiteSpace_ShouldReturnCreateResult_TEXT_SHOULD_NOT_BE_EMPTY_400(string text)
+        {
+            NewsPost newsPost = TestFixtures.TestFixtures.GetNewsPostFixtureWithAllFields(generateText: false, text: text);
+            var updateResult = await _newsService.Update(newsPost);
+
+            _newsRepositoryMock.Verify(nr => nr.Update(newsPost), Times.Never);
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, updateResult.StatusCode);
+            Assert.AreEqual(ErrorStrings.TEXT_SHOULD_NOT_BE_EMPTY, updateResult.Message);
         }
 
         [TestMethod]
-        public async Task Update_HeadlineIsNullOrWhiteSpace_ShouldReturnCreateResult_HEADLINE_SHOULD_NOT_BE_EMPTY_400()
+        public async Task Update_NewsPostIsValidAndActual_ShouldReturnOk()
         {
-            throw new NotImplementedException(); //TODO: Update_HeadlineIsNullOrWhiteSpace_ShouldReturnCreateResult_HEADLINE_SHOULD_NOT_BE_EMPTY_400()
+            NewsPost newsPost = TestFixtures.TestFixtures.GetNewsPostFixtureWithRequiredFields();
+
+            var expectedId = TestFixtures.TestFixtures.GenerateId();
+
+            _newsRepositoryMock.Setup(nr => nr.Update(newsPost))
+                .ReturnsAsync(new UpdateResult
+                {
+                    Message = Core.ErrorStrings.NEWS_IS_ACTUAL,
+                    StatusCode = System.Net.HttpStatusCode.OK
+                });
+
+            var updateResult = await _newsService.Update(newsPost);
+
+            _newsRepositoryMock.Verify(nr => nr.Update(newsPost), Times.Once);
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(Core.ErrorStrings.NEWS_IS_ACTUAL, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
         }
 
         [TestMethod]
-        public async Task Update_TextIsNullOrWhiteSpace_ShouldReturnCreateResult_TEXT_SHOULD_NOT_BE_EMPTY_400()
+        public async Task Update_NewsPostIsValidAndUpdated_ShouldReturnOk()
         {
-            throw new NotImplementedException(); //TODO: Update_TextIsNullOrWhiteSpace_ShouldReturnCreateResult_TEXT_SHOULD_NOT_BE_EMPTY_400()
+            NewsPost newsPost = TestFixtures.TestFixtures.GetNewsPostFixtureWithRequiredFields();
+
+            var expectedId = TestFixtures.TestFixtures.GenerateId();
+
+            _newsRepositoryMock.Setup(nr => nr.Update(newsPost))
+                .ReturnsAsync(new UpdateResult
+                {
+                    Message = Core.ErrorStrings.NEWS_UPDATED,
+                    StatusCode = System.Net.HttpStatusCode.OK
+                });
+
+            var updateResult = await _newsService.Update(newsPost);
+
+            _newsRepositoryMock.Verify(nr => nr.Update(newsPost), Times.Once);
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(Core.ErrorStrings.NEWS_UPDATED, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
+        }
+
+
+        [TestMethod]
+        public async Task Update_NewsPostIsValidFullAndUpdated_ShouldReturnOk()
+        {
+            NewsPost newsPost = TestFixtures.TestFixtures.GetNewsPostFixtureWithAllFields();
+
+            var expectedId = TestFixtures.TestFixtures.GenerateId();
+
+            _newsRepositoryMock.Setup(nr => nr.Update(newsPost))
+                .ReturnsAsync(new UpdateResult
+                {
+                    Message = Core.ErrorStrings.NEWS_UPDATED,
+                    StatusCode = System.Net.HttpStatusCode.OK
+                });
+
+            var updateResult = await _newsService.Update(newsPost);
+
+            _newsRepositoryMock.Verify(nr => nr.Update(newsPost), Times.Once);
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(Core.ErrorStrings.NEWS_UPDATED, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
         }
 
         [TestMethod]
-        public async Task Update_NewsPostIsValid_ShouldReturnOk()
+        public async Task Update_NewsPostIsValidFullAndActual_ShouldReturnOk()
         {
-            throw new NotImplementedException(); //TODO: Update_NewsPostIsValid_ShouldReturnOk
-        }
+            NewsPost newsPost = TestFixtures.TestFixtures.GetNewsPostFixtureWithAllFields();
 
-        [TestMethod]
-        public async Task Update_NewsPostIsValidAndFull_ShouldReturnOk()
-        {
-            throw new NotImplementedException(); //TODO: Update_NewsPostIsValidAndFull_ShouldReturnOk
+            var expectedId = TestFixtures.TestFixtures.GenerateId();
+
+            _newsRepositoryMock.Setup(nr => nr.Update(newsPost))
+                .ReturnsAsync(new UpdateResult
+                {
+                    Message = Core.ErrorStrings.NEWS_IS_ACTUAL,
+                    StatusCode = System.Net.HttpStatusCode.OK
+                });
+
+            var updateResult = await _newsService.Update(newsPost);
+
+            _newsRepositoryMock.Verify(nr => nr.Update(newsPost), Times.Once);
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(Core.ErrorStrings.NEWS_IS_ACTUAL, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
         }
     }
 }
