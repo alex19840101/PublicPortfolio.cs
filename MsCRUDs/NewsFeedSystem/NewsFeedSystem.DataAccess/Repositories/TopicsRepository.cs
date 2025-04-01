@@ -92,7 +92,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
                 .SingleOrDefaultAsync(t => t.Id == topic.Id);
 
             if (entityTopic is null)
-                return new UpdateResult(ErrorStrings.NEWS_NOT_FOUND, HttpStatusCode.NotFound);
+                return new UpdateResult(ErrorStrings.TOPIC_NOT_FOUND, HttpStatusCode.NotFound);
 
             if (!string.Equals(topic.Name, entityTopic.Name)) entityTopic.UpdateTopicName(topic.Name);
 
