@@ -44,6 +44,8 @@ namespace NewsFeedSystem.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(CreateResponseDto), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Create(CreateTagRequestDto createTagRequestDto)
         {
             var createResult = await _tagsService.Create(new Core.Tag(id: 0, name: createTagRequestDto.Tag ));
@@ -139,6 +141,8 @@ namespace NewsFeedSystem.API.Controllers
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.NotFound)]
+        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Update(TagDto tagDto)
         {
             var updateResult = await _tagsService.Update(tagDto.GetTag());

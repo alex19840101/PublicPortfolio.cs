@@ -43,6 +43,8 @@ namespace NewsFeedSystem.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(CreateResponseDto), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Create(CreateNewsRequestDto createNewsRequestDto)
         {
             var createResult = await _newsService.Create(createNewsRequestDto.GetNewsPostForCreate());
@@ -167,6 +169,8 @@ namespace NewsFeedSystem.API.Controllers
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.NotFound)]
+        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Update(UpdateNewsRequestDto request)
         {
             var updateResult = await _newsService.Update(request.GetNewsPostForUpdate());

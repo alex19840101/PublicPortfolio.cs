@@ -45,6 +45,8 @@ namespace NewsFeedSystem.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(CreateResponseDto), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Create(CreateTopicRequestDto createTopicRequestDto)
         {
             var createResult = await _topicsService.Create(new Core.Topic(id: 0, name: createTopicRequestDto.Topic));
@@ -113,6 +115,8 @@ namespace NewsFeedSystem.API.Controllers
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.NotFound)]
+        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Update(TopicDto topicDto)
         {
             var updateResult = await _topicsService.Update(topicDto.GetTopic());
