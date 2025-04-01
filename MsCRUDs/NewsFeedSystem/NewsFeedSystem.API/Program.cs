@@ -55,14 +55,12 @@ try
 
     builder.Services.AddControllers();
 
-    builder.Services.AddAuthorization(options =>
-    {
-        options.AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy =>
+    builder.Services.AddAuthorizationBuilder()
+        .AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy =>
         {
             policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
             policy.RequireClaim(ClaimTypes.Role);
         });
-    });
 
     builder.Services.AddHttpContextAccessor();
 
