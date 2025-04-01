@@ -110,7 +110,7 @@ namespace ProjectTasksTrackService.API.Controllers
         /// <summary>
         /// Предоставление (установка/сброс) роли аккаунту
         /// </summary>
-        [HttpPost("api/v2/Auth/GrantRole")]
+        [HttpPatch("api/v2/Auth/GrantRole")]
         [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.NotFound)]
@@ -133,7 +133,7 @@ namespace ProjectTasksTrackService.API.Controllers
         /// <summary>
         /// Обновление аккаунта
         /// </summary>
-        [HttpPost("api/v2/Auth/UpdateAccount")]
+        [HttpPatch("api/v2/Auth/UpdateAccount")]
         [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Unauthorized)]

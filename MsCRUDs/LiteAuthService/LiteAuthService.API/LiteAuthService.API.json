@@ -153,7 +153,7 @@
       }
     },
     "/Auth/api/v1/GrantRole": {
-      "post": {
+      "patch": {
         "tags": [
           "Auth"
         ],
@@ -217,7 +217,7 @@
       }
     },
     "/Auth/api/v1/UpdateAccount": {
-      "post": {
+      "patch": {
         "tags": [
           "Auth"
         ],
