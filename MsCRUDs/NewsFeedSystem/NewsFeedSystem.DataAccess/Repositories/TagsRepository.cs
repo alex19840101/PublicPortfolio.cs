@@ -45,7 +45,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
             .SingleOrDefaultAsync(t => t.Id == tagId);
 
             if (entityTag is null)
-                return new DeleteResult(ErrorStrings.TOPIC_NOT_FOUND, HttpStatusCode.NotFound);
+                return new DeleteResult(ErrorStrings.TAG_NOT_FOUND, HttpStatusCode.NotFound);
 
             _dbContext.Tags.Remove(entityTag);
             await _dbContext.SaveChangesAsync();

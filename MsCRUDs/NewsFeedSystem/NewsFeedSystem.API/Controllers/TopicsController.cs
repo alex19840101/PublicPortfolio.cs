@@ -82,7 +82,7 @@ namespace NewsFeedSystem.API.Controllers
             var topic = await _topicsService.Get(topicId);
 
             if (topic is null)
-                return NotFound(new MessageResponseDto { Message = ErrorStrings.NEWS_NOT_FOUND });
+                return NotFound(new MessageResponseDto { Message = ErrorStrings.TOPIC_NOT_FOUND });
 
             return Ok(topic.GetTopicDto());
         }

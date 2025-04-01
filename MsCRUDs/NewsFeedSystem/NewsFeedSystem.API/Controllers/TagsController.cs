@@ -108,7 +108,7 @@ namespace NewsFeedSystem.API.Controllers
             var tag = await _tagsService.Get(tagId);
 
             if (tag is null)
-                return NotFound(new MessageResponseDto { Message = ErrorStrings.NEWS_NOT_FOUND });
+                return NotFound(new MessageResponseDto { Message = ErrorStrings.TAG_NOT_FOUND });
 
             return Ok(tag.GetTagDto());
         }
