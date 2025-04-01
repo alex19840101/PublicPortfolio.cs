@@ -33,7 +33,8 @@ namespace NewsFeedSystem.DataAccess.Repositories
             return new CreateResult
             {
                 Id = newTagEntity.Id,
-                StatusCode = HttpStatusCode.Created
+                StatusCode = HttpStatusCode.Created,
+                Message = ErrorStrings.OK
             };
         }
 
