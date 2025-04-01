@@ -92,7 +92,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
                 .SingleOrDefaultAsync(t => t.Id == tag.Id);
 
             if (entityTag is null)
-                return new UpdateResult(ErrorStrings.NEWS_NOT_FOUND, HttpStatusCode.NotFound);
+                return new UpdateResult(ErrorStrings.TAG_NOT_FOUND, HttpStatusCode.NotFound);
 
             if (!string.Equals(tag.Name, entityTag.Name)) entityTag.UpdateTagName(tag.Name);
 
