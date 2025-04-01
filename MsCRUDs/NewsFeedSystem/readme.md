@@ -39,12 +39,12 @@ TestFixtures\
 **- Caching: Redis.
 
 **- Unit Tests for Busines Logic services:**
-- MsTest tests (AuthServiceTests);
+- MsTest tests (AuthServiceTests, NewsServiceTests, TagsServiceTests, TopicsServiceTests);
 - using extra NuGet packages: Moq, AutoFixture, FluentAssertions (methods versions with FluentAssertions and without FluentAssertions in AuthServiceTests).
 
 
 **- Auth. (authentication and authorization):**
-- JWT-tokens + roles. Authorization required in Create, Delete... methods.
+- JWT-tokens + roles. Authorization required in Create, Delete..., Update, GrantRole, GetUserInfoById, GetUserInfoByLogin methods.
 
 **- Documentation**: Swagger (OpenAPI).
 
