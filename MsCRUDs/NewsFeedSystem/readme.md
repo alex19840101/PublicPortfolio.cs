@@ -36,7 +36,7 @@ TestFixtures\
 
 **- DataBase**: Microsoft SQL Server Express Edition v15 - LocalDB.
 
-**- Caching: Redis.
+**- Caching:** Redis.
 
 **- Unit Tests for Busines Logic services:**
 - MsTest tests (AuthServiceTests, NewsServiceTests, TagsServiceTests, TopicsServiceTests);
