@@ -59,7 +59,7 @@ message UserInfoReply {
 	string email = 4;
 	google.protobuf.StringValue nick = 5; //nullable
 	google.protobuf.StringValue phone = 6; //nullable
-	google.protobuf.StringValue requested_role = 7; //nullable
+	google.protobuf.StringValue role = 7; //nullable
 }
 
 // Сообщение-запрос на вход в систему пользователя
@@ -77,7 +77,7 @@ message UpdateUserRequest {
 	string email = 4;
 	string existing_password = 5;
 	google.protobuf.StringValue new_password = 6;	//nullable
-	google.protobuf.StringValue repeat_password = 7;	//nullable
+	google.protobuf.StringValue repeat_new_password = 7;	//nullable
 	google.protobuf.StringValue nick = 8; //nullable
 	google.protobuf.StringValue phone = 9; //nullable
 	google.protobuf.StringValue requested_role = 10; //nullable
