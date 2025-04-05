@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gRPC", "gRPC", "{6B32295E-1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsFeedSystem.GrpcService", "NewsFeedSystem.GrpcService\NewsFeedSystem.GrpcService.csproj", "{627A1EE7-4370-4D1D-92F9-FC7B3C9560F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsFeedSystem.GrpcClient", "NewsFeedSystem.GrpcClient\NewsFeedSystem.GrpcClient.csproj", "{EC2AF24E-232A-461F-BDD6-DD9C64682FC8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{627A1EE7-4370-4D1D-92F9-FC7B3C9560F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{627A1EE7-4370-4D1D-92F9-FC7B3C9560F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{627A1EE7-4370-4D1D-92F9-FC7B3C9560F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC2AF24E-232A-461F-BDD6-DD9C64682FC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC2AF24E-232A-461F-BDD6-DD9C64682FC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC2AF24E-232A-461F-BDD6-DD9C64682FC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC2AF24E-232A-461F-BDD6-DD9C64682FC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{F8303E3F-17C0-485E-A671-4DFA380D81F7} = {F9B28D23-FD07-417E-A950-0D959AB3B35B}
 		{F673048F-EB38-48CB-A094-882933F380C9} = {F9B28D23-FD07-417E-A950-0D959AB3B35B}
 		{627A1EE7-4370-4D1D-92F9-FC7B3C9560F6} = {6B32295E-12F3-433E-AF04-E8FA1216846F}
+		{EC2AF24E-232A-461F-BDD6-DD9C64682FC8} = {6B32295E-12F3-433E-AF04-E8FA1216846F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {18ECECB5-0ADB-480C-BFC6-3974D235CB89}

@@ -18,7 +18,6 @@ namespace NewsFeedSystem.GrpcService.Services
 
         public async Task<AuthReply> RegisterUser(RegisterUserRequest registerUserRequest)
         {
-            
             var authUserToRegister = new AuthUser(
                 id: 0,
                 login: registerUserRequest.Login,
