@@ -1,0 +1,110 @@
+﻿syntax = "proto3";
+import "google/protobuf/wrappers.proto"; 
+option csharp_namespace = "NewsFeedSystem.GrpcService.Auth";
+
+package NewsFeedSystem;
+
+service GrpcAuth {
+	// Запрос на регистрацию пользователя
+	rpc RegisterUser (RegisterUserRequest) returns (AuthReply);
+	// Запрос информации о пользователе (по id)
+	rpc GetUserInfoById (GetUserInfoByIdRequest) returns (UserInfoReply);
+	// Запрос информации о пользователе (по login)
+	rpc GetUserInfoByLogin (GetUserInfoByLoginRequest) returns (UserInfoReply);
+	// Запрос на вход в систему пользователя
+	rpc LoginUser (LoginRequest) returns (AuthReply);
+	// Запрос на обновление данных пользователя
+	rpc UpdateUser (UpdateUserRequest) returns (ResultReply);
+	// Запрос на предоставление/изменение прав пользователя администратором
+	rpc GrantRoleToUser (GrantRoleRequest) returns (ResultReply);
+	// Запрос на удаление пользователя им самим/администратором
+	rpc DeleteUser (DeleteUserRequest) returns (ResultReply);
+}
+
+// Сообщение-запрос на регистрацию пользователя
+message RegisterUserRequest {
+	string login = 1;
+	string user_name = 2;
+	string email = 3;
+	string password = 4;
+	string repeat_password = 5;
+	google.protobuf.StringValue nick = 6; //nullable
+	google.protobuf.StringValue phone = 7; //nullable
+	google.protobuf.StringValue requested_role = 8; //nullable
+}
+
+// Ответное сообщение на запрос регистрации или входа в систему
+message AuthReply {
+	google.protobuf.UInt32Value id = 1; //nullable
+	string message = 2;
+	int32 status_code = 3;
+	google.protobuf.StringValue token = 4; //nullable
+}
+
+// Сообщение-запрос информации о пользователе (по id)
+message GetUserInfoByIdRequest {
+	uint32 id = 1;
+}
+
+// Сообщение-запрос информации о пользователе (по login)
+message GetUserInfoByLoginRequest {
+	string login = 1;
+}
+
+// Ответное сообщение на запрос информации о пользователе
+message UserInfoReply {
+	uint32 id = 1;
+	string login = 2;
+	string user_name = 3;
+	string email = 4;
+	google.protobuf.StringValue nick = 5; //nullable
+	google.protobuf.StringValue phone = 6; //nullable
+	google.protobuf.StringValue requested_role = 7; //nullable
+}
+
+// Сообщение-запрос на вход в систему пользователя
+message LoginRequest {
+	string login = 1;
+	string password = 2;
+	google.protobuf.Int32Value timeout_minutes = 3; //nullable
+}
+
+// Сообщение-запрос на обновление данных пользователя
+message UpdateUserRequest {
+	uint32 id = 1;
+	string login = 2;
+	string user_name = 3;
+	string email = 4;
+	string existing_password = 5;
+	google.protobuf.StringValue new_password = 6;	//nullable
+	google.protobuf.StringValue repeat_password = 7;	//nullable
+	google.protobuf.StringValue nick = 8; //nullable
+	google.protobuf.StringValue phone = 9; //nullable
+	google.protobuf.StringValue requested_role = 10; //nullable
+}
+
+// Ответное сообщение на запрос на обновление/удаление данных
+message ResultReply {
+	string message = 1;
+	int32 status_code = 2;
+}
+
+// Запрос на предоставление/изменение прав пользователя администратором
+message GrantRoleRequest {
+	uint32 id = 1;
+	string login = 2;
+	google.protobuf.StringValue new_role = 3; //nullable
+	uint32 granter_id = 4;
+	string granter_login = 5;
+	string granter_password = 6;
+}
+
+// Запрос на удаление пользователя им самим/администратором
+message DeleteUserRequest {
+	uint32 id = 1;
+	string login = 2;
+	string password = 3;
+	string repeat_password = 4;
+	google.protobuf.UInt32Value granter_id = 5; //nullable
+	google.protobuf.StringValue granter_login = 6; //nullable
+}

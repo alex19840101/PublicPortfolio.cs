@@ -8,10 +8,20 @@
 
   <ItemGroup>
     <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
+	<Protobuf Include="Protos\GrpcAuth.proto" GrpcServices="Server" />
+	<Protobuf Include="Protos\GrpcNews.proto" GrpcServices="Server" />
+	<Protobuf Include="Protos\GrpcTags.proto" GrpcServices="Server" />
+	<Protobuf Include="Protos\GrpcTopics.proto" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.70.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NewsFeedSystem.BusinessLogic\NewsFeedSystem.BusinessLogic.csproj" />
+    <ProjectReference Include="..\NewsFeedSystem.Core\NewsFeedSystem.Core.csproj" />
+    <ProjectReference Include="..\NewsFeedSystem.DataAccess\NewsFeedSystem.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
