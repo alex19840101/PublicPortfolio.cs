@@ -2,7 +2,7 @@
 {
     public class UpdateAccountData
     {
-        public int Id { get { return _id; } }
+        public uint Id { get { return _id; } }
         public string Login { get { return _login; } }
         public string UserName { get { return _userName; } }
         public string Email { get { return _email; } }
@@ -12,7 +12,7 @@
         public string Phone { get { return _phone; } }
         public string RequestedRole { get { return _requestedRole; } }
 
-        private readonly int _id;
+        private readonly uint _id;
         private readonly string _login;
         private readonly string _userName;
         private readonly string _email;
@@ -23,7 +23,7 @@
         private readonly string _requestedRole;
 
         public UpdateAccountData(
-            int id,
+            uint id,
             string login,
             string userName,
             string email,

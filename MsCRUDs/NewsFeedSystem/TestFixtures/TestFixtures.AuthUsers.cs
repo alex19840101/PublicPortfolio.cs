@@ -166,7 +166,7 @@ namespace TestFixtures
         {
             var fixture = new Fixture();
 
-            var id = generateId ? fixture.Create<int>() : 0;
+            var id = generateId ? fixture.Create<uint>() : 0;
 
             return new UpdateAccountData(
                 id: id,

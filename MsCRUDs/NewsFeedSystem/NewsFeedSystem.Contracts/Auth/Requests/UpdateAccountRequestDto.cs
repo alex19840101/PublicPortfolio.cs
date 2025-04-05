@@ -8,7 +8,7 @@
         /// <summary>
         /// Id пользователя*
         /// </summary>
-        public int Id { get; set; }
+        public uint Id { get; set; }
 
         /// <summary>
         /// Логин (уникальное имя аккаунта)*
