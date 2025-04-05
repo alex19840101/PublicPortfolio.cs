@@ -200,7 +200,7 @@ public class AuthController : ControllerBase, IAuthAPI
             login: request.Login,
             userName: request.UserName,
             email: request.Email,
-            passwordHash: GeneratePasswordHash(request.Password, request.RepeatPassword),
+            passwordHash: SHA256Hasher.GeneratePasswordHash(request.Password, request.RepeatPassword),
             nick: request.Nick,
             phone: request.Phone,
             role: request.RequestedRole,
@@ -209,21 +209,11 @@ public class AuthController : ControllerBase, IAuthAPI
             lastUpdateDt: null);
 
     [NonAction]
-    private static string GeneratePasswordHash(string password, string repeatPassword)
-    {
-        if (!string.Equals(password, repeatPassword) ||
-            string.IsNullOrWhiteSpace(password))
-            return null;
-
-        return SHA256Hasher.GetHash(password);
-    }
-
-    [NonAction]
     private static LoginData LoginData(LoginRequestDto request)
     {
         return new LoginData(
             login: request.Login,
-            passwordHash: GeneratePasswordHash(request.Password, request.Password),
+            passwordHash: SHA256Hasher.GeneratePasswordHash(request.Password, request.Password),
             timeoutMinutes: request.TimeoutMinutes);
     }
 
@@ -234,7 +224,7 @@ public class AuthController : ControllerBase, IAuthAPI
         return new DeleteAccountData(
             id: request.Id,
             login: request.Login,
-            passwordHash: GeneratePasswordHash(request.Password, request.RepeatPassword),
+            passwordHash: SHA256Hasher.GeneratePasswordHash(request.Password, request.RepeatPassword),
             granterId: request.GranterId,
             granterLogin: request.GranterLogin);
     }
@@ -255,7 +245,7 @@ public class AuthController : ControllerBase, IAuthAPI
         return new GrantRoleData(
             id: requestDto.Id,
             login: requestDto.Login,
-            passwordHash: GeneratePasswordHash(requestDto.Password, repeatPassword: requestDto.Password),
+            passwordHash: SHA256Hasher.GeneratePasswordHash(requestDto.Password, repeatPassword: requestDto.Password),
             newRole: requestDto.NewRole,
             granterId: requestDto.GranterId,
             granterLogin: requestDto.GranterLogin);
@@ -269,8 +259,8 @@ public class AuthController : ControllerBase, IAuthAPI
                 login: requestDto.Login,
                 userName: requestDto.UserName,
                 email: requestDto.Email,
-                passwordHash: GeneratePasswordHash(requestDto.ExistingPassword, repeatPassword: requestDto.ExistingPassword),
-                newPasswordHash: requestDto.NewPassword != null ? GeneratePasswordHash(requestDto.NewPassword, repeatPassword: requestDto.RepeatNewPassword) : null,
+                passwordHash: SHA256Hasher.GeneratePasswordHash(requestDto.ExistingPassword, repeatPassword: requestDto.ExistingPassword),
+                newPasswordHash: requestDto.NewPassword != null ? SHA256Hasher.GeneratePasswordHash(requestDto.NewPassword, repeatPassword: requestDto.RepeatNewPassword) : null,
                 nick: requestDto.Nick,
                 phone: requestDto.Phone,
                 requestedRole: requestDto.RequestedRole);
