@@ -23,7 +23,7 @@ namespace NewsFeedSystem.API
             if (context.User == null)
                 return Task.CompletedTask;
 
-            if (context.User.IsInRole("PM") || context.User.IsInRole("admin"))
+            if (context.User.IsInRole("editor") || context.User.IsInRole("admin"))
                 context.Succeed(requirement);
 
             return Task.CompletedTask;

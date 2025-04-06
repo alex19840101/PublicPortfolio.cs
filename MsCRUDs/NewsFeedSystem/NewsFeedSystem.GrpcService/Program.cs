@@ -25,7 +25,6 @@ using Serilog.Templates.Themes;
 using NewsFeedSystem.GrpcService.Services;
 using NewsFeedSystem.GrpcService;
 
-const string DEVELOPER = "Shapovalov Alexey";
 const string SERVICE_NAME = $"NewsFeedSystem";
 
 Log.Logger = new LoggerConfiguration()
@@ -171,7 +170,6 @@ try
         endpoints.MapGrpcService<GrpcNewsService>();
         endpoints.MapGrpcService<GrpcTagsService>();
         endpoints.MapGrpcService<GrpcTopicsService>();
-        //endpoints.MapGrpcReflectionService();
     });
 
     await app.RunAsync();
