@@ -3,7 +3,7 @@ using NewsFeedSystem.GrpcService.Topics;
 
 namespace NewsFeedSystem.GrpcClient
 {
-    internal class GrpcTopicsTester
+    internal sealed class GrpcTopicsTester
     {
         private readonly GrpcTopics.GrpcTopicsClient _gprcTopicsClient;
         private const byte DEADLINE_SECONDS = 3;

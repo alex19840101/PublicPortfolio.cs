@@ -3,18 +3,85 @@ using NewsFeedSystem.GrpcService.Auth;
 
 namespace NewsFeedSystem.GrpcClient
 {
-    internal class GrpcAuthTester
+    internal sealed class GrpcAuthTester
     {
         private readonly GrpcAuth.GrpcAuthClient _authClient;
         private const byte DEADLINE_SECONDS = 3;
         private string _granterLogin;
         private string _granterPassword;
+        /// <summary>
+        /// запрос на удаление созданного временного админа (для других тестов других gRPC-сервисов)
+        /// </summary>
+        private DeleteUserRequest? _deleteUserRequest = null;
 
         internal GrpcAuthTester(GrpcAuth.GrpcAuthClient authClient, string granterLogin, string granterPassword)
         {
             _authClient = authClient;
             _granterLogin = granterLogin;
             _granterPassword = granterPassword;
+        }
+
+        /// <summary>
+        /// Создание временного админа для других тестов других gRPC-сервисов
+        /// </summary>
+        /// <returns> JWT временного админа </returns>
+        internal async Task<string> CreateTempAdmin()
+        {
+            //Register
+            var testLoginName = $"TempAdminUser{DateTime.Now}";
+            var pass = Guid.NewGuid().ToString();
+            var registerUserRequest = new RegisterUserRequest
+            {
+                Login = testLoginName,
+                UserName = testLoginName,
+                Email = "{testLoginName}@404.fake".Replace(" ", ""),
+                Password = pass,
+                RepeatPassword = pass,
+                Nick = null,
+                Phone = null,
+                RequestedRole = null
+            };
+            var userId = await TestRegisterUserAsync(registerUserRequest);
+
+            //Login granter
+            var loginAdminRequest = new LoginRequest
+            {
+                Login = _granterLogin,
+                Password = _granterPassword,
+                TimeoutMinutes = null
+            };
+            var jwtAdmin = await TestLoginUserAsync(loginAdminRequest);
+
+            //GrantRoleToUser TempAdmin
+            var grantRoleRequest = new GrantRoleRequest
+            {
+                Id = (uint)userId,
+                Login = registerUserRequest.Login,
+                NewRole = "admin",
+                GranterId = 1,
+                GranterLogin = _granterLogin,
+                GranterPassword = _granterPassword
+            };
+            await TestGrantRoleToUserAsync(grantRoleRequest, jwtAdmin);
+
+            //Login TempAdmin
+            var loginRequest = new LoginRequest
+            {
+                Login = registerUserRequest.Login,
+                Password = registerUserRequest.Password,
+                TimeoutMinutes = null
+            };
+            var jwt = await TestLoginUserAsync(loginRequest);
+            return jwt;
+        }
+
+        /// <summary>
+        /// Удаление созданного временного админа, созданного для других тестов других gRPC-сервисов
+        /// </summary>
+        internal async Task DeleteTempAdmin()
+        {
+            if (_deleteUserRequest != null)
+                await TestDeleteUserAsync(_deleteUserRequest);
         }
 
         internal async Task MakeTests()
@@ -44,7 +111,7 @@ namespace NewsFeedSystem.GrpcClient
             };
             var jwt = await TestLoginUserAsync(loginRequest);
 
-            //Login
+            //Login granter
             var loginAdminRequest = new LoginRequest
             {
                 Login = _granterLogin,
@@ -64,7 +131,6 @@ namespace NewsFeedSystem.GrpcClient
                 Nick = $"Nick{loginRequest.Login}",
                 Phone = "?",
                 RequestedRole = "admin"
-
             };
 
             await TestUpdateUserAsync(updateUserRequest);

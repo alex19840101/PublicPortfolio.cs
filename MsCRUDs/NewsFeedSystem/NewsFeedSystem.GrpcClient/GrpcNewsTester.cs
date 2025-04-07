@@ -3,18 +3,16 @@ using NewsFeedSystem.GrpcService.News;
 
 namespace NewsFeedSystem.GrpcClient
 {
-    internal class GrpcNewsTester
+    internal sealed class GrpcNewsTester
     {
-        private readonly GrpcNews.GrpcNewsClient _authClient;
+        private readonly GrpcNews.GrpcNewsClient _newsClient;
         private const byte DEADLINE_SECONDS = 3;
-        private string _adminLogin;
-        private string _adminPassword;
+        private string _adminJwt;
 
-        internal GrpcNewsTester(GrpcNews.GrpcNewsClient authClient, string adminLogin, string adminPassword)
+        internal GrpcNewsTester(GrpcNews.GrpcNewsClient newsClient, string adminJwt)
         {
-            _authClient = authClient;
-            _adminLogin = adminLogin;
-            _adminPassword = adminPassword;
+            _newsClient = newsClient;
+            _adminJwt = adminJwt;
         }
 
         internal async Task MakeTests()

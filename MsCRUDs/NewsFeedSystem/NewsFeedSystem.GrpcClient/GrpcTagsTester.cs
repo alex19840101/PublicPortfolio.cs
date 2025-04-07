@@ -3,7 +3,7 @@ using NewsFeedSystem.GrpcService.Tags;
 
 namespace NewsFeedSystem.GrpcClient
 {
-    internal class GrpcTagsTester
+    internal sealed class GrpcTagsTester
     {
         private readonly GrpcTags.GrpcTagsClient _gprcTagsClient;
         private const byte DEADLINE_SECONDS = 3;
