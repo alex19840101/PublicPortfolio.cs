@@ -53,8 +53,8 @@ namespace NewsFeedSystem.GrpcService.Services
                 Headline = newsPost.Headline,
                 Text = newsPost.Text,
                 Author = newsPost.Author,
-                Created = Timestamp.FromDateTime(newsPost.Created),
-                Updated = Timestamp.FromDateTime(newsPost.Updated ?? newsPost.Created),
+                Created = Timestamp.FromDateTime(newsPost.Created.ToUniversalTime()),
+                Updated = Timestamp.FromDateTime(newsPost.Updated?.ToUniversalTime() ?? newsPost.Created.ToUniversalTime()),
                 Url = newsPost.URL,
             };
 

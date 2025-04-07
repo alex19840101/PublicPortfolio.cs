@@ -17,6 +17,7 @@ namespace NewsFeedSystem.GrpcClient
 
         internal async Task MakeTests()
         {
+            Console.WriteLine($"{nameof(GrpcTagsTester)} tests:");
             // CreateTag
             var createTagRequest = new CreateTagRequest { Name = $"Tag {Guid.NewGuid}" };
             var TagId = await TestCreateTagAsync(createTagRequest, _adminJwt);
@@ -38,7 +39,7 @@ namespace NewsFeedSystem.GrpcClient
             await TestGetTagsAsync(getTagsRequest);
 
             //DeleteTag
-            await TestDeleteTagAsync(tagIdRequest);
+            await TestDeleteTagAsync(tagIdRequest, _adminJwt);
         }
         private async Task<uint?> TestCreateTagAsync(CreateTagRequest createTagRequest, string? jwt = null)
         {

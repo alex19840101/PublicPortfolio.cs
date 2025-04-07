@@ -86,6 +86,7 @@ namespace NewsFeedSystem.GrpcClient
 
         internal async Task MakeTests()
         {
+            Console.WriteLine($"{nameof(GrpcAuthTester)} tests:");
             //Register
             var testLoginName = $"User{DateTime.Now}";
             var pass = Guid.NewGuid().ToString();

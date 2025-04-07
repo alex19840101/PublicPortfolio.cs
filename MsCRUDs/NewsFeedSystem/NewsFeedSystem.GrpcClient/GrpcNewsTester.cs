@@ -18,6 +18,7 @@ namespace NewsFeedSystem.GrpcClient
 
         internal async Task MakeTests()
         {
+            Console.WriteLine($"{nameof(GrpcNewsTester)} tests:");
             // CreateTopic
             var tags = new RepeatedField<TagId>();
             tags.Add(new TagId() { Id = 1});
@@ -72,7 +73,7 @@ namespace NewsFeedSystem.GrpcClient
             await TestGetHeadlinesByTagAsync(getHeadlinesByTagRequest);
 
             //DeleteNewsPost
-            await TestDeleteNewsPostAsync(newsPostIdRequest);
+            await TestDeleteNewsPostAsync(newsPostIdRequest, _adminJwt);
         }
         private async Task<uint?> TestCreateNewsPostAsync(CreateNewsPostRequest createNewsPostRequest, string? jwt = null)
         {

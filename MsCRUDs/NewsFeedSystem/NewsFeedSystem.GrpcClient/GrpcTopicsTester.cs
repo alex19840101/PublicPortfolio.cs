@@ -22,6 +22,7 @@ namespace NewsFeedSystem.GrpcClient
 
         internal async Task MakeTests()
         {
+            Console.WriteLine($"{nameof(GrpcTopicsTester)} tests:");
             // CreateTopic
             var createTopicRequest = new CreateTopicRequest { Name = $"Topic {Guid.NewGuid}" };
             var topicId = await TestCreateTopicAsync(createTopicRequest, _adminJwt);
@@ -43,7 +44,7 @@ namespace NewsFeedSystem.GrpcClient
             await TestGetTopicsAsync(getTopicsRequest);
             
             //DeleteTopic
-            await TestDeleteTopicAsync(topicIdRequest);
+            await TestDeleteTopicAsync(topicIdRequest, _adminJwt);
         }
         private async Task<uint?> TestCreateTopicAsync(CreateTopicRequest createTopicRequest, string? jwt = null)
         {
