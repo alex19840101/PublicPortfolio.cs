@@ -11,5 +11,13 @@ namespace NewsFeedSystem.GrpcService.Services
             _newsService = newsService;
             _logger = logger;
         }
+
+        //rpc CreateNewsPost(CreateNewsPostRequest) returns(CreateReply);
+        //rpc GetNewsPost(NewsPostId) returns(NewsPostReply);
+        //rpc GetHeadlines(HeadlinesRequest) returns(HeadLinesReply);
+        //rpc GetHeadlinesByTag(HeadlinesByTagOrTopicRequest) returns(HeadLinesReply);
+        //rpc GetHeadlinesByTopic(HeadlinesByTagOrTopicRequest) returns(HeadLinesReply);
+        //rpc UpdateNewsPost(UpdateNewsRequest) returns(ResultReply);
+        //rpc DeleteNewsPost(NewsPostId) returns(ResultReply);
     }
 }

@@ -11,5 +11,11 @@ namespace NewsFeedSystem.GrpcService.Services
             _tagsService = tagsService;
             _logger = logger;
         }
+
+        //rpc CreateTag(CreateTagRequest) returns(CreateReply);
+        //rpc GetTag(TagId) returns(TagReply);
+        //rpc GetTags(GetTagsRequest) returns(TagsReply);
+        //rpc UpdateTag(UpdateTagRequest) returns(ResultReply);
+        //rpc DeleteTag(TagId) returns(ResultReply);
     }
 }

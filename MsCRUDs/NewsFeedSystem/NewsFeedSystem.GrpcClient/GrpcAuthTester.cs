@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Grpc.Core;
+﻿using Grpc.Core;
 using NewsFeedSystem.GrpcService.Auth;
 
 namespace NewsFeedSystem.GrpcClient
@@ -12,21 +7,18 @@ namespace NewsFeedSystem.GrpcClient
     {
         private readonly GrpcAuth.GrpcAuthClient _authClient;
         private const byte DEADLINE_SECONDS = 3;
+        private string _granterLogin;
+        private string _granterPassword;
 
-        internal GrpcAuthTester(GrpcAuth.GrpcAuthClient authClient)
+        internal GrpcAuthTester(GrpcAuth.GrpcAuthClient authClient, string granterLogin, string granterPassword)
         {
             _authClient = authClient;
+            _granterLogin = granterLogin;
+            _granterPassword = granterPassword;
         }
 
         internal async Task MakeTests()
         {
-            Console.WriteLine("Enter GranterLogin:");
-            var granterLogin = Console.ReadLine();
-
-            Console.WriteLine("Enter GranterPassword:");
-            Console.ForegroundColor = ConsoleColor.Black;
-            var granterPassword = Console.ReadLine();
-
             //Register
             var testLoginName = $"User{DateTime.Now}";
             var pass = Guid.NewGuid().ToString();
@@ -55,8 +47,8 @@ namespace NewsFeedSystem.GrpcClient
             //Login
             var loginAdminRequest = new LoginRequest
             {
-                Login = granterLogin,
-                Password = granterPassword,
+                Login = _granterLogin,
+                Password = _granterPassword,
                 TimeoutMinutes = null
             };
             var jwtAdmin = await TestLoginUserAsync(loginAdminRequest);
@@ -87,8 +79,8 @@ namespace NewsFeedSystem.GrpcClient
                 Login = registerUserRequest.Login,
                 NewRole = "admin",
                 GranterId = 1,
-                GranterLogin = granterLogin,
-                GranterPassword = granterPassword
+                GranterLogin = _granterLogin,
+                GranterPassword = _granterPassword
             };
             await TestGrantRoleToUserAsync(grantRoleRequest, jwtAdmin);
 

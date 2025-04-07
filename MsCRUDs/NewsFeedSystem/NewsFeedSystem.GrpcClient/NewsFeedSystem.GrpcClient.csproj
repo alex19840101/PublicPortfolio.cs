@@ -16,12 +16,19 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\NewsFeedSystem.GrpcService\NewsFeedSystem.GrpcService.csproj" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<Protobuf Include="..\NewsFeedSystem.GrpcService\Protos\greet.proto" GrpcServices="Client">
 			<Link>Protos\greet.proto</Link>
 		</Protobuf>
 		<Protobuf Include="..\NewsFeedSystem.GrpcService\Protos\GrpcAuth.proto" GrpcServices="Client">
 			<Link>Protos\GrpcAuth.proto</Link>
+		</Protobuf>
+		<Protobuf Include="..\NewsFeedSystem.GrpcService\Protos\GrpcNews.proto" GrpcServices="Client">
+			<Link>Protos\GrpcNews.proto</Link>
 		</Protobuf>
 		<Protobuf Include="..\NewsFeedSystem.GrpcService\Protos\GrpcTags.proto" GrpcServices="Client">
 			<Link>Protos\GrpcTags.proto</Link>
