@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using NewsFeedSystem.Core.Results;
 using NewsFeedSystem.Core.Services;
 using NewsFeedSystem.GrpcService.Tags;
@@ -17,7 +18,7 @@ namespace NewsFeedSystem.GrpcService.Services
 
         [Authorize(Roles = "admin")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<CreateReply> CreateTopic(CreateTagRequest createTagRequest)
+        public override async Task<CreateReply> CreateTag(CreateTagRequest createTagRequest, ServerCallContext context)
         {
             var createResult = await _tagsService.Create(new Core.Tag(id: 0, name: createTagRequest.Name));
 
@@ -29,7 +30,7 @@ namespace NewsFeedSystem.GrpcService.Services
             };
         }
 
-        public async Task<TagReply?> GetTag(TagId tagIdRequest)
+        public override async Task<TagReply?> GetTag(TagId tagIdRequest, ServerCallContext context)
         {
             var tag = await _tagsService.Get(tagIdRequest.Id);
 
@@ -43,7 +44,7 @@ namespace NewsFeedSystem.GrpcService.Services
             };
         }
 
-        public async Task<TagsReply> GetTags(GetTagsRequest getTagsRequest)
+        public override async Task<TagsReply> GetTags(GetTagsRequest getTagsRequest, ServerCallContext context)
         {
             var tagsList = await _tagsService.GetTags(getTagsRequest.MinTagId, getTagsRequest.MaxTagId);
             if (!tagsList.Any())
@@ -62,7 +63,7 @@ namespace NewsFeedSystem.GrpcService.Services
 
         [Authorize(Roles = "admin")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ResultReply> UpdateTag(UpdateTagRequest updateTagRequest)
+        public override async Task<ResultReply> UpdateTag(UpdateTagRequest updateTagRequest, ServerCallContext context)
         {
             var updateResult = await _tagsService.Update(new Core.Tag(
                 id: updateTagRequest.Id,
@@ -73,7 +74,7 @@ namespace NewsFeedSystem.GrpcService.Services
 
         [Authorize(Roles = "admin")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ResultReply> DeleteTag(TagId tagIdRequest)
+        public override async Task<ResultReply> DeleteTag(TagId tagIdRequest, ServerCallContext context)
         {
             var deleteResult = await _tagsService.Delete(tagIdRequest.Id);
 

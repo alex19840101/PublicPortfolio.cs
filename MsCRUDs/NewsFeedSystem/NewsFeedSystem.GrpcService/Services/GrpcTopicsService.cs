@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using NewsFeedSystem.Core.Results;
 using NewsFeedSystem.Core.Services;
 using NewsFeedSystem.GrpcService.Topics;
@@ -17,7 +18,7 @@ namespace NewsFeedSystem.GrpcService.Services
 
         [Authorize(Roles = "admin")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<CreateReply> CreateTopic(CreateTopicRequest createTopicRequest)
+        public override async Task<CreateReply> CreateTopic(CreateTopicRequest createTopicRequest, ServerCallContext context)
         {
             var createResult = await _topicsService.Create(new Core.Topic(id: 0, name: createTopicRequest.Name));
 
@@ -29,7 +30,7 @@ namespace NewsFeedSystem.GrpcService.Services
             };
         }
 
-        public async Task<TopicReply?> GetTopic(TopicId topicId)
+        public override async Task<TopicReply?> GetTopic(TopicId topicId, ServerCallContext context)
         {
             var topic = await _topicsService.Get(topicId.Id);
 
@@ -43,7 +44,7 @@ namespace NewsFeedSystem.GrpcService.Services
             };
         }
 
-        public async Task<TopicsReply> GetTopics(GetTopicsRequest getTopicsRequest)
+        public override async Task<TopicsReply> GetTopics(GetTopicsRequest getTopicsRequest, ServerCallContext context)
         {
             var topicsList = await _topicsService.GetTopics(getTopicsRequest.MinTopicId, getTopicsRequest.MaxTopicId);
             if (!topicsList.Any())
@@ -62,7 +63,7 @@ namespace NewsFeedSystem.GrpcService.Services
 
         [Authorize(Roles = "admin")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ResultReply> UpdateTopic(UpdateTopicRequest updateTopicRequest)
+        public override async Task<ResultReply> UpdateTopic(UpdateTopicRequest updateTopicRequest, ServerCallContext context)
         {
             var updateResult = await _topicsService.Update(new Core.Topic(
                 id: updateTopicRequest.Id,
@@ -73,7 +74,7 @@ namespace NewsFeedSystem.GrpcService.Services
 
         [Authorize(Roles = "admin")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ResultReply> DeleteTopic(TopicId topicIdRequest)
+        public override async Task<ResultReply> DeleteTopic(TopicId topicIdRequest, ServerCallContext context)
         {
             var deleteResult = await _topicsService.Delete(topicIdRequest.Id);
 

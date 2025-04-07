@@ -34,7 +34,7 @@ namespace NewsFeedSystem.GrpcClient
             await TestGetTagAsync(tagIdRequest);
 
             // GetTags
-            var getTagsRequest = new GetTagsRequest { MinTagId = 10, MaxTagId = 10 };
+            var getTagsRequest = new GetTagsRequest { MinTagId = 1, MaxTagId = 10 };
             await TestGetTagsAsync(getTagsRequest);
 
             //DeleteTag

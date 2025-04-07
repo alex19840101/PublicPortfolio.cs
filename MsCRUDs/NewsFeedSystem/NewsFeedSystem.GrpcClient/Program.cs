@@ -20,12 +20,16 @@ var adminJwt = await grpcAuthTester.CreateTempAdmin();
 
 var newsClient = new NewsFeedSystem.GrpcService.News.GrpcNews.GrpcNewsClient(channel);
 var grpcNewsTester = new GrpcNewsTester(newsClient, adminJwt);
+await grpcNewsTester.MakeTests();
 
 var tagsClient = new NewsFeedSystem.GrpcService.Tags.GrpcTags.GrpcTagsClient(channel);
 var grpcTagsTester = new GrpcTagsTester(tagsClient, adminJwt);
+await grpcTagsTester.MakeTests();
 
 var topicsClient = new NewsFeedSystem.GrpcService.Topics.GrpcTopics.GrpcTopicsClient(channel);
 var grpcTopicsTester = new GrpcTopicsTester(topicsClient, adminJwt);
+await grpcTopicsTester.MakeTests();
+
 
 await grpcAuthTester.DeleteTempAdmin();
 

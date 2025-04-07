@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 using NewsFeedSystem.Core;
 using NewsFeedSystem.Core.Results;
@@ -19,7 +20,7 @@ namespace NewsFeedSystem.GrpcService.Services
 
         [Authorize(Roles = "admin")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<CreateReply> CreateNewsPost(CreateNewsPostRequest createNewsPostRequest)
+        public override async Task<CreateReply> CreateNewsPost(CreateNewsPostRequest createNewsPostRequest, ServerCallContext context)
         {
             var createResult = await _newsService.Create(new Core.NewsPost(
                 id: 0,
@@ -40,7 +41,7 @@ namespace NewsFeedSystem.GrpcService.Services
             };
         }
 
-        public async Task<NewsPostReply?> GetNewsPost(NewsPostId newsPostId)
+        public override async Task<NewsPostReply?> GetNewsPost(NewsPostId newsPostId, ServerCallContext context)
         {
             var newsPost = await _newsService.Get(newsPostId.Id);
 
@@ -63,7 +64,7 @@ namespace NewsFeedSystem.GrpcService.Services
             return newsPostReply;
         }
 
-        public async Task<HeadLinesReply> GetHeadlines(HeadlinesRequest headlinesRequest)
+        public override async Task<HeadLinesReply> GetHeadlines(HeadlinesRequest headlinesRequest, ServerCallContext context)
         {
             var headlinesList = await _newsService.GetHeadlines(headlinesRequest.MinNewsId, headlinesRequest.MaxNewsId);
             if (!headlinesList.Any())
@@ -72,7 +73,7 @@ namespace NewsFeedSystem.GrpcService.Services
             return GetHeadlinesReply(headlinesList);
         }
 
-        public async Task<HeadLinesReply> GetHeadlinesByTag(HeadlinesByTagOrTopicRequest headlinesRequest)
+        public override async Task<HeadLinesReply> GetHeadlinesByTag(HeadlinesByTagOrTopicRequest headlinesRequest, ServerCallContext context)
         {
             var headlinesList = await _newsService.GetHeadlinesByTag(headlinesRequest.Id, headlinesRequest.MinNewsId);
             if (!headlinesList.Any())
@@ -81,7 +82,7 @@ namespace NewsFeedSystem.GrpcService.Services
             return GetHeadlinesReply(headlinesList);
         }
 
-        public async Task<HeadLinesReply> GetHeadlinesByTopic(HeadlinesByTagOrTopicRequest headlinesRequest)
+        public override async Task<HeadLinesReply> GetHeadlinesByTopic(HeadlinesByTagOrTopicRequest headlinesRequest, ServerCallContext context)
         {
             var headlinesList = await _newsService.GetHeadlinesByTopic(headlinesRequest.Id, headlinesRequest.MinNewsId);
             if (!headlinesList.Any())
@@ -92,7 +93,7 @@ namespace NewsFeedSystem.GrpcService.Services
 
         [Authorize(Roles = "admin")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ResultReply> UpdateNewsPost(UpdateNewsRequest updateNewsRequest)
+        public override async Task<ResultReply> UpdateNewsPost(UpdateNewsRequest updateNewsRequest, ServerCallContext context)
         {
             var topics = updateNewsRequest.Topics.Select(t => t.Id).ToList();
 
@@ -112,7 +113,7 @@ namespace NewsFeedSystem.GrpcService.Services
 
         [Authorize(Roles = "admin")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ResultReply> DeleteTopic(NewsPostId newsIdRequest)
+        public override async Task<ResultReply> DeleteNewsPost(NewsPostId newsIdRequest, ServerCallContext context)
         {
             var deleteResult = await _newsService.DeleteNewsPost(newsIdRequest.Id);
 

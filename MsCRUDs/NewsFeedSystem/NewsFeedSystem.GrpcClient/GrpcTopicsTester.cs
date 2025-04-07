@@ -39,7 +39,7 @@ namespace NewsFeedSystem.GrpcClient
             await TestGetTopicAsync(topicIdRequest);
 
             // GetTopics
-            var getTopicsRequest = new GetTopicsRequest { MinTopicId = 10, MaxTopicId = 10 };
+            var getTopicsRequest = new GetTopicsRequest { MinTopicId = 1, MaxTopicId = 10 };
             await TestGetTopicsAsync(getTopicsRequest);
             
             //DeleteTopic
