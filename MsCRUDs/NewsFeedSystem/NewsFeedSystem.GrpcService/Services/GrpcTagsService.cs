@@ -45,19 +45,19 @@ namespace NewsFeedSystem.GrpcService.Services
 
         public async Task<TagsReply> GetTags(GetTagsRequest getTagsRequest)
         {
-            var topicsList = await _tagsService.GetTags(getTagsRequest.MinTagId, getTagsRequest.MaxTagId);
-            if (!topicsList.Any())
+            var tagsList = await _tagsService.GetTags(getTagsRequest.MinTagId, getTagsRequest.MaxTagId);
+            if (!tagsList.Any())
                 return new TagsReply();
 
-            var topicsReply = new TagsReply();
-            var tags = topicsList.Select(t => new TagReply
+            var tagsReply = new TagsReply();
+            var tags = tagsList.Select(t => new TagReply
             {
                 Id = t.Id,
                 Name = t.Name
             });
-            topicsReply.Tags.AddRange(tags);
+            tagsReply.Tags.AddRange(tags);
 
-            return topicsReply;
+            return tagsReply;
         }
 
         [Authorize(Roles = "admin")]

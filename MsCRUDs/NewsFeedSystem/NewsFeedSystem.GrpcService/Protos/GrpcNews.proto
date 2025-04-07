@@ -66,13 +66,18 @@ message HeadlinesRequest {
 	google.protobuf.UInt32Value max_news_id = 2; //nullable
 }
 
-// Ответное сообщение на запрос на получение новостных заголовков
-message HeadLinesReply {
+// "Сообщение" в составе gPRC-сообщения, содержащее информацию о заголовке
+message HeadLineReply {
 	uint32 id = 1;
 	string headline = 2;
 	repeated TagId Tags = 3;
 	repeated TopicId Topics = 4;
 	google.protobuf.Timestamp created = 5;
+}
+
+// Ответное сообщение на запрос на получение новостных заголовков
+message HeadLinesReply {
+	repeated HeadLineReply headlines = 1;
 }
 
 // Сообщение-запрос на получение новостных заголовков по тегу/теме
