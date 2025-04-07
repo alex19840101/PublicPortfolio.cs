@@ -60,6 +60,8 @@ namespace NewsFeedSystem.GrpcService.Services
             return topicsReply;
         }
 
+        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ResultReply> UpdateTopic(UpdateTopicRequest updateTopicRequest)
         {
             var updateResult = await _topicsService.Update(new Core.Topic(
@@ -69,6 +71,8 @@ namespace NewsFeedSystem.GrpcService.Services
             return GetResultReply(updateResult);
         }
 
+        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ResultReply> DeleteTopic(TopicId topicIdRequest)
         {
             var deleteResult = await _topicsService.Delete(topicIdRequest.Id);

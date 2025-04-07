@@ -1,4 +1,7 @@
-﻿using NewsFeedSystem.Core.Services;
+﻿using Microsoft.AspNetCore.Authorization;
+using NewsFeedSystem.Core.Results;
+using NewsFeedSystem.Core.Services;
+using NewsFeedSystem.GrpcService.Tags;
 
 namespace NewsFeedSystem.GrpcService.Services
 {
@@ -12,10 +15,81 @@ namespace NewsFeedSystem.GrpcService.Services
             _logger = logger;
         }
 
-        //rpc CreateTag(CreateTagRequest) returns(CreateReply);
-        //rpc GetTag(TagId) returns(TagReply);
-        //rpc GetTags(GetTagsRequest) returns(TagsReply);
-        //rpc UpdateTag(UpdateTagRequest) returns(ResultReply);
-        //rpc DeleteTag(TagId) returns(ResultReply);
+        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<CreateReply> CreateTopic(CreateTagRequest createTagRequest)
+        {
+            var createResult = await _tagsService.Create(new Core.Tag(id: 0, name: createTagRequest.Name));
+
+            return new CreateReply
+            {
+                Id = createResult.Id,
+                Message = createResult.Message,
+                StatusCode = (int)createResult.StatusCode
+            };
+        }
+
+        public async Task<TagReply?> GetTag(TagId tagIdRequest)
+        {
+            var tag = await _tagsService.Get(tagIdRequest.Id);
+
+            if (tag == null)
+                return null;
+
+            return new TagReply
+            {
+                Id = tag.Id,
+                Name = tag.Name
+            };
+        }
+
+        public async Task<TagsReply> GetTags(GetTagsRequest getTagsRequest)
+        {
+            var topicsList = await _tagsService.GetTags(getTagsRequest.MinTagId, getTagsRequest.MaxTagId);
+            if (!topicsList.Any())
+                return new TagsReply();
+
+            var topicsReply = new TagsReply();
+            var tags = topicsList.Select(t => new TagReply
+            {
+                Id = t.Id,
+                Name = t.Name
+            });
+            topicsReply.Tags.AddRange(tags);
+
+            return topicsReply;
+        }
+
+        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ResultReply> UpdateTag(UpdateTagRequest updateTagRequest)
+        {
+            var updateResult = await _tagsService.Update(new Core.Tag(
+                id: updateTagRequest.Id,
+                name: updateTagRequest.Name));
+
+            return GetResultReply(updateResult);
+        }
+
+        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ResultReply> DeleteTag(TagId tagIdRequest)
+        {
+            var deleteResult = await _tagsService.Delete(tagIdRequest.Id);
+
+            return GetResultReply(deleteResult);
+        }
+
+        private static ResultReply GetResultReply(UpdateResult result) => new ResultReply
+        {
+            StatusCode = (int)result.StatusCode,
+            Message = result.Message
+        };
+
+        private static ResultReply GetResultReply(DeleteResult result) => new ResultReply
+        {
+            StatusCode = (int)result.StatusCode,
+            Message = result.Message
+        };
     }
 }
