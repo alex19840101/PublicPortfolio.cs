@@ -44,6 +44,7 @@ namespace NewsFeedSystem.DataAccess.Repositories
             {
                 Id = newAuthUserEntity.Id,
                 StatusCode = HttpStatusCode.Created,
+                Message = ErrorStrings.OK
             };
 
         }

@@ -1,4 +1,5 @@
 ﻿using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using NewsFeedSystem.Core.Auth;
 using NewsFeedSystem.Core.Results;
 using NewsFeedSystem.Core.Services;
@@ -56,12 +57,15 @@ namespace NewsFeedSystem.GrpcService.Services
             {
                 Id = loginResult!.Id!.Value,
                 Message = loginResult.Message,
+                StatusCode = (int)loginResult.StatusCode,
                 Token = loginResult.Token
             };
 
             return result;
         }
 
+        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public override async Task<UserInfoReply> GetUserInfoById(GetUserInfoByIdRequest request, ServerCallContext context)
         {
             var authUser = await _authService.GetUserInfo(request.Id);
@@ -72,6 +76,8 @@ namespace NewsFeedSystem.GrpcService.Services
             return GetUserInfoReply(authUser);
         }
 
+        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public override async Task<UserInfoReply> GetUserInfoByLogin(GetUserInfoByLoginRequest request, ServerCallContext context)
         {
             var authUser = await _authService.GetUserInfo(request.Login);
@@ -82,6 +88,8 @@ namespace NewsFeedSystem.GrpcService.Services
             return GetUserInfoReply(authUser);
         }
 
+        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public override async Task<ResultReply> GrantRoleToUser(GrantRoleRequest request, ServerCallContext context)
         {
             var grantResult = await _authService.GrantRole(GrantRoleData(request));

@@ -20,19 +20,15 @@ namespace NewsFeedSystem.GrpcClient
 
         internal async Task MakeTests()
         {
-            
+            Console.WriteLine("Enter GranterLogin:");
+            var granterLogin = Console.ReadLine();
+
             Console.WriteLine("Enter GranterPassword:");
             Console.ForegroundColor = ConsoleColor.Black;
             var granterPassword = Console.ReadLine();
 
-            var getUserInfoByIdRequest = new GetUserInfoByIdRequest { Id = 1 };
-            await TestGetUserInfoByIdAsync(getUserInfoByIdRequest);
-            var granterLogin = "login";
-            var getUserInfoByLoginRequest = new GetUserInfoByLoginRequest { Login = "login" };
-            await TestGetUserInfoByLoginAsync(getUserInfoByLoginRequest);
-            
             //Register
-            var testLoginName = $"User{DateTime.Now.Date}";
+            var testLoginName = $"User{DateTime.Now}";
             var pass = Guid.NewGuid().ToString();
             var registerUserRequest = new RegisterUserRequest
             {
@@ -47,18 +43,71 @@ namespace NewsFeedSystem.GrpcClient
             };
             var userId = await TestRegisterUserAsync(registerUserRequest);
 
+            //Login
+            var loginRequest = new LoginRequest
+            {
+                Login = registerUserRequest.Login,
+                Password = registerUserRequest.Password,
+                TimeoutMinutes = null
+            };
+            var jwt = await TestLoginUserAsync(loginRequest);
+
+            //Login
+            var loginAdminRequest = new LoginRequest
+            {
+                Login = granterLogin,
+                Password = granterPassword,
+                TimeoutMinutes = null
+            };
+            var jwtAdmin = await TestLoginUserAsync(loginAdminRequest);
+
+            //Update
+            var updateUserRequest = new UpdateUserRequest
+            {
+                Id = (uint)userId,
+                Login = loginRequest.Login,
+                ExistingPassword = registerUserRequest.Password,
+                UserName = registerUserRequest.UserName,
+                Email = registerUserRequest.Email,
+                Nick = $"Nick{loginRequest.Login}",
+                Phone = "?",
+                RequestedRole = "admin"
+
+            };
+            await TestUpdateUserAsync(updateUserRequest);
+            updateUserRequest.NewPassword = Guid.NewGuid().ToString();
+            updateUserRequest.RepeatNewPassword = updateUserRequest.NewPassword;
+            await TestUpdateUserAsync(updateUserRequest);
+
             //GrantRoleToUser
             var grantRoleRequest = new GrantRoleRequest
             {
                 Id = (uint)userId,
                 Login = registerUserRequest.Login,
-                NewRole = "fakeRole",
+                NewRole = "admin",
                 GranterId = 1,
                 GranterLogin = granterLogin,
                 GranterPassword = granterPassword
             };
-            await TestGrantRoleToUserAsync(grantRoleRequest);
+            await TestGrantRoleToUserAsync(grantRoleRequest, jwtAdmin);
 
+            //GetUserInfoById
+            var getUserInfoByIdRequest = new GetUserInfoByIdRequest { Id = (uint)userId };
+            await TestGetUserInfoByIdAsync(getUserInfoByIdRequest, jwt);
+
+            //GetUserInfoByLogin
+            var getUserInfoByLoginRequest = new GetUserInfoByLoginRequest { Login = registerUserRequest.Login };
+            await TestGetUserInfoByLoginAsync(getUserInfoByLoginRequest, jwt);
+
+            //DeleteUser
+            var deleteUserRequest = new DeleteUserRequest
+            {
+                Id = (uint)userId,
+                Login = registerUserRequest.Login,
+                Password = registerUserRequest.Password,
+                RepeatPassword = registerUserRequest.RepeatPassword
+            };
+            await TestDeleteUserAsync(deleteUserRequest);
         }
 
         private async Task TestGetUserInfoByIdAsync(GetUserInfoByIdRequest getUserInfoByIdRequest, string? jwt = null)
@@ -152,6 +201,70 @@ namespace NewsFeedSystem.GrpcClient
             {
                 ConsoleLogger.Error(ex);
                 return null;
+            }
+        }
+
+        private async Task<string?> TestLoginUserAsync(LoginRequest loginRequest)
+        {
+            try
+            {
+                var reply = await _authClient.LoginUserAsync(
+                    loginRequest,
+                    deadline: DateTime.UtcNow.AddSeconds(DEADLINE_SECONDS));
+
+                ConsoleLogger.InfoOkMessage($"{reply.Id} {reply.StatusCode} {reply.Message} Token: {reply.Token}");
+
+                return reply.Token;
+            }
+            catch (RpcException rpcException)
+            {
+                ConsoleLogger.Error(rpcException);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                ConsoleLogger.Error(ex);
+                return null;
+            }
+        }
+
+        private async Task TestUpdateUserAsync(UpdateUserRequest updateUserRequest)
+        {
+            try
+            {
+                var reply = await _authClient.UpdateUserAsync(
+                    updateUserRequest,
+                    deadline: DateTime.UtcNow.AddSeconds(DEADLINE_SECONDS));
+
+                ConsoleLogger.InfoOkMessage($"{reply.StatusCode} {reply.Message}");
+            }
+            catch (RpcException rpcException)
+            {
+                ConsoleLogger.Error(rpcException);
+            }
+            catch (Exception ex)
+            {
+                ConsoleLogger.Error(ex);
+            }
+        }
+
+        private async Task TestDeleteUserAsync(DeleteUserRequest deleteUserRequest)
+        {
+            try
+            {
+                var reply = await _authClient.DeleteUserAsync(
+                    deleteUserRequest,
+                    deadline: DateTime.UtcNow.AddSeconds(DEADLINE_SECONDS));
+
+                ConsoleLogger.InfoOkMessage($"{reply.StatusCode} {reply.Message}");
+            }
+            catch (RpcException rpcException)
+            {
+                ConsoleLogger.Error(rpcException);
+            }
+            catch (Exception ex)
+            {
+                ConsoleLogger.Error(ex);
             }
         }
     }
