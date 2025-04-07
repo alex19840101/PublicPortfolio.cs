@@ -74,6 +74,7 @@ namespace NewsFeedSystem.GrpcClient
                 RequestedRole = "admin"
 
             };
+
             await TestUpdateUserAsync(updateUserRequest);
             updateUserRequest.NewPassword = Guid.NewGuid().ToString();
             updateUserRequest.RepeatNewPassword = updateUserRequest.NewPassword;
@@ -90,6 +91,8 @@ namespace NewsFeedSystem.GrpcClient
                 GranterPassword = granterPassword
             };
             await TestGrantRoleToUserAsync(grantRoleRequest, jwtAdmin);
+
+            jwt = await TestLoginUserAsync(loginRequest);
 
             //GetUserInfoById
             var getUserInfoByIdRequest = new GetUserInfoByIdRequest { Id = (uint)userId };
@@ -115,7 +118,7 @@ namespace NewsFeedSystem.GrpcClient
             try
             {
                 var headers = RequestHeadersPreparator.GetMetadataWithAuthorizationHeader(jwt);
-                
+
                 var reply = await _authClient.GetUserInfoByIdAsync(
                     getUserInfoByIdRequest,
                     headers,
