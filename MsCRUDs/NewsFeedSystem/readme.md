@@ -34,6 +34,13 @@ TestFixtures\
 ## **using stack:**
 **- Platform:** .NET 9.0.
 
+**ASP.NET Core Web API**:
+- NewsFeedSystem.API
+
+**gRPC service and test client with auth.:**
+- NewsFeedSystem.GrpcService,
+- NewsFeedSystem.GrpcClient for all methods simple testing with auth.
+
 **- ORM:** EF Core.
 
 **- DataBase**: Microsoft SQL Server Express Edition v15 - LocalDB.
@@ -41,24 +48,18 @@ TestFixtures\
 **- Caching:** Redis.
 Using for news posts caching.
 
-**ASP.NET Core Web API**:
-- NewsFeedSystem.API
-
-**gRPC service and test client with auth.:**:
-- NewsFeedSystem.GrpcService
-- NewsFeedSystem.GrpcClient for all methods simple testing with auth.
-
-**- Unit Tests for Busines Logic services:**
-- MsTest tests (AuthServiceTests, NewsServiceTests, TagsServiceTests, TopicsServiceTests);
-- using extra NuGet packages: Moq, AutoFixture, FluentAssertions (methods versions with FluentAssertions and without FluentAssertions in AuthServiceTests).
-
 **- Auth. (authentication and authorization):**
-- JWT-tokens + roles. Authorization required in Create, Delete..., Update, GrantRole, GetUserInfoById, GetUserInfoByLogin methods.
+- JWT-tokens + roles.
+- Authorization required in Create, Delete..., Update, GrantRole, GetUserInfoById, GetUserInfoByLogin methods.
 Using in projects:
 - NewsFeedSystem.API,
-- NewsFeedSystem.GrpcService
+- NewsFeedSystem.GrpcService,
 - NewsFeedSystem.GrpcClient
 
 **- Documentation**: Swagger (OpenAPI) in NewsFeedSystem.API.
 
 **- Logging**: Serilog (console, file) in NewsFeedSystem.API, NewsFeedSystem.GrpcService.
+
+**- Unit Tests for Busines Logic services:**
+- MsTest tests (AuthServiceTests, NewsServiceTests, TagsServiceTests, TopicsServiceTests);
+- using extra NuGet packages: Moq, AutoFixture, FluentAssertions (methods versions with FluentAssertions and without FluentAssertions in AuthServiceTests).
