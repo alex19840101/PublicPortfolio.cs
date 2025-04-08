@@ -1,17 +1,9 @@
-using System;
-using System.IO;
-using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using NewsFeedSystem.BusinessLogic;
@@ -19,11 +11,11 @@ using NewsFeedSystem.Core.Repositories;
 using NewsFeedSystem.Core.Services;
 using NewsFeedSystem.DataAccess;
 using NewsFeedSystem.DataAccess.Repositories;
+using NewsFeedSystem.GrpcService;
+using NewsFeedSystem.GrpcService.Services;
 using Serilog;
 using Serilog.Templates;
 using Serilog.Templates.Themes;
-using NewsFeedSystem.GrpcService.Services;
-using NewsFeedSystem.GrpcService;
 
 const string SERVICE_NAME = $"NewsFeedSystem";
 

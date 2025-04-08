@@ -1,8 +1,8 @@
 using Grpc.Core;
-using NewsFeedSystem.GrpcService;
 
 namespace NewsFeedSystem.GrpcService.Services
 {
+    [Obsolete("Test class for gRPC smoke tests. Don't use!")]
     public class GreeterService : Greeter.GreeterBase
     {
         private readonly ILogger<GreeterService> _logger;

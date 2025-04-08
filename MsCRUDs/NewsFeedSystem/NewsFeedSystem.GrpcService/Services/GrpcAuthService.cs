@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using NewsFeedSystem.Core.Auth;
 using NewsFeedSystem.Core.Results;
 using NewsFeedSystem.Core.Services;
-using NewsFeedSystem.GrpcService;
 using NewsFeedSystem.GrpcService.Auth;
 
 namespace NewsFeedSystem.GrpcService.Services
