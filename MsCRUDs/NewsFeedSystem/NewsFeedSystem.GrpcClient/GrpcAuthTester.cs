@@ -7,8 +7,8 @@ namespace NewsFeedSystem.GrpcClient
     {
         private readonly GrpcAuth.GrpcAuthClient _authClient;
         private const byte DEADLINE_SECONDS = 3;
-        private string _granterLogin;
-        private string _granterPassword;
+        private readonly string _granterLogin;
+        private readonly string _granterPassword;
         /// <summary>
         /// запрос на удаление созданного временного админа (для других тестов других gRPC-сервисов)
         /// </summary>
@@ -42,6 +42,14 @@ namespace NewsFeedSystem.GrpcClient
                 RequestedRole = null
             };
             var userId = await TestRegisterUserAsync(registerUserRequest);
+
+            _deleteUserRequest = new DeleteUserRequest
+            {
+                Id = (uint)userId,
+                Login = registerUserRequest.Login,
+                Password = registerUserRequest.Password,
+                RepeatPassword = registerUserRequest.RepeatPassword
+            };
 
             //Login granter
             var loginAdminRequest = new LoginRequest

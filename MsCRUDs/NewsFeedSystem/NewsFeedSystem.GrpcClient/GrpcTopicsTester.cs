@@ -7,7 +7,7 @@ namespace NewsFeedSystem.GrpcClient
     {
         private readonly GrpcTopics.GrpcTopicsClient _gprcTopicsClient;
         private const byte DEADLINE_SECONDS = 3;
-        private string _adminJwt;
+        private readonly string _adminJwt;
 
         /// <summary>
         /// Конструктор класса GrpcTopicsTester

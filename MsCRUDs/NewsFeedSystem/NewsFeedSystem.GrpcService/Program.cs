@@ -62,7 +62,7 @@ try
         ValidateAudience = true,
         ValidAudience = builder.Configuration["JWT:Audience"],
         ValidateLifetime = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(builder.Configuration["JWT:KEY"])),
+        IssuerSigningKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(builder.Configuration["JWT:KEY"]!)),
         ValidateIssuerSigningKey = true
     };
 
@@ -157,7 +157,7 @@ try
 
     app.UseEndpoints(static endpoints =>
     {
-        endpoints.MapGrpcService<GreeterService>();
+        //endpoints.MapGrpcService<GreeterService>(); //Debug
         endpoints.MapGrpcService<GrpcAuthService>();
         endpoints.MapGrpcService<GrpcNewsService>();
         endpoints.MapGrpcService<GrpcTagsService>();

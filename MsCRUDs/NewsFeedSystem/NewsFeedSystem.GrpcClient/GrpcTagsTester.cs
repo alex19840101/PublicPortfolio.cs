@@ -7,7 +7,7 @@ namespace NewsFeedSystem.GrpcClient
     {
         private readonly GrpcTags.GrpcTagsClient _gprcTagsClient;
         private const byte DEADLINE_SECONDS = 3;
-        private string _adminJwt;
+        private readonly string _adminJwt;
 
         internal GrpcTagsTester(GrpcTags.GrpcTagsClient gprcTagsClient, string adminJwt)
         {

@@ -8,7 +8,7 @@ namespace NewsFeedSystem.GrpcClient
     {
         private readonly GrpcNews.GrpcNewsClient _newsClient;
         private const byte DEADLINE_SECONDS = 3;
-        private string _adminJwt;
+        private readonly string _adminJwt;
 
         internal GrpcNewsTester(GrpcNews.GrpcNewsClient newsClient, string adminJwt)
         {
