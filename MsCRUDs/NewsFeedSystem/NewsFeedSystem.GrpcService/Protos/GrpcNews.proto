@@ -1,0 +1,104 @@
+﻿syntax = "proto3";
+option csharp_namespace = "NewsFeedSystem.GrpcService.News";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+package NewsFeedSystem;
+
+service GrpcNews {
+	rpc CreateNewsPost (CreateNewsPostRequest) returns (CreateReply);
+	rpc GetNewsPost (NewsPostId) returns (NewsPostReply);
+	rpc GetHeadlines (HeadlinesRequest) returns (HeadLinesReply);
+	rpc GetHeadlinesByTag (HeadlinesByTagOrTopicRequest) returns (HeadLinesReply);
+	rpc GetHeadlinesByTopic (HeadlinesByTagOrTopicRequest) returns (HeadLinesReply);
+	rpc UpdateNewsPost(UpdateNewsRequest) returns (ResultReply);
+	rpc DeleteNewsPost(NewsPostId) returns (ResultReply);
+}
+
+// Сообщение-запрос на создание новостного поста
+message CreateNewsPostRequest {
+	string headline = 1;
+	string text = 2;
+	google.protobuf.StringValue url = 3; //nullable
+	google.protobuf.StringValue author = 4; //nullable
+	repeated TagId Tags = 5;
+	repeated TopicId Topics = 6;
+}
+
+// Ответное сообщение на запрос на создание новой сущности (новостного поста/тега/темы)
+message CreateReply {
+	google.protobuf.UInt32Value id = 1; //nullable
+	string message = 2;
+	int32 status_code = 3;
+}
+
+// "Сообщение" в составе gPRC-сообщения, содержащее id тега
+message TagId {
+	uint32 id = 1;
+}
+
+// "Сообщение" в составе gPRC-сообщения, содержащее id темы
+message TopicId {
+	uint32 id = 1;
+}
+
+// "Сообщение" в составе gPRC-сообщения, содержащее id новостного поста
+message NewsPostId {
+	uint32 id = 1;
+}
+
+// Ответное сообщение - новостной пост
+message NewsPostReply {
+	uint32 id = 1;
+	string headline = 2;
+	string text = 3;
+	google.protobuf.StringValue url = 4; //nullable
+	google.protobuf.StringValue author = 5; //nullable
+	repeated TagId Tags = 6;
+	repeated TopicId Topics = 7;
+	google.protobuf.Timestamp created = 8;
+	google.protobuf.Timestamp updated = 9;
+}
+
+// Сообщение-запрос на получение новостных заголовков
+message HeadlinesRequest {
+	google.protobuf.UInt32Value min_news_id = 1; //nullable
+	google.protobuf.UInt32Value max_news_id = 2; //nullable
+}
+
+// "Сообщение" в составе gPRC-сообщения, содержащее информацию о заголовке
+message HeadLineReply {
+	uint32 id = 1;
+	string headline = 2;
+	repeated TagId Tags = 3;
+	repeated TopicId Topics = 4;
+	google.protobuf.Timestamp created = 5;
+}
+
+// Ответное сообщение на запрос на получение новостных заголовков
+message HeadLinesReply {
+	repeated HeadLineReply headlines = 1;
+}
+
+// Сообщение-запрос на получение новостных заголовков по тегу/теме
+message HeadlinesByTagOrTopicRequest {
+	uint32 id = 1;
+	uint32 min_news_id = 2;
+}
+
+// Сообщение-запрос на обновление новостного поста	
+message UpdateNewsRequest {
+	uint32 id = 1;
+	string headline = 2;
+	string text = 3;
+	google.protobuf.StringValue url = 4; //nullable
+	google.protobuf.StringValue author = 5; //nullable
+	repeated TagId Tags = 6;
+	repeated TopicId Topics = 7;
+}
+
+// Ответное сообщение на запрос на обновление/удаление данных
+message ResultReply {
+	string message = 1;
+	int32 status_code = 2;
+}

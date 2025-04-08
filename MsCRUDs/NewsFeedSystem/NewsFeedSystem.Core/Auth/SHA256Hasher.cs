@@ -21,5 +21,14 @@ namespace NewsFeedSystem.Core.Auth
             }
             return Convert.ToBase64String(hash);
         }
+
+        public static string GeneratePasswordHash(string password, string repeatPassword)
+        {
+            if (!string.Equals(password, repeatPassword) ||
+                string.IsNullOrWhiteSpace(password))
+                return null;
+
+            return GetHash(password);
+        }
     }
 }

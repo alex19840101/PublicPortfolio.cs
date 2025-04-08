@@ -1,8 +1,7 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 
-namespace NewsFeedSystem.API
+namespace NewsFeedSystem.GrpcService
 {
     /// <summary>
     /// Класс для авторизации по ролям (в методах Delete...)
