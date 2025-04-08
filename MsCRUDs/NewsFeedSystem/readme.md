@@ -38,7 +38,7 @@ TestFixtures\
 
 **- DataBase**: Microsoft SQL Server Express Edition v15 - LocalDB.
 
-**- Caching:** Redis.
+**- Caching:** Redis. Using for news posts caching.
 
 **ASP.NET Core Web API**:
 - NewsFeedSystem.API
