@@ -4,6 +4,7 @@
 
 - [LiteAuthService](MsCRUDs/LiteAuthService) - pet project service for Auth (Authentication and Authorization). Using Dapper
 
-- [NewsFeedSystem](MsCRUDs/NewsFeedSystem) - pet project service for news posts, topics, tags + auth. Using EF Core. ASP.NET Core Web API + gRPC service and test client
+- [NewsFeedSystem](MsCRUDs/NewsFeedSystem) - pet project service for news posts, topics, tags + auth. Using EF Core. ASP.NET Core Web API + gRPC service and test client.
+Redis is using for news posts caching.
 
 ## [ProjectTasksTrackService](ProjectTasksTrackService) - pet project service for projects, projectSubDivisions, tasks (.NET 9.0, Microsoft EF Core + PostgreSQL 17).
