@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ShopServices.Core.Services;
 
 namespace Goods.API.Controllers
 {
@@ -7,10 +8,14 @@ namespace Goods.API.Controllers
     [Route("[controller]")]
     public class GoodsController : ControllerBase
     {
+        private readonly IGoodsService goodsService;
         private readonly ILogger<GoodsController> _logger;
 
-        public GoodsController(ILogger<GoodsController> logger)
+        public GoodsController(
+            IGoodsService _goodsService,
+            ILogger<GoodsController> logger)
         {
+            _goodsService = goodsService;
             _logger = logger;
         }
     }
