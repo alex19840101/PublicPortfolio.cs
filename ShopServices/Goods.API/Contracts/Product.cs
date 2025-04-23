@@ -2,12 +2,10 @@
 
 namespace Goods.API.Contracts
 {
-    /// <summary>
-    /// Товар
-    /// </summary>
+    /// <summary> Товар </summary>
     public class Product
     {
-        /// <summary> Уникальный идентификатор товара в системе </summary>
+        /// <summary> *Уникальный идентификатор товара в системе </summary>
         public uint Id { get; set; }
 
         /// <summary> Артикул производителя (при наличии) </summary>
@@ -16,7 +14,7 @@ namespace Goods.API.Contracts
         /// <summary> Производитель (бренд) </summary>
         public string Brand { get; set; }
 
-        /// <summary> Название товара </summary>
+        /// <summary> *Название товара </summary>
         public string Name { get; set; }
 
         /// <summary> Параметры товара </summary>

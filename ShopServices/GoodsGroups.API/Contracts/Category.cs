@@ -1,0 +1,27 @@
+﻿namespace GoodsGroups.API.Contracts
+{
+    /// <summary> Категория (группа) товаров в системе </summary>
+    public class Category
+    {
+        /// <summary> *Уникальный идентификатор категории (группы) товаров в системе </summary>
+        public uint Id { get; set; }
+
+        /// <summary> *Название категории (группы) товаров </summary>
+        public string Name { get; set; }
+
+        /// <summary> Производитель (бренд) (опционально) </summary>
+        public string Brand { get; set; }
+
+        /// <summary> Параметры (опционально) </summary>
+        public string Params { get; set; }
+
+        /// <summary> Ссылка (опционально) </summary>
+        public string Url { get; set; }
+
+        /// <summary> Ссылка на фото/изображение категории (опционально) </summary>
+        public string ImageUrl { get; set; }
+
+        /// <summary> В архиве ли категория </summary>
+        public bool Archieved { get; set; }
+    }
+}

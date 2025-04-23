@@ -8,32 +8,32 @@ namespace ShopServices.BusinessLogic
 {
     public class GoodsService : IGoodsService
     {
-        public Task<Result> AddProduct(Product product)
+        public async Task<Result> AddProduct(Product product)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> DeleteProduct(uint id)
+        public async Task<Result> DeleteProduct(uint id)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Product> GetProductById(uint id)
+        public async Task<Product> GetProductById(uint id)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<IEnumerable<Product>> GetProducts(string nameSubString, string brand = null, uint byPage = 10, uint page = 1)
+        public async Task<IEnumerable<Product>> GetProducts(string nameSubString, string brand = null, uint byPage = 10, uint page = 1)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<IEnumerable<Product>> GetProductsByArticle(string articleSubString)
+        public async Task<IEnumerable<Product>> GetProductsByArticle(string articleSubString)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Result> UpdateProduct(Product product)
+        public async Task<Result> UpdateProduct(Product product)
         {
             throw new System.NotImplementedException();
         }
