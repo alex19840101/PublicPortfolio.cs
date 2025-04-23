@@ -41,6 +41,7 @@ namespace ShopServices.Core.Models
             string parameters,
             string url,
             string imageUrl,
+             List<uint> goodsGroups,
             bool archieved)
         {
             Id = id;
@@ -50,6 +51,7 @@ namespace ShopServices.Core.Models
             Params = parameters;
             Url = url;
             ImageUrl = imageUrl;
+            GoodsGroups = goodsGroups;
             Archieved = archieved;
         }
     }
