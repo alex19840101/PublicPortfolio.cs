@@ -18,6 +18,8 @@ namespace Goods.API
                 Url = coreProduct.Url,
                 ImageUrl = coreProduct.ImageUrl,
                 GoodsGroups = coreProduct.GoodsGroups,
+                Created = coreProduct.Created,
+                Updated = coreProduct.Updated,
                 Archieved = coreProduct.Archieved
             };
         }
@@ -53,6 +55,8 @@ namespace Goods.API
                 Url = coreProduct.Url,
                 ImageUrl = coreProduct.ImageUrl,
                 GoodsGroups = coreProduct.GoodsGroups,
+                Created = coreProduct.Created,
+                Updated = coreProduct.Updated,
                 Archieved = coreProduct.Archieved
             });
         }

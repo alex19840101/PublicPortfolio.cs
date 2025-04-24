@@ -31,10 +31,10 @@ namespace Goods.API.Contracts
         public List<uint> GoodsGroups { get; set; }
 
         /// <summary> Дата и время создания данных о товаре </summary>
-        public DateTime Created { get; private set; }
+        public DateTime Created { get; set; }
 
         /// <summary> Дата и время обновления данных о товаре (опционально) </summary>
-        public DateTime? Updated { get; private set; }
+        public DateTime? Updated { get; set; }
 
         /// <summary> В архиве ли товар </summary>
         public bool Archieved { get; set; }

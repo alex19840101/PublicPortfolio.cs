@@ -17,6 +17,8 @@ namespace GoodsGroups.API
                 Params = coreCategory.Params,
                 Url = coreCategory.Url,
                 ImageUrl = coreCategory.ImageUrl,
+                Created = coreCategory.Created,
+                Updated = coreCategory.Updated,
                 Archieved = coreCategory.Archieved
             };
         }
@@ -50,6 +52,8 @@ namespace GoodsGroups.API
                 Params = coreCategory.Params,
                 Url = coreCategory.Url,
                 ImageUrl = coreCategory.ImageUrl,
+                Created = coreCategory.Created,
+                Updated = coreCategory.Updated,
                 Archieved = coreCategory.Archieved
             });
         }
