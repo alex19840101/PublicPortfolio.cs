@@ -1,4 +1,6 @@
-﻿namespace ShopServices.Core.Models
+﻿using System;
+
+namespace ShopServices.Core.Models
 {
     /// <summary> Категория (группа) товаров в системе </summary>
     public class Category
@@ -21,7 +23,13 @@
         /// <summary> Ссылка на фото/изображение категории (опционально) </summary>
         public string ImageUrl { get; private set; }
 
-        /// <summary> В архиве ли товар </summary>
+        /// <summary> Дата и время создания категории </summary>
+        public DateTime Created { get; private set; }
+
+        /// <summary> Дата и время обновления категории (опционально) </summary>
+        public DateTime? Updated { get; private set; }
+
+        /// <summary> В архиве ли категория </summary>
         public bool Archieved { get; private set; }
 
         public Category(uint id,

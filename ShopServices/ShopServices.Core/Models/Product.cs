@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ShopServices.Core.Models
 {
@@ -30,6 +31,12 @@ namespace ShopServices.Core.Models
 
         /// <summary> Id групп товаров </summary>
         public List<uint> GoodsGroups { get; private set; }
+
+        /// <summary> Дата и время создания данных о товаре </summary>
+        public DateTime Created { get; private set; }
+
+        /// <summary> Дата и время обновления данных о товаре (опционально) </summary>
+        public DateTime? Updated { get; private set; }
 
         /// <summary> В архиве ли товар </summary>
         public bool Archieved { get; private set; }

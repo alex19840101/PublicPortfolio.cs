@@ -1,4 +1,6 @@
-﻿namespace GoodsGroups.API.Contracts
+﻿using System;
+
+namespace GoodsGroups.API.Contracts
 {
     /// <summary> Категория (группа) товаров в системе </summary>
     public class Category
@@ -20,6 +22,12 @@
 
         /// <summary> Ссылка на фото/изображение категории (опционально) </summary>
         public string ImageUrl { get; set; }
+
+        /// <summary> Дата и время создания категории </summary>
+        public DateTime Created { get; set; }
+
+        /// <summary> Дата и время обновления категории (опционально) </summary>
+        public DateTime? Updated { get; set; }
 
         /// <summary> В архиве ли категория </summary>
         public bool Archieved { get; set; }
