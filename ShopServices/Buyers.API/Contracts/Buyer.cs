@@ -39,5 +39,8 @@ namespace Buyers.API.Contracts
 
         /// <summary> Дата и время обновления данных пользователя (опционально) </summary>
         public DateTime? Updated { get; set; }
+
+        /// <summary> Список id групп скидок </summary>
+        public List<uint> DiscountGroups { get; set; }
     }
 }

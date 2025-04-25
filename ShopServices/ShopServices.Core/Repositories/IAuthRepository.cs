@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using ShopServices.Abstractions;
+using ShopServices.Abstractions.Auth;
 using ShopServices.Core.Auth;
 
 namespace ShopServices.Core.Repositories

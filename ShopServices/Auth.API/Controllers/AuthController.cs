@@ -10,6 +10,7 @@ using ShopServices.Core.Auth;
 using ShopServices.Abstractions;
 using ShopServices.Core;
 using ShopServices.Core.Services;
+using ShopServices.Abstractions.Auth;
 
 namespace Auth.API.Controllers;
 

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using ShopServices.Abstractions;
+using ShopServices.Abstractions.Auth;
 using ShopServices.Core;
 using ShopServices.Core.Auth;
 using ShopServices.Core.Repositories;

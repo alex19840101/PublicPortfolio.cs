@@ -37,6 +37,9 @@ namespace ShopServices.Core.Models
         /// <summary> Дата и время обновления данных пользователя (опционально) </summary>
         public DateTime? Updated { get; private set; }
 
+        /// <summary> Список id групп скидок </summary>
+        public List<uint> DiscountGroups { get; private set; }
+
         public Buyer(uint id,
             string login,
             string name,
@@ -46,7 +49,8 @@ namespace ShopServices.Core.Models
             string phones,
             string passwordHash,
             DateTime created,
-            DateTime? updated)
+            DateTime? updated,
+            List<uint> discountGroups)
         {
             Id = id;
             Login = login;
@@ -58,6 +62,7 @@ namespace ShopServices.Core.Models
             PasswordHash = passwordHash;
             Created = created;
             Updated = updated;
+            DiscountGroups = discountGroups;
         }
     }
 }

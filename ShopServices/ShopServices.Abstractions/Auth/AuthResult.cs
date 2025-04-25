@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace ShopServices.Abstractions
+namespace ShopServices.Abstractions.Auth
 {
     public class AuthResult
     {

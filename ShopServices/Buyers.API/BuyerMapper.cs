@@ -17,7 +17,8 @@ namespace Buyers.API
                 Email = coreBuyer.Email,
                 Phones = coreBuyer.Phones,
                 Created = coreBuyer.Created,
-                Updated = coreBuyer.Updated
+                Updated = coreBuyer.Updated,
+                DiscountGroups = coreBuyer.DiscountGroups
             };
         }
 
@@ -33,7 +34,8 @@ namespace Buyers.API
                 phones: buyerDto.Phones,
                 passwordHash: SHA256Hasher.GeneratePasswordHash(buyerDto.Password, buyerDto.RepeatPassword),
                 created: buyerDto.Created,
-                updated: buyerDto.Updated);
+                updated: buyerDto.Updated,
+                discountGroups: buyerDto.DiscountGroups);
         }
     }
 }
