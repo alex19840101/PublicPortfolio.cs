@@ -47,7 +47,6 @@ namespace ShopServices.DataAccess.Repositories
                 StatusCode = HttpStatusCode.Created,
                 Message = ResultMessager.OK
             };
-
         }
 
         public async Task<Result> DeleteUser(uint id)
