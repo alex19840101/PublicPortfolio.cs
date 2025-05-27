@@ -1,4 +1,4 @@
-﻿namespace Auth.API.Contracts.Responses
+﻿namespace Employees.API.Contracts.Responses
 {
     /// <summary>
     /// Класс ответа с информацией о пользователе

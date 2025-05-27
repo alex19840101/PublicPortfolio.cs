@@ -1,7 +1,7 @@
 ﻿namespace Employees.API.Contracts.Requests
 {
     /// <summary>
-    /// Запрос на регистрацию аккаунта
+    /// Запрос на регистрацию аккаунта работника
     /// </summary>
     public class RegisterRequestDto
     {
@@ -19,6 +19,11 @@
         /// Фамилия пользователя*
         /// </summary>
         public required string Surname { get; set; }
+
+        /// <summary>
+        /// Адрес пользователя (работника)*
+        /// </summary>
+        public required string Address { get; set; }
 
         /// <summary>
         /// Адрес электронной почты (уникальный)*

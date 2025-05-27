@@ -1,8 +1,7 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Auth.API.Contracts.Requests;
-using Auth.API.Contracts.Responses;
+using Employees.API.Contracts.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +38,7 @@ public class EmployeesController : ControllerBase
     [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> Register(RegisterRequestDto request)
     {
-        var registerResult = await _employeesService.Register(AuthUser(request));
+        var registerResult = await _employeesService.Register(Employee(request));
 
         if (registerResult.StatusCode == HttpStatusCode.BadRequest)
             return new BadRequestObjectResult(new ProblemDetails { Title = registerResult.Message });
@@ -168,12 +167,12 @@ public class EmployeesController : ControllerBase
     [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<IActionResult> GetUserInfoById(uint id)
     {
-        var authUser = await _employeesService.GetUserInfo(id);
+        var employee = await _employeesService.GetUserInfo(id);
 
-        if (authUser is null)
+        if (employee is null)
             return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
 
-        return Ok(UserInfoResponseDto(authUser));
+        return Ok(UserInfoResponseDto(employee));
     }
 
     /// <summary> Получение информации о работнике по логину (для администраторов) </summary>
@@ -186,21 +185,22 @@ public class EmployeesController : ControllerBase
     [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<IActionResult> GetUserInfoByLogin(string login)
     {
-        var authUser = await _employeesService.GetUserInfo(login);
+        var employee = await _employeesService.GetUserInfo(login);
 
-        if (authUser is null)
+        if (employee is null)
             return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
 
-        return Ok(UserInfoResponseDto(authUser));
+        return Ok(UserInfoResponseDto(employee));
     }
 
     [NonAction]
-    private static AuthUser AuthUser(RegisterRequestDto request) =>
-        new AuthUser(
+    private static Employee Employee(RegisterRequestDto request) =>
+        new Employee(
             id: 0,
             login: request.Login,
             name: request.Name,
             surname: request.Surname,
+            address: request.Address,
             email: request.Email,
             passwordHash: SHA256Hasher.GeneratePasswordHash(request.Password, request.RepeatPassword),
             nick: request.Nick,
@@ -270,16 +270,16 @@ public class EmployeesController : ControllerBase
     }
 
     [NonAction]
-    private static UserInfoResponseDto UserInfoResponseDto(AuthUser authUser) =>
+    private static UserInfoResponseDto UserInfoResponseDto(Employee employee) =>
         new UserInfoResponseDto
         {
-            Id = authUser.Id,
-            Login = authUser.Login,
-            Name = authUser.Name,
-            Surname = authUser.Surname,
-            Email = authUser.Email,
-            Nick = authUser.Nick,
-            Phone = authUser.Phone,
-            Role = authUser.Role
+            Id = employee.Id,
+            Login = employee.Login,
+            Name = employee.Name,
+            Surname = employee.Surname,
+            Email = employee.Email,
+            Nick = employee.Nick,
+            Phone = employee.Phone,
+            Role = employee.Role
         };
 }

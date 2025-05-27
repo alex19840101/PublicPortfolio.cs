@@ -34,37 +34,37 @@ namespace ShopServices.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task Register_AuthUserIsNull_ShouldThrowArgumentNullException()
+        public async Task Register_EmployeeIsNull_ShouldThrowArgumentNullException()
         {
-            AuthUser authUser = null;
+            Employee employee = null;
             AuthResult authResult = null;
-            var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => authResult = await _employeesService.Register(authUser));
+            var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => authResult = await _employeesService.Register(employee));
 
-            _employeesRepositoryMock.Verify(ar => ar.AddUser(authUser), Times.Never);
+            _employeesRepositoryMock.Verify(ar => ar.AddUser(employee), Times.Never);
             Assert.IsNotNull(exception);
             Assert.IsNull(authResult);
             Assert.AreEqual(ResultMessager.EMPLOYEE_PARAM_NAME, exception.ParamName);
         }
 
         [TestMethod]
-        public async Task Register_AuthUserIsNull_ShouldThrowArgumentNullException_FluentAssertion()
+        public async Task Register_EmployeeIsNull_ShouldThrowArgumentNullException_FluentAssertion()
         {
-            AuthUser authUser = null;
+            Employee employee = null;
             AuthResult authResult = null;
-            var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => authResult = await _employeesService.Register(authUser));
+            var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => authResult = await _employeesService.Register(employee));
 
-            _employeesRepositoryMock.Verify(ar => ar.AddUser(authUser), Times.Never);
+            _employeesRepositoryMock.Verify(ar => ar.AddUser(employee), Times.Never);
             exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ResultMessager.EMPLOYEE_PARAM_NAME);
             authResult.Should().BeNull();
             exception.ParamName.Should().Be(ResultMessager.EMPLOYEE_PARAM_NAME);
         }
 
         [TestMethod]
-        public async Task Register_AuthUserWithNotZeroUserId_ShouldReturnAuthResult_USER_ID_SHOULD_BE_ZERO_400()
+        public async Task Register_EmployeeWithNotZeroUserId_ShouldReturnAuthResult_USER_ID_SHOULD_BE_ZERO_400()
         {
-            var authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithAllFields(generateId: true);
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithAllFields(generateId: true);
 
-            var authResult = await _employeesService.Register(authUser);
+            var authResult = await _employeesService.Register(employee);
 
             Assert.IsNotNull(authResult);
             Assert.AreEqual(ResultMessager.USER_ID_SHOULD_BE_ZERO, authResult.Message);
@@ -73,11 +73,11 @@ namespace ShopServices.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task Register_AuthUserWithNotZeroUserId_ShouldReturnAuthResult_USER_ID_SHOULD_BE_ZERO_400_FluentAssertion()
+        public async Task Register_EmployeeWithNotZeroUserId_ShouldReturnAuthResult_USER_ID_SHOULD_BE_ZERO_400_FluentAssertion()
         {
-            var authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithAllFields(generateId: true);
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithAllFields(generateId: true);
 
-            var authResult = await _employeesService.Register(authUser);
+            var authResult = await _employeesService.Register(employee);
 
             authResult.Should().NotBeNull();
             authResult.Message.Should().Be(ResultMessager.USER_ID_SHOULD_BE_ZERO);
@@ -86,11 +86,11 @@ namespace ShopServices.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task Register_AuthUserWithoutLogin_ShouldReturnAuthResult_LOGIN_SHOULD_NOT_BE_EMPTY_400()
+        public async Task Register_EmployeeWithoutLogin_ShouldReturnAuthResult_LOGIN_SHOULD_NOT_BE_EMPTY_400()
         {
-            var authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithAllFields(generateLogin: false);
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithAllFields(generateLogin: false);
 
-            var authResult = await _employeesService.Register(authUser);
+            var authResult = await _employeesService.Register(employee);
 
             Assert.IsNotNull(authResult);
             Assert.AreEqual(ResultMessager.LOGIN_SHOULD_NOT_BE_EMPTY, authResult.Message);
@@ -99,11 +99,11 @@ namespace ShopServices.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task Register_AuthUserWithoutLogin_ShouldReturnAuthResult_LOGIN_SHOULD_NOT_BE_EMPTY_FluentAssertion()
+        public async Task Register_EmployeeWithoutLogin_ShouldReturnAuthResult_LOGIN_SHOULD_NOT_BE_EMPTY_FluentAssertion()
         {
-            var authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithAllFields(generateLogin: false);
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithAllFields(generateLogin: false);
 
-            var authResult = await _employeesService.Register(authUser);
+            var authResult = await _employeesService.Register(employee);
 
             authResult.Should().NotBeNull();
             authResult.Message.Should().Be(ResultMessager.LOGIN_SHOULD_NOT_BE_EMPTY);
@@ -112,11 +112,11 @@ namespace ShopServices.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task Register_AuthUserWithoutSurname_ShouldReturnAuthResult_SURNAME_SHOULD_NOT_BE_EMPTY_400()
+        public async Task Register_EmployeeWithoutSurname_ShouldReturnAuthResult_SURNAME_SHOULD_NOT_BE_EMPTY_400()
         {
-            var authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithAllFields(generateSurname: false);
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithAllFields(generateSurname: false);
 
-            var authResult = await _employeesService.Register(authUser);
+            var authResult = await _employeesService.Register(employee);
 
             Assert.IsNotNull(authResult);
             Assert.AreEqual(ResultMessager.SURNAME_SHOULD_NOT_BE_EMPTY, authResult.Message);
@@ -125,11 +125,11 @@ namespace ShopServices.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task Register_AuthUserWithoutSurname_ShouldReturnAuthResult_SURNAME_SHOULD_NOT_BE_EMPTY_FluentAssertion()
+        public async Task Register_EmployeeWithoutSurname_ShouldReturnAuthResult_SURNAME_SHOULD_NOT_BE_EMPTY_FluentAssertion()
         {
-            var authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithAllFields(generateSurname: false);
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithAllFields(generateSurname: false);
 
-            var authResult = await _employeesService.Register(authUser);
+            var authResult = await _employeesService.Register(employee);
 
             authResult.Should().NotBeNull();
             authResult.Message.Should().Be(ResultMessager.SURNAME_SHOULD_NOT_BE_EMPTY);
@@ -138,11 +138,11 @@ namespace ShopServices.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task Register_AuthUserWithoutUserName_ShouldReturnAuthResult_USERNAME_SHOULD_NOT_BE_EMPTY_400()
+        public async Task Register_EmployeeWithoutUserName_ShouldReturnAuthResult_USERNAME_SHOULD_NOT_BE_EMPTY_400()
         {
-            var authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithAllFields(generateName: false);
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithAllFields(generateName: false);
 
-            var authResult = await _employeesService.Register(authUser);
+            var authResult = await _employeesService.Register(employee);
 
             Assert.IsNotNull(authResult);
             Assert.AreEqual(ResultMessager.NAME_SHOULD_NOT_BE_EMPTY, authResult.Message);
@@ -151,11 +151,11 @@ namespace ShopServices.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task Register_AuthUserWithoutUserName_ShouldReturnAuthResult_USERNAME_SHOULD_NOT_BE_EMPTY_FluentAssertion()
+        public async Task Register_EmployeeWithoutUserName_ShouldReturnAuthResult_USERNAME_SHOULD_NOT_BE_EMPTY_FluentAssertion()
         {
-            var authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithAllFields(generateName: false);
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithAllFields(generateName: false);
 
-            var authResult = await _employeesService.Register(authUser);
+            var authResult = await _employeesService.Register(employee);
 
             authResult.Should().NotBeNull();
             authResult.Message.Should().Be(ResultMessager.NAME_SHOULD_NOT_BE_EMPTY);
@@ -164,11 +164,11 @@ namespace ShopServices.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task Register_AuthUserWithoutEmail_ShouldReturnAuthResult_EMAIL_SHOULD_NOT_BE_EMPTY_400()
+        public async Task Register_EmployeeWithoutEmail_ShouldReturnAuthResult_EMAIL_SHOULD_NOT_BE_EMPTY_400()
         {
-            var authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithAllFields(generateEmail: false);
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithAllFields(generateEmail: false);
 
-            var authResult = await _employeesService.Register(authUser);
+            var authResult = await _employeesService.Register(employee);
 
             Assert.IsNotNull(authResult);
             Assert.AreEqual(ResultMessager.EMAIL_SHOULD_NOT_BE_EMPTY, authResult.Message);
@@ -177,11 +177,11 @@ namespace ShopServices.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task Register_AuthUserWithoutEmail_ShouldReturnAuthResult_EMAIL_SHOULD_NOT_BE_EMPTY_FluentAssertion()
+        public async Task Register_EmployeeWithoutEmail_ShouldReturnAuthResult_EMAIL_SHOULD_NOT_BE_EMPTY_FluentAssertion()
         {
-            var authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithAllFields(generateEmail: false);
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithAllFields(generateEmail: false);
 
-            var authResult = await _employeesService.Register(authUser);
+            var authResult = await _employeesService.Register(employee);
 
             authResult.Should().NotBeNull();
             authResult.Message.Should().Be(ResultMessager.EMAIL_SHOULD_NOT_BE_EMPTY);
@@ -190,11 +190,11 @@ namespace ShopServices.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task Register_AuthUserWithoutPasswordHash_ShouldReturnAuthResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400()
+        public async Task Register_EmployeeWithoutPasswordHash_ShouldReturnAuthResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400()
         {
-            var authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithAllFields(generatePasswordHash: false);
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithAllFields(generatePasswordHash: false);
 
-            var authResult = await _employeesService.Register(authUser);
+            var authResult = await _employeesService.Register(employee);
 
             Assert.IsNotNull(authResult);
             Assert.AreEqual(ResultMessager.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, authResult.Message);
@@ -203,11 +203,11 @@ namespace ShopServices.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task Register_AuthUserWithoutPasswordHash_ShouldReturnAuthResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_FluentAssertion()
+        public async Task Register_EmployeeWithoutPasswordHash_ShouldReturnAuthResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_FluentAssertion()
         {
-            var authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithAllFields(generatePasswordHash: false);
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithAllFields(generatePasswordHash: false);
 
-            var authResult = await _employeesService.Register(authUser);
+            var authResult = await _employeesService.Register(employee);
 
             authResult.Should().NotBeNull();
             authResult.Message.Should().Be(ResultMessager.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY);
@@ -216,77 +216,77 @@ namespace ShopServices.BusinessLogic.MsTests
         }
 
         [TestMethod]
-        public async Task Register_AuthUserIsValidAndFull_ShouldReturnOk()
+        public async Task Register_EmployeeIsValidAndFull_ShouldReturnOk()
         {
-            var authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithAllFields();
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithAllFields();
 
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
-            _employeesRepositoryMock.Setup(ar => ar.AddUser(authUser))
+            _employeesRepositoryMock.Setup(ar => ar.AddUser(employee))
                 .ReturnsAsync(new AuthResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
-            var registerResult = await _employeesService.Register(authUser);
+            var registerResult = await _employeesService.Register(employee);
 
             Assert.IsTrue(registerResult.Id > 0);
             Assert.AreEqual(expectedId, registerResult.Id);
             Assert.AreEqual(System.Net.HttpStatusCode.Created, registerResult.StatusCode);
-            _employeesRepositoryMock.Verify(ar => ar.AddUser(authUser), Times.Once);
+            _employeesRepositoryMock.Verify(ar => ar.AddUser(employee), Times.Once);
         }
 
         [TestMethod]
-        public async Task Register_AuthUserIsValidAndFull_ShouldReturnOk_FluentAssertion()
+        public async Task Register_EmployeeIsValidAndFull_ShouldReturnOk_FluentAssertion()
         {
-            var authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithAllFields();
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithAllFields();
 
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
-            _employeesRepositoryMock.Setup(ar => ar.AddUser(authUser))
+            _employeesRepositoryMock.Setup(ar => ar.AddUser(employee))
                 .ReturnsAsync(new AuthResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
-            var registerResult = await _employeesService.Register(authUser);
+            var registerResult = await _employeesService.Register(employee);
 
             registerResult.Id.Should().BeGreaterThan(0);
             registerResult.Id.Should().Be(expectedId);
             registerResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
 
-            _employeesRepositoryMock.Verify(ar => ar.AddUser(authUser), Times.Once);
+            _employeesRepositoryMock.Verify(ar => ar.AddUser(employee), Times.Once);
         }
 
         [TestMethod]
-        public async Task Register_AuthUserIsValid_ShouldReturnOk()
+        public async Task Register_EmployeeIsValid_ShouldReturnOk()
         {
-            var authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields();
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields();
 
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
-            _employeesRepositoryMock.Setup(ar => ar.AddUser(authUser))
+            _employeesRepositoryMock.Setup(ar => ar.AddUser(employee))
                 .ReturnsAsync(new AuthResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
-            var registerResult = await _employeesService.Register(authUser);
+            var registerResult = await _employeesService.Register(employee);
 
             Assert.IsTrue(registerResult.Id > 0);
             Assert.AreEqual(expectedId, registerResult.Id);
             Assert.AreEqual(System.Net.HttpStatusCode.Created, registerResult.StatusCode);
-            _employeesRepositoryMock.Verify(ar => ar.AddUser(authUser), Times.Once);
+            _employeesRepositoryMock.Verify(ar => ar.AddUser(employee), Times.Once);
         }
 
         [TestMethod]
-        public async Task Register_AuthUserIsValid_ShouldReturnOk_FluentAssertion()
+        public async Task Register_EmployeeIsValid_ShouldReturnOk_FluentAssertion()
         {
-            var authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields();
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields();
 
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
-            _employeesRepositoryMock.Setup(ar => ar.AddUser(authUser))
+            _employeesRepositoryMock.Setup(ar => ar.AddUser(employee))
                             .ReturnsAsync(new AuthResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
-            var createResult = await _employeesService.Register(authUser);
+            var createResult = await _employeesService.Register(employee);
 
             createResult.Id.Should().BeGreaterThan(0);
             createResult.Id.Should().Be(expectedId);
             createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
 
-            _employeesRepositoryMock.Verify(ar => ar.AddUser(authUser), Times.Once);
+            _employeesRepositoryMock.Verify(ar => ar.AddUser(employee), Times.Once);
         }
 
         [TestMethod]
@@ -374,9 +374,9 @@ namespace ShopServices.BusinessLogic.MsTests
         public async Task Login_UserNotFound_ShouldReturnAuthResult_USER_NOT_FOUND_404()
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
-            AuthUser authUser = null;
+            Employee employee = null;
             _employeesRepositoryMock.Setup(ar => ar.GetUser(loginData.Login))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
             var authResult = await _employeesService.Login(loginData);
 
@@ -392,9 +392,9 @@ namespace ShopServices.BusinessLogic.MsTests
         public async Task Login_UserNotFound_ShouldReturnAuthResult_USER_NOT_FOUND_404_FluentAssertion()
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
-            AuthUser authUser = null;
+            Employee employee = null;
             _employeesRepositoryMock.Setup(ar => ar.GetUser(loginData.Login))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
             var authResult = await _employeesService.Login(loginData);
 
@@ -410,9 +410,9 @@ namespace ShopServices.BusinessLogic.MsTests
         public async Task Login_PasswordHashMismatch_ShouldReturnAuthResult_PASSWORD_HASH_MISMATCH_401()
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
-            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields();
+            Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields();
             _employeesRepositoryMock.Setup(ar => ar.GetUser(loginData.Login))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
             var authResult = await _employeesService.Login(loginData);
 
@@ -428,9 +428,9 @@ namespace ShopServices.BusinessLogic.MsTests
         public async Task Login_PasswordHashMismatch_ShouldReturnAuthResult_PASSWORD_HASH_MISMATCH_401_FluentAssertion()
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
-            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields();
+            Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields();
             _employeesRepositoryMock.Setup(ar => ar.GetUser(loginData.Login))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
             var authResult = await _employeesService.Login(loginData);
 
@@ -447,9 +447,9 @@ namespace ShopServices.BusinessLogic.MsTests
         public async Task Login_OK_ShouldReturnAuthResult_OK()
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
-            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(generateId: true, passwordHash: loginData.PasswordHash);
+            Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(generateId: true, passwordHash: loginData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(loginData.Login))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
             var authResult = await _employeesService.Login(loginData);
 
@@ -467,9 +467,9 @@ namespace ShopServices.BusinessLogic.MsTests
         public async Task Login_OK_ShouldReturnAuthResult_OK_FluentAssertion()
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
-            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(generateId: true, passwordHash: loginData.PasswordHash);
+            Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(generateId: true, passwordHash: loginData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(loginData.Login))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
             var authResult = await _employeesService.Login(loginData);
 
@@ -611,9 +611,9 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
-            AuthUser authUser = null;
+            Employee employee = null;
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
             var updateResult = await _employeesService.GrantRole(grantRoleData);
 
@@ -630,9 +630,9 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
-            AuthUser authUser = null;
+            Employee employee = null;
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
             var updateResult = await _employeesService.GrantRole(grantRoleData);
 
@@ -650,9 +650,9 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
-            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
+            Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
             var updateResult = await _employeesService.GrantRole(grantRoleData);
 
@@ -669,9 +669,9 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
-            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
+            Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
             var updateResult = await _employeesService.GrantRole(grantRoleData);
 
@@ -690,11 +690,11 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
-            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
+            Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.Login);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
-            AuthUser granter = null;
+            Employee granter = null;
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
@@ -714,11 +714,11 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
-            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
+            Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.Login);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
-            AuthUser granter = null;
+            Employee granter = null;
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
@@ -739,11 +739,11 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
-            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
+            Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.Login);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
-            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
+            Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
@@ -763,11 +763,11 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
-            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
+            Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.Login);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
-            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
+            Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
@@ -788,11 +788,11 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
-            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
+            Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.Login);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
-            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.GranterLogin);
+            Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.GranterLogin);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
@@ -812,11 +812,11 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
-            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
+            Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.Login);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
-            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.GranterLogin);
+            Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.GranterLogin);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
@@ -837,11 +837,11 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
-            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
+            Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.Login);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
-            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash, login: grantRoleData.GranterLogin);
+            Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash, login: grantRoleData.GranterLogin);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
@@ -864,11 +864,11 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
-            AuthUser authUser = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: grantRoleData.Login);
+            Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.Login);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.Id))
-                .ReturnsAsync(authUser);
+                .ReturnsAsync(employee);
 
-            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash, login: grantRoleData.GranterLogin);
+            Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash, login: grantRoleData.GranterLogin);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
@@ -1184,7 +1184,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
-            AuthUser userToDelete = null;
+            Employee userToDelete = null;
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
@@ -1202,7 +1202,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
-            AuthUser userToDelete = null;
+            Employee userToDelete = null;
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
@@ -1222,7 +1222,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: deleteAccountData.PasswordHash);
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
@@ -1240,7 +1240,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(passwordHash: deleteAccountData.PasswordHash);
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
@@ -1258,7 +1258,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true);
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
@@ -1276,7 +1276,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true);
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
@@ -1295,12 +1295,12 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
-            AuthUser granter = null;
+            Employee granter = null;
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
                 .ReturnsAsync(granter);
 
@@ -1319,12 +1319,12 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
-            AuthUser granter = null;
+            Employee granter = null;
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
                 .ReturnsAsync(granter);
 
@@ -1344,13 +1344,13 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true,
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
-            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true, passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
                 .ReturnsAsync(granter);
@@ -1370,13 +1370,13 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true,
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
-            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true, passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
                 .ReturnsAsync(granter);
@@ -1397,13 +1397,13 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true,
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
-            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true, login: deleteAccountData.GranterLogin);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
                 .ReturnsAsync(granter);
@@ -1423,13 +1423,13 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true,
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
-            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true, login: deleteAccountData.GranterLogin);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
                 .ReturnsAsync(granter);
@@ -1450,13 +1450,13 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterLogin: true);
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true,
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
-            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
             uint ZERO_GRANTER_ID = 0;
             _employeesRepositoryMock.Setup(ar => ar.GetUser(ZERO_GRANTER_ID))
@@ -1477,13 +1477,13 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterLogin: true);
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true,
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
-            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
             uint ZERO_GRANTER_ID = 0;
             _employeesRepositoryMock.Setup(ar => ar.GetUser(ZERO_GRANTER_ID))
@@ -1505,7 +1505,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: deleteAccountData.Login);
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: deleteAccountData.Login);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
@@ -1523,7 +1523,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: deleteAccountData.Login);
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: deleteAccountData.Login);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
@@ -1541,7 +1541,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
@@ -1562,7 +1562,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
@@ -1584,14 +1584,14 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true,
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
-            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
                 .ReturnsAsync(granter);
@@ -1614,13 +1614,13 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
 
-            AuthUser userToDelete = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true,
                 login: deleteAccountData.Login);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
-            AuthUser granter = TestFixtures.TestFixtures.GetAuthUserFixtureWithRequiredFields(
+            Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
             _employeesRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
                 .ReturnsAsync(granter);

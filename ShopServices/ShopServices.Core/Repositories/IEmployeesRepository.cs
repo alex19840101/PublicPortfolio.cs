@@ -7,10 +7,10 @@ namespace ShopServices.Core.Repositories
 {
     public interface IEmployeesRepository
     {
-        Task<AuthResult> AddUser(AuthUser authUser);
-        Task<AuthUser> GetUser(uint id);
-        Task<AuthUser> GetUser(string login);
-        Task<Result> UpdateUser(UpdateAccountData authUser);
+        Task<AuthResult> AddUser(Employee employee);
+        Task<Employee> GetUser(uint id);
+        Task<Employee> GetUser(string login);
+        Task<Result> UpdateUser(UpdateAccountData employee);
         Task<Result> GrantRole(uint id, string role, uint granterId);
         Task<Result> DeleteUser(uint id);
     }

@@ -20,23 +20,24 @@ namespace ShopServices.DataAccess.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<AuthResult> AddUser(AuthUser authUser)
+        public async Task<AuthResult> AddUser(Employee employee)
         {
-            ArgumentNullException.ThrowIfNull(authUser);
+            ArgumentNullException.ThrowIfNull(employee);
 
             var newEmployeeEntity = new Entities.Employee(
-                id: authUser.Id,
-                login: authUser.Login,
-                name: authUser.Name,
-                surname: authUser.Surname,
-                email: authUser.Email,
-                passwordHash: authUser.PasswordHash,
-                nick: authUser.Nick,
-                phone: authUser.Phone,
-                role: authUser.Role,
-                granterId: authUser.GranterId,
-                createdDt: authUser.CreatedDt.ToUniversalTime(),
-                lastUpdateDt: authUser.LastUpdateDt?.ToUniversalTime());
+                id: employee.Id,
+                login: employee.Login,
+                name: employee.Name,
+                surname: employee.Surname,
+                address: employee.Address,
+                email: employee.Email,
+                passwordHash: employee.PasswordHash,
+                nick: employee.Nick,
+                phone: employee.Phone,
+                role: employee.Role,
+                granterId: employee.GranterId,
+                createdDt: employee.CreatedDt.ToUniversalTime(),
+                lastUpdateDt: employee.LastUpdateDt?.ToUniversalTime());
 
             await _dbContext.Employees.AddAsync(newEmployeeEntity);
             await _dbContext.SaveChangesAsync();
@@ -52,7 +53,7 @@ namespace ShopServices.DataAccess.Repositories
 
         public async Task<Result> DeleteUser(uint id)
         {
-            var employeeEntity = await GetAuthUserEntity(id);
+            var employeeEntity = await GetEmployeeEntity(id);
 
             if (employeeEntity is null)
                 return new Result(ResultMessager.USER_NOT_FOUND, HttpStatusCode.NotFound);
@@ -63,27 +64,27 @@ namespace ShopServices.DataAccess.Repositories
             return new Result(ResultMessager.OK, HttpStatusCode.OK);
         }
 
-        public async Task<AuthUser> GetUser(uint id)
+        public async Task<Employee> GetUser(uint id)
         {
-            var employeeEntity = await GetAuthUserEntity(id);
+            var employeeEntity = await GetEmployeeEntity(id);
             if (employeeEntity is null)
                 return null;
 
-            return AuthUser(employeeEntity);
+            return Employee(employeeEntity);
         }
 
-        public async Task<AuthUser> GetUser(string login)
+        public async Task<Employee> GetUser(string login)
         {
-            var employeeEntity = await GetAuthUserEntity(login);
+            var employeeEntity = await GetEmployeeEntity(login);
             if (employeeEntity is null)
                 return null;
 
-            return AuthUser(employeeEntity);
+            return Employee(employeeEntity);
         }
 
         public async Task<Result> GrantRole(uint id, string role, uint granterId)
         {
-            var granterUserEntity = await GetAuthUserEntity(granterId);
+            var granterUserEntity = await GetEmployeeEntity(granterId);
             if (granterUserEntity is null)
                 return new Result(ResultMessager.GRANTER_NOT_FOUND, HttpStatusCode.Unauthorized);
 
@@ -135,7 +136,7 @@ namespace ShopServices.DataAccess.Repositories
             return new Result(ResultMessager.USER_IS_ACTUAL, HttpStatusCode.OK);
         }
 
-        private async Task<Entities.Employee> GetAuthUserEntity(uint id)
+        private async Task<Entities.Employee> GetEmployeeEntity(uint id)
         {
             var query = _dbContext.Employees.AsNoTracking().Where(u => u.Id == id);
             var employeeEntity = await query.SingleOrDefaultAsync();
@@ -143,7 +144,7 @@ namespace ShopServices.DataAccess.Repositories
             return employeeEntity;
         }
 
-        private async Task<Entities.Employee> GetAuthUserEntity(string login)
+        private async Task<Entities.Employee> GetEmployeeEntity(string login)
         {
             var query = _dbContext.Employees.AsNoTracking().Where(u => u.Login.Equals(login));
             var employeeEntity = await query.SingleOrDefaultAsync();
@@ -151,12 +152,13 @@ namespace ShopServices.DataAccess.Repositories
             return employeeEntity;
         }
 
-        private static AuthUser AuthUser(Entities.Employee userEntity) =>
-            new AuthUser(
+        private static Employee Employee(Entities.Employee userEntity) =>
+            new Employee(
                 id: userEntity.Id,
                 login: userEntity.Login,
                 name: userEntity.Name,
                 surname: userEntity.Surname,
+                address: userEntity.Address,
                 email: userEntity.Email,
                 passwordHash: userEntity.PasswordHash,
                 nick: userEntity.Nick,

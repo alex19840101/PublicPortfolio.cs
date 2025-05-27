@@ -28,7 +28,7 @@ namespace ShopServices.BusinessLogic
             _key = key;
         }
 
-        public async Task<AuthResult> Register(AuthUser employee)
+        public async Task<AuthResult> Register(Employee employee)
         {
             if (employee == null)
                 throw new ArgumentNullException(ResultMessager.EMPLOYEE_PARAM_NAME);
@@ -126,7 +126,7 @@ namespace ShopServices.BusinessLogic
             if (!string.Equals(user.Login, grantRoleData.Login))
                 return new Result(message: ResultMessager.LOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
 
-            AuthUser granter = await _employeesRepository.GetUser(grantRoleData.GranterId);
+            Employee granter = await _employeesRepository.GetUser(grantRoleData.GranterId);
 
             if (granter is null)
                 return new Result(message: ResultMessager.GRANTER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
@@ -215,7 +215,7 @@ namespace ShopServices.BusinessLogic
 
             if (deleteAccountData.GranterId != null)
             {
-                AuthUser granter = await _employeesRepository.GetUser(deleteAccountData.GranterId.Value);
+                Employee granter = await _employeesRepository.GetUser(deleteAccountData.GranterId.Value);
 
                 if (granter is null)
                     return new Result(message: ResultMessager.GRANTER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
@@ -234,13 +234,13 @@ namespace ShopServices.BusinessLogic
 
             return await _employeesRepository.DeleteUser(id: deleteAccountData.Id);
         }
-        public async Task<AuthUser> GetUserInfo(uint id)
+        public async Task<Employee> GetUserInfo(uint id)
         {
             var user = await _employeesRepository.GetUser(id);
 
             return user;
         }
-        public async Task<AuthUser> GetUserInfo(string login)
+        public async Task<Employee> GetUserInfo(string login)
         {
             if (string.IsNullOrWhiteSpace(login))
                 return default!; //throw new ArgumentNullException(ResultMessager.LOGIN_SHOULD_NOT_BE_EMPTY);

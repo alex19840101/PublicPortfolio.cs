@@ -10,7 +10,8 @@ namespace ShopServices.DataAccess.Entities
         public string Login { get { return _login; } }
         public string Name { get { return _name; } }
         public string Surname { get { return _surname; } }
-        public string Email { get { return _email; } }
+		public string Address { get { return _address; } }
+		public string Email { get { return _email; } }
         public string PasswordHash { get { return _passwordHash; } }
         public string? Nick { get { return _nick; } }
         public string? Phone { get { return _phone; } }
@@ -23,7 +24,8 @@ namespace ShopServices.DataAccess.Entities
         private string _login;
         private string _name;
         private string _surname;
-        private string _email;
+		private string _address;
+		private string _email;
         private string _passwordHash;
         private string? _nick;
         private string? _phone;
@@ -37,7 +39,8 @@ namespace ShopServices.DataAccess.Entities
             string login,
             string name,
             string surname,
-            string email,
+			string address,
+			string email,
             string passwordHash,
             string? nick,
             string? phone,
@@ -50,7 +53,8 @@ namespace ShopServices.DataAccess.Entities
             _login = login;
             _name = name;
             _surname = surname;
-            _email = email;
+			_address = address;
+			_email = email;
             _passwordHash = passwordHash;
             _nick = nick;
             _phone = phone;
@@ -63,7 +67,8 @@ namespace ShopServices.DataAccess.Entities
         public void UpdateLogin(string newLogin) => _login = newLogin;
         public void UpdateName(string newName) => _name = newName;
         public void UpdateSurname(string newSurname) => _surname = newSurname;
-        public void UpdateEmail(string newEmail) => _email = newEmail;
+		public void UpdateAddress(string newAddress) => _address = newAddress;
+		public void UpdateEmail(string newEmail) => _email = newEmail;
         public void UpdatePasswordHash(string newPasswordHash) => _passwordHash = newPasswordHash;
         public void UpdateNick(string? newNick) => _nick = newNick;
         public void UpdatePhone(string? newPhone) => _phone = newPhone;
@@ -73,18 +78,19 @@ namespace ShopServices.DataAccess.Entities
 
         public override bool Equals(object obj)
         {
-            var comparedAuthUser = (Employee)obj;
-            if (comparedAuthUser.Id != _id ||
-                !string.Equals(comparedAuthUser.Login, _login) ||
-                !string.Equals(comparedAuthUser.Name, _name) ||
-                !string.Equals(comparedAuthUser.Surname, _surname) ||
-                !string.Equals(comparedAuthUser.Email, _email) ||
-                !string.Equals(comparedAuthUser.PasswordHash, _passwordHash) ||
-                !string.Equals(comparedAuthUser.Nick, _nick) ||
-                !string.Equals(comparedAuthUser.Phone, _phone) ||
-                !string.Equals(comparedAuthUser.Role, _phone) ||
-                comparedAuthUser.CreatedDt != _createdDt ||
-                comparedAuthUser.LastUpdateDt != _lastUpdateDt)
+            var comparedEmployee = (Employee)obj;
+            if (comparedEmployee.Id != _id ||
+                !string.Equals(comparedEmployee.Login, _login) ||
+                !string.Equals(comparedEmployee.Name, _name) ||
+                !string.Equals(comparedEmployee.Surname, _surname) ||
+				!string.Equals(comparedEmployee.Address, _address) ||
+				!string.Equals(comparedEmployee.Email, _email) ||
+                !string.Equals(comparedEmployee.PasswordHash, _passwordHash) ||
+                !string.Equals(comparedEmployee.Nick, _nick) ||
+                !string.Equals(comparedEmployee.Phone, _phone) ||
+                !string.Equals(comparedEmployee.Role, _phone) ||
+                comparedEmployee.CreatedDt != _createdDt ||
+                comparedEmployee.LastUpdateDt != _lastUpdateDt)
                 return false;
 
             return true;

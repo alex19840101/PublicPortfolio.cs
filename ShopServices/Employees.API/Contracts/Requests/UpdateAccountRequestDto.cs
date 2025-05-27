@@ -1,7 +1,7 @@
-﻿namespace Auth.API.Contracts.Requests
+﻿namespace Employees.API.Contracts.Requests
 {
     /// <summary>
-    /// Запрос на обновление аккаунта
+    /// Запрос на обновление аккаунта работника
     /// </summary>
     public class UpdateAccountRequestDto
     {

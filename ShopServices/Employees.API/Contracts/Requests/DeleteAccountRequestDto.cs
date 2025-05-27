@@ -1,7 +1,7 @@
-﻿namespace Auth.API.Contracts.Requests
+﻿namespace Employees.API.Contracts.Requests
 {
     /// <summary>
-    /// Запрос на удаление аккаунта
+    /// Запрос на удаление аккаунта работника
     /// </summary>
     public class DeleteAccountRequestDto
     {

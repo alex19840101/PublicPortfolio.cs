@@ -8,11 +8,12 @@ namespace TestFixtures
 {
     public partial class TestFixtures
     {
-        public static AuthUser GetAuthUserFixtureWithAllFields(
+        public static Employee GetEmployeeFixtureWithAllFields(
                     bool generateId = false,
                     bool generateLogin = true,
                     bool generateName = true,
                     bool generateSurname = true,
+                    bool generateAddress = true,
                     bool generateEmail = true,
                     bool generatePasswordHash = true,
                     bool generateNick = true,
@@ -37,11 +38,12 @@ namespace TestFixtures
                 excludeIds.Add(id);
             }
 
-            return new AuthUser(
+            return new Employee(
                 id: id,
                 login: GenerateStringIfTrueElseReturnNull(generateLogin),
                 name: GenerateStringIfTrueElseReturnNull(generateName),
                 surname: GenerateStringIfTrueElseReturnNull(generateSurname),
+                address: GenerateStringIfTrueElseReturnNull(generateAddress),
                 email: GenerateStringIfTrueElseReturnNull(generateEmail),
                 passwordHash: passwordHash ?? GenerateStringIfTrueElseReturnNull(generatePasswordHash),
                 nick: GenerateStringIfTrueElseReturnNull(generateNick),
@@ -56,11 +58,12 @@ namespace TestFixtures
                 flag == true ? fixture.Build<string>().Create() : null;
         }
 
-        public static AuthUser GetAuthUserFixtureWithRequiredFields(
+        public static Employee GetEmployeeFixtureWithRequiredFields(
             bool generateId = false,
             bool generateLogin = true,
             bool generateName = true,
             bool generateSurname = true,
+            bool generateAddress = true,
             bool generateEmail = true,
             bool generatePasswordHash = true,
             string passwordHash = null,
@@ -70,11 +73,12 @@ namespace TestFixtures
 
             var id = generateId ? fixture.Create<uint>() : 0;
 
-            return new AuthUser(
+            return new Employee(
                 id: id,
                 login: login ?? GenerateStringIfTrueElseReturnNull(generateLogin),
                 name: GenerateStringIfTrueElseReturnNull(generateName),
                 surname: GenerateStringIfTrueElseReturnNull(generateSurname),
+                address: GenerateStringIfTrueElseReturnNull(generateAddress),
                 email: GenerateStringIfTrueElseReturnNull(generateEmail),
                 passwordHash: passwordHash ?? GenerateStringIfTrueElseReturnNull(generatePasswordHash),
                 nick: null,

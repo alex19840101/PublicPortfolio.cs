@@ -1,7 +1,7 @@
-﻿namespace Auth.API.Contracts.Requests
+﻿namespace Employees.API.Contracts.Requests
 {
     /// <summary>
-    /// Запрос на вход (аутентификацию)
+    /// Запрос на вход (аутентификацию) работника
     /// </summary>
     public class LoginRequestDto
     {

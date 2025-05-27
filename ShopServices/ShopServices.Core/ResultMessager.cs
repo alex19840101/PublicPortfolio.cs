@@ -5,7 +5,7 @@
         public static string OK = "OK";
         public static string NOT_FOUND = "Not found";
 
-        //AuthUser
+        //Employee
         public const string EMPTY_OR_NULL_PASSWORD_HASH = "Empty/null/space password hash";
         public const string GRANTER_NOT_FOUND = "granter not found";
         public const string USER_NOT_FOUND = "User not found";
@@ -29,7 +29,7 @@
         public const string GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE = "GranterLogin should be empty when GranterId is null";
         public const string UPDATEACCOUNTDATA_PARAM_NAME = "updateAccountData";
         public const string DELETEACCOUNTDATA_PARAM_NAME = "deleteAccountData";
-        public const string CONFLICT = "Conflict with existing AuthUser";
-        public const string ALREADY_EXISTS = "AuthUser is already existing";
+        public const string CONFLICT = "Conflict with existing Employee";
+        public const string ALREADY_EXISTS = "Employee is already existing";
     }
 }

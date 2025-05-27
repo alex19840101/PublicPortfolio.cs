@@ -1,7 +1,7 @@
-﻿namespace Auth.API.Contracts.Requests
+﻿namespace Employees.API.Contracts.Requests
 {
     /// <summary>
-    /// Запрос на предоставление роли аккаунту
+    /// Запрос на предоставление роли аккаунту работника
     /// </summary>
     public class GrantRoleRequestDto
     {
