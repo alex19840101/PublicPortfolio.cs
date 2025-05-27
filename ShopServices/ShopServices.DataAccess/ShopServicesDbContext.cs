@@ -11,7 +11,7 @@ namespace ShopServices.DataAccess
         
         }
 
-        public DbSet<Employee> AuthUsers { get; set; }
+        public DbSet<Employee> Employees { get; set; }
         //public DbSet<_> _s { get; set; }
         //public DbSet<_> _s { get; set; }
         //public DbSet<_> _s { get; set; }

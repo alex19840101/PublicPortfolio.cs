@@ -24,7 +24,7 @@ namespace ShopServices.DataAccess.Repositories
         {
             ArgumentNullException.ThrowIfNull(authUser);
 
-            var newAuthUserEntity = new Entities.Employee(
+            var newEmployeeEntity = new Entities.Employee(
                 id: authUser.Id,
                 login: authUser.Login,
                 name: authUser.Name,
@@ -38,13 +38,13 @@ namespace ShopServices.DataAccess.Repositories
                 createdDt: authUser.CreatedDt.ToUniversalTime(),
                 lastUpdateDt: authUser.LastUpdateDt?.ToUniversalTime());
 
-            await _dbContext.AuthUsers.AddAsync(newAuthUserEntity);
+            await _dbContext.Employees.AddAsync(newEmployeeEntity);
             await _dbContext.SaveChangesAsync();
 
-            await _dbContext.Entry(newAuthUserEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id
+            await _dbContext.Entry(newEmployeeEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id
             return new AuthResult
             {
-                Id = newAuthUserEntity.Id,
+                Id = newEmployeeEntity.Id,
                 StatusCode = HttpStatusCode.Created,
                 Message = ResultMessager.OK
             };
@@ -52,12 +52,12 @@ namespace ShopServices.DataAccess.Repositories
 
         public async Task<Result> DeleteUser(uint id)
         {
-            var authUserEntity = await GetAuthUserEntity(id);
+            var employeeEntity = await GetAuthUserEntity(id);
 
-            if (authUserEntity is null)
+            if (employeeEntity is null)
                 return new Result(ResultMessager.USER_NOT_FOUND, HttpStatusCode.NotFound);
 
-            _dbContext.AuthUsers.Remove(authUserEntity);
+            _dbContext.Employees.Remove(employeeEntity);
             await _dbContext.SaveChangesAsync();
 
             return new Result(ResultMessager.OK, HttpStatusCode.OK);
@@ -65,20 +65,20 @@ namespace ShopServices.DataAccess.Repositories
 
         public async Task<AuthUser> GetUser(uint id)
         {
-            var authUserEntity = await GetAuthUserEntity(id);
-            if (authUserEntity is null)
+            var employeeEntity = await GetAuthUserEntity(id);
+            if (employeeEntity is null)
                 return null;
 
-            return AuthUser(authUserEntity);
+            return AuthUser(employeeEntity);
         }
 
         public async Task<AuthUser> GetUser(string login)
         {
-            var authUserEntity = await GetAuthUserEntity(login);
-            if (authUserEntity is null)
+            var employeeEntity = await GetAuthUserEntity(login);
+            if (employeeEntity is null)
                 return null;
 
-            return AuthUser(authUserEntity);
+            return AuthUser(employeeEntity);
         }
 
         public async Task<Result> GrantRole(uint id, string role, uint granterId)
@@ -87,16 +87,16 @@ namespace ShopServices.DataAccess.Repositories
             if (granterUserEntity is null)
                 return new Result(ResultMessager.GRANTER_NOT_FOUND, HttpStatusCode.Unauthorized);
 
-            var query = _dbContext.AuthUsers.Where(u => u.Id == id);
-            var authUserEntity = await query.SingleOrDefaultAsync();
-            if (authUserEntity is null)
+            var query = _dbContext.Employees.Where(u => u.Id == id);
+            var employeeEntity = await query.SingleOrDefaultAsync();
+            if (employeeEntity is null)
                 return new Result(ResultMessager.USER_NOT_FOUND, HttpStatusCode.NotFound);
 
-            authUserEntity.UpdateRole(role);
-            if (!Equals(authUserEntity.GranterId, granterId))
-                authUserEntity.UpdateGranterId(granterId);
+            employeeEntity.UpdateRole(role);
+            if (!Equals(employeeEntity.GranterId, granterId))
+                employeeEntity.UpdateGranterId(granterId);
 
-            authUserEntity.UpdateLastUpdateDt(DateTime.Now.ToUniversalTime());
+            employeeEntity.UpdateLastUpdateDt(DateTime.Now.ToUniversalTime());
 
             await _dbContext.SaveChangesAsync();
 
@@ -107,27 +107,27 @@ namespace ShopServices.DataAccess.Repositories
         {
             ArgumentNullException.ThrowIfNull(upd);
 
-            var authUserEntity = await _dbContext.AuthUsers
+            var employeeEntity = await _dbContext.Employees
                 .SingleOrDefaultAsync(u => u.Id == upd.Id);
 
-            if (authUserEntity is null)
+            if (employeeEntity is null)
                 return new Result(ResultMessager.USER_NOT_FOUND, HttpStatusCode.NotFound);
 
-            if (!string.Equals(upd.PasswordHash, authUserEntity.PasswordHash))
+            if (!string.Equals(upd.PasswordHash, employeeEntity.PasswordHash))
                 return new Result(ResultMessager.PASSWORD_HASH_MISMATCH, HttpStatusCode.Forbidden);
 
-            if (!string.Equals(upd.Login, authUserEntity.Login)) authUserEntity.UpdateLogin(upd.Login);
-            if (!string.Equals(upd.Name, authUserEntity.Name)) authUserEntity.UpdateName(upd.Name);
-            if (!string.Equals(upd.Surname, authUserEntity.Surname)) authUserEntity.UpdateSurname(upd.Surname);
-            if (!string.Equals(upd.Email, authUserEntity.Email)) authUserEntity.UpdateEmail(upd.Email);
-            if (!string.Equals(upd.NewPasswordHash, authUserEntity.PasswordHash)) authUserEntity.UpdatePasswordHash(upd.PasswordHash);
-            if (!string.Equals(upd.Nick, authUserEntity.Nick)) authUserEntity.UpdateNick(upd.Nick);
-            if (!string.Equals(upd.Phone, authUserEntity.Phone)) authUserEntity.UpdatePhone(upd.Phone);
-            if (!string.Equals(upd.RequestedRole, authUserEntity.Role)) authUserEntity.UpdateRole(newRole: $"?{upd.RequestedRole}"); //? - запрошенная пользователем роль утверждается администратором
+            if (!string.Equals(upd.Login, employeeEntity.Login)) employeeEntity.UpdateLogin(upd.Login);
+            if (!string.Equals(upd.Name, employeeEntity.Name)) employeeEntity.UpdateName(upd.Name);
+            if (!string.Equals(upd.Surname, employeeEntity.Surname)) employeeEntity.UpdateSurname(upd.Surname);
+            if (!string.Equals(upd.Email, employeeEntity.Email)) employeeEntity.UpdateEmail(upd.Email);
+            if (!string.Equals(upd.NewPasswordHash, employeeEntity.PasswordHash)) employeeEntity.UpdatePasswordHash(upd.PasswordHash);
+            if (!string.Equals(upd.Nick, employeeEntity.Nick)) employeeEntity.UpdateNick(upd.Nick);
+            if (!string.Equals(upd.Phone, employeeEntity.Phone)) employeeEntity.UpdatePhone(upd.Phone);
+            if (!string.Equals(upd.RequestedRole, employeeEntity.Role)) employeeEntity.UpdateRole(newRole: $"?{upd.RequestedRole}"); //? - запрошенная пользователем роль утверждается администратором
 
             if (_dbContext.ChangeTracker.HasChanges())
             {
-                authUserEntity.UpdateLastUpdateDt(DateTime.Now.ToUniversalTime());
+                employeeEntity.UpdateLastUpdateDt(DateTime.Now.ToUniversalTime());
                 await _dbContext.SaveChangesAsync();
                 return new Result(ResultMessager.USER_UPDATED, HttpStatusCode.OK);
             }
@@ -137,18 +137,18 @@ namespace ShopServices.DataAccess.Repositories
 
         private async Task<Entities.Employee> GetAuthUserEntity(uint id)
         {
-            var query = _dbContext.AuthUsers.AsNoTracking().Where(u => u.Id == id);
-            var authUserEntity = await query.SingleOrDefaultAsync();
+            var query = _dbContext.Employees.AsNoTracking().Where(u => u.Id == id);
+            var employeeEntity = await query.SingleOrDefaultAsync();
 
-            return authUserEntity;
+            return employeeEntity;
         }
 
         private async Task<Entities.Employee> GetAuthUserEntity(string login)
         {
-            var query = _dbContext.AuthUsers.AsNoTracking().Where(u => u.Login.Equals(login));
-            var authUserEntity = await query.SingleOrDefaultAsync();
+            var query = _dbContext.Employees.AsNoTracking().Where(u => u.Login.Equals(login));
+            var employeeEntity = await query.SingleOrDefaultAsync();
 
-            return authUserEntity;
+            return employeeEntity;
         }
 
         private static AuthUser AuthUser(Entities.Employee userEntity) =>

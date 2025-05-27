@@ -43,7 +43,7 @@ namespace ShopServices.BusinessLogic.MsTests
             _employeesRepositoryMock.Verify(ar => ar.AddUser(authUser), Times.Never);
             Assert.IsNotNull(exception);
             Assert.IsNull(authResult);
-            Assert.AreEqual(ResultMessager.AUTHUSER_PARAM_NAME, exception.ParamName);
+            Assert.AreEqual(ResultMessager.EMPLOYEE_PARAM_NAME, exception.ParamName);
         }
 
         [TestMethod]
@@ -54,9 +54,9 @@ namespace ShopServices.BusinessLogic.MsTests
             var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => authResult = await _employeesService.Register(authUser));
 
             _employeesRepositoryMock.Verify(ar => ar.AddUser(authUser), Times.Never);
-            exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ResultMessager.AUTHUSER_PARAM_NAME);
+            exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ResultMessager.EMPLOYEE_PARAM_NAME);
             authResult.Should().BeNull();
-            exception.ParamName.Should().Be(ResultMessager.AUTHUSER_PARAM_NAME);
+            exception.ParamName.Should().Be(ResultMessager.EMPLOYEE_PARAM_NAME);
         }
 
         [TestMethod]

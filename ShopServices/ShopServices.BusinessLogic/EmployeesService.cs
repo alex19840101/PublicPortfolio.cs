@@ -28,41 +28,41 @@ namespace ShopServices.BusinessLogic
             _key = key;
         }
 
-        public async Task<AuthResult> Register(AuthUser authUser)
+        public async Task<AuthResult> Register(AuthUser employee)
         {
-            if (authUser == null)
-                throw new ArgumentNullException(ResultMessager.AUTHUSER_PARAM_NAME);
+            if (employee == null)
+                throw new ArgumentNullException(ResultMessager.EMPLOYEE_PARAM_NAME);
 
-            if (authUser.Id != 0)
+            if (employee.Id != 0)
                 return new AuthResult(ResultMessager.USER_ID_SHOULD_BE_ZERO, System.Net.HttpStatusCode.BadRequest);
 
-            if (string.IsNullOrWhiteSpace(authUser.Login))
+            if (string.IsNullOrWhiteSpace(employee.Login))
                 return new AuthResult(ResultMessager.LOGIN_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
-            if (string.IsNullOrWhiteSpace(authUser.Name))
+            if (string.IsNullOrWhiteSpace(employee.Name))
                 return new AuthResult(ResultMessager.NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
-            if (string.IsNullOrWhiteSpace(authUser.Surname))
+            if (string.IsNullOrWhiteSpace(employee.Surname))
                 return new AuthResult(ResultMessager.SURNAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
-            if (string.IsNullOrWhiteSpace(authUser.Email))
+            if (string.IsNullOrWhiteSpace(employee.Email))
                 return new AuthResult(ResultMessager.EMAIL_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
-            if (string.IsNullOrWhiteSpace(authUser.PasswordHash))
+            if (string.IsNullOrWhiteSpace(employee.PasswordHash))
                 return new AuthResult(ResultMessager.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
-            authUser.UpdateRole(newRole: $"?{authUser.Role}"); //? - запрошенная пользователем роль утверждается администратором
+            employee.UpdateRole(newRole: $"?{employee.Role}"); //? - запрошенная пользователем роль утверждается администратором
 
-            var existingUser = await _employeesRepository.GetUser(authUser.Login);
+            var existingUser = await _employeesRepository.GetUser(employee.Login);
             if (existingUser != null)
             {
-                if (!existingUser.IsEqualIgnoreIdAndDt(authUser))
+                if (!existingUser.IsEqualIgnoreIdAndDt(employee))
                     return new AuthResult(ResultMessager.CONFLICT, System.Net.HttpStatusCode.Conflict);
 
                 return new AuthResult(ResultMessager.ALREADY_EXISTS, System.Net.HttpStatusCode.Created, id: existingUser.Id);
             }
 
-            var registerResult = await _employeesRepository.AddUser(authUser);
+            var registerResult = await _employeesRepository.AddUser(employee);
 
             return registerResult;
         }
