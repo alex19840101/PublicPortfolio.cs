@@ -12,7 +12,7 @@ using ShopServices.Core;
 using ShopServices.Core.Services;
 using ShopServices.Abstractions.Auth;
 
-namespace Auth.API.Controllers;
+namespace Employees.API.Controllers;
 
 /// <summary> Контроллер управления аутентификацией </summary>
 [ApiController]
@@ -20,12 +20,12 @@ namespace Auth.API.Controllers;
 [Route("api/v{version:apiVersion}/[controller]/[action]")]
 [Produces("application/json")]
 [Consumes("application/json")]
-public class AuthController : ControllerBase
+public class EmployeesController : ControllerBase
 {
     private readonly IAuthService _authService;
 
     /// <summary> Конструктор контроллера управления аутентификацией </summary>
-    public AuthController(IAuthService authService)
+    public EmployeesController(IAuthService authService)
     {
         _authService = authService;
     }
