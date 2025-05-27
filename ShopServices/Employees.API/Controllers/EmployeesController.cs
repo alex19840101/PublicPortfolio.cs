@@ -261,6 +261,7 @@ public class EmployeesController : ControllerBase
                 login: requestDto.Login,
                 name: requestDto.Name,
                 surname: requestDto.Surname,
+                address: requestDto.Address,
                 email: requestDto.Email,
                 passwordHash: SHA256Hasher.GeneratePasswordHash(requestDto.ExistingPassword, repeatPassword: requestDto.ExistingPassword),
                 newPasswordHash: requestDto.NewPassword != null ? SHA256Hasher.GeneratePasswordHash(requestDto.NewPassword, repeatPassword: requestDto.RepeatNewPassword) : null,

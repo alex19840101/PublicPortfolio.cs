@@ -138,6 +138,32 @@ namespace ShopServices.BusinessLogic.MsTests
         }
 
         [TestMethod]
+        public async Task Register_EmployeeWithoutAddress_ShouldReturnAuthResult_ADDRESS_SHOULD_NOT_BE_EMPTY_400()
+        {
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithAllFields(generateAddress: false);
+
+            var authResult = await _employeesService.Register(employee);
+
+            Assert.IsNotNull(authResult);
+            Assert.AreEqual(ResultMessager.ADDRESS_SHOULD_NOT_BE_EMPTY, authResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, authResult.StatusCode);
+            Assert.IsNull(authResult.Id);
+        }
+
+        [TestMethod]
+        public async Task Register_EmployeeWithoutAddress_ShouldReturnAuthResult_ADDRESS_SHOULD_NOT_BE_EMPTY_FluentAssertion()
+        {
+            var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithAllFields(generateAddress: false);
+
+            var authResult = await _employeesService.Register(employee);
+
+            authResult.Should().NotBeNull();
+            authResult.Message.Should().Be(ResultMessager.ADDRESS_SHOULD_NOT_BE_EMPTY);
+            authResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+            authResult.Id.Should().BeNull();
+        }
+
+        [TestMethod]
         public async Task Register_EmployeeWithoutUserName_ShouldReturnAuthResult_USERNAME_SHOULD_NOT_BE_EMPTY_400()
         {
             var employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithAllFields(generateName: false);
@@ -961,7 +987,29 @@ namespace ShopServices.BusinessLogic.MsTests
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
         }
 
+        [TestMethod]
+        public async Task UpdateAccount_UpdateAccountDataWithoutAddress_ShouldReturnResult_ADDRESS_SHOULD_NOT_BE_EMPTY_400()
+        {
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture(generateAddress: false);
 
+            var updateResult = await _employeesService.UpdateAccount(updateAccountData);
+
+            Assert.IsNotNull(updateResult);
+            Assert.AreEqual(ResultMessager.ADDRESS_SHOULD_NOT_BE_EMPTY, updateResult.Message);
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, updateResult.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task UpdateAccount_UpdateAccountDataWithoutAddress_ShouldReturnResult_ADDRESS_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
+        {
+            var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture(generateAddress: false);
+
+            var updateResult = await _employeesService.UpdateAccount(updateAccountData);
+
+            updateResult.Should().NotBeNull();
+            updateResult.Message.Should().Be(ResultMessager.ADDRESS_SHOULD_NOT_BE_EMPTY);
+            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+        }
 
         [TestMethod]
         public async Task UpdateAccount_UpdateAccountDataWithoutUserName_ShouldReturnResult_SURNAME_SHOULD_NOT_BE_EMPTY_400()

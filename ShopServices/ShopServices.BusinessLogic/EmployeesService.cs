@@ -45,6 +45,9 @@ namespace ShopServices.BusinessLogic
             if (string.IsNullOrWhiteSpace(employee.Surname))
                 return new AuthResult(ResultMessager.SURNAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
+            if (string.IsNullOrWhiteSpace(employee.Address))
+                return new AuthResult(ResultMessager.ADDRESS_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
             if (string.IsNullOrWhiteSpace(employee.Email))
                 return new AuthResult(ResultMessager.EMAIL_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
@@ -169,6 +172,13 @@ namespace ShopServices.BusinessLogic
                 return new Result
                 {
                     Message = ResultMessager.SURNAME_SHOULD_NOT_BE_EMPTY,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                };
+
+            if (string.IsNullOrWhiteSpace(updateAccountData.Address))
+                return new Result
+                {
+                    Message = ResultMessager.ADDRESS_SHOULD_NOT_BE_EMPTY,
                     StatusCode = System.Net.HttpStatusCode.BadRequest
                 };
 

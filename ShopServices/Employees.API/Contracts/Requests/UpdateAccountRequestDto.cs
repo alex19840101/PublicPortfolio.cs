@@ -6,24 +6,29 @@
     public class UpdateAccountRequestDto
     {
         /// <summary>
-        /// Id пользователя*
+        /// Id работника*
         /// </summary>
         public uint Id { get; set; }
 
         /// <summary>
-        /// Логин (уникальное имя аккаунта)*
+        /// Логин (уникальное имя аккаунта) работника*
         /// </summary>
         public required string Login { get; set; }
 
         /// <summary>
-        /// Имя [, отчество] пользователя*
+        /// Имя [, отчество] работника*
         /// </summary>
         public required string Name { get; set; }
 
         /// <summary>
-        /// Фамилия пользователя*
+        /// Фамилия работника*
         /// </summary>
         public required string Surname { get; set; }
+
+        /// <summary>
+        /// Адрес работника*
+        /// </summary>
+        public required string Address { get; set; }
 
         /// <summary>
         /// Адрес электронной почты (уникальный)*

@@ -20,7 +20,8 @@
         public const string LOGIN_SHOULD_NOT_BE_EMPTY = "Login should be not empty";
         public const string NAME_SHOULD_NOT_BE_EMPTY = "Name should be not empty";
         public const string SURNAME_SHOULD_NOT_BE_EMPTY = "Surname should be not empty";
-        public const string EMAIL_SHOULD_NOT_BE_EMPTY = "Email should be not empty";
+		public const string ADDRESS_SHOULD_NOT_BE_EMPTY = "Address should be not empty";
+		public const string EMAIL_SHOULD_NOT_BE_EMPTY = "Email should be not empty";
         public const string PASSWORD_HASH_SHOULD_NOT_BE_EMPTY = "Passwordhash should be not empty";
         public const string LOGINDATA_PARAM_NAME = "loginData";
         public const string GRANTROLEDATA_PARAM_NAME = "grantRoleData";
