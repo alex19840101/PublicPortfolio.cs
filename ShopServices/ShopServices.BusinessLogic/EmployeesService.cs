@@ -14,16 +14,16 @@ using ShopServices.Core.Services;
 
 namespace ShopServices.BusinessLogic
 {
-    public class AuthService : IAuthService
+    public class EmployeesService : IEmployeesService
     {
-        private readonly IAuthRepository _authRepository;
+        private readonly IAuthRepository _employeesRepository;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly string _key;
         private const int LOGIN_DEFAULT_TIMEOUT = 60;
 
-        public AuthService(IAuthRepository authRepository, TokenValidationParameters tokenValidationParameters, string key)
+        public EmployeesService(IAuthRepository authRepository, TokenValidationParameters tokenValidationParameters, string key)
         {
-            _authRepository = authRepository;
+            _employeesRepository = authRepository;
             _tokenValidationParameters = tokenValidationParameters;
             _key = key;
         }
@@ -50,7 +50,7 @@ namespace ShopServices.BusinessLogic
 
             authUser.UpdateRole(newRole: $"?{authUser.Role}"); //? - запрошенная пользователем роль утверждается администратором
 
-            var existingUser = await _authRepository.GetUser(authUser.Login);
+            var existingUser = await _employeesRepository.GetUser(authUser.Login);
             if (existingUser != null)
             {
                 if (!existingUser.IsEqualIgnoreIdAndDt(authUser))
@@ -59,7 +59,7 @@ namespace ShopServices.BusinessLogic
                 return new AuthResult(ResultMessager.ALREADY_EXISTS, System.Net.HttpStatusCode.Created, id: existingUser.Id);
             }
 
-            var registerResult = await _authRepository.AddUser(authUser);
+            var registerResult = await _employeesRepository.AddUser(authUser);
 
             return registerResult;
         }
@@ -75,7 +75,7 @@ namespace ShopServices.BusinessLogic
                 return new AuthResult(ResultMessager.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
 
-            var user = await _authRepository.GetUser(loginData.Login);
+            var user = await _employeesRepository.GetUser(loginData.Login);
 
             if (user == null)
                 return new AuthResult(message: ResultMessager.USER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
@@ -115,7 +115,7 @@ namespace ShopServices.BusinessLogic
             if (string.IsNullOrWhiteSpace(grantRoleData.GranterLogin))
                 return new Result(ResultMessager.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
-            var user = await _authRepository.GetUser(grantRoleData.Id);
+            var user = await _employeesRepository.GetUser(grantRoleData.Id);
 
             if (user is null)
                 return new Result(message: ResultMessager.USER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
@@ -123,7 +123,7 @@ namespace ShopServices.BusinessLogic
             if (!string.Equals(user.Login, grantRoleData.Login))
                 return new Result(message: ResultMessager.LOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
 
-            AuthUser granter = await _authRepository.GetUser(grantRoleData.GranterId);
+            AuthUser granter = await _employeesRepository.GetUser(grantRoleData.GranterId);
 
             if (granter is null)
                 return new Result(message: ResultMessager.GRANTER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
@@ -135,7 +135,7 @@ namespace ShopServices.BusinessLogic
                 return new Result(message: ResultMessager.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
 
 
-            var updateResult = await _authRepository.GrantRole(
+            var updateResult = await _employeesRepository.GrantRole(
                 id: grantRoleData.Id,
                 role: grantRoleData.NewRole,
                 granterId: grantRoleData.GranterId);
@@ -176,7 +176,7 @@ namespace ShopServices.BusinessLogic
                     StatusCode = System.Net.HttpStatusCode.BadRequest
                 };
 
-            return await _authRepository.UpdateUser(updateAccountData);
+            return await _employeesRepository.UpdateUser(updateAccountData);
         }
         public async Task<Result> DeleteAccount(DeleteAccountData deleteAccountData)
         {
@@ -195,7 +195,7 @@ namespace ShopServices.BusinessLogic
             if (deleteAccountData.GranterId != null && string.IsNullOrWhiteSpace(deleteAccountData.GranterLogin))
                 return new Result(ResultMessager.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE, System.Net.HttpStatusCode.BadRequest);
 
-            var user = await _authRepository.GetUser(deleteAccountData.Id);
+            var user = await _employeesRepository.GetUser(deleteAccountData.Id);
 
             if (user is null)
                 return new Result(message: ResultMessager.USER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
@@ -205,7 +205,7 @@ namespace ShopServices.BusinessLogic
 
             if (deleteAccountData.GranterId != null)
             {
-                AuthUser granter = await _authRepository.GetUser(deleteAccountData.GranterId.Value);
+                AuthUser granter = await _employeesRepository.GetUser(deleteAccountData.GranterId.Value);
 
                 if (granter is null)
                     return new Result(message: ResultMessager.GRANTER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
@@ -222,11 +222,11 @@ namespace ShopServices.BusinessLogic
                     return new Result(message: ResultMessager.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
             }
 
-            return await _authRepository.DeleteUser(id: deleteAccountData.Id);
+            return await _employeesRepository.DeleteUser(id: deleteAccountData.Id);
         }
         public async Task<AuthUser> GetUserInfo(uint id)
         {
-            var user = await _authRepository.GetUser(id);
+            var user = await _employeesRepository.GetUser(id);
 
             return user;
         }
@@ -235,7 +235,7 @@ namespace ShopServices.BusinessLogic
             if (string.IsNullOrWhiteSpace(login))
                 return default!; //throw new ArgumentNullException(ResultMessager.LOGIN_SHOULD_NOT_BE_EMPTY);
 
-            var user = await _authRepository.GetUser(login);
+            var user = await _employeesRepository.GetUser(login);
 
             return user;
         }

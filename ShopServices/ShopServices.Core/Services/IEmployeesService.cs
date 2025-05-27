@@ -5,7 +5,7 @@ using ShopServices.Core.Auth;
 
 namespace ShopServices.Core.Services
 {
-    public interface IAuthService
+    public interface IEmployeesService
     {
         Task<AuthResult> Register(AuthUser authUser);
         Task<AuthResult> Login(LoginData loginData);
