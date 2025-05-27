@@ -58,7 +58,7 @@ namespace ShopServices.DataAccess.Repositories
             if (employeeEntity is null)
                 return new Result(ResultMessager.USER_NOT_FOUND, HttpStatusCode.NotFound);
 
-            _dbContext.Employees.Remove(employeeEntity);
+            employeeEntity.UpdateRole($"DELETED {employeeEntity.Role}");
             await _dbContext.SaveChangesAsync();
 
             return new Result(ResultMessager.OK, HttpStatusCode.OK);

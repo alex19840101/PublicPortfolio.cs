@@ -6,51 +6,51 @@
     public class RegisterRequestDto
     {
         /// <summary>
-        /// Логин (уникальное имя аккаунта)*
+        /// Логин (уникальное имя аккаунта) работника*
         /// </summary>
         public required string Login { get; set; }
 
         /// <summary>
-        /// Имя [, отчество] пользователя*
+        /// Имя [, отчество] работника*
         /// </summary>
         public required string Name { get; set; }
 
         /// <summary>
-        /// Фамилия пользователя*
+        /// Фамилия работника*
         /// </summary>
         public required string Surname { get; set; }
 
         /// <summary>
-        /// Адрес пользователя (работника)*
+        /// Адрес работника*
         /// </summary>
         public required string Address { get; set; }
 
         /// <summary>
-        /// Адрес электронной почты (уникальный)*
+        /// Адрес электронной почты (уникальный) работника*
         /// </summary>
         public required string Email { get; set; }
 
         /// <summary>
-        /// Пароль для входа*
+        /// Пароль для входа работника*
         /// </summary>
         public required string Password { get; set; }
-        
+
         /// <summary>
-        /// Пароль для входа (повторно)*
+        /// Пароль для входа работника (повторно)*
         /// </summary>
         public required string RepeatPassword { get; set; }
 
         /// <summary>
-        /// Ник
+        /// Ник работника
         /// </summary>
         public string? Nick { get; set; }
 
         /// <summary>
-        /// Телефон(ы)
+        /// Телефон(ы) работника
         /// </summary>
         public string? Phone { get; set; }
         /// <summary>
-        /// Роль
+        /// Роль работника
         /// </summary>
         public string? RequestedRole { get; set; }
     }

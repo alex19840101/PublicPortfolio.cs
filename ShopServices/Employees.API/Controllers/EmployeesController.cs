@@ -134,7 +134,7 @@ public class EmployeesController : ControllerBase
         return Ok(updateResult);
     }
 
-    /// <summary> Удаление аккаунта работника им самим или администратором </summary>
+    /// <summary> Удаление (блокировка) аккаунта работника им самим или администратором </summary>
     [HttpDelete]
     [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
