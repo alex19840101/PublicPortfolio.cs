@@ -11,11 +11,11 @@ using ShopServices.Abstractions;
 
 namespace ShopServices.DataAccess.Repositories
 {
-    public class AuthRepository : IAuthRepository
+    public class EmployeesRepository : IEmployeesRepository
     {
         private readonly ShopServicesDbContext _dbContext;
 
-        public AuthRepository(ShopServicesDbContext dbContext)
+        public EmployeesRepository(ShopServicesDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -24,10 +24,11 @@ namespace ShopServices.DataAccess.Repositories
         {
             ArgumentNullException.ThrowIfNull(authUser);
 
-            var newAuthUserEntity = new Entities.AuthUser(
+            var newAuthUserEntity = new Entities.Employee(
                 id: authUser.Id,
                 login: authUser.Login,
-                userName: authUser.UserName,
+                name: authUser.Name,
+                surname: authUser.Surname,
                 email: authUser.Email,
                 passwordHash: authUser.PasswordHash,
                 nick: authUser.Nick,
@@ -116,7 +117,8 @@ namespace ShopServices.DataAccess.Repositories
                 return new Result(ResultMessager.PASSWORD_HASH_MISMATCH, HttpStatusCode.Forbidden);
 
             if (!string.Equals(upd.Login, authUserEntity.Login)) authUserEntity.UpdateLogin(upd.Login);
-            if (!string.Equals(upd.UserName, authUserEntity.UserName)) authUserEntity.UpdateName(upd.UserName);
+            if (!string.Equals(upd.Name, authUserEntity.Name)) authUserEntity.UpdateName(upd.Name);
+            if (!string.Equals(upd.Surname, authUserEntity.Surname)) authUserEntity.UpdateSurname(upd.Surname);
             if (!string.Equals(upd.Email, authUserEntity.Email)) authUserEntity.UpdateEmail(upd.Email);
             if (!string.Equals(upd.NewPasswordHash, authUserEntity.PasswordHash)) authUserEntity.UpdatePasswordHash(upd.PasswordHash);
             if (!string.Equals(upd.Nick, authUserEntity.Nick)) authUserEntity.UpdateNick(upd.Nick);
@@ -133,7 +135,7 @@ namespace ShopServices.DataAccess.Repositories
             return new Result(ResultMessager.USER_IS_ACTUAL, HttpStatusCode.OK);
         }
 
-        private async Task<Entities.AuthUser> GetAuthUserEntity(uint id)
+        private async Task<Entities.Employee> GetAuthUserEntity(uint id)
         {
             var query = _dbContext.AuthUsers.AsNoTracking().Where(u => u.Id == id);
             var authUserEntity = await query.SingleOrDefaultAsync();
@@ -141,7 +143,7 @@ namespace ShopServices.DataAccess.Repositories
             return authUserEntity;
         }
 
-        private async Task<Entities.AuthUser> GetAuthUserEntity(string login)
+        private async Task<Entities.Employee> GetAuthUserEntity(string login)
         {
             var query = _dbContext.AuthUsers.AsNoTracking().Where(u => u.Login.Equals(login));
             var authUserEntity = await query.SingleOrDefaultAsync();
@@ -149,11 +151,12 @@ namespace ShopServices.DataAccess.Repositories
             return authUserEntity;
         }
 
-        private static AuthUser AuthUser(Entities.AuthUser userEntity) =>
+        private static AuthUser AuthUser(Entities.Employee userEntity) =>
             new AuthUser(
                 id: userEntity.Id,
                 login: userEntity.Login,
-                userName: userEntity.UserName,
+                name: userEntity.Name,
+                surname: userEntity.Surname,
                 email: userEntity.Email,
                 passwordHash: userEntity.PasswordHash,
                 nick: userEntity.Nick,

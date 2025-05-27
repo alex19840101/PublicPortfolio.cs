@@ -6,7 +6,8 @@ namespace ShopServices.Core.Auth
     {
         public uint Id { get { return _id; } }
         public string Login { get { return _login; } }
-        public string UserName { get { return _userName; } }
+        public string Name { get { return _name; } }
+        public string Surname { get { return _surname; } }
         public string Email { get { return _email; } }
         public string PasswordHash { get { return _passwordHash; } }
         public string Nick { get { return _nick; } }
@@ -18,7 +19,8 @@ namespace ShopServices.Core.Auth
 
         private readonly uint _id;
         private string _login;
-        private string _userName;
+        private string _name;
+        private string _surname;
         private string _email;
         private string _passwordHash;
         private string _nick;
@@ -31,7 +33,8 @@ namespace ShopServices.Core.Auth
         public AuthUser(
             uint id,
             string login,
-            string userName,
+            string name,
+            string surname,
             string email,
             string passwordHash,
             string nick,
@@ -43,7 +46,8 @@ namespace ShopServices.Core.Auth
         {
             _id = id;
             _login = login;
-            _userName = userName;
+            _name = name;
+            _surname = surname;
             _email = email;
             _passwordHash = passwordHash;
             _nick = nick;
@@ -55,7 +59,8 @@ namespace ShopServices.Core.Auth
         }
 
         public void UpdateLogin(string newLogin) => _login = newLogin;
-        public void UpdateName(string newUserName) => _userName = newUserName;
+        public void UpdateName(string newName) => _name = newName;
+        public void UpdateSurname(string newSurname) => _surname = newSurname;
         public void UpdateEmail(string newEmail) => _email = newEmail;
         public void UpdatePasswordHash(string newPasswordHash) => _passwordHash = newPasswordHash;
         public void UpdateNick(string newNick) => _nick = newNick;
@@ -69,7 +74,8 @@ namespace ShopServices.Core.Auth
             var comparedAuthUser = (AuthUser)obj;
             if (comparedAuthUser.Id != _id ||
                 !string.Equals(comparedAuthUser.Login, _login) ||
-                !string.Equals(comparedAuthUser.UserName, _userName) ||
+                !string.Equals(comparedAuthUser.Name, _name) ||
+                !string.Equals(comparedAuthUser.Surname, _surname) ||
                 !string.Equals(comparedAuthUser.Email, _email) ||
                 !string.Equals(comparedAuthUser.PasswordHash, _passwordHash) ||
                 !string.Equals(comparedAuthUser.Nick, _nick) ||
@@ -93,7 +99,8 @@ namespace ShopServices.Core.Auth
         public bool IsEqualIgnoreIdAndDt(AuthUser comparedAuthUser, bool checkRole = false)
         {
             if (!string.Equals(comparedAuthUser.Login, _login) ||
-                !string.Equals(comparedAuthUser.UserName, _userName) ||
+                !string.Equals(comparedAuthUser.Name, _name) ||
+                !string.Equals(comparedAuthUser.Surname, _surname) ||
                 !string.Equals(comparedAuthUser.Email, _email) ||
                 !string.Equals(comparedAuthUser.PasswordHash, _passwordHash) ||
                 !string.Equals(comparedAuthUser.Nick, _nick) ||
@@ -106,7 +113,7 @@ namespace ShopServices.Core.Auth
 
         public override string ToString()
         {
-            return $"{_role} {_login} {_userName} ";
+            return $"{_role} {_login} {_name} {Surname}";
         }
     }
 }

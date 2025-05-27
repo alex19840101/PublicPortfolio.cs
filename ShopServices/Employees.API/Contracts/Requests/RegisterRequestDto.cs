@@ -1,4 +1,4 @@
-﻿namespace Auth.API.Contracts.Requests
+﻿namespace Employees.API.Contracts.Requests
 {
     /// <summary>
     /// Запрос на регистрацию аккаунта
@@ -11,9 +11,14 @@
         public required string Login { get; set; }
 
         /// <summary>
-        /// Имя (ФИО) пользователя*
+        /// Имя [, отчество] пользователя*
         /// </summary>
-        public required string UserName { get; set; }
+        public required string Name { get; set; }
+
+        /// <summary>
+        /// Фамилия пользователя*
+        /// </summary>
+        public required string Surname { get; set; }
 
         /// <summary>
         /// Адрес электронной почты (уникальный)*

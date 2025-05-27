@@ -4,7 +4,8 @@
     {
         public uint Id { get { return _id; } }
         public string Login { get { return _login; } }
-        public string UserName { get { return _userName; } }
+        public string Name { get { return _name; } }
+        public string Surname { get { return _surname; } }
         public string Email { get { return _email; } }
         public string PasswordHash { get { return _passwordHash; } }
         public string NewPasswordHash { get { return _newPasswordHash; } }
@@ -14,7 +15,8 @@
 
         private readonly uint _id;
         private readonly string _login;
-        private readonly string _userName;
+        private readonly string _name;
+        private readonly string _surname;
         private readonly string _email;
         private readonly string _passwordHash;
         private readonly string _newPasswordHash;
@@ -25,8 +27,9 @@
         public UpdateAccountData(
             uint id,
             string login,
-            string userName,
+            string name,
             string email,
+            string surname,
             string passwordHash,
             string newPasswordHash,
             string nick,
@@ -35,7 +38,8 @@
         {
             _id = id;
             _login = login;
-            _userName = userName;
+            _name = name;
+            _surname = surname;
             _email = email;
             _passwordHash = passwordHash;
             _newPasswordHash = newPasswordHash;

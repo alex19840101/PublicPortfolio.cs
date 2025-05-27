@@ -5,7 +5,7 @@ using ShopServices.Core.Auth;
 
 namespace ShopServices.Core.Repositories
 {
-    public interface IAuthRepository
+    public interface IEmployeesRepository
     {
         Task<AuthResult> AddUser(AuthUser authUser);
         Task<AuthUser> GetUser(uint id);

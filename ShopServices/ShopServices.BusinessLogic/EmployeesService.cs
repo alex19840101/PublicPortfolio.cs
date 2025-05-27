@@ -16,12 +16,12 @@ namespace ShopServices.BusinessLogic
 {
     public class EmployeesService : IEmployeesService
     {
-        private readonly IAuthRepository _employeesRepository;
+        private readonly IEmployeesRepository _employeesRepository;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly string _key;
         private const int LOGIN_DEFAULT_TIMEOUT = 60;
 
-        public EmployeesService(IAuthRepository authRepository, TokenValidationParameters tokenValidationParameters, string key)
+        public EmployeesService(IEmployeesRepository authRepository, TokenValidationParameters tokenValidationParameters, string key)
         {
             _employeesRepository = authRepository;
             _tokenValidationParameters = tokenValidationParameters;
@@ -39,8 +39,11 @@ namespace ShopServices.BusinessLogic
             if (string.IsNullOrWhiteSpace(authUser.Login))
                 return new AuthResult(ResultMessager.LOGIN_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
-            if (string.IsNullOrWhiteSpace(authUser.UserName))
-                return new AuthResult(ResultMessager.USERNAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+            if (string.IsNullOrWhiteSpace(authUser.Name))
+                return new AuthResult(ResultMessager.NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            if (string.IsNullOrWhiteSpace(authUser.Surname))
+                return new AuthResult(ResultMessager.SURNAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
             if (string.IsNullOrWhiteSpace(authUser.Email))
                 return new AuthResult(ResultMessager.EMAIL_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
@@ -155,10 +158,17 @@ namespace ShopServices.BusinessLogic
                     StatusCode = System.Net.HttpStatusCode.BadRequest
                 };
 
-            if (string.IsNullOrWhiteSpace(updateAccountData.UserName))
+            if (string.IsNullOrWhiteSpace(updateAccountData.Name))
                 return new Result
                 {
-                    Message = ResultMessager.USERNAME_SHOULD_NOT_BE_EMPTY,
+                    Message = ResultMessager.NAME_SHOULD_NOT_BE_EMPTY,
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                };
+
+            if (string.IsNullOrWhiteSpace(updateAccountData.Surname))
+                return new Result
+                {
+                    Message = ResultMessager.SURNAME_SHOULD_NOT_BE_EMPTY,
                     StatusCode = System.Net.HttpStatusCode.BadRequest
                 };
 

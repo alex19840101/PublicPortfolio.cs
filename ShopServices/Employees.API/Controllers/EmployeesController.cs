@@ -11,6 +11,7 @@ using ShopServices.Abstractions;
 using ShopServices.Core;
 using ShopServices.Core.Services;
 using ShopServices.Abstractions.Auth;
+using Employees.API.Contracts.Requests;
 
 namespace Employees.API.Controllers;
 
@@ -198,7 +199,8 @@ public class EmployeesController : ControllerBase
         new AuthUser(
             id: 0,
             login: request.Login,
-            userName: request.UserName,
+            name: request.Name,
+            surname: request.Surname,
             email: request.Email,
             passwordHash: SHA256Hasher.GeneratePasswordHash(request.Password, request.RepeatPassword),
             nick: request.Nick,
@@ -257,7 +259,8 @@ public class EmployeesController : ControllerBase
         return new UpdateAccountData(
                 id: requestDto.Id,
                 login: requestDto.Login,
-                userName: requestDto.UserName,
+                name: requestDto.Name,
+                surname: requestDto.Surname,
                 email: requestDto.Email,
                 passwordHash: SHA256Hasher.GeneratePasswordHash(requestDto.ExistingPassword, repeatPassword: requestDto.ExistingPassword),
                 newPasswordHash: requestDto.NewPassword != null ? SHA256Hasher.GeneratePasswordHash(requestDto.NewPassword, repeatPassword: requestDto.RepeatNewPassword) : null,
@@ -272,7 +275,8 @@ public class EmployeesController : ControllerBase
         {
             Id = authUser.Id,
             Login = authUser.Login,
-            UserName = authUser.UserName,
+            Name = authUser.Name,
+            Surname = authUser.Surname,
             Email = authUser.Email,
             Nick = authUser.Nick,
             Phone = authUser.Phone,

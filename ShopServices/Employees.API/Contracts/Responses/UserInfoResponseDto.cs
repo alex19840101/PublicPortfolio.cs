@@ -16,9 +16,14 @@
         public string Login { get; set; } = default!;
 
         /// <summary>
-        /// Имя (ФИО) пользователя*
+        /// Имя [, отчество] пользователя*
         /// </summary>
-        public string UserName { get; set; } = default!;
+        public required string Name { get; set; } = default!;
+
+        /// <summary>
+        /// Фамилия пользователя*
+        /// </summary>
+        public required string Surname { get; set; } = default!;
 
         /// <summary>
         /// Адрес электронной почты (уникальный)*

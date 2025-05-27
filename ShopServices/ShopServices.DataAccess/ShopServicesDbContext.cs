@@ -11,14 +11,14 @@ namespace ShopServices.DataAccess
         
         }
 
-        public DbSet<AuthUser> AuthUsers { get; set; }
+        public DbSet<Employee> AuthUsers { get; set; }
         //public DbSet<_> _s { get; set; }
         //public DbSet<_> _s { get; set; }
         //public DbSet<_> _s { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new AuthUserConfiguration());
+            modelBuilder.ApplyConfiguration(new EmployeesConfiguration());
             //modelBuilder.ApplyConfiguration(new _sConfiguration());
             //modelBuilder.ApplyConfiguration(new _sConfiguration());
             //modelBuilder.ApplyConfiguration(new _sConfiguration());
