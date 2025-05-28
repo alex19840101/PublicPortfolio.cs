@@ -88,7 +88,7 @@ namespace ShopServices.DataAccess.Repositories
             if (granterUserEntity is null)
                 return new Result(ResultMessager.GRANTER_NOT_FOUND, HttpStatusCode.Unauthorized);
 
-            var query = _dbContext.Employees.Where(u => u.Id == id);
+            var query = _dbContext.Employees.Where(e => e.Id == id);
             var employeeEntity = await query.SingleOrDefaultAsync();
             if (employeeEntity is null)
                 return new Result(ResultMessager.USER_NOT_FOUND, HttpStatusCode.NotFound);
@@ -109,7 +109,7 @@ namespace ShopServices.DataAccess.Repositories
             ArgumentNullException.ThrowIfNull(upd);
 
             var employeeEntity = await _dbContext.Employees
-                .SingleOrDefaultAsync(u => u.Id == upd.Id);
+                .SingleOrDefaultAsync(e => e.Id == upd.Id);
 
             if (employeeEntity is null)
                 return new Result(ResultMessager.USER_NOT_FOUND, HttpStatusCode.NotFound);
@@ -138,7 +138,7 @@ namespace ShopServices.DataAccess.Repositories
 
         private async Task<Entities.Employee> GetEmployeeEntity(uint id)
         {
-            var query = _dbContext.Employees.AsNoTracking().Where(u => u.Id == id);
+            var query = _dbContext.Employees.AsNoTracking().Where(e => e.Id == id);
             var employeeEntity = await query.SingleOrDefaultAsync();
 
             return employeeEntity;
@@ -146,7 +146,7 @@ namespace ShopServices.DataAccess.Repositories
 
         private async Task<Entities.Employee> GetEmployeeEntity(string login)
         {
-            var query = _dbContext.Employees.AsNoTracking().Where(u => u.Login.Equals(login));
+            var query = _dbContext.Employees.AsNoTracking().Where(e => e.Login.Equals(login));
             var employeeEntity = await query.SingleOrDefaultAsync();
 
             return employeeEntity;

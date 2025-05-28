@@ -99,7 +99,7 @@ namespace ShopServices.DataAccess.Repositories
             if (granterUserEntity is null)
                 return new Result(ResultMessager.GRANTER_NOT_FOUND, HttpStatusCode.Unauthorized);
 
-            var query = _dbContext.Buyers.Where(u => u.Id == id);
+            var query = _dbContext.Buyers.Where(b => b.Id == id);
             var buyerEntity = await query.SingleOrDefaultAsync();
             if (buyerEntity is null)
                 return new Result(ResultMessager.USER_NOT_FOUND, HttpStatusCode.NotFound);
@@ -120,7 +120,7 @@ namespace ShopServices.DataAccess.Repositories
             ArgumentNullException.ThrowIfNull(upd);
 
             var buyerEntity = await _dbContext.Buyers
-                .SingleOrDefaultAsync(u => u.Id == upd.Id);
+                .SingleOrDefaultAsync(b => b.Id == upd.Id);
 
             if (buyerEntity is null)
                 return new Result(ResultMessager.USER_NOT_FOUND, HttpStatusCode.NotFound);
@@ -146,17 +146,17 @@ namespace ShopServices.DataAccess.Repositories
             return new Result(ResultMessager.USER_IS_ACTUAL, HttpStatusCode.OK);
         }
 
-        private async Task<Entities.Buyer> GetBuyerEntity(uint id)
+        private async Task<Entities.Buyer?> GetBuyerEntity(uint id)
         {
-            var query = _dbContext.Buyers.AsNoTracking().Where(u => u.Id == id);
+            var query = _dbContext.Buyers.AsNoTracking().Where(b => b.Id == id);
             var buyerEntity = await query.SingleOrDefaultAsync();
 
             return buyerEntity;
         }
 
-        private async Task<Entities.Buyer> GetBuyerEntity(string login)
+        private async Task<Entities.Buyer?> GetBuyerEntity(string login)
         {
-            var query = _dbContext.Buyers.AsNoTracking().Where(u => u.Login.Equals(login));
+            var query = _dbContext.Buyers.AsNoTracking().Where(b => b.Login.Equals(login));
             var buyerEntity = await query.SingleOrDefaultAsync();
 
             return buyerEntity;

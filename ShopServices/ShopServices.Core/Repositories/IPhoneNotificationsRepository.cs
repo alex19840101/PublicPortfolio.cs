@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ShopServices.Core.Repositories
 {
-    internal interface IPhoneNotificationsRepository
+    public interface IPhoneNotificationsRepository
     {
     }
 }
