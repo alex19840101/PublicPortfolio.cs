@@ -20,4 +20,9 @@
     <ProjectReference Include="..\ShopServices.Core\ShopServices.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Contracts\Responses\" />
+    <Folder Include="Contracts\Requests\" />
+  </ItemGroup>
+
 </Project>

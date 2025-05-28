@@ -17,5 +17,7 @@ namespace ShopServices.DataAccess.Entities
 
         public uint? ManagerId { get; set; }
         public uint? CourierId { get; set; }
+
+        public ICollection<Product> Products { get; private set; } = [];
     }
 }

@@ -9,5 +9,7 @@ namespace ShopServices.DataAccess.Entities
     public class Manager
     {
         public Employee Employee { get; set; } = default!;
+        public ICollection<Order> Orders { get; set; } = [];
+        public ICollection<Delivery> Deliveries { get; set; } = [];
     }
 }
