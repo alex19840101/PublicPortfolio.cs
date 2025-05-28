@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ShopServices.DataAccess.Entities
 {
-    internal class PhoneNotification
+    public class PhoneNotification
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public uint Id { get; private set; }

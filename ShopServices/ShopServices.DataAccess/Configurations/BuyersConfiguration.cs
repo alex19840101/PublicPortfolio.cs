@@ -4,7 +4,7 @@ using ShopServices.DataAccess.Entities;
 
 namespace ShopServices.DataAccess.Configurations
 {
-    public class BuyersConfiguration : IEntityTypeConfiguration<Buyer>
+    internal class BuyersConfiguration : IEntityTypeConfiguration<Buyer>
     {
         private const int MAX_NAME_LENGTH = 255;
         private const int MAX_STRING_LENGTH = 255;
