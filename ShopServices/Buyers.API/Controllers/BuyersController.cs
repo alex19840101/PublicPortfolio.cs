@@ -15,7 +15,7 @@ using ShopServices.Core.Models;
 
 namespace Buyers.API.Controllers;
 
-/// <summary> Контроллер управления аутентификацией для входа в систему покупателов </summary>
+/// <summary> РљРѕРЅС‚СЂРѕР»Р»РµСЂ СѓРїСЂР°РІР»РµРЅРёСЏ Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРµР№ РґР»СЏ РІС…РѕРґР° РІ СЃРёСЃС‚РµРјСѓ РїРѕРєСѓРїР°С‚РµР»РµР№ </summary>
 [ApiController]
 [Asp.Versioning.ApiVersion(1.0)]
 [Route("api/v{version:apiVersion}/[controller]/[action]")]
@@ -25,13 +25,13 @@ public class BuyersController : ControllerBase
 {
     private readonly IBuyersService _buyersService;
 
-    /// <summary> Конструктор контроллера управления аутентификацией покупателов </summary>
+    /// <summary> РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРЅС‚СЂРѕР»Р»РµСЂР° СѓРїСЂР°РІР»РµРЅРёСЏ Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРµР№ РїРѕРєСѓРїР°С‚РµР»РµР№ </summary>
     public BuyersController(IBuyersService buyersService)
     {
         _buyersService = buyersService;
     }
 
-    /// <summary> Регистрация покупатела </summary>
+    /// <summary> Р РµРіРёСЃС‚СЂР°С†РёСЏ РїРѕРєСѓРїР°С‚РµР»СЏ </summary>
     [HttpPost]
     [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -59,7 +59,7 @@ public class BuyersController : ControllerBase
 
     }
 
-    /// <summary> Вход покупатела в систему </summary>
+    /// <summary> Р’С…РѕРґ РїРѕРєСѓРїР°С‚РµР»СЏ РІ СЃРёСЃС‚РµРјСѓ </summary>
     [HttpPost]
     [ProducesResponseType(typeof(AuthResponseDto), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -88,7 +88,7 @@ public class BuyersController : ControllerBase
     }
 
     /// <summary>
-    /// Запрос на изменение групп скидок для покупателя
+    /// Р—Р°РїСЂРѕСЃ РЅР° РёР·РјРµРЅРµРЅРёРµ РіСЂСѓРїРї СЃРєРёРґРѕРє РґР»СЏ РїРѕРєСѓРїР°С‚РµР»СЏ
     /// </summary>
     [HttpPatch]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.OK)]
@@ -111,7 +111,7 @@ public class BuyersController : ControllerBase
     }
 
     /// <summary>
-    /// Обновление аккаунта покупатела
+    /// РћР±РЅРѕРІР»РµРЅРёРµ Р°РєРєР°СѓРЅС‚Р° РїРѕРєСѓРїР°С‚РµР»СЏ
     /// </summary>
     [HttpPatch]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.OK)]
@@ -135,7 +135,7 @@ public class BuyersController : ControllerBase
         return Ok(updateResult);
     }
 
-    /// <summary> Удаление (блокировка) аккаунта покупатела им самим или администратором </summary>
+    /// <summary> РЈРґР°Р»РµРЅРёРµ (Р±Р»РѕРєРёСЂРѕРІРєР°) Р°РєРєР°СѓРЅС‚Р° РїРѕРєСѓРїР°С‚РµР»СЏ РёРј СЃР°РјРёРј РёР»Рё Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂРѕРј </summary>
     [HttpDelete]
     [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -158,7 +158,7 @@ public class BuyersController : ControllerBase
         return Ok(deleteResult);
     }
 
-    /// <summary> Получение информации о покупателе по Id (для администраторов) </summary>
+    /// <summary> РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РїРѕРєСѓРїР°С‚РµР»Рµ РїРѕ Id (РґР»СЏ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂРѕРІ) </summary>
     [HttpGet]
     [ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -176,7 +176,7 @@ public class BuyersController : ControllerBase
         return Ok(UserInfoResponseDto(buyer));
     }
 
-    /// <summary> Получение информации о покупателе по логину (для администраторов) </summary>
+    /// <summary> РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РїРѕРєСѓРїР°С‚РµР»Рµ РїРѕ Р»РѕРіРёРЅСѓ (РґР»СЏ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂРѕРІ) </summary>
     [HttpGet]
     [ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -231,7 +231,7 @@ public class BuyersController : ControllerBase
             granterLogin: request.GranterLogin);
     }
 
-    #region Logout не требуется для пет-проекта
+    #region Logout РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ РґР»СЏ РїРµС‚-РїСЂРѕРµРєС‚Р°
     //[NonAction]
     //private static LogoutData LogoutData(LogoutRequestDto request)
     //{
@@ -239,7 +239,7 @@ public class BuyersController : ControllerBase
     //        login: request.Login,
     //        id: request.Id);
     //}
-    #endregion Logout не требуется для пет-проекта
+    #endregion Logout РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ РґР»СЏ РїРµС‚-РїСЂРѕРµРєС‚Р°
 
     [NonAction]
     private static ChangeDiscountGroupsData ChangeDiscountGroupsData(ChangeDiscountGroupsRequestDto requestDto)
