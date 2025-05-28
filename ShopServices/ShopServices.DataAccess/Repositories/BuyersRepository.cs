@@ -75,7 +75,7 @@ namespace ShopServices.DataAccess.Repositories
             return new Result(ResultMessager.OK, HttpStatusCode.OK);
         }
 
-        public async Task<Buyer> GetUser(uint id)
+        public async Task<Buyer?> GetUser(uint id)
         {
             var buyerEntity = await GetBuyerEntity(id);
             if (buyerEntity is null)
@@ -84,7 +84,7 @@ namespace ShopServices.DataAccess.Repositories
             return Buyer(buyerEntity);
         }
 
-        public async Task<Buyer> GetUser(string login)
+        public async Task<Buyer?> GetUser(string login)
         {
             var buyerEntity = await GetBuyerEntity(login);
             if (buyerEntity is null)

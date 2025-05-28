@@ -64,7 +64,7 @@ namespace ShopServices.DataAccess.Repositories
             return new Result(ResultMessager.OK, HttpStatusCode.OK);
         }
 
-        public async Task<Employee> GetUser(uint id)
+        public async Task<Employee?> GetUser(uint id)
         {
             var employeeEntity = await GetEmployeeEntity(id);
             if (employeeEntity is null)
@@ -73,7 +73,7 @@ namespace ShopServices.DataAccess.Repositories
             return Employee(employeeEntity);
         }
 
-        public async Task<Employee> GetUser(string login)
+        public async Task<Employee?> GetUser(string login)
         {
             var employeeEntity = await GetEmployeeEntity(login);
             if (employeeEntity is null)
