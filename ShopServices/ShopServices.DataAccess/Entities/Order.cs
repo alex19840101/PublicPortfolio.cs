@@ -51,5 +51,11 @@ namespace ShopServices.DataAccess.Entities
 
         /// <summary> В архиве ли (отменен ли) заказ </summary>
         public bool Archieved { get; set; }
+
+        /// <summary> Масса, г </summary>
+        public string MassInGrams { get; set; } = default!;
+
+        /// <summary> Габариты </summary>
+        public string Dimensions { get; set; } = default!;
     }
 }

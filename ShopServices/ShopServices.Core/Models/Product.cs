@@ -40,6 +40,13 @@ namespace ShopServices.Core.Models
 
         /// <summary> В архиве ли товар </summary>
         public bool Archieved { get; private set; }
+        
+        /// <summary> Масса, г </summary>
+        public string MassInGrams { get; private set; }
+
+        /// <summary> Габариты </summary>
+        public string Dimensions { get; private set; }
+
 
         public Product(uint id,
             string articleNumber,
@@ -49,7 +56,9 @@ namespace ShopServices.Core.Models
             string url,
             string imageUrl,
             List<uint> goodsGroups,
-            bool archieved)
+            bool archieved,
+            string massInGrams,
+            string dimensions)
         {
             Id = id;
             ArticleNumber = articleNumber;
@@ -60,6 +69,8 @@ namespace ShopServices.Core.Models
             ImageUrl = imageUrl;
             GoodsGroups = goodsGroups;
             Archieved = archieved;
+            MassInGrams = massInGrams;
+            Dimensions = dimensions;
         }
     }
 }

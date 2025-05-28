@@ -38,5 +38,12 @@ namespace Goods.API.Contracts
 
         /// <summary> В архиве ли товар </summary>
         public bool Archieved { get; set; }
+
+        /// <summary> Масса, г </summary>
+        public string MassInGrams { get; set; }
+
+        /// <summary> Габариты </summary>
+        public string Dimensions { get; set; }
+
     }
 }

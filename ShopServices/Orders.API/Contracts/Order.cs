@@ -53,5 +53,11 @@ namespace Orders.API.Contracts
 
         /// <summary> В архиве ли (отменен ли) заказ </summary>
         public bool Archieved { get; set; }
+
+        /// <summary> Масса, г </summary>
+        public string MassInGrams { get; set; }
+
+        /// <summary> Габариты </summary>
+        public string Dimensions { get; set; }
     }
 }

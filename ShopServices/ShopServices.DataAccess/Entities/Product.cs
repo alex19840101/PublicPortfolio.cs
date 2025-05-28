@@ -43,6 +43,13 @@ namespace ShopServices.DataAccess.Entities
         /// <summary> В архиве ли товар </summary>
         public bool Archieved { get; private set; }
 
+        /// <summary> Масса, г </summary>
+        public string MassInGrams { get; private set; } = default!;
+
+        /// <summary> Габариты </summary>
+        public string Dimensions { get; private set; } = default!;
+
+
         public Product(uint id,
             string articleNumber,
             string brand,
@@ -51,7 +58,9 @@ namespace ShopServices.DataAccess.Entities
             string url,
             string imageUrl,
             List<uint> goodsGroups,
-            bool archieved)
+            bool archieved,
+            string massInGrams,
+            string dimensions)
         {
             Id = id;
             ArticleNumber = articleNumber;
@@ -62,6 +71,8 @@ namespace ShopServices.DataAccess.Entities
             ImageUrl = imageUrl;
             GoodsGroups = goodsGroups;
             Archieved = archieved;
+            MassInGrams = massInGrams;
+            Dimensions = dimensions;
         }
     }
 }
