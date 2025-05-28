@@ -12,7 +12,7 @@ namespace ShopServices.DataAccess
         }
 
         public DbSet<Employee> Employees { get; set; }
-        //public DbSet<_> _s { get; set; }
+        public DbSet<Buyer> Buyers { get; set; }
         //public DbSet<_> _s { get; set; }
         //public DbSet<_> _s { get; set; }
 

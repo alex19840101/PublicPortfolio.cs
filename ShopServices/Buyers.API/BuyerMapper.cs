@@ -29,6 +29,7 @@ namespace Buyers.API
                 login: buyerDto.Login,
                 name: buyerDto.Name,
                 surname: buyerDto.Surname,
+                nick: buyerDto.Nick,
                 address: buyerDto.Address,
                 email: buyerDto.Email,
                 phones: buyerDto.Phones,

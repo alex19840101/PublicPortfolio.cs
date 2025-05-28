@@ -37,7 +37,7 @@
             string newPasswordHash,
             string nick,
             string phone,
-            string requestedRole)
+            string requestedRole = null)
         {
             _id = id;
             _login = login;

@@ -18,6 +18,8 @@ namespace Buyers.API.Contracts
 
         /// <summary> Фамилия </summary>
         public string Surname { get; set; }
+        /// <summary> Ник (опционально) </summary>
+        public string Nick { get; set; }
 
         /// <summary> Адрес доставки по умолчанию (опционально) </summary>
         public string Address { get; set; }
