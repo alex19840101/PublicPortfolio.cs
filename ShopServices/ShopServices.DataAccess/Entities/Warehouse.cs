@@ -11,5 +11,10 @@ namespace ShopServices.DataAccess.Entities
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public uint Id { get; private set; }
+        public string Name { get; private set; } = default!;
+        public string Address { get; private set; } = default!;
+        public string Phone { get; private set; } = default!;
+        public string Email { get; private set; } = default!;
+        public string Url { get; private set; } = default!;
     }
 }

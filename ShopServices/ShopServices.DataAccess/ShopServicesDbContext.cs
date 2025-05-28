@@ -19,6 +19,7 @@ namespace ShopServices.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new EmployeesConfiguration());
+            modelBuilder.ApplyConfiguration(new BuyersConfiguration());
             //modelBuilder.ApplyConfiguration(new _sConfiguration());
             //modelBuilder.ApplyConfiguration(new _sConfiguration());
             //modelBuilder.ApplyConfiguration(new _sConfiguration());
