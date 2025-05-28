@@ -35,6 +35,9 @@ namespace ShopServices.DataAccess.Entities
         /// <summary> Дата и время фактической доставки заказа </summary>
         public DateTime? Delivered { get; set; }
 
+        /// <summary> Информация по оплате </summary>
+        public string PaymentInfo { get; set; } = default!;
+
         /// <summary> Дата и время фактического получения (выдачи) заказа </summary>
         public DateTime? Received { get; set; }
 
