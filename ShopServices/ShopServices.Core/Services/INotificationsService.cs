@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ShopServices.Core.Models;
 
 namespace ShopServices.Core.Services
 {
-    internal interface INotificationsService
+    public interface INotificationsService
     {
     }
 }

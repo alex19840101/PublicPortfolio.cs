@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ShopServices.Core.Services
 {
-    internal interface IWarehouseService
+    public interface IWarehouseService
     {
     }
 }
