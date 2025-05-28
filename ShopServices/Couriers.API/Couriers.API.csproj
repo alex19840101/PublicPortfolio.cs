@@ -18,7 +18,11 @@
 
   <ItemGroup>
     <Folder Include="Contracts\Requests\" />
-    <Folder Include="Contracts\Responses\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ShopServices.Abstractions\ShopServices.Abstractions.csproj" />
+    <ProjectReference Include="..\ShopServices.Core\ShopServices.Core.csproj" />
   </ItemGroup>
 
 </Project>
