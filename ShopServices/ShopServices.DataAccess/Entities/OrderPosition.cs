@@ -6,9 +6,12 @@ namespace ShopServices.DataAccess.Entities
     /// <summary> Товарная позиция в заказе </summary>
     public class OrderPosition
     {
-        /// <summary> *Уникальный идентификатор товара в системе </summary>
+        /// <summary> *Уникальный идентификатор товарной позиции в системе </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public uint Id { get; set; }
+
+        /// <summary> *Уникальный идентификатор товара в системе </summary>
+        public uint ProductId { get; private set; }
 
         /// <summary> Артикул производителя (при наличии) </summary>
         public string ArticleNumber { get; set; } = default!;

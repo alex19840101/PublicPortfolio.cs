@@ -44,6 +44,5 @@ namespace Goods.API.Contracts
 
         /// <summary> Габариты </summary>
         public string Dimensions { get; set; }
-
     }
 }
