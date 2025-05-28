@@ -35,7 +35,9 @@ namespace Goods.API
                 url: productDto.Url,
                 imageUrl: productDto.ImageUrl,
                 goodsGroups: productDto.GoodsGroups,
-                archieved: productDto.Archieved);
+                archieved: productDto.Archieved,
+                massInGrams: productDto.MassInGrams,
+                dimensions: productDto.Dimensions);
         }
 
         /// <summary>
