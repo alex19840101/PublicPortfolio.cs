@@ -18,7 +18,7 @@ namespace Delivery.API.Contracts
         public string PaymentInfo { get; set; }
 
         /// <summary> Уникальный идентификатор курьера </summary>
-        public uint? CouirierId { get; set; }
+        public uint? CourierId { get; set; }
 
         /// <summary> Адрес доставки заказа </summary>
         public string Address { get; set; }

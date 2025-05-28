@@ -7,11 +7,11 @@ namespace ShopServices.DataAccess.Entities
     public class Buyer
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public uint Id{ get { return _id; } }
+        public uint Id { get { return _id; } }
         public string Login { get { return _login; } }
         public string Name { get { return _name; } }
         public string Surname { get { return _surname; } }
-		public string Address { get { return _address; } }
+		public string? Address { get { return _address; } }
 		public string Email { get { return _email; } }
         public string PasswordHash { get { return _passwordHash; } }
         public string? Nick { get { return _nick; } }
@@ -21,6 +21,10 @@ namespace ShopServices.DataAccess.Entities
         public DateTime CreatedDt { get { return _createdDt; } }
         public DateTime? LastUpdateDt { get { return _lastUpdateDt; } }
         public bool Blocked { get { return _blocked; } }
+
+        public ICollection<Order> Orders { get; set; } = [];
+        public ICollection<Delivery> Deliveries { get; set; } = [];
+
 
         private readonly uint _id;
         private string _login;

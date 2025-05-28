@@ -13,5 +13,6 @@ namespace Trade.API.Controllers
         {
             _logger = logger;
         }
+        //TODO: Trade.API
     }
 }
