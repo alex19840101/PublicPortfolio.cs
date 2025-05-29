@@ -1,10 +1,14 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using System.Reflection;
+﻿using System.Security.Claims;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Templates;
-using Microsoft.Extensions.Configuration;
 using Serilog.Templates.Themes;
 
 namespace ServiceCollectionsExtensions
@@ -112,6 +116,53 @@ namespace ServiceCollectionsExtensions
                     theme: TemplateTheme.Code)));
 
             return serviceCollection;
+        }
+
+        /// <summary>
+        /// Добавление AuthorizationBuilder для JWT для аутентификации и авторизации по ролям
+        /// </summary>
+        /// <param name="serviceCollection"> IServiceCollection-коллекция сервисов</param>
+        /// <returns> The <see cref="AuthorizationBuilder"/> so that additional calls can be chained. </returns>
+        public static AuthorizationBuilder AddAuthorizationBuilderForJWT(this IServiceCollection serviceCollection)
+        {
+            return serviceCollection.AddAuthorizationBuilder()
+                    .AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy =>
+                    {
+                        policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+                        policy.RequireClaim(ClaimTypes.Role);
+                    });
+        }
+
+        /// <summary>
+        /// Добавление AuthenticationBuilder для JWT для аутентификации
+        /// </summary>
+        /// <param name="serviceCollection"> IServiceCollection-коллекция сервисов </param>
+        /// <param name="tokenValidationParameters"> TokenValidationParameters-параметры валидации JWT-токена </param>
+        /// <returns>A <see cref="AuthenticationBuilder"/> that can be used to further configure authentication.</returns>
+        public static AuthenticationBuilder AddAuthenticationBuilderForJWT(this IServiceCollection serviceCollection, TokenValidationParameters tokenValidationParameters)
+        {
+            return serviceCollection.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = tokenValidationParameters;
+                    options.IncludeErrorDetails = true;
+                    options.SaveToken = true;
+                });
+        }
+
+        /// <summary>
+        /// Добавление Redis-кэширования
+        /// </summary>
+        /// <param name="serviceCollection"> IServiceCollection-коллекция сервисов </param>
+        /// <param name="configuration"> IConfiguration-конфигурация ((ConfigurationManager)) </param>
+        /// <returns> IServiceCollection-коллекция сервисов </returns>
+        public static IServiceCollection AddStackExchangeRedisCaching(this IServiceCollection serviceCollection,
+            IConfiguration configuration)
+        {
+            return serviceCollection.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = $"{configuration.GetValue<string>("Redis:Server")}:{configuration.GetValue<int>("Redis:Port")}";
+            });
         }
     }
 }

@@ -1,8 +1,5 @@
 using System;
-using System.Security.Claims;
-using System.Text;
 using Employees.API;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -12,7 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using ServiceCollectionsExtensions;
 using ShopServices.BusinessLogic;
@@ -39,44 +35,18 @@ try
         .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
 
     builder.Services.AddSerilogging(builder.Configuration);
-    //builder.Services.AddSerilog((services, loggerConfiguration) => loggerConfiguration
-    //        .ReadFrom.Configuration(builder.Configuration)
-    //        .ReadFrom.Services(services)
-    //        .Enrich.FromLogContext()
-    //        .WriteTo.Console(new ExpressionTemplate(
-    //            template: "[{@t:HH:mm:ss} {@l:u3}{#if @tr is not null} ({substring(@tr,0,4)}:{substring(@sp,0,4)}){#end}] {@m}\n{@x}", // Include trace and span ids when present.
-    //            theme: TemplateTheme.Code)));
 
     builder.Services.AddControllers();
 
-    builder.Services.AddAuthorizationBuilder()
-        .AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy =>
-        {
-            policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
-            policy.RequireClaim(ClaimTypes.Role);
-        });
+    builder.Services.AddAuthorizationBuilderForJWT();
 
     builder.Services.AddHttpContextAccessor();
 
     builder.Services.AddScoped<IAuthorizationHandler, RoleAuthorizationHandler>();
-    var tokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidIssuer = builder.Configuration["JWT:Issuer"],
-        ValidateAudience = true,
-        ValidAudience = builder.Configuration["JWT:Audience"],
-        ValidateLifetime = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(builder.Configuration["JWT:KEY"])),
-        ValidateIssuerSigningKey = true
-    };
+    var tokenValidationParameters = builder.Configuration.GetTokenValidationParametersForJWT();
 
-    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = tokenValidationParameters;
-            options.IncludeErrorDetails = true;
-            options.SaveToken = true;
-        });
+    builder.Services.AddAuthenticationBuilderForJWT(tokenValidationParameters);
+
     builder.Services.AddOpenApi();
 
     builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
@@ -86,13 +56,13 @@ try
                     key: builder.Configuration["JWT:KEY"]!));
 
     builder.Services.AddSingleton<ICacheService, CacheService>();
+    builder.Services.AddStackExchangeRedisCaching(builder.Configuration);
+    //builder.Services.AddStackExchangeRedisCache(options =>
+    //{
+    //    options.Configuration = $"{builder.Configuration.GetValue<string>("Redis:Server")}:{builder.Configuration.GetValue<int>("Redis:Port")}";
+    //});
 
-    builder.Services.AddStackExchangeRedisCache(options =>
-    {
-        options.Configuration = $"{builder.Configuration.GetValue<string>("Redis:Server")}:{builder.Configuration.GetValue<int>("Redis:Port")}";
-    });
-
-        string dataBaseConnectionStr = builder.Configuration.GetConnectionString("localdb")!;
+    string dataBaseConnectionStr = builder.Configuration.GetConnectionString("localdb")!;
 
     var isDevelopment = env.IsDevelopment();
 
