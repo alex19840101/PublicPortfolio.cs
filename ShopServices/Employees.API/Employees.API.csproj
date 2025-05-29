@@ -38,6 +38,7 @@
 	  <ProjectReference Include="..\ShopServices.Abstractions\ShopServices.Abstractions.csproj" />
 	  <ProjectReference Include="..\ShopServices.BusinessLogic\ShopServices.BusinessLogic.csproj" />
 	  <ProjectReference Include="..\ShopServices.Core\ShopServices.Core.csproj" />
+	  <ProjectReference Include="..\ShopServices.DataAccess\ShopServices.DataAccess.csproj" />
 	</ItemGroup>
 
 </Project>
