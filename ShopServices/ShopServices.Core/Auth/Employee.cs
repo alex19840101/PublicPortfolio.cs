@@ -1,0 +1,126 @@
+﻿using System;
+
+namespace ShopServices.Core.Auth
+{
+    public class Employee
+    {
+        public uint Id { get { return _id; } }
+        public string Login { get { return _login; } }
+        public string Name { get { return _name; } }
+        public string Surname { get { return _surname; } }
+        public string Address { get { return _address; } }
+        public string Email { get { return _email; } }
+        public string PasswordHash { get { return _passwordHash; } }
+        public string Nick { get { return _nick; } }
+        public string Phone { get { return _phone; } }
+        public string Role { get { return _role; } }
+        public uint? GranterId { get { return _granterId; } }
+        public DateTime CreatedDt { get { return _createdDt; } }
+        public DateTime? LastUpdateDt { get { return _lastUpdateDt; } }
+
+        private readonly uint _id;
+        private string _login;
+        private string _name;
+        private string _surname;
+        private string _address;
+        private string _email;
+        private string _passwordHash;
+        private string _nick;
+        private string _phone;
+        private string _role;
+        private uint? _granterId;
+        private readonly DateTime _createdDt;
+        private DateTime? _lastUpdateDt;
+
+        public Employee(
+            uint id,
+            string login,
+            string name,
+            string surname,
+            string address,
+            string email,
+            string passwordHash,
+            string nick,
+            string phone,
+            string role,
+            uint? granterId,
+            DateTime createdDt,
+            DateTime? lastUpdateDt)
+        {
+            _id = id;
+            _login = login;
+            _name = name;
+            _surname = surname;
+            _address = address;
+            _email = email;
+            _passwordHash = passwordHash;
+            _nick = nick;
+            _phone = phone;
+            _role = role;
+            _granterId = granterId;
+            _createdDt = createdDt;
+            _lastUpdateDt = lastUpdateDt;
+        }
+
+        public void UpdateLogin(string newLogin) => _login = newLogin;
+        public void UpdateName(string newName) => _name = newName;
+        public void UpdateSurname(string newSurname) => _surname = newSurname;
+        public void UpdateAddress(string newAddress) => _address = newAddress;
+        public void UpdateEmail(string newEmail) => _email = newEmail;
+        public void UpdatePasswordHash(string newPasswordHash) => _passwordHash = newPasswordHash;
+        public void UpdateNick(string newNick) => _nick = newNick;
+        public void UpdatePhone(string newPhone) => _phone = newPhone;
+        public void UpdateRole(string newRole) => _role = newRole;
+        public void UpdateGranterId(uint granterId) => _granterId = granterId;
+        public void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
+
+        public override bool Equals(object obj)
+        {
+            var comparedEmployee = (Employee)obj;
+            if (comparedEmployee.Id != _id ||
+                !string.Equals(comparedEmployee.Login, _login) ||
+                !string.Equals(comparedEmployee.Name, _name) ||
+                !string.Equals(comparedEmployee.Surname, _surname) ||
+                !string.Equals(comparedEmployee.Address, _address) ||
+                !string.Equals(comparedEmployee.Email, _email) ||
+                !string.Equals(comparedEmployee.PasswordHash, _passwordHash) ||
+                !string.Equals(comparedEmployee.Nick, _nick) ||
+                !string.Equals(comparedEmployee.Phone, _phone) ||
+                !string.Equals(comparedEmployee.Role, _role) ||
+                comparedEmployee.CreatedDt != _createdDt ||
+                comparedEmployee.LastUpdateDt != _lastUpdateDt)
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Проверка на равенство (существующему Employee) с игнорированием:
+        /// <para> - Id (Id до момента регистрации не определен, как бы равен нулю),</para>
+        /// <para> - CreatedDt, LastUpdateDt - не важны для сравнения</para>
+        /// <para> - Role - не важны для сравнения при проверке факта регистрации (bool checkRole = false) </para>
+        /// </summary>
+        /// <param name="comparedEmployee"> Employee для сравнения </param>
+        /// <returns></returns>
+        public bool IsEqualIgnoreIdAndDt(Employee comparedEmployee, bool checkRole = false)
+        {
+            if (!string.Equals(comparedEmployee.Login, _login) ||
+                !string.Equals(comparedEmployee.Name, _name) ||
+                !string.Equals(comparedEmployee.Surname, _surname) ||
+                !string.Equals(comparedEmployee.Address, _address) ||
+                !string.Equals(comparedEmployee.Email, _email) ||
+                !string.Equals(comparedEmployee.PasswordHash, _passwordHash) ||
+                !string.Equals(comparedEmployee.Nick, _nick) ||
+                !string.Equals(comparedEmployee.Phone, _phone) ||
+                checkRole && !string.Equals(comparedEmployee.Role, _role))
+                return false;
+
+            return true;
+        }
+
+        public override string ToString()
+        {
+            return $"{_role} {_login} {_name} {Surname}";
+        }
+    }
+}
