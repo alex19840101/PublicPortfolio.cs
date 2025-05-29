@@ -13,5 +13,9 @@ namespace ShopServices.DataAccess.Entities
         public Employee Employee { get; set; } = default!;
         public ICollection<Order> Orders { get; set; } = [];
         public ICollection<Delivery> Deliveries { get; set; } = [];
+        public string? DriverLicenseCategory { get; set; }
+        public string Transport { get; set; } = default!;
+        public string Areas { get; set; } = default!;
+        public string DeliveryTimeSchedule { get; set; } = default!;
     }
 }

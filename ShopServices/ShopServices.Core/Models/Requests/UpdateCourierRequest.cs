@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ShopServices.Core.Auth;
 
-namespace ShopServices.Core.Models
+namespace ShopServices.Core.Models.Requests
 {
-    public class Courier
+    public class UpdateCourierRequest
     {
-        public Employee Employee { get; set; } = default!;
+        public uint Id { get; set; }
         public string DriverLicenseCategory { get; set; } = default!;
         public string Transport { get; set; } = default!;
         public string Areas { get; set; } = default!;

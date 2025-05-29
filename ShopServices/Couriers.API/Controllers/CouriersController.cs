@@ -1,5 +1,6 @@
 using System.Net;
 using System.Threading.Tasks;
+using Couriers.API.Contracts.Requests;
 using Couriers.API.Contracts.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using ShopServices.Abstractions;
 using ShopServices.Core;
 using ShopServices.Core.Models;
+using ShopServices.Core.Models.Requests;
 using ShopServices.Core.Services;
 
 namespace Couriers.API.Controllers
@@ -78,6 +80,25 @@ namespace Couriers.API.Controllers
             return Ok(UserInfoResponseDto(employee));
         }
 
+        [HttpPatch]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> UpdateCourier(UpdateCourierRequestDto updateCourierRequest)
+        {
+            var updateResult = await _couriersService.UpdateCourier(UpdateCourierRequest(updateCourierRequest));
+
+            if (updateResult.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(updateResult);
+
+            if (updateResult.StatusCode == HttpStatusCode.Unauthorized)
+                return new UnauthorizedObjectResult(new Result { Message = updateResult.Message });
+
+            return Ok(updateResult);
+        }
+
+
         [NonAction]
         private static UserInfoResponseDto UserInfoResponseDto(Courier courier)
         {
@@ -93,6 +114,19 @@ namespace Couriers.API.Controllers
                 Nick = employee.Nick,
                 Phone = employee.Phone,
                 Role = employee.Role
+            };
+        }
+
+        [NonAction]
+        private static UpdateCourierRequest UpdateCourierRequest(UpdateCourierRequestDto requestDto)
+        {
+            return new UpdateCourierRequest
+            {
+                Id = requestDto.Id,
+                DriverLicenseCategory = requestDto.DriverLicenseCategory,
+                Transport = requestDto.Transport,
+                Areas = requestDto.Areas,
+                DeliveryTimeSchedule = requestDto.DeliveryTimeSchedule
             };
         }
     }

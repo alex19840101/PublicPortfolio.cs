@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\Requests\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ShopServices.Abstractions\ShopServices.Abstractions.csproj" />
     <ProjectReference Include="..\ShopServices.Core\ShopServices.Core.csproj" />
   </ItemGroup>
