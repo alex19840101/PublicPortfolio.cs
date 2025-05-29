@@ -57,7 +57,7 @@ namespace ServiceCollectionsExtensions
                 //options.OperationFilter<SwaggerCustomFilters.AuthHeaderFilter>();
 
                 // Set the comments path for the Swagger JSON and UI.
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlFile = $"{serviceName}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 options.IncludeXmlComments(xmlPath);
                 xmlFile = "ShopServices.Abstractions.xml";

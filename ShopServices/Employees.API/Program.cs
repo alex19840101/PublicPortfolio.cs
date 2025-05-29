@@ -1,9 +1,7 @@
 using System;
-using System.IO;
-using System.Reflection;
 using System.Security.Claims;
 using System.Text;
-using Asp.Versioning;
+using Employees.API;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -15,20 +13,15 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using Employees.API;
+using Serilog;
+using ServiceCollectionsExtensions;
 using ShopServices.BusinessLogic;
 using ShopServices.Core.Repositories;
 using ShopServices.Core.Services;
 using ShopServices.DataAccess;
 using ShopServices.DataAccess.Repositories;
-using Serilog;
-using Serilog.Templates;
-using Serilog.Templates.Themes;
-using ServiceCollectionsExtensions;
 
-const string DEVELOPER = "Shapovalov Alexey";
-const string SERVICE_NAME = $"ShopServices";
+const string SERVICE_NAME = "Employees.API";
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
