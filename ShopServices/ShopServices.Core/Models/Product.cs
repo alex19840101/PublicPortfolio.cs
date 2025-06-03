@@ -42,7 +42,7 @@ namespace ShopServices.Core.Models
         public bool Archieved { get; private set; }
         
         /// <summary> Масса, г </summary>
-        public string MassInGrams { get; private set; }
+        public uint MassInGrams { get; private set; }
 
         /// <summary> Габариты </summary>
         public string Dimensions { get; private set; }
@@ -57,7 +57,7 @@ namespace ShopServices.Core.Models
             string imageUrl,
             List<uint> goodsGroups,
             bool archieved,
-            string massInGrams,
+            uint massInGrams,
             string dimensions)
         {
             Id = id;

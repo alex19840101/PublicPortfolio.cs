@@ -8,7 +8,6 @@ namespace ShopServices.DataAccess
     {
         public ShopServicesDbContext(DbContextOptions<ShopServicesDbContext> options) : base(options)
         {
-        
         }
 
         public DbSet<Availability> Availabilities { get; set; }

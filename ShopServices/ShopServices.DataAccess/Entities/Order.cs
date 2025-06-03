@@ -44,7 +44,7 @@ namespace ShopServices.DataAccess.Entities
         /// <summary> Дата и время обновления заказа </summary>
         public DateTime? Updated { get; set; }
 
-        /// <summary> Адрес доставки заказа </summary>
+        /// <summary> Адрес доставки заказа (в случае доставки не в магазин) </summary>
         public string? DeliveryAddress { get; set; }
         /// <summary> Магазин доставки заказа </summary>
         public uint? ShopId { get; set; }
@@ -56,7 +56,7 @@ namespace ShopServices.DataAccess.Entities
         public bool Archieved { get; set; }
 
         /// <summary> Масса, г </summary>
-        public string MassInGrams { get; set; } = default!;
+        public uint MassInGrams { get; set; } = default!;
 
         /// <summary> Габариты </summary>
         public string Dimensions { get; set; } = default!;

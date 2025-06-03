@@ -6,7 +6,7 @@ namespace ShopServices.Core.Models
 {
     public class EmailNotification
     {
-        public uint Id { get; private set; }
+        public ulong Id { get; private set; }
         public string EmailFrom { get; private set; }
         public string EmailTo { get; private set; }
         public string Message { get; private set; }

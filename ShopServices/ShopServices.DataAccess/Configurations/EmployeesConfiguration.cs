@@ -6,6 +6,7 @@ namespace ShopServices.DataAccess.Configurations
 {
     internal class EmployeesConfiguration : IEntityTypeConfiguration<Employee>
     {
+        private const int MAX_EMAIL_LENGTH = 254;
         private const int MAX_NAME_LENGTH = 255;
         private const int MAX_STRING_LENGTH = 255;
         private const int DATETIME_LENGTH = 25;
@@ -20,7 +21,7 @@ namespace ShopServices.DataAccess.Configurations
             builder.Property(e => e.Name).HasField("_name").HasMaxLength(MAX_NAME_LENGTH).IsRequired();
             builder.Property(e => e.Surname).HasField("_surname").HasMaxLength(MAX_NAME_LENGTH).IsRequired();
             builder.Property(e => e.Address).HasField("_address").HasMaxLength(MAX_STRING_LENGTH).IsRequired();
-            builder.Property(e => e.Email).HasField("_email").HasMaxLength(MAX_STRING_LENGTH).IsRequired();
+            builder.Property(e => e.Email).HasField("_email").HasMaxLength(MAX_EMAIL_LENGTH).IsRequired();
             builder.Property(e => e.PasswordHash).HasField("_passwordHash").HasMaxLength(MAX_NAME_LENGTH).IsRequired();
             builder.Property(e => e.GranterId).HasField("_granterId").HasColumnType("int");
 

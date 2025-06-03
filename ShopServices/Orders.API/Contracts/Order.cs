@@ -55,7 +55,7 @@ namespace Orders.API.Contracts
         public bool Archieved { get; set; }
 
         /// <summary> Масса, г </summary>
-        public string MassInGrams { get; set; }
+        public uint MassInGrams { get; set; }
 
         /// <summary> Габариты </summary>
         public string Dimensions { get; set; }

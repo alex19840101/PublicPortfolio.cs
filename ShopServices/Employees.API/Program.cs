@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -62,7 +63,7 @@ try
     //    options.Configuration = $"{builder.Configuration.GetValue<string>("Redis:Server")}:{builder.Configuration.GetValue<int>("Redis:Port")}";
     //});
 
-    string dataBaseConnectionStr = builder.Configuration.GetConnectionString("localdb")!;
+    string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ShopServicesEmployees")!;
 
     var isDevelopment = env.IsDevelopment();
 
@@ -76,6 +77,7 @@ try
                     .EnableSensitiveDataLogging();
 
             builder.LogTo(Console.WriteLine);
+            builder.ConfigureWarnings(wcb => wcb.Ignore(RelationalEventId.PendingModelChangesWarning));
         });
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
     }

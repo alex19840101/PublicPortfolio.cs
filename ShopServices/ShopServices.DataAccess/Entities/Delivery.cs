@@ -34,7 +34,7 @@ namespace ShopServices.DataAccess.Entities
         public string PaymentInfo { get; set; } = default!;
 
         /// <summary> Масса, г </summary>
-        public string MassInGrams { get; set; } = default!;
+        public uint MassInGrams { get; set; } = default!;
 
         /// <summary> Габариты </summary>
         public string Dimensions { get; set; } = default!;

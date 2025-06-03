@@ -8,7 +8,6 @@ namespace ShopServices.DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<Manager> builder)
         {
-            builder.OwnsOne(m => m.Employee);
         }
     }
 }

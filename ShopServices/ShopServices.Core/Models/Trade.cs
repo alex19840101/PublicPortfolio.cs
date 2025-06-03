@@ -6,6 +6,6 @@ namespace ShopServices.Core.Models
 {
     public class Trade
     {
-        public uint Id { get; private set; }
+        public long Id { get; private set; }
     }
 }
