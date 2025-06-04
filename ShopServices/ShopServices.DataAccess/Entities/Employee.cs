@@ -88,7 +88,7 @@ namespace ShopServices.DataAccess.Entities
                 !string.Equals(comparedEmployee.PasswordHash, _passwordHash) ||
                 !string.Equals(comparedEmployee.Nick, _nick) ||
                 !string.Equals(comparedEmployee.Phone, _phone) ||
-                !string.Equals(comparedEmployee.Role, _phone) ||
+                !string.Equals(comparedEmployee.Role, _role) ||
                 comparedEmployee.CreatedDt != _createdDt ||
                 comparedEmployee.LastUpdateDt != _lastUpdateDt)
                 return false;
