@@ -136,7 +136,7 @@ namespace ShopServices.DataAccess.Repositories
             return new Result(ResultMessager.USER_IS_ACTUAL, HttpStatusCode.OK);
         }
 
-        private async Task<Entities.Employee> GetEmployeeEntity(uint id)
+        private async Task<Entities.Employee?> GetEmployeeEntity(uint id)
         {
             var query = _dbContext.Employees.AsNoTracking().Where(e => e.Id == id);
             var employeeEntity = await query.SingleOrDefaultAsync();
@@ -144,7 +144,7 @@ namespace ShopServices.DataAccess.Repositories
             return employeeEntity;
         }
 
-        private async Task<Entities.Employee> GetEmployeeEntity(string login)
+        private async Task<Entities.Employee?> GetEmployeeEntity(string login)
         {
             var query = _dbContext.Employees.AsNoTracking().Where(e => e.Login.Equals(login));
             var employeeEntity = await query.SingleOrDefaultAsync();
