@@ -32,8 +32,8 @@ try
     IHostEnvironment env = builder.Environment;
 
     builder.Configuration
-        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: false, reloadOnChange: true);
 
     builder.Services.AddSerilogging(builder.Configuration);
 
