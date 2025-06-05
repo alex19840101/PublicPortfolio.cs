@@ -115,9 +115,6 @@ namespace ShopServices.BusinessLogic
             if (string.IsNullOrWhiteSpace(changeDiscountGroupsData.Login))
                 return new Result(ResultMessager.LOGIN_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
-            if (string.IsNullOrWhiteSpace(changeDiscountGroupsData.PasswordHash))
-                return new Result(ResultMessager.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
-
             if (string.IsNullOrWhiteSpace(changeDiscountGroupsData.GranterLogin))
                 return new Result(ResultMessager.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
@@ -128,18 +125,6 @@ namespace ShopServices.BusinessLogic
 
             if (!string.Equals(user.Login, changeDiscountGroupsData.Login))
                 return new Result(message: ResultMessager.LOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
-
-            Buyer granter = await _buyersRepository.GetUser(changeDiscountGroupsData.GranterId);
-
-            if (granter is null)
-                return new Result(message: ResultMessager.GRANTER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
-
-            if (!string.Equals(granter.Login, changeDiscountGroupsData.GranterLogin))
-                return new Result(message: ResultMessager.GRANTERLOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
-
-            if (!string.Equals(granter.PasswordHash, changeDiscountGroupsData.PasswordHash))
-                return new Result(message: ResultMessager.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
-
 
             var updateResult = await _buyersRepository.ChangeDiscountGroups(
                 buyerId: changeDiscountGroupsData.BuyerId,

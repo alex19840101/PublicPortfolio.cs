@@ -580,45 +580,6 @@ namespace ShopServices.BusinessLogic.MsTests
 
 
         [TestMethod]
-        public async Task ChangeDiscountGroups_ChangeDiscountGroupsDataWithoutPasswordHash_ShouldReturnResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400()
-        {
-            var changeDiscountGroupsData = TestFixtures.TestFixtures.GetChangeDiscountGroupsDataFixture(generatePasswordHash: false);
-
-            var updateResult = await _buyersService.ChangeDiscountGroups(changeDiscountGroupsData);
-
-            Assert.IsNotNull(updateResult);
-            Assert.AreEqual(ResultMessager.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, updateResult.Message);
-            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, updateResult.StatusCode);
-
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Never);
-            _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
-                changeDiscountGroupsData.BuyerId,
-                changeDiscountGroupsData.DiscountGroups,
-                changeDiscountGroupsData.GranterId),
-                Times.Never);
-        }
-
-        [TestMethod]
-        public async Task ChangeDiscountGroups_ChangeDiscountGroupsDataWithoutPasswordHash_ShouldReturnResult_PASSWORD_HASH_SHOULD_NOT_BE_EMPTY_400_FluentAssertion()
-        {
-            var changeDiscountGroupsData = TestFixtures.TestFixtures.GetChangeDiscountGroupsDataFixture(generatePasswordHash: false);
-
-            var updateResult = await _buyersService.ChangeDiscountGroups(changeDiscountGroupsData);
-
-            updateResult.Should().NotBeNull();
-            updateResult.Message.Should().Be(ResultMessager.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY);
-            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
-
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Never);
-            _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
-                changeDiscountGroupsData.BuyerId,
-                changeDiscountGroupsData.DiscountGroups,
-                changeDiscountGroupsData.GranterId),
-                Times.Never);
-        }
-
-
-        [TestMethod]
         public async Task ChangeDiscountGroups_ChangeDiscountGroupsDataWithoutGranterLogin_ShouldReturnResult_GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_400()
         {
             var changeDiscountGroupsData = TestFixtures.TestFixtures.GetChangeDiscountGroupsDataFixture(generateGranterLogin: false);
@@ -709,7 +670,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var changeDiscountGroupsData = TestFixtures.TestFixtures.GetChangeDiscountGroupsDataFixture();
 
-            Buyer buyer = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(passwordHash: changeDiscountGroupsData.PasswordHash);
+            Buyer buyer = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(passwordHash: TestFixtures.TestFixtures.GenerateString());
             _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.BuyerId))
                 .ReturnsAsync(buyer);
 
@@ -732,7 +693,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var changeDiscountGroupsData = TestFixtures.TestFixtures.GetChangeDiscountGroupsDataFixture();
 
-            Buyer buyer = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(passwordHash: changeDiscountGroupsData.PasswordHash);
+            Buyer buyer = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(passwordHash: TestFixtures.TestFixtures.GenerateString());
             _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.BuyerId))
                 .ReturnsAsync(buyer);
 
@@ -751,177 +712,6 @@ namespace ShopServices.BusinessLogic.MsTests
         }
 
 
-
-        [TestMethod]
-        public async Task ChangeDiscountGroups_GranterNotFound_ShouldReturnResult_GRANTER_NOT_FOUND_404()
-        {
-            var changeDiscountGroupsData = TestFixtures.TestFixtures.GetChangeDiscountGroupsDataFixture();
-
-            Buyer buyer = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(login: changeDiscountGroupsData.Login);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.BuyerId))
-                .ReturnsAsync(buyer);
-
-            Buyer granter = null;
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.GranterId))
-                .ReturnsAsync(granter);
-
-            var updateResult = await _buyersService.ChangeDiscountGroups(changeDiscountGroupsData);
-
-            Assert.IsNotNull(updateResult);
-            Assert.AreEqual(Core.ResultMessager.GRANTER_NOT_FOUND, updateResult.Message);
-            Assert.AreEqual(System.Net.HttpStatusCode.NotFound, updateResult.StatusCode);
-
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.GranterId), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
-                changeDiscountGroupsData.BuyerId,
-                changeDiscountGroupsData.DiscountGroups,
-                changeDiscountGroupsData.GranterId),
-                Times.Never);
-        }
-
-        [TestMethod]
-        public async Task ChangeDiscountGroups_GranterNotFound_ShouldReturnResult_GRANTER_NOT_FOUND_404_FluentAssertion()
-        {
-            var changeDiscountGroupsData = TestFixtures.TestFixtures.GetChangeDiscountGroupsDataFixture();
-
-            Buyer buyer = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(login: changeDiscountGroupsData.Login);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.BuyerId))
-                .ReturnsAsync(buyer);
-
-            Buyer granter = null;
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.GranterId))
-                .ReturnsAsync(granter);
-
-            var updateResult = await _buyersService.ChangeDiscountGroups(changeDiscountGroupsData);
-
-            updateResult.Should().NotBeNull();
-            updateResult.Message.Should().Be(Core.ResultMessager.GRANTER_NOT_FOUND);
-            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
-
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.GranterId), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
-                changeDiscountGroupsData.BuyerId,
-                changeDiscountGroupsData.DiscountGroups,
-                changeDiscountGroupsData.GranterId),
-                Times.Never);
-        }
-
-
-        [TestMethod]
-        public async Task ChangeDiscountGroups_GranterLoginMismatch_ShouldReturnResult_GRANTERLOGIN_MISMATCH_403_FluentAssertion()
-        {
-            var changeDiscountGroupsData = TestFixtures.TestFixtures.GetChangeDiscountGroupsDataFixture();
-
-            Buyer buyer = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(login: changeDiscountGroupsData.Login);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.BuyerId))
-                .ReturnsAsync(buyer);
-
-            Buyer granter = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(passwordHash: changeDiscountGroupsData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.GranterId))
-                .ReturnsAsync(granter);
-
-            var updateResult = await _buyersService.ChangeDiscountGroups(changeDiscountGroupsData);
-
-            Assert.IsNotNull(updateResult);
-            Assert.AreEqual(Core.ResultMessager.GRANTERLOGIN_MISMATCH, updateResult.Message);
-            Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, updateResult.StatusCode);
-
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.GranterId), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups
-            (changeDiscountGroupsData.BuyerId,
-            changeDiscountGroupsData.DiscountGroups,
-            changeDiscountGroupsData.GranterId), Times.Never);
-        }
-
-        [TestMethod]
-        public async Task ChangeDiscountGroups_GranterLoginMismatch_ShouldReturnResult_GRANTERLOGIN_MISMATCH_403()
-        {
-            var changeDiscountGroupsData = TestFixtures.TestFixtures.GetChangeDiscountGroupsDataFixture();
-
-            Buyer buyer = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(login: changeDiscountGroupsData.Login);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.BuyerId))
-                .ReturnsAsync(buyer);
-
-            Buyer granter = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(passwordHash: changeDiscountGroupsData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.GranterId))
-                .ReturnsAsync(granter);
-
-            var updateResult = await _buyersService.ChangeDiscountGroups(changeDiscountGroupsData);
-
-            updateResult.Should().NotBeNull();
-            updateResult.Message.Should().Be(Core.ResultMessager.GRANTERLOGIN_MISMATCH);
-            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
-
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.GranterId), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
-                changeDiscountGroupsData.BuyerId,
-                changeDiscountGroupsData.DiscountGroups,
-                changeDiscountGroupsData.GranterId),
-                Times.Never);
-        }
-
-
-        [TestMethod]
-        public async Task ChangeDiscountGroups_GranterPasswordHashMismatch_ShouldReturnResult_PASSWORD_HASH_MISMATCH_403()
-        {
-            var changeDiscountGroupsData = TestFixtures.TestFixtures.GetChangeDiscountGroupsDataFixture();
-
-            Buyer buyer = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(login: changeDiscountGroupsData.Login);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.BuyerId))
-                .ReturnsAsync(buyer);
-
-            Buyer granter = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(login: changeDiscountGroupsData.GranterLogin);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.GranterId))
-                .ReturnsAsync(granter);
-
-            var updateResult = await _buyersService.ChangeDiscountGroups(changeDiscountGroupsData);
-
-            Assert.IsNotNull(updateResult);
-            Assert.AreEqual(Core.ResultMessager.PASSWORD_HASH_MISMATCH, updateResult.Message);
-            Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, updateResult.StatusCode);
-
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.GranterId), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
-                changeDiscountGroupsData.BuyerId,
-                changeDiscountGroupsData.DiscountGroups,
-                changeDiscountGroupsData.GranterId),
-                Times.Never);
-        }
-
-        [TestMethod]
-        public async Task ChangeDiscountGroups_GranterPasswordHashMismatch_ShouldReturnResult_PASSWORD_HASH_MISMATCH_403_FluentAssertion()
-        {
-            var changeDiscountGroupsData = TestFixtures.TestFixtures.GetChangeDiscountGroupsDataFixture();
-
-            Buyer buyer = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(login: changeDiscountGroupsData.Login);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.BuyerId))
-                .ReturnsAsync(buyer);
-
-            Buyer granter = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(login: changeDiscountGroupsData.GranterLogin);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.GranterId))
-                .ReturnsAsync(granter);
-
-            var updateResult = await _buyersService.ChangeDiscountGroups(changeDiscountGroupsData);
-
-            updateResult.Should().NotBeNull();
-            updateResult.Message.Should().Be(Core.ResultMessager.PASSWORD_HASH_MISMATCH);
-            updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
-
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.GranterId), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
-                changeDiscountGroupsData.BuyerId,
-                changeDiscountGroupsData.DiscountGroups,
-                changeDiscountGroupsData.GranterId),
-                Times.Never);
-        }
-
-
         [TestMethod]
         public async Task ChangeDiscountGroups_Updated_ShouldReturnResult_USER_UPDATED_200()
         {
@@ -930,10 +720,6 @@ namespace ShopServices.BusinessLogic.MsTests
             Buyer buyer = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(login: changeDiscountGroupsData.Login);
             _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.BuyerId))
                 .ReturnsAsync(buyer);
-
-            Buyer granter = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(passwordHash: changeDiscountGroupsData.PasswordHash, login: changeDiscountGroupsData.GranterLogin);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.GranterId))
-                .ReturnsAsync(granter);
 
             _buyersRepositoryMock.Setup(ar => ar.ChangeDiscountGroups(
                 changeDiscountGroupsData.BuyerId,
@@ -948,7 +734,6 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
 
             _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.GranterId), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
                 changeDiscountGroupsData.BuyerId,
                 changeDiscountGroupsData.DiscountGroups,
@@ -965,10 +750,6 @@ namespace ShopServices.BusinessLogic.MsTests
             _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.BuyerId))
                 .ReturnsAsync(buyer);
 
-            Buyer granter = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(passwordHash: changeDiscountGroupsData.PasswordHash, login: changeDiscountGroupsData.GranterLogin);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.GranterId))
-                .ReturnsAsync(granter);
-
             _buyersRepositoryMock.Setup(ar => ar.ChangeDiscountGroups(
                 changeDiscountGroupsData.BuyerId,
                 changeDiscountGroupsData.DiscountGroups,
@@ -982,7 +763,6 @@ namespace ShopServices.BusinessLogic.MsTests
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
 
             _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.GranterId), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
                 changeDiscountGroupsData.BuyerId,
                 changeDiscountGroupsData.DiscountGroups,
