@@ -23,7 +23,7 @@
         /// <summary>
         /// Адрес доставки по умолчанию для покупателя (опционально)
         /// </summary>
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         /// <summary>
         /// Адрес электронной почты (уникальный) покупателя*
@@ -43,11 +43,11 @@
         /// <summary>
         /// Ник покупателя
         /// </summary>
-        public string Nick { get; set; }
+        public string? Nick { get; set; }
 
         /// <summary>
         /// Телефон(ы) покупателя
         /// </summary>
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
     }
 }
