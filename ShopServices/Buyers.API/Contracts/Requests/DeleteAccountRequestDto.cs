@@ -33,6 +33,6 @@
         /// <summary>
         /// Логин (уникальное имя аккаунта) администратора (если удаление администратором)*
         /// </summary>
-        public string GranterLogin { get; set; }
+        public string? GranterLogin { get; set; }
     }
 }
