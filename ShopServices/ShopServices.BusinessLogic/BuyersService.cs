@@ -208,20 +208,7 @@ namespace ShopServices.BusinessLogic
             if (!string.Equals(user.Login, deleteAccountData.Login))
                 return new Result(message: ResultMessager.LOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
 
-            if (deleteAccountData.GranterId != null)
-            {
-                Buyer granter = await _buyersRepository.GetUser(deleteAccountData.GranterId.Value);
-
-                if (granter is null)
-                    return new Result(message: ResultMessager.GRANTER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
-
-                if (!string.Equals(granter.Login, deleteAccountData.GranterLogin))
-                    return new Result(message: ResultMessager.GRANTERLOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
-
-                if (!string.Equals(granter.PasswordHash, deleteAccountData.PasswordHash))
-                    return new Result(message: ResultMessager.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
-            }
-            else
+            if (deleteAccountData.GranterId == null) //если же указан GranterId, то данные (Id, хэш пароля) админа/менеджера не проверяем, т.к. не сможем получить их из репозитория покупателей
             {
                 if (!string.Equals(user.PasswordHash, deleteAccountData.PasswordHash))
                     return new Result(message: ResultMessager.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
