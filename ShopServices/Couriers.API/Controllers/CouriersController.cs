@@ -31,7 +31,7 @@ namespace Couriers.API.Controllers
             _logger = logger;
         }
 
-
+        /// <summary> Подсказка по регистрации аккаунта курьера </summary>
         [HttpPost]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.NotImplemented)]
@@ -40,6 +40,7 @@ namespace Couriers.API.Controllers
             return new ObjectResult("Use Employees.API/Register") { StatusCode = StatusCodes.Status501NotImplemented };
         }
 
+        /// <summary> Подсказка по удалению аккаунта курьера </summary>
         [HttpDelete]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.NotImplemented)]
@@ -47,8 +48,9 @@ namespace Couriers.API.Controllers
         {
             return new ObjectResult("Use Employees.API/DeleteAccount") { StatusCode = StatusCodes.Status501NotImplemented };
         }
+        //TODO: Couriers.API, CouriersController
 
-        /// <summary> ��������� ���������� � ��������� ((�������)) �� Id </summary>
+        /// <summary> Получение информации о работнике ((курьере)) по Id </summary>
         [HttpGet]
         [ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -64,7 +66,7 @@ namespace Couriers.API.Controllers
             return Ok(UserInfoResponseDto(employee));
         }
 
-        /// <summary> ��������� ���������� � ��������� ((�������)) �� ������ </summary>
+        /// <summary> Получение информации о работнике ((курьере)) по логину </summary>
         [HttpGet]
         [ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -80,6 +82,11 @@ namespace Couriers.API.Controllers
             return Ok(UserInfoResponseDto(employee));
         }
 
+        /// <summary>
+        /// Обновление данных курьера
+        /// </summary>
+        /// <param name="updateCourierRequest"> UpdateCourierRequestDto-Запрос на обновление данных курьера </param>
+        /// <returns></returns>
         [HttpPatch]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]

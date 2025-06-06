@@ -8,8 +8,8 @@ namespace ShopServices.Core.Repositories
 {
     public interface IManagersRepository
     {
-        /// <summary> Получение данных по работнику без отслеживания изменений </summary>
-        /// <param name="id"> id работника </param>
+        /// <summary> Получение данных по менеджеру без отслеживания изменений </summary>
+        /// <param name="id"> id работника (менеджера) </param>
         /// <returns></returns>
         Task<Manager> GetUser(uint id);
 
