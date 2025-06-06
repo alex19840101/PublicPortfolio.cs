@@ -52,35 +52,68 @@ namespace Couriers.API.Controllers
 
         /// <summary> Получение информации о работнике ((курьере)) по Id </summary>
         [HttpGet]
-        [ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(CourierInfoResponseDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetUserInfoById(uint id)
+        public async Task<IActionResult> GetCourierInfoById(uint id)
         {
             var employee = await _couriersService.GetUserInfo(id);
 
             if (employee is null)
                 return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
 
-            return Ok(UserInfoResponseDto(employee));
+            return Ok(CourierInfoResponseDto(employee));
         }
 
         /// <summary> Получение информации о работнике ((курьере)) по логину </summary>
         [HttpGet]
-        [ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(CourierInfoResponseDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetUserInfoByLogin(string login)
+        public async Task<IActionResult> GetCourierInfoByLogin(string login)
         {
             var employee = await _couriersService.GetUserInfo(login);
 
             if (employee is null)
                 return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
 
-            return Ok(UserInfoResponseDto(employee));
+            return Ok(CourierInfoResponseDto(employee));
         }
+
+
+        ///// <summary> Получение информации о работнике ((курьере)) по Id </summary>
+        //[HttpGet]
+        //[ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
+        //[ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        //[ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
+        //[ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        //public async Task<IActionResult> GetUserInfoById(uint id)
+        //{
+        //    var employee = await _couriersService.GetUserInfo(id);
+
+        //    if (employee is null)
+        //        return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
+
+        //    return Ok(UserInfoResponseDto(employee));
+        //}
+
+        ///// <summary> Получение информации о работнике ((курьере)) по логину </summary>
+        //[HttpGet]
+        //[ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
+        //[ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        //[ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
+        //[ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        //public async Task<IActionResult> GetUserInfoByLogin(string login)
+        //{
+        //    var employee = await _couriersService.GetUserInfo(login);
+
+        //    if (employee is null)
+        //        return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
+
+        //    return Ok(UserInfoResponseDto(employee));
+        //}
 
         /// <summary>
         /// Обновление данных курьера
@@ -107,24 +140,6 @@ namespace Couriers.API.Controllers
 
 
         [NonAction]
-        private static UserInfoResponseDto UserInfoResponseDto(Courier courier)
-        {
-            var employee = courier.Employee;
-           
-            return new UserInfoResponseDto
-            {
-                Id = employee.Id,
-                Login = employee.Login,
-                Name = employee.Name,
-                Surname = employee.Surname,
-                Email = employee.Email,
-                Nick = employee.Nick,
-                Phone = employee.Phone,
-                Role = employee.Role
-            };
-        }
-
-        [NonAction]
         private static UpdateCourierRequest UpdateCourierRequest(UpdateCourierRequestDto requestDto)
         {
             return new UpdateCourierRequest
@@ -134,6 +149,22 @@ namespace Couriers.API.Controllers
                 Transport = requestDto.Transport,
                 Areas = requestDto.Areas,
                 DeliveryTimeSchedule = requestDto.DeliveryTimeSchedule
+            };
+        }
+
+
+
+        [NonAction]
+        private static CourierInfoResponseDto CourierInfoResponseDto(Courier courier)
+        {
+          
+            return new CourierInfoResponseDto
+            {
+                Id = courier.Employee.Id,
+                DriverLicenseCategory = courier.DriverLicenseCategory,
+                Transport = courier.Transport,
+                Areas = courier.Areas,
+                DeliveryTimeSchedule = courier.DeliveryTimeSchedule
             };
         }
     }

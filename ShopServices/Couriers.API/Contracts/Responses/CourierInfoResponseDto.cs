@@ -1,13 +1,13 @@
-﻿namespace Couriers.API.Contracts.Requests
+﻿namespace Couriers.API.Contracts.Responses
 {
-    /// <summary> Запрос на обновление данных курьера </summary>
-    public class UpdateCourierRequestDto
+    /// <summary> Класс данных курьера для Couriers.API </summary>
+    public class CourierInfoResponseDto
     {
         /// <summary>
         /// Id курьера*
         /// </summary>
         public uint Id { get; set; }
-        
+
         /// <summary>
         /// Категория водительских прав (при наличии)
         /// </summary>
@@ -17,7 +17,7 @@
         /// Информация о транспорте*
         /// </summary>
         public string Transport { get; set; } = default!;
-        
+
         /// <summary>
         /// Районы доставки*
         /// </summary>
