@@ -28,6 +28,7 @@ namespace Managers.API.Controllers
             _managersService = managersService;
         }
 
+        /// <summary> РџРѕРґСЃРєР°Р·РєР° РїРѕ СЂРµРіРёСЃС‚СЂР°С†РёРё Р°РєРєР°СѓРЅС‚Р° РјРµРЅРµРґР¶РµСЂР° </summary>
         [HttpPost]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.NotImplemented)]
@@ -36,6 +37,7 @@ namespace Managers.API.Controllers
             return new ObjectResult("Use Employees.API/Register") { StatusCode = StatusCodes.Status501NotImplemented };
         }
 
+        /// <summary> РџРѕРґСЃРєР°Р·РєР° РїРѕ СѓРґР°Р»РµРЅРёСЋ Р°РєРєР°СѓРЅС‚Р° РјРµРЅРµРґР¶РµСЂР° </summary>
         [HttpDelete]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.NotImplemented)]
@@ -43,8 +45,9 @@ namespace Managers.API.Controllers
         {
             return new ObjectResult("Use Employees.API/DeleteAccount") { StatusCode = StatusCodes.Status501NotImplemented };
         }
-
-        /// <summary> Получение информации о работнике ((менеджере)) по Id </summary>
+        
+        //TODO: Managers.API, ManagersController
+        /// <summary> РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ СЂР°Р±РѕС‚РЅРёРєРµ ((РјРµРЅРµРґР¶РµСЂРµ)) РїРѕ Id </summary>
         [HttpGet]
         [ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -60,7 +63,7 @@ namespace Managers.API.Controllers
             return Ok(UserInfoResponseDto(employee));
         }
 
-        /// <summary> Получение информации о работнике ((менеджере)) по логину </summary>
+        /// <summary> РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ СЂР°Р±РѕС‚РЅРёРєРµ ((РјРµРЅРµРґР¶РµСЂРµ)) РїРѕ Р»РѕРіРёРЅСѓ </summary>
         [HttpGet]
         [ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
