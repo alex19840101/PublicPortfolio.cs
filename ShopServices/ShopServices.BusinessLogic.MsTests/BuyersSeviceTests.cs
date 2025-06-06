@@ -518,7 +518,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => updateResult = await _buyersService.ChangeDiscountGroups(changeDiscountGroupsData));
             var userId = TestFixtures.TestFixtures.GenerateId();
 
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(userId), Times.Never);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(userId), Times.Never);
             Assert.IsNotNull(exception);
             Assert.IsNull(updateResult);
             Assert.AreEqual(ResultMessager.CHANGEDISCOUNTGROUPSDATA_PARAM_NAME, exception.ParamName);
@@ -532,7 +532,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => updateResult = await _buyersService.ChangeDiscountGroups(changeDiscountGroupsData));
             var userId = TestFixtures.TestFixtures.GenerateId();
 
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(userId), Times.Never);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(userId), Times.Never);
 
             exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ResultMessager.CHANGEDISCOUNTGROUPSDATA_PARAM_NAME);
             updateResult.Should().BeNull();
@@ -551,7 +551,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.AreEqual(ResultMessager.LOGIN_SHOULD_NOT_BE_EMPTY, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, updateResult.StatusCode);
 
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Never);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(changeDiscountGroupsData.BuyerId), Times.Never);
             _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
                 changeDiscountGroupsData.BuyerId,
                 changeDiscountGroupsData.DiscountGroups,
@@ -570,7 +570,7 @@ namespace ShopServices.BusinessLogic.MsTests
             updateResult.Message.Should().Be(ResultMessager.LOGIN_SHOULD_NOT_BE_EMPTY);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
 
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Never);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(changeDiscountGroupsData.BuyerId), Times.Never);
             _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
                 changeDiscountGroupsData.BuyerId,
                 changeDiscountGroupsData.DiscountGroups,
@@ -590,7 +590,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.AreEqual(ResultMessager.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, updateResult.StatusCode);
 
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Never);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(changeDiscountGroupsData.BuyerId), Times.Never);
             _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
                 changeDiscountGroupsData.BuyerId,
                 changeDiscountGroupsData.DiscountGroups,
@@ -609,7 +609,7 @@ namespace ShopServices.BusinessLogic.MsTests
             updateResult.Message.Should().Be(ResultMessager.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
 
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Never);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(changeDiscountGroupsData.BuyerId), Times.Never);
             _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
                 changeDiscountGroupsData.BuyerId,
                 changeDiscountGroupsData.DiscountGroups,
@@ -624,7 +624,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var changeDiscountGroupsData = TestFixtures.TestFixtures.GetChangeDiscountGroupsDataFixture();
 
             Buyer buyer = null;
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.BuyerId))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(changeDiscountGroupsData.BuyerId))
                 .ReturnsAsync(buyer);
 
             var updateResult = await _buyersService.ChangeDiscountGroups(changeDiscountGroupsData);
@@ -633,7 +633,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.AreEqual(Core.ResultMessager.USER_NOT_FOUND, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, updateResult.StatusCode);
 
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Once);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(changeDiscountGroupsData.BuyerId), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
                 changeDiscountGroupsData.BuyerId,
                 changeDiscountGroupsData.DiscountGroups,
@@ -647,7 +647,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var changeDiscountGroupsData = TestFixtures.TestFixtures.GetChangeDiscountGroupsDataFixture();
 
             Buyer buyer = null;
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.BuyerId))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(changeDiscountGroupsData.BuyerId))
                 .ReturnsAsync(buyer);
 
             var updateResult = await _buyersService.ChangeDiscountGroups(changeDiscountGroupsData);
@@ -656,7 +656,7 @@ namespace ShopServices.BusinessLogic.MsTests
             updateResult.Message.Should().Be(Core.ResultMessager.USER_NOT_FOUND);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
 
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Once);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(changeDiscountGroupsData.BuyerId), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
                 changeDiscountGroupsData.BuyerId,
                 changeDiscountGroupsData.DiscountGroups,
@@ -671,7 +671,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var changeDiscountGroupsData = TestFixtures.TestFixtures.GetChangeDiscountGroupsDataFixture();
 
             Buyer buyer = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(passwordHash: TestFixtures.TestFixtures.GenerateString());
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.BuyerId))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(changeDiscountGroupsData.BuyerId))
                 .ReturnsAsync(buyer);
 
             var updateResult = await _buyersService.ChangeDiscountGroups(changeDiscountGroupsData);
@@ -680,7 +680,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.AreEqual(Core.ResultMessager.LOGIN_MISMATCH, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, updateResult.StatusCode);
 
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Once);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(changeDiscountGroupsData.BuyerId), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
                 changeDiscountGroupsData.BuyerId,
                 changeDiscountGroupsData.DiscountGroups,
@@ -694,7 +694,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var changeDiscountGroupsData = TestFixtures.TestFixtures.GetChangeDiscountGroupsDataFixture();
 
             Buyer buyer = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(passwordHash: TestFixtures.TestFixtures.GenerateString());
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.BuyerId))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(changeDiscountGroupsData.BuyerId))
                 .ReturnsAsync(buyer);
 
             var updateResult = await _buyersService.ChangeDiscountGroups(changeDiscountGroupsData);
@@ -703,7 +703,7 @@ namespace ShopServices.BusinessLogic.MsTests
             updateResult.Message.Should().Be(Core.ResultMessager.LOGIN_MISMATCH);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
 
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Once);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(changeDiscountGroupsData.BuyerId), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
                 changeDiscountGroupsData.BuyerId,
                 changeDiscountGroupsData.DiscountGroups,
@@ -718,7 +718,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var changeDiscountGroupsData = TestFixtures.TestFixtures.GetChangeDiscountGroupsDataFixture();
 
             Buyer buyer = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(login: changeDiscountGroupsData.Login);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.BuyerId))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(changeDiscountGroupsData.BuyerId))
                 .ReturnsAsync(buyer);
 
             _buyersRepositoryMock.Setup(ar => ar.ChangeDiscountGroups(
@@ -733,7 +733,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.AreEqual(Core.ResultMessager.USER_UPDATED, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
 
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Once);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(changeDiscountGroupsData.BuyerId), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
                 changeDiscountGroupsData.BuyerId,
                 changeDiscountGroupsData.DiscountGroups,
@@ -747,7 +747,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var changeDiscountGroupsData = TestFixtures.TestFixtures.GetChangeDiscountGroupsDataFixture();
 
             Buyer buyer = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(login: changeDiscountGroupsData.Login);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(changeDiscountGroupsData.BuyerId))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(changeDiscountGroupsData.BuyerId))
                 .ReturnsAsync(buyer);
 
             _buyersRepositoryMock.Setup(ar => ar.ChangeDiscountGroups(
@@ -762,7 +762,7 @@ namespace ShopServices.BusinessLogic.MsTests
             updateResult.Message.Should().Be(Core.ResultMessager.USER_UPDATED);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
 
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(changeDiscountGroupsData.BuyerId), Times.Once);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(changeDiscountGroupsData.BuyerId), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.ChangeDiscountGroups(
                 changeDiscountGroupsData.BuyerId,
                 changeDiscountGroupsData.DiscountGroups,
@@ -1091,7 +1091,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             Buyer userToDelete = null;
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _buyersService.DeleteAccount(deleteAccountData);
@@ -1099,7 +1099,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(Core.ResultMessager.USER_NOT_FOUND, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, deleteResult.StatusCode);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(deleteAccountData.Id), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
         }
 
@@ -1109,7 +1109,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             Buyer userToDelete = null;
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _buyersService.DeleteAccount(deleteAccountData);
@@ -1117,7 +1117,7 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(Core.ResultMessager.USER_NOT_FOUND);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(deleteAccountData.Id), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
         }
 
@@ -1129,7 +1129,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             Buyer userToDelete = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _buyersService.DeleteAccount(deleteAccountData);
@@ -1137,7 +1137,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(Core.ResultMessager.LOGIN_MISMATCH, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, deleteResult.StatusCode);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(deleteAccountData.Id), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
         }
 
@@ -1147,7 +1147,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             Buyer userToDelete = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _buyersService.DeleteAccount(deleteAccountData);
@@ -1155,7 +1155,7 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(Core.ResultMessager.LOGIN_MISMATCH);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(deleteAccountData.Id), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
         }
 
@@ -1165,7 +1165,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true);
 
             Buyer userToDelete = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _buyersService.DeleteAccount(deleteAccountData);
@@ -1173,7 +1173,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(ResultMessager.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, deleteResult.StatusCode);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Never);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(deleteAccountData.Id), Times.Never);
             _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
         }
 
@@ -1183,7 +1183,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true);
 
             Buyer userToDelete = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _buyersService.DeleteAccount(deleteAccountData);
@@ -1191,162 +1191,7 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(ResultMessager.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Never);
-            _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
-        }
-
-
-        [TestMethod]
-        public async Task DeleteAccount_GranterNotFound_ShouldReturnResult_GRANTER_NOT_FOUND_404()
-        {
-            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
-
-            Buyer userToDelete = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(
-                login: deleteAccountData.Login,
-                passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
-                .ReturnsAsync(userToDelete);
-            Buyer granter = null;
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
-                .ReturnsAsync(granter);
-
-            var deleteResult = await _buyersService.DeleteAccount(deleteAccountData);
-
-            Assert.IsNotNull(deleteResult);
-            Assert.AreEqual(Core.ResultMessager.GRANTER_NOT_FOUND, deleteResult.Message);
-            Assert.AreEqual(System.Net.HttpStatusCode.NotFound, deleteResult.StatusCode);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.GranterId.Value), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
-        }
-
-        [TestMethod]
-        public async Task DeleteAccount_GranterNotFound_ShouldReturnResult_GRANTER_NOT_FOUND_404_FluentAssertion()
-        {
-            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
-
-            Buyer userToDelete = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(
-                login: deleteAccountData.Login,
-                passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
-                .ReturnsAsync(userToDelete);
-            Buyer granter = null;
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
-                .ReturnsAsync(granter);
-
-            var deleteResult = await _buyersService.DeleteAccount(deleteAccountData);
-
-            deleteResult.Should().NotBeNull();
-            deleteResult.Message.Should().Be(Core.ResultMessager.GRANTER_NOT_FOUND);
-            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.GranterId.Value), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
-        }
-
-
-        [TestMethod]
-        public async Task DeleteAccount_GranterLoginMismatch_ShouldReturnResult_GRANTERLOGIN_MISMATCH_403()
-        {
-            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
-
-            Buyer userToDelete = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(
-                generateId: true,
-                login: deleteAccountData.Login,
-                passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
-                .ReturnsAsync(userToDelete);
-            Buyer granter = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(
-                generateId: true, passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
-                .ReturnsAsync(granter);
-
-            var deleteResult = await _buyersService.DeleteAccount(deleteAccountData);
-
-            Assert.IsNotNull(deleteResult);
-            Assert.AreEqual(Core.ResultMessager.GRANTERLOGIN_MISMATCH, deleteResult.Message);
-            Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, deleteResult.StatusCode);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.GranterId.Value), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
-        }
-
-        [TestMethod]
-        public async Task DeleteAccount_GranterLoginMismatch_ShouldReturnResult_GRANTERLOGIN_MISMATCH_403_FluentAssertion()
-        {
-            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
-
-            Buyer userToDelete = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(
-                generateId: true,
-                login: deleteAccountData.Login,
-                passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
-                .ReturnsAsync(userToDelete);
-            Buyer granter = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(
-                generateId: true, passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
-                .ReturnsAsync(granter);
-
-            var deleteResult = await _buyersService.DeleteAccount(deleteAccountData);
-
-            deleteResult.Should().NotBeNull();
-            deleteResult.Message.Should().Be(Core.ResultMessager.GRANTERLOGIN_MISMATCH);
-            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.GranterId.Value), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
-        }
-
-
-        [TestMethod]
-        public async Task DeleteAccount_GranterPasswordHashMismatch_ShouldReturnResult_PASSWORD_HASH_MISMATCH_403()
-        {
-            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
-
-            Buyer userToDelete = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(
-                generateId: true,
-                login: deleteAccountData.Login,
-                passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
-                .ReturnsAsync(userToDelete);
-            Buyer granter = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(
-                generateId: true, login: deleteAccountData.GranterLogin);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
-                .ReturnsAsync(granter);
-
-            var deleteResult = await _buyersService.DeleteAccount(deleteAccountData);
-
-            Assert.IsNotNull(deleteResult);
-            Assert.AreEqual(Core.ResultMessager.PASSWORD_HASH_MISMATCH, deleteResult.Message);
-            Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, deleteResult.StatusCode);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.GranterId.Value), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
-        }
-
-        [TestMethod]
-        public async Task DeleteAccount_GranterPasswordHashMismatch_ShouldReturnResult_PASSWORD_HASH_MISMATCH_403_FluentAssertion()
-        {
-            var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true, generateGranterLogin: true);
-
-            Buyer userToDelete = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(
-                generateId: true,
-                login: deleteAccountData.Login,
-                passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
-                .ReturnsAsync(userToDelete);
-            Buyer granter = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(
-                generateId: true, login: deleteAccountData.GranterLogin);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
-                .ReturnsAsync(granter);
-
-            var deleteResult = await _buyersService.DeleteAccount(deleteAccountData);
-
-            deleteResult.Should().NotBeNull();
-            deleteResult.Message.Should().Be(Core.ResultMessager.PASSWORD_HASH_MISMATCH);
-            deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.GranterId.Value), Times.Once);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(deleteAccountData.Id), Times.Never);
             _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
         }
 
@@ -1360,21 +1205,15 @@ namespace ShopServices.BusinessLogic.MsTests
                 generateId: true,
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
-            Buyer granter = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(
-                generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
-            uint ZERO_GRANTER_ID = 0;
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(ZERO_GRANTER_ID))
-                .ReturnsAsync(granter);
 
             var deleteResult = await _buyersService.DeleteAccount(deleteAccountData);
 
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(ResultMessager.GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, deleteResult.StatusCode);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Never);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(ZERO_GRANTER_ID), Times.Never);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(deleteAccountData.Id), Times.Never);
             _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
         }
 
@@ -1387,21 +1226,15 @@ namespace ShopServices.BusinessLogic.MsTests
                 generateId: true,
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
-            Buyer granter = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(
-                generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
-            uint ZERO_GRANTER_ID = 0;
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(ZERO_GRANTER_ID))
-                .ReturnsAsync(granter);
 
             var deleteResult = await _buyersService.DeleteAccount(deleteAccountData);
 
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(ResultMessager.GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Never);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(ZERO_GRANTER_ID), Times.Never);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(deleteAccountData.Id), Times.Never);
             _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
         }
 
@@ -1412,7 +1245,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             Buyer userToDelete = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(login: deleteAccountData.Login);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _buyersService.DeleteAccount(deleteAccountData);
@@ -1420,7 +1253,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(Core.ResultMessager.PASSWORD_HASH_MISMATCH, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, deleteResult.StatusCode);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(deleteAccountData.Id), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
         }
 
@@ -1430,7 +1263,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             Buyer userToDelete = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(login: deleteAccountData.Login);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _buyersService.DeleteAccount(deleteAccountData);
@@ -1438,7 +1271,7 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(Core.ResultMessager.PASSWORD_HASH_MISMATCH);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(deleteAccountData.Id), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Never);
         }
 
@@ -1448,7 +1281,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             Buyer userToDelete = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             _buyersRepositoryMock.Setup(ar => ar.DeleteUser(deleteAccountData.Id))
@@ -1459,7 +1292,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(Core.ResultMessager.OK, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.OK, deleteResult.StatusCode);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(deleteAccountData.Id), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Once);
         }
 
@@ -1469,7 +1302,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             Buyer userToDelete = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             _buyersRepositoryMock.Setup(ar => ar.DeleteUser(deleteAccountData.Id))
@@ -1480,7 +1313,7 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(Core.ResultMessager.OK);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(deleteAccountData.Id), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Once);
         }
 
@@ -1494,13 +1327,8 @@ namespace ShopServices.BusinessLogic.MsTests
                 generateId: true,
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
-
-            Buyer granter = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(
-                generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
-                .ReturnsAsync(granter);
 
             _buyersRepositoryMock.Setup(ar => ar.DeleteUser(deleteAccountData.Id))
                 .ReturnsAsync(new Result { Message = Core.ResultMessager.OK, StatusCode = System.Net.HttpStatusCode.OK });
@@ -1510,8 +1338,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(Core.ResultMessager.OK, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.OK, deleteResult.StatusCode);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.GranterId.Value), Times.Once);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(deleteAccountData.Id), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Once);
         }
 
@@ -1523,13 +1350,8 @@ namespace ShopServices.BusinessLogic.MsTests
             Buyer userToDelete = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(
                 generateId: true,
                 login: deleteAccountData.Login);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.Id))
+            _buyersRepositoryMock.Setup(ar => ar.GetUserForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
-
-            Buyer granter = TestFixtures.TestFixtures.GetBuyerFixtureWithRequiredFields(
-                generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
-            _buyersRepositoryMock.Setup(ar => ar.GetUser(deleteAccountData.GranterId.Value))
-                .ReturnsAsync(granter);
 
             _buyersRepositoryMock.Setup(ar => ar.DeleteUser(deleteAccountData.Id))
                 .ReturnsAsync(new Result { Message = Core.ResultMessager.OK, StatusCode = System.Net.HttpStatusCode.OK });
@@ -1539,8 +1361,7 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(Core.ResultMessager.OK);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.Id), Times.Once);
-            _buyersRepositoryMock.Verify(ar => ar.GetUser(deleteAccountData.GranterId.Value), Times.Once);
+            _buyersRepositoryMock.Verify(ar => ar.GetUserForUpdate(deleteAccountData.Id), Times.Once);
             _buyersRepositoryMock.Verify(ar => ar.DeleteUser(deleteAccountData.Id), Times.Once);
         }
     }

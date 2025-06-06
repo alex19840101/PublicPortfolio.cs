@@ -118,7 +118,7 @@ namespace ShopServices.BusinessLogic
             if (string.IsNullOrWhiteSpace(changeDiscountGroupsData.GranterLogin))
                 return new Result(ResultMessager.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
-            var user = await _buyersRepository.GetUser(changeDiscountGroupsData.BuyerId);
+            var user = await _buyersRepository.GetUserForUpdate(changeDiscountGroupsData.BuyerId);
 
             if (user is null)
                 return new Result(message: ResultMessager.USER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
@@ -200,7 +200,7 @@ namespace ShopServices.BusinessLogic
             if (deleteAccountData.GranterId != null && string.IsNullOrWhiteSpace(deleteAccountData.GranterLogin))
                 return new Result(ResultMessager.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE, System.Net.HttpStatusCode.BadRequest);
 
-            var user = await _buyersRepository.GetUser(deleteAccountData.Id);
+            var user = await _buyersRepository.GetUserForUpdate(deleteAccountData.Id);
 
             if (user is null)
                 return new Result(message: ResultMessager.USER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
