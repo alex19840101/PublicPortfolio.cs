@@ -51,8 +51,12 @@ try
     builder.Services.AddOpenApi();
 
     builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
+    builder.Services.AddScoped<ICouriersRepository, CouriersRepository>();
+    builder.Services.AddScoped<IManagersRepository, ManagersRepository>();
     builder.Services.AddScoped<IEmployeesService>(src => new EmployeesService(
         src.GetRequiredService<IEmployeesRepository>(),
+        src.GetRequiredService<ICouriersRepository>(),
+        src.GetRequiredService<IManagersRepository>(),
                     tokenValidationParameters,
                     key: builder.Configuration["JWT:KEY"]!));
 

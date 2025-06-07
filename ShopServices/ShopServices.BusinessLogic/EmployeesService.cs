@@ -17,13 +17,22 @@ namespace ShopServices.BusinessLogic
     public class EmployeesService : IEmployeesService
     {
         private readonly IEmployeesRepository _employeesRepository;
+        private readonly ICouriersRepository _couriersRepository;
+        private readonly IManagersRepository _managersRepository;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly string _key;
         private const int LOGIN_DEFAULT_TIMEOUT = 60;
 
-        public EmployeesService(IEmployeesRepository employeesRepository, TokenValidationParameters tokenValidationParameters, string key)
+        public EmployeesService(
+            IEmployeesRepository employeesRepository,
+            ICouriersRepository couriersRepository,
+            IManagersRepository managersRepository,
+            TokenValidationParameters tokenValidationParameters,
+            string key)
         {
             _employeesRepository = employeesRepository;
+            _couriersRepository = couriersRepository;
+            _managersRepository = managersRepository;
             _tokenValidationParameters = tokenValidationParameters;
             _key = key;
         }
@@ -53,7 +62,7 @@ namespace ShopServices.BusinessLogic
 
             if (string.IsNullOrWhiteSpace(employee.PasswordHash))
                 return new AuthResult(ResultMessager.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
-
+            var rolePost = employee.Role;
             employee.UpdateRole(newRole: $"?{employee.Role}"); //? - запрошенная пользователем роль утверждается администратором
 
             var existingUser = await _employeesRepository.GetUser(employee.Login);
@@ -65,7 +74,15 @@ namespace ShopServices.BusinessLogic
                 return new AuthResult(ResultMessager.ALREADY_EXISTS, System.Net.HttpStatusCode.Created, id: existingUser.Id);
             }
 
-            var registerResult = await _employeesRepository.AddUser(employee);
+            AuthResult registerResult;
+
+            if (string.Equals(rolePost?.ToLowerInvariant().Trim(), "manager"))
+                return await _managersRepository.AddUser(employee);
+
+            if (string.Equals(rolePost?.ToLowerInvariant().Trim(), "courier"))
+                return await _couriersRepository.AddUser(employee);
+
+            registerResult = await _employeesRepository.AddUser(employee);
 
             return registerResult;
         }

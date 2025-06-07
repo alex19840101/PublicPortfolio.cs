@@ -38,5 +38,7 @@
         public const string TRANSPORT_FIELD_SHOULD_NOT_BE_EMPTY = "Transport field should be not empty";
         public const string AREAS_FIELD_SHOULD_NOT_BE_EMPTY = "Areas field should be not empty";
         public const string DELIVERYTIMESCHEDULE_FIELD_SHOULD_NOT_BE_EMPTY = "DeliveryTimeSchedule field should be not empty";
+
+        public const string EMPLOYEE_IS_NOT_COURIER = "Employee is not courier";
     }
 }

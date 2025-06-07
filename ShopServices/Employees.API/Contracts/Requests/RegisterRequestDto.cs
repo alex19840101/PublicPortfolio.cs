@@ -50,7 +50,7 @@
         /// </summary>
         public string? Phone { get; set; }
         /// <summary>
-        /// Роль работника
+        /// Роль работника, например: "manager" / "courier")
         /// </summary>
         public string? RequestedRole { get; set; }
     }

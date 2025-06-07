@@ -4,7 +4,9 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ShopServices.Abstractions;
+using ShopServices.Abstractions.Auth;
 using ShopServices.Core;
+using ShopServices.Core.Auth;
 using ShopServices.Core.Models;
 using ShopServices.Core.Models.Requests;
 using ShopServices.Core.Repositories;
@@ -20,6 +22,43 @@ namespace ShopServices.DataAccess.Repositories
             _dbContext = dbContext;
         }
         //TODO: CouriersRepository
+
+        public async Task<AuthResult> AddUser(Employee employee)
+        {
+            ArgumentNullException.ThrowIfNull(employee);
+
+            var newCourierEntity = new Entities.Courier(
+                id: employee.Id,
+                login: employee.Login,
+                name: employee.Name,
+                surname: employee.Surname,
+                address: employee.Address,
+                email: employee.Email,
+                passwordHash: employee.PasswordHash,
+                nick: employee.Nick,
+                phone: employee.Phone,
+                role: employee.Role,
+                granterId: employee.GranterId,
+                createdDt: employee.CreatedDt.ToUniversalTime(),
+                lastUpdateDt: employee.LastUpdateDt?.ToUniversalTime())
+            {
+                Transport = "?",
+                Areas = "?",
+                DeliveryTimeSchedule = "?"
+            };
+
+            await _dbContext.Couriers.AddAsync(newCourierEntity);
+            await _dbContext.SaveChangesAsync();
+
+            await _dbContext.Entry(newCourierEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id
+            return new AuthResult
+            {
+                Id = newCourierEntity.Id,
+                StatusCode = HttpStatusCode.Created,
+                Message = ResultMessager.OK
+            };
+        }
+
 
         public async Task<Courier?> GetUser(uint id)
         {
@@ -78,31 +117,7 @@ namespace ShopServices.DataAccess.Repositories
                 if (employeeEntity is null)
                     return new Result(ResultMessager.USER_NOT_FOUND, HttpStatusCode.NotFound);
 
-                courierEntity = new Entities.Courier(
-                    id: employeeEntity.Id,
-                    login: employeeEntity.Login,
-                    name: employeeEntity.Name,
-                    surname: employeeEntity.Surname,
-                    address: employeeEntity.Address,
-                    email: employeeEntity.Email,
-                    passwordHash: employeeEntity.PasswordHash,
-                    nick: employeeEntity.Nick,
-                    phone: employeeEntity.Phone,
-                    role: employeeEntity.Role,
-                    granterId: employeeEntity.GranterId,
-                    createdDt: employeeEntity.CreatedDt,
-                    lastUpdateDt: employeeEntity.LastUpdateDt)
-                {
-                    DriverLicenseCategory = upd.DriverLicenseCategory,
-                    Transport = upd.Transport,
-                    Areas = upd.Areas,
-                    DeliveryTimeSchedule = upd.DeliveryTimeSchedule
-                };
-
-                _dbContext.Attach<Entities.Courier>(courierEntity);
-
-                await _dbContext.SaveChangesAsync();
-                return new Result(ResultMessager.USER_UPDATED, HttpStatusCode.OK);
+                return new Result(ResultMessager.EMPLOYEE_IS_NOT_COURIER, System.Net.HttpStatusCode.Conflict);
             }
 
             if (!string.Equals(upd.DriverLicenseCategory, courierEntity.DriverLicenseCategory)) courierEntity.DriverLicenseCategory = upd.DriverLicenseCategory;

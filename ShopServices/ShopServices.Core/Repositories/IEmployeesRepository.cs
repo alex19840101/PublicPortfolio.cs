@@ -7,6 +7,11 @@ namespace ShopServices.Core.Repositories
 {
     public interface IEmployeesRepository
     {
+        /// <summary>
+        /// Добавление цифрового аккаунта абстрактного работника
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         Task<AuthResult> AddUser(Employee employee);
         /// <summary> Получение данных по работнику без отслеживания изменений </summary>
         /// <param name="id"> id работника </param>

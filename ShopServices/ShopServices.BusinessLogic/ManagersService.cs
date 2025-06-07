@@ -19,7 +19,9 @@ namespace ShopServices.BusinessLogic
 
         public ManagersService(
             IEmployeesRepository employeesRepository,
-            IManagersRepository managersRepository, TokenValidationParameters tokenValidationParameters, string key)
+            IManagersRepository managersRepository,
+            TokenValidationParameters tokenValidationParameters,
+            string key)
         {
             _managersRepository = managersRepository;
             _tokenValidationParameters = tokenValidationParameters;

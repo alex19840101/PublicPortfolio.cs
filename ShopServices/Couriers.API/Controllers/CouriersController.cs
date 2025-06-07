@@ -128,6 +128,7 @@ namespace Couriers.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> UpdateCourier(UpdateCourierRequestDto updateCourierRequest)
         {
             var updateResult = await _couriersService.UpdateCourier(UpdateCourierRequest(updateCourierRequest));
@@ -137,6 +138,9 @@ namespace Couriers.API.Controllers
 
             if (updateResult.StatusCode == HttpStatusCode.Unauthorized)
                 return new UnauthorizedObjectResult(new Result { Message = updateResult.Message });
+
+            if (updateResult.StatusCode == HttpStatusCode.Conflict)
+                return new ConflictObjectResult(updateResult);
 
             return Ok(updateResult);
         }
