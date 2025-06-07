@@ -23,9 +23,9 @@ namespace ShopServices.BusinessLogic
         private readonly string _key;
         private const int LOGIN_DEFAULT_TIMEOUT = 60;
 
-        public BuyersService(IBuyersRepository authRepository, TokenValidationParameters tokenValidationParameters, string key)
+        public BuyersService(IBuyersRepository buyersRepository, TokenValidationParameters tokenValidationParameters, string key)
         {
-            _buyersRepository = authRepository;
+            _buyersRepository = buyersRepository;
             _tokenValidationParameters = tokenValidationParameters;
             _key = key;
         }

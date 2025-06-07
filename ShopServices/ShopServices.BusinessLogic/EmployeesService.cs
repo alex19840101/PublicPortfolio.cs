@@ -21,9 +21,9 @@ namespace ShopServices.BusinessLogic
         private readonly string _key;
         private const int LOGIN_DEFAULT_TIMEOUT = 60;
 
-        public EmployeesService(IEmployeesRepository authRepository, TokenValidationParameters tokenValidationParameters, string key)
+        public EmployeesService(IEmployeesRepository employeesRepository, TokenValidationParameters tokenValidationParameters, string key)
         {
-            _employeesRepository = authRepository;
+            _employeesRepository = employeesRepository;
             _tokenValidationParameters = tokenValidationParameters;
             _key = key;
         }
