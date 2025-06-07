@@ -49,9 +49,11 @@ try
     builder.Services.AddAuthenticationBuilderForJWT(tokenValidationParameters);
 
     builder.Services.AddOpenApi();
-
+    
+    builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
     builder.Services.AddScoped<ICouriersRepository, CouriersRepository>();
     builder.Services.AddScoped<ICouriersService>(src => new CouriersService(
+        src.GetRequiredService<IEmployeesRepository>(),
         src.GetRequiredService<ICouriersRepository>(),
                     tokenValidationParameters,
                     key: builder.Configuration["JWT:KEY"]!));
@@ -63,7 +65,7 @@ try
     //    options.Configuration = $"{builder.Configuration.GetValue<string>("Redis:Server")}:{builder.Configuration.GetValue<int>("Redis:Port")}";
     //});
 
-    string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ShopServicesCouriers")!;
+    string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ShopServicesEmployees")!;
 
     var isDevelopment = env.IsDevelopment();
 

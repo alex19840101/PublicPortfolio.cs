@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using ShopServices.Abstractions;
 using ShopServices.Core.Models;
+using ShopServices.Core.Models.Requests;
 
 namespace ShopServices.Core.Repositories
 {
@@ -14,5 +16,7 @@ namespace ShopServices.Core.Repositories
         Task<Courier> GetUser(uint id);
 
         Task<Courier> GetUser(string login);
+
+        Task<Result> UpdateCourier(UpdateCourierRequest updateCourierRequest);
     }
 }
