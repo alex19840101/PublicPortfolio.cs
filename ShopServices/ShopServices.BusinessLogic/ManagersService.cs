@@ -11,14 +11,17 @@ namespace ShopServices.BusinessLogic
 {
     public class ManagersService : IManagersService
     {
+        private readonly IEmployeesRepository _employeesRepository;
         private readonly IManagersRepository _managersRepository;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly string _key;
         private const int LOGIN_DEFAULT_TIMEOUT = 60;
 
-        public ManagersService(IManagersRepository authRepository, TokenValidationParameters tokenValidationParameters, string key)
+        public ManagersService(
+            IEmployeesRepository employeesRepository,
+            IManagersRepository managersRepository, TokenValidationParameters tokenValidationParameters, string key)
         {
-            _managersRepository = authRepository;
+            _managersRepository = managersRepository;
             _tokenValidationParameters = tokenValidationParameters;
             _key = key;
         }

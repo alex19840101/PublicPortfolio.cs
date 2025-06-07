@@ -12,7 +12,10 @@ using ShopServices.Core.Services;
 namespace Managers.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Asp.Versioning.ApiVersion(1.0)]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
     [Authorize(Roles = "admin,courier,manager")]
     [Authorize(AuthenticationSchemes = "Bearer")]
     public class ManagersController : ControllerBase

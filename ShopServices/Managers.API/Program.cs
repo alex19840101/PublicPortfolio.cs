@@ -50,8 +50,10 @@ try
 
     builder.Services.AddOpenApi();
 
+    builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
     builder.Services.AddScoped<IManagersRepository, ManagersRepository>();
     builder.Services.AddScoped<IManagersService>(src => new ManagersService(
+        src.GetRequiredService<IEmployeesRepository>(),
         src.GetRequiredService<IManagersRepository>(),
                     tokenValidationParameters,
                     key: builder.Configuration["JWT:KEY"]!));
@@ -63,7 +65,7 @@ try
     //    options.Configuration = $"{builder.Configuration.GetValue<string>("Redis:Server")}:{builder.Configuration.GetValue<int>("Redis:Port")}";
     //});
 
-    string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ShopServicesManagers")!;
+    string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ShopServicesEmployees")!;
 
     var isDevelopment = env.IsDevelopment();
 
