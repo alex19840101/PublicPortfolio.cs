@@ -60,13 +60,6 @@ try
                     tokenValidationParameters,
                     key: builder.Configuration["JWT:KEY"]!));
 
-    builder.Services.AddSingleton<ICacheService, CacheService>();
-    builder.Services.AddStackExchangeRedisCaching(builder.Configuration);
-    //builder.Services.AddStackExchangeRedisCache(options =>
-    //{
-    //    options.Configuration = $"{builder.Configuration.GetValue<string>("Redis:Server")}:{builder.Configuration.GetValue<int>("Redis:Port")}";
-    //});
-
     string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ShopServicesEmployees")!;
 
     var isDevelopment = env.IsDevelopment();
