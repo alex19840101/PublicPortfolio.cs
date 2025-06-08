@@ -2,12 +2,20 @@
 using System.Threading.Tasks;
 using ShopServices.Abstractions;
 using ShopServices.Core.Models;
+using ShopServices.Core.Repositories;
 using ShopServices.Core.Services;
 
 namespace ShopServices.BusinessLogic
 {
     public class GoodsService : IGoodsService
     {
+        private readonly IProductsRepository _productsRepository;
+
+        public GoodsService(IProductsRepository productsRepository)
+        {
+            _productsRepository = productsRepository;
+        }
+
         public async Task<Result> AddProduct(Product product)
         {
             throw new System.NotImplementedException();
