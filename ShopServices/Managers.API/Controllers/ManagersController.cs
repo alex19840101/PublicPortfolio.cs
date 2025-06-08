@@ -11,6 +11,7 @@ using ShopServices.Core.Models;
 using ShopServices.Core.Services;
 namespace Managers.API.Controllers
 {
+    /// <summary> Контроллер управления данными менеджеров </summary>
     [ApiController]
     [Asp.Versioning.ApiVersion(1.0)]
     [Route("api/v{version:apiVersion}/[controller]/[action]")]
@@ -23,6 +24,7 @@ namespace Managers.API.Controllers
         private readonly ILogger<ManagersController> _logger;
         private readonly IManagersService _managersService;
 
+        /// <summary> Конструктор контроллера управления данными менеджеров </summary>
         public ManagersController(
             IManagersService managersService,
             ILogger<ManagersController> logger)

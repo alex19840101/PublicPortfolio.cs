@@ -33,15 +33,15 @@
         /// <summary>
         /// Ник
         /// </summary>
-        public string Nick { get; set; }
+        public string? Nick { get; set; }
 
         /// <summary>
         /// Телефон(ы)
         /// </summary>
-        public string Phone { get; set; }
+        public string Phone { get; set; } = default!;
         /// <summary>
         /// Роль
         /// </summary>
-        public string Role { get; set; }
+        public string? Role { get; set; }
     }
 }

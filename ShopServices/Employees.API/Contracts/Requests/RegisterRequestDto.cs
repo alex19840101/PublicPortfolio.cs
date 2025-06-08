@@ -48,7 +48,7 @@
         /// <summary>
         /// Телефон(ы) работника
         /// </summary>
-        public string? Phone { get; set; }
+        public string Phone { get; set; } = default!;
         /// <summary>
         /// Роль работника, например: "manager" / "courier")
         /// </summary>

@@ -14,6 +14,7 @@ using ShopServices.Core.Services;
 
 namespace Couriers.API.Controllers
 {
+    /// <summary> Контроллер управления данными курьеров </summary>
     [ApiController]
     [Asp.Versioning.ApiVersion(1.0)]
     [Route("api/v{version:apiVersion}/[controller]/[action]")]
@@ -26,6 +27,8 @@ namespace Couriers.API.Controllers
         private readonly ILogger<CouriersController> _logger;
         private readonly ICouriersService _couriersService;
 
+
+        /// <summary> Конструктор контроллера управления данными курьеров </summary>
         public CouriersController(
             ICouriersService couriersService,
             ILogger<CouriersController> logger)

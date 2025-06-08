@@ -38,7 +38,7 @@
         /// <summary>
         /// Телефон(ы)
         /// </summary>
-        public string? Phone { get; set; }
+        public string Phone { get; set; } = default!;
         /// <summary>
         /// Роль
         /// </summary>
