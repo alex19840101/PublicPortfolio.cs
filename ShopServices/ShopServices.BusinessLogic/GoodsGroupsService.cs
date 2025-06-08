@@ -4,12 +4,19 @@ using System.Text;
 using System.Threading.Tasks;
 using ShopServices.Abstractions;
 using ShopServices.Core.Models;
+using ShopServices.Core.Repositories;
 using ShopServices.Core.Services;
 
 namespace ShopServices.BusinessLogic
 {
     public class GoodsGroupsService : IGoodsGroupsService
     {
+        private readonly ICategoriesRepository _categoriesRepository;
+
+        public GoodsGroupsService(ICategoriesRepository categoriesRepository)
+        {
+            _categoriesRepository = categoriesRepository;
+        }
         public async Task<Result> AddCategory(Category product)
         {
             throw new NotImplementedException();
