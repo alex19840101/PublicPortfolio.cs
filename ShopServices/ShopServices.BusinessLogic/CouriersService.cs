@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.IdentityModel.Tokens;
 using ShopServices.Abstractions;
 using ShopServices.Core;
 using ShopServices.Core.Auth;
@@ -17,18 +14,13 @@ namespace ShopServices.BusinessLogic
     {
         private readonly IEmployeesRepository _employeesRepository;
         private readonly ICouriersRepository _couriersRepository;
-        private readonly TokenValidationParameters _tokenValidationParameters;
-        private readonly string _key;
-        private const int LOGIN_DEFAULT_TIMEOUT = 60;
 
         public CouriersService(
             IEmployeesRepository employeesRepository,
-            ICouriersRepository couriersRepository, TokenValidationParameters tokenValidationParameters, string key)
+            ICouriersRepository couriersRepository)
         {
             _employeesRepository = employeesRepository;
             _couriersRepository = couriersRepository;
-            _tokenValidationParameters = tokenValidationParameters;
-            _key = key;
         }
 
         public async Task<Courier> GetUserInfo(uint id)

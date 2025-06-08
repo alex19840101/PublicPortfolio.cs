@@ -54,16 +54,7 @@ try
     builder.Services.AddScoped<ICouriersRepository, CouriersRepository>();
     builder.Services.AddScoped<ICouriersService>(src => new CouriersService(
         src.GetRequiredService<IEmployeesRepository>(),
-        src.GetRequiredService<ICouriersRepository>(),
-                    tokenValidationParameters,
-                    key: builder.Configuration["JWT:KEY"]!));
-
-    builder.Services.AddSingleton<ICacheService, CacheService>();
-    builder.Services.AddStackExchangeRedisCaching(builder.Configuration);
-    //builder.Services.AddStackExchangeRedisCache(options =>
-    //{
-    //    options.Configuration = $"{builder.Configuration.GetValue<string>("Redis:Server")}:{builder.Configuration.GetValue<int>("Redis:Port")}";
-    //});
+        src.GetRequiredService<ICouriersRepository>()));
 
     string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ShopServicesEmployees")!;
 
