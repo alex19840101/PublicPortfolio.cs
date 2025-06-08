@@ -54,16 +54,7 @@ try
     builder.Services.AddScoped<IManagersRepository, ManagersRepository>();
     builder.Services.AddScoped<IManagersService>(src => new ManagersService(
         src.GetRequiredService<IEmployeesRepository>(),
-        src.GetRequiredService<IManagersRepository>(),
-                    tokenValidationParameters,
-                    key: builder.Configuration["JWT:KEY"]!));
-
-    builder.Services.AddSingleton<ICacheService, CacheService>();
-    builder.Services.AddStackExchangeRedisCaching(builder.Configuration);
-    //builder.Services.AddStackExchangeRedisCache(options =>
-    //{
-    //    options.Configuration = $"{builder.Configuration.GetValue<string>("Redis:Server")}:{builder.Configuration.GetValue<int>("Redis:Port")}";
-    //});
+        src.GetRequiredService<IManagersRepository>()));
 
     string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ShopServicesEmployees")!;
 
