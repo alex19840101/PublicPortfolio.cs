@@ -9,6 +9,11 @@
         public uint Id { get; set; }
 
         /// <summary>
+        /// Информация о работнике (Employee) ((курьере)))
+        /// </summary>
+        public EmployeeAccountDto EmployeeAccount { get; set; } = default!;
+
+        /// <summary>
         /// Категория водительских прав (при наличии)
         /// </summary>
         public string? DriverLicenseCategory { get; set; }

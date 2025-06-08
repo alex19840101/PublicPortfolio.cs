@@ -38,7 +38,7 @@ public class EmployeesController : ControllerBase
     [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> Register(RegisterRequestDto request)
     {
-        var registerResult = await _employeesService.Register(Employee(request));
+        var registerResult = await _employeesService.Register(GetCoreEmployee(request));
 
         if (registerResult.StatusCode == HttpStatusCode.BadRequest)
             return new BadRequestObjectResult(new ProblemDetails { Title = registerResult.Message });
@@ -66,7 +66,7 @@ public class EmployeesController : ControllerBase
     [ProducesResponseType(typeof(AuthResponseDto), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> Login(LoginRequestDto request)
     {
-        var loginResult = await _employeesService.Login(LoginData(request));
+        var loginResult = await _employeesService.Login(GetCoreLoginData(request));
 
         if (loginResult.StatusCode == HttpStatusCode.BadRequest)
             return new BadRequestObjectResult(new ProblemDetails { Title = loginResult.Message });
@@ -98,7 +98,7 @@ public class EmployeesController : ControllerBase
     [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<IActionResult> GrantRole(GrantRoleRequestDto request)
     {
-        var grantResult = await _employeesService.GrantRole(GrantRoleData(request));
+        var grantResult = await _employeesService.GrantRole(GetCoreGrantRoleData(request));
 
         if (grantResult.StatusCode == HttpStatusCode.NotFound)
             return NotFound(grantResult);
@@ -120,7 +120,7 @@ public class EmployeesController : ControllerBase
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Conflict)]
     public async Task<IActionResult> UpdateAccount(UpdateAccountRequestDto request)
     {
-        var updateResult = await _employeesService.UpdateAccount(UpdateAccountData(request));
+        var updateResult = await _employeesService.UpdateAccount(GetCoreUpdateAccountData(request));
 
         if (updateResult.StatusCode == HttpStatusCode.NotFound)
             return NotFound(updateResult);
@@ -143,7 +143,7 @@ public class EmployeesController : ControllerBase
     [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> DeleteAccount(DeleteAccountRequestDto request)
     {
-        var deleteResult = await _employeesService.DeleteAccount(DeleteAccountData(request));
+        var deleteResult = await _employeesService.DeleteAccount(GetCoreDeleteAccountData(request));
 
         if (deleteResult.StatusCode == HttpStatusCode.NotFound)
             return NotFound(deleteResult);
@@ -172,7 +172,7 @@ public class EmployeesController : ControllerBase
         if (employee is null)
             return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
 
-        return Ok(UserInfoResponseDto(employee));
+        return Ok(GetUserInfoResponseDto(employee));
     }
 
     /// <summary> Получение информации о работнике по логину (для администраторов) </summary>
@@ -190,11 +190,11 @@ public class EmployeesController : ControllerBase
         if (employee is null)
             return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
 
-        return Ok(UserInfoResponseDto(employee));
+        return Ok(GetUserInfoResponseDto(employee));
     }
 
     [NonAction]
-    private static Employee Employee(RegisterRequestDto request) =>
+    private static Employee GetCoreEmployee(RegisterRequestDto request) =>
         new Employee(
             id: 0,
             login: request.Login,
@@ -211,7 +211,7 @@ public class EmployeesController : ControllerBase
             lastUpdateDt: null);
 
     [NonAction]
-    private static LoginData LoginData(LoginRequestDto request)
+    private static LoginData GetCoreLoginData(LoginRequestDto request)
     {
         return new LoginData(
             login: request.Login,
@@ -221,7 +221,7 @@ public class EmployeesController : ControllerBase
 
 
     [NonAction]
-    private static DeleteAccountData DeleteAccountData(DeleteAccountRequestDto request)
+    private static DeleteAccountData GetCoreDeleteAccountData(DeleteAccountRequestDto request)
     {
         return new DeleteAccountData(
             id: request.Id,
@@ -242,7 +242,7 @@ public class EmployeesController : ControllerBase
     #endregion Logout не требуется для пет-проекта
 
     [NonAction]
-    private static GrantRoleData GrantRoleData(GrantRoleRequestDto requestDto)
+    private static GrantRoleData GetCoreGrantRoleData(GrantRoleRequestDto requestDto)
     {
         return new GrantRoleData(
             id: requestDto.Id,
@@ -254,7 +254,7 @@ public class EmployeesController : ControllerBase
     }
 
     [NonAction]
-    private static UpdateAccountData UpdateAccountData(UpdateAccountRequestDto requestDto)
+    private static UpdateAccountData GetCoreUpdateAccountData(UpdateAccountRequestDto requestDto)
     {
         return new UpdateAccountData(
                 id: requestDto.Id,
@@ -271,7 +271,7 @@ public class EmployeesController : ControllerBase
     }
 
     [NonAction]
-    private static UserInfoResponseDto UserInfoResponseDto(Employee employee) =>
+    private static UserInfoResponseDto GetUserInfoResponseDto(Employee employee) =>
         new UserInfoResponseDto
         {
             Id = employee.Id,

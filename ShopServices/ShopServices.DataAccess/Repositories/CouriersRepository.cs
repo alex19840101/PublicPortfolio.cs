@@ -21,9 +21,8 @@ namespace ShopServices.DataAccess.Repositories
         {
             _dbContext = dbContext;
         }
-        //TODO: CouriersRepository
 
-        public async Task<AuthResult> AddUser(Employee employee)
+        public async Task<AuthResult> AddCourier(Employee employee)
         {
             ArgumentNullException.ThrowIfNull(employee);
 
@@ -60,7 +59,7 @@ namespace ShopServices.DataAccess.Repositories
         }
 
 
-        public async Task<Courier?> GetUser(uint id)
+        public async Task<Courier?> GetCourier(uint id)
         {
             var courierEntity = await GetCourierEntity(id, asNoTracking: true);
             if (courierEntity is null)
@@ -69,18 +68,23 @@ namespace ShopServices.DataAccess.Repositories
             return GetCoreCourierModel(courierEntity);
         }
 
-        public async Task<Courier?> GetUserForUpdate(uint id)
+        public async Task<Courier?> GetCourier(string login)
         {
-            var courierEntity = await GetCourierEntity(id, asNoTracking: false);
+            var courierEntity = await GetCourierEntity(login);
             if (courierEntity is null)
                 return null;
 
             return GetCoreCourierModel(courierEntity);
         }
 
-        public Task<Courier> GetUser(string login)
+
+        public async Task<Courier?> GetCourierForUpdate(uint id)
         {
-            throw new NotImplementedException();
+            var courierEntity = await GetCourierEntity(id, asNoTracking: false);
+            if (courierEntity is null)
+                return null;
+
+            return GetCoreCourierModel(courierEntity);
         }
 
         private async Task<Entities.Courier?> GetCourierEntity(uint id, bool asNoTracking)

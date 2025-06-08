@@ -20,7 +20,7 @@ namespace ShopServices.DataAccess.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<AuthResult> AddUser(Employee employee)
+        public async Task<AuthResult> AddEmployee(Employee employee)
         {
             ArgumentNullException.ThrowIfNull(employee);
 
@@ -51,7 +51,7 @@ namespace ShopServices.DataAccess.Repositories
             };
         }
 
-        public async Task<Result> DeleteUser(uint id)
+        public async Task<Result> DeleteEmployee(uint id)
         {
             var employeeEntity = await GetEmployeeEntity(id, asNoTracking: false);
 
@@ -64,7 +64,7 @@ namespace ShopServices.DataAccess.Repositories
             return new Result(ResultMessager.OK, HttpStatusCode.OK);
         }
 
-        public async Task<Employee?> GetUser(uint id)
+        public async Task<Employee?> GetEmployee(uint id)
         {
             var employeeEntity = await GetEmployeeEntity(id, asNoTracking: true);
             if (employeeEntity is null)
@@ -73,7 +73,7 @@ namespace ShopServices.DataAccess.Repositories
             return Employee(employeeEntity);
         }
 
-        public async Task<Employee?> GetUserForUpdate(uint id)
+        public async Task<Employee?> GetEmployeeForUpdate(uint id)
         {
             var employeeEntity = await GetEmployeeEntity(id, asNoTracking: false);
             if (employeeEntity is null)
@@ -82,7 +82,7 @@ namespace ShopServices.DataAccess.Repositories
             return Employee(employeeEntity);
         }
 
-        public async Task<Employee?> GetUser(string login)
+        public async Task<Employee?> GetEmployee(string login)
         {
             var employeeEntity = await GetEmployeeEntity(login);
             if (employeeEntity is null)
@@ -113,7 +113,7 @@ namespace ShopServices.DataAccess.Repositories
             return new Result(ResultMessager.USER_UPDATED, HttpStatusCode.OK);
         }
 
-        public async Task<Result> UpdateUser(UpdateAccountData upd)
+        public async Task<Result> UpdateEmployee(UpdateAccountData upd)
         {
             ArgumentNullException.ThrowIfNull(upd);
 

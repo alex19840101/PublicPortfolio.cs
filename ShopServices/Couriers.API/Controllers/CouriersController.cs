@@ -54,7 +54,6 @@ namespace Couriers.API.Controllers
         {
             return new ObjectResult("Use Employees.API/DeleteAccount") { StatusCode = StatusCodes.Status501NotImplemented };
         }
-        //TODO: Couriers.API, CouriersController
 
         /// <summary> Получение информации о работнике ((курьере)) по Id </summary>
         [HttpGet]
@@ -62,14 +61,14 @@ namespace Couriers.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetCourierInfoById(uint id)
+        public async Task<IActionResult> GetCourierById(uint id)
         {
-            var employee = await _couriersService.GetUserInfo(id);
+            var employee = await _couriersService.GetCourier(id);
 
             if (employee is null)
                 return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
 
-            return Ok(CourierInfoResponseDto(employee));
+            return Ok(GetCourierInfoResponseDto(employee));
         }
 
         /// <summary> Получение информации о работнике ((курьере)) по логину </summary>
@@ -78,48 +77,15 @@ namespace Couriers.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetCourierInfoByLogin(string login)
+        public async Task<IActionResult> GetCourierByLogin(string login)
         {
-            var employee = await _couriersService.GetUserInfo(login);
+            var employee = await _couriersService.GetCourier(login);
 
             if (employee is null)
                 return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
 
-            return Ok(CourierInfoResponseDto(employee));
+            return Ok(GetCourierInfoResponseDto(employee));
         }
-
-
-        ///// <summary> Получение информации о работнике ((курьере)) по Id </summary>
-        //[HttpGet]
-        //[ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
-        //[ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
-        //[ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
-        //[ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        //public async Task<IActionResult> GetUserInfoById(uint id)
-        //{
-        //    var employee = await _couriersService.GetUserInfo(id);
-
-        //    if (employee is null)
-        //        return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
-
-        //    return Ok(UserInfoResponseDto(employee));
-        //}
-
-        ///// <summary> Получение информации о работнике ((курьере)) по логину </summary>
-        //[HttpGet]
-        //[ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
-        //[ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
-        //[ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
-        //[ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        //public async Task<IActionResult> GetUserInfoByLogin(string login)
-        //{
-        //    var employee = await _couriersService.GetUserInfo(login);
-
-        //    if (employee is null)
-        //        return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
-
-        //    return Ok(UserInfoResponseDto(employee));
-        //}
 
         /// <summary>
         /// Обновление данных курьера
@@ -134,7 +100,7 @@ namespace Couriers.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> UpdateCourier(UpdateCourierRequestDto updateCourierRequest)
         {
-            var updateResult = await _couriersService.UpdateCourier(UpdateCourierRequest(updateCourierRequest));
+            var updateResult = await _couriersService.UpdateCourier(GetCoreUpdateCourierRequest(updateCourierRequest));
 
             if (updateResult.StatusCode == HttpStatusCode.NotFound)
                 return NotFound(updateResult);
@@ -148,9 +114,13 @@ namespace Couriers.API.Controllers
             return Ok(updateResult);
         }
 
-
+        /// <summary>
+        /// Маппер UpdateCourierRequestDto - Core.Models.Requests.UpdateCourierRequest
+        /// </summary>
+        /// <param name="requestDto"></param>
+        /// <returns></returns>
         [NonAction]
-        private static UpdateCourierRequest UpdateCourierRequest(UpdateCourierRequestDto requestDto)
+        private static UpdateCourierRequest GetCoreUpdateCourierRequest(UpdateCourierRequestDto requestDto)
         {
             return new UpdateCourierRequest
             {
@@ -163,14 +133,28 @@ namespace Couriers.API.Controllers
         }
 
 
-
+        /// <summary>
+        /// Маппер Core.Models.Courier - CourierInfoResponseDto
+        /// </summary>
+        /// <param name="courier"> Core.Models.Courier - курьер </param>
+        /// <returns></returns>
         [NonAction]
-        private static CourierInfoResponseDto CourierInfoResponseDto(Courier courier)
+        private static CourierInfoResponseDto GetCourierInfoResponseDto(Courier courier)
         {
-          
             return new CourierInfoResponseDto
             {
                 Id = courier.Employee.Id,
+                EmployeeAccount = new EmployeeAccountDto
+                {
+                    Id = courier.Employee.Id,
+                    Login = courier.Employee.Login,
+                    Name = courier.Employee.Name,
+                    Surname = courier.Employee.Surname,
+                    Email = courier.Employee.Email,
+                    Nick = courier.Employee.Nick,
+                    Phone = courier.Employee.Phone,
+                    Role = courier.Employee.Role
+                },
                 DriverLicenseCategory = courier.DriverLicenseCategory,
                 Transport = courier.Transport,
                 Areas = courier.Areas,

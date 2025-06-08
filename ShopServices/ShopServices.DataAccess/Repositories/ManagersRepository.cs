@@ -3,10 +3,12 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ShopServices.Abstractions;
 using ShopServices.Abstractions.Auth;
 using ShopServices.Core;
 using ShopServices.Core.Auth;
 using ShopServices.Core.Models;
+using ShopServices.Core.Models.Requests;
 using ShopServices.Core.Repositories;
 
 namespace ShopServices.DataAccess.Repositories
@@ -19,9 +21,8 @@ namespace ShopServices.DataAccess.Repositories
         {
             _dbContext = dbContext;
         }
-        //TODO: ManagersRepository
 
-        public async Task<AuthResult> AddUser(Employee employee)
+        public async Task<AuthResult> AddManager(Employee employee)
         {
             ArgumentNullException.ThrowIfNull(employee);
 
@@ -52,15 +53,25 @@ namespace ShopServices.DataAccess.Repositories
             };
         }
 
-        public Task<Manager> GetUser(uint id)
+
+        public async Task<Manager?> GetManager(uint id)
         {
-            throw new NotImplementedException();
+            var managerEntity = await GetManagerEntity(id, asNoTracking: true);
+            if (managerEntity is null)
+                return null;
+
+            return GetCoreManagerModel(managerEntity);
         }
 
-        public Task<Manager> GetUser(string login)
+        public async Task<Manager?> GetManager(string login)
         {
-            throw new NotImplementedException();
+            var managerEntity = await GetManagerEntity(login);
+            if (managerEntity is null)
+                return null;
+
+            return GetCoreManagerModel(managerEntity);
         }
+
 
         private async Task<Entities.Manager?> GetManagerEntity(uint id, bool asNoTracking)
         {
@@ -80,5 +91,64 @@ namespace ShopServices.DataAccess.Repositories
 
             return managerEntity;
         }
+
+        public async Task<Result> UpdateManager(UpdateManagerRequest upd)
+        {
+            ArgumentNullException.ThrowIfNull(upd);
+
+            var managerEntity = await _dbContext.Managers
+                .SingleOrDefaultAsync(c => c.Id == upd.Id);
+
+            if (managerEntity == null)
+            {
+                var employeeEntity = await _dbContext.Employees
+                    .SingleOrDefaultAsync(e => e.Id == upd.Id);
+
+                if (employeeEntity is null)
+                    return new Result(ResultMessager.USER_NOT_FOUND, HttpStatusCode.NotFound);
+
+                return new Result(ResultMessager.EMPLOYEE_IS_NOT_COURIER, System.Net.HttpStatusCode.Conflict);
+            }
+
+            //if (!string.Equals(upd.Field, managerEntity.Field)) managerEntity.Field = upd.Field;
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                managerEntity.UpdateLastUpdateDt(DateTime.Now.ToUniversalTime());
+                await _dbContext.SaveChangesAsync();
+                return new Result(ResultMessager.USER_UPDATED, HttpStatusCode.OK);
+            }
+
+            return new Result(ResultMessager.USER_IS_ACTUAL, HttpStatusCode.OK);
+        }
+
+
+
+        /// <summary>
+        /// Маппинг Entities.Manager - Core.Models.Manager
+        /// </summary>
+        /// <param name="managerEntity"> Entities.Manager-данные менеджера из БД </param>
+        /// <returns> Core.Models.Manager-объект </returns>
+        private static Manager GetCoreManagerModel(Entities.Manager managerEntity) =>
+            new Manager
+            {
+                //Field(s)
+                //...
+
+                Employee = new Core.Auth.Employee(
+                    id: managerEntity.Id,
+                    login: managerEntity.Login,
+                    name: managerEntity.Name,
+                    surname: managerEntity.Surname,
+                    address: managerEntity.Address,
+                    email: managerEntity.Email,
+                    passwordHash: managerEntity.PasswordHash,
+                    nick: managerEntity.Nick,
+                    phone: managerEntity.Phone,
+                    role: managerEntity.Role,
+                    granterId: managerEntity.GranterId,
+                    createdDt: managerEntity.CreatedDt.ToLocalTime(),
+                    lastUpdateDt: managerEntity.LastUpdateDt?.ToLocalTime())
+
+            };
     }
 }

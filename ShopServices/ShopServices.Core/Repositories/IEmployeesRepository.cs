@@ -12,19 +12,19 @@ namespace ShopServices.Core.Repositories
         /// </summary>
         /// <param name="employee"></param>
         /// <returns></returns>
-        Task<AuthResult> AddUser(Employee employee);
+        Task<AuthResult> AddEmployee(Employee employee);
         /// <summary> Получение данных по работнику без отслеживания изменений </summary>
-        /// <param name="id"> id работника </param>
+        /// <param name="employeeId"> id работника </param>
         /// <returns></returns>
-        Task<Employee> GetUser(uint id);
+        Task<Employee> GetEmployee(uint employeeId);
 
         /// <summary> Получение данных по работнику (с отслеживанием изменений для дальнейшего обновления) </summary>
-        /// <param name="id"> id работника </param>
+        /// <param name="employeeId"> id работника </param>
         /// <returns></returns>
-        Task<Employee> GetUserForUpdate(uint id);
-        Task<Employee> GetUser(string login);
-        Task<Result> UpdateUser(UpdateAccountData employee);
+        Task<Employee> GetEmployeeForUpdate(uint employeeId);
+        Task<Employee> GetEmployee(string employeeLogin);
+        Task<Result> UpdateEmployee(UpdateAccountData employee);
         Task<Result> GrantRole(uint id, string role, uint granterId);
-        Task<Result> DeleteUser(uint id);
+        Task<Result> DeleteEmployee(uint id);
     }
 }

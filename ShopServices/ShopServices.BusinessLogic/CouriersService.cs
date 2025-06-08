@@ -23,9 +23,9 @@ namespace ShopServices.BusinessLogic
             _couriersRepository = couriersRepository;
         }
 
-        public async Task<Courier> GetUserInfo(uint id)
+        public async Task<Courier> GetCourier(uint id)
         {
-            var user = await _couriersRepository.GetUser(id);
+            var user = await _couriersRepository.GetCourier(id);
 
             if (user == null)
             {
@@ -40,19 +40,19 @@ namespace ShopServices.BusinessLogic
             return user;
         }
 
-        public async Task<Courier> GetUserInfo(string login)
+        public async Task<Courier> GetCourier(string login)
         {
             if (string.IsNullOrWhiteSpace(login))
                 return default!; //throw new ArgumentNullException(ResultMessager.LOGIN_SHOULD_NOT_BE_EMPTY);
 
-            var user = await _couriersRepository.GetUser(login);
+            var user = await _couriersRepository.GetCourier(login);
 
             return user;
         }
 
         public async Task<Employee> GetEmployee(uint id)
         {
-            var user = await _employeesRepository.GetUser(id);
+            var user = await _employeesRepository.GetEmployee(id);
 
             return user;
         }
@@ -61,7 +61,7 @@ namespace ShopServices.BusinessLogic
             if (string.IsNullOrWhiteSpace(login))
                 return default!; //throw new ArgumentNullException(ResultMessager.LOGIN_SHOULD_NOT_BE_EMPTY);
 
-            var user = await _employeesRepository.GetUser(login);
+            var user = await _employeesRepository.GetEmployee(login);
 
             return user;
         }

@@ -1,9 +1,9 @@
-﻿namespace Couriers.API.Contracts.Responses
+﻿namespace Managers.API.Contracts.Responses
 {
     /// <summary>
-    /// Класс ответа с информацией о пользователе (работнике ((курьере)))
+    /// Класс ответа с информацией о работнике ((менеджере)))
     /// </summary>
-    public class UserInfoResponseDto
+    public class EmployeeAccountDto
     {
         /// <summary>
         /// Уникальный id аккаунта*

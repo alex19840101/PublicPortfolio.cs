@@ -15,16 +15,16 @@ namespace ShopServices.Core.Repositories
         /// <summary> Получение данных по курьеру без отслеживания изменений </summary>
         /// <param name="id"> id работника (курьера) </param>
         /// <returns></returns>
-        Task<Courier> GetUser(uint id);
+        Task<Courier> GetCourier(uint id);
 
-        Task<Courier> GetUser(string login);
+        Task<Courier> GetCourier(string login);
 
         /// <summary>
         /// Добавление цифрового аккаунта работника-курьера
         /// </summary>
         /// <param name="employee"></param>
         /// <returns></returns>
-        Task<AuthResult> AddUser(Employee employee);
+        Task<AuthResult> AddCourier(Employee employee);
         Task<Result> UpdateCourier(UpdateCourierRequest updateCourierRequest);
     }
 }

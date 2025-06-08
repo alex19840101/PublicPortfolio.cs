@@ -53,7 +53,7 @@ namespace ShopServices.BusinessLogic.MsTests
             AuthResult authResult = null;
             var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => authResult = await _employeesService.Register(employee));
 
-            _employeesRepositoryMock.Verify(er => er.AddUser(employee), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.AddEmployee(employee), Times.Never);
             Assert.IsNotNull(exception);
             Assert.IsNull(authResult);
             Assert.AreEqual(ResultMessager.EMPLOYEE_PARAM_NAME, exception.ParamName);
@@ -66,7 +66,7 @@ namespace ShopServices.BusinessLogic.MsTests
             AuthResult authResult = null;
             var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => authResult = await _employeesService.Register(employee));
 
-            _employeesRepositoryMock.Verify(er => er.AddUser(employee), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.AddEmployee(employee), Times.Never);
             exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ResultMessager.EMPLOYEE_PARAM_NAME);
             authResult.Should().BeNull();
             exception.ParamName.Should().Be(ResultMessager.EMPLOYEE_PARAM_NAME);
@@ -261,7 +261,7 @@ namespace ShopServices.BusinessLogic.MsTests
 
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
-            _employeesRepositoryMock.Setup(er => er.AddUser(employee))
+            _employeesRepositoryMock.Setup(er => er.AddEmployee(employee))
                 .ReturnsAsync(new AuthResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
             var registerResult = await _employeesService.Register(employee);
@@ -269,7 +269,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsTrue(registerResult.Id > 0);
             Assert.AreEqual(expectedId, registerResult.Id);
             Assert.AreEqual(System.Net.HttpStatusCode.Created, registerResult.StatusCode);
-            _employeesRepositoryMock.Verify(er => er.AddUser(employee), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.AddEmployee(employee), Times.Once);
         }
 
         [DataTestMethod]
@@ -283,7 +283,7 @@ namespace ShopServices.BusinessLogic.MsTests
 
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
-            _couriersRepositoryMock.Setup(cr => cr.AddUser(employee))
+            _couriersRepositoryMock.Setup(cr => cr.AddCourier(employee))
                 .ReturnsAsync(new AuthResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
             var registerResult = await _employeesService.Register(employee);
@@ -291,7 +291,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsTrue(registerResult.Id > 0);
             Assert.AreEqual(expectedId, registerResult.Id);
             Assert.AreEqual(System.Net.HttpStatusCode.Created, registerResult.StatusCode);
-            _couriersRepositoryMock.Verify(cr => cr.AddUser(employee), Times.Once);
+            _couriersRepositoryMock.Verify(cr => cr.AddCourier(employee), Times.Once);
         }
 
 
@@ -306,7 +306,7 @@ namespace ShopServices.BusinessLogic.MsTests
 
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
-            _managersRepositoryMock.Setup(mr => mr.AddUser(employee))
+            _managersRepositoryMock.Setup(mr => mr.AddManager(employee))
                 .ReturnsAsync(new AuthResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
             var registerResult = await _employeesService.Register(employee);
@@ -314,7 +314,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsTrue(registerResult.Id > 0);
             Assert.AreEqual(expectedId, registerResult.Id);
             Assert.AreEqual(System.Net.HttpStatusCode.Created, registerResult.StatusCode);
-            _managersRepositoryMock.Verify(mr => mr.AddUser(employee), Times.Once);
+            _managersRepositoryMock.Verify(mr => mr.AddManager(employee), Times.Once);
         }
 
         [TestMethod]
@@ -324,7 +324,7 @@ namespace ShopServices.BusinessLogic.MsTests
 
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
-            _employeesRepositoryMock.Setup(er => er.AddUser(employee))
+            _employeesRepositoryMock.Setup(er => er.AddEmployee(employee))
                 .ReturnsAsync(new AuthResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
             var registerResult = await _employeesService.Register(employee);
@@ -333,7 +333,7 @@ namespace ShopServices.BusinessLogic.MsTests
             registerResult.Id.Should().Be(expectedId);
             registerResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
 
-            _employeesRepositoryMock.Verify(er => er.AddUser(employee), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.AddEmployee(employee), Times.Once);
         }
 
         [TestMethod]
@@ -343,7 +343,7 @@ namespace ShopServices.BusinessLogic.MsTests
 
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
-            _employeesRepositoryMock.Setup(er => er.AddUser(employee))
+            _employeesRepositoryMock.Setup(er => er.AddEmployee(employee))
                 .ReturnsAsync(new AuthResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
             var registerResult = await _employeesService.Register(employee);
@@ -351,7 +351,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsTrue(registerResult.Id > 0);
             Assert.AreEqual(expectedId, registerResult.Id);
             Assert.AreEqual(System.Net.HttpStatusCode.Created, registerResult.StatusCode);
-            _employeesRepositoryMock.Verify(er => er.AddUser(employee), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.AddEmployee(employee), Times.Once);
         }
 
         [TestMethod]
@@ -361,7 +361,7 @@ namespace ShopServices.BusinessLogic.MsTests
 
             var expectedId = TestFixtures.TestFixtures.GenerateId();
 
-            _employeesRepositoryMock.Setup(er => er.AddUser(employee))
+            _employeesRepositoryMock.Setup(er => er.AddEmployee(employee))
                             .ReturnsAsync(new AuthResult { Id = expectedId, StatusCode = System.Net.HttpStatusCode.Created });
 
             var createResult = await _employeesService.Register(employee);
@@ -370,7 +370,7 @@ namespace ShopServices.BusinessLogic.MsTests
             createResult.Id.Should().Be(expectedId);
             createResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Created);
 
-            _employeesRepositoryMock.Verify(er => er.AddUser(employee), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.AddEmployee(employee), Times.Once);
         }
 
         [TestMethod]
@@ -381,7 +381,7 @@ namespace ShopServices.BusinessLogic.MsTests
             string login = null;
             var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => authResult = await _employeesService.Login(loginData));
 
-            _employeesRepositoryMock.Verify(er => er.GetUser(login), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(login), Times.Never);
             Assert.IsNotNull(exception);
             Assert.IsNull(authResult);
             Assert.AreEqual(ResultMessager.LOGINDATA_PARAM_NAME, exception.ParamName);
@@ -395,7 +395,7 @@ namespace ShopServices.BusinessLogic.MsTests
             string login = null;
             var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => authResult = await _employeesService.Login(loginData));
 
-            _employeesRepositoryMock.Verify(er => er.GetUser(login), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(login), Times.Never);
             exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ResultMessager.LOGINDATA_PARAM_NAME);
             authResult.Should().BeNull();
             exception.ParamName.Should().Be(ResultMessager.LOGINDATA_PARAM_NAME);
@@ -459,7 +459,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
             Employee employee = null;
-            _employeesRepositoryMock.Setup(er => er.GetUser(loginData.Login))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(loginData.Login))
                 .ReturnsAsync(employee);
 
             var authResult = await _employeesService.Login(loginData);
@@ -469,7 +469,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, authResult.StatusCode);
             Assert.IsNull(authResult.Id);
 
-            _employeesRepositoryMock.Verify(er => er.GetUser(loginData.Login), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(loginData.Login), Times.Once);
         }
 
         [TestMethod]
@@ -477,7 +477,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
             Employee employee = null;
-            _employeesRepositoryMock.Setup(er => er.GetUser(loginData.Login))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(loginData.Login))
                 .ReturnsAsync(employee);
 
             var authResult = await _employeesService.Login(loginData);
@@ -487,7 +487,7 @@ namespace ShopServices.BusinessLogic.MsTests
             authResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
             authResult.Id.Should().BeNull();
 
-            _employeesRepositoryMock.Verify(er => er.GetUser(loginData.Login), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(loginData.Login), Times.Once);
         }
 
         [TestMethod]
@@ -495,7 +495,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
             Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields();
-            _employeesRepositoryMock.Setup(er => er.GetUser(loginData.Login))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(loginData.Login))
                 .ReturnsAsync(employee);
 
             var authResult = await _employeesService.Login(loginData);
@@ -505,7 +505,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.AreEqual(System.Net.HttpStatusCode.Unauthorized, authResult.StatusCode);
             Assert.IsNull(authResult.Id);
 
-            _employeesRepositoryMock.Verify(er => er.GetUser(loginData.Login), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(loginData.Login), Times.Once);
         }
 
         [TestMethod]
@@ -513,7 +513,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
             Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields();
-            _employeesRepositoryMock.Setup(er => er.GetUser(loginData.Login))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(loginData.Login))
                 .ReturnsAsync(employee);
 
             var authResult = await _employeesService.Login(loginData);
@@ -523,7 +523,7 @@ namespace ShopServices.BusinessLogic.MsTests
             authResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
             authResult.Id.Should().BeNull();
 
-            _employeesRepositoryMock.Verify(er => er.GetUser(loginData.Login), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(loginData.Login), Times.Once);
         }
 
 
@@ -532,7 +532,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
             Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(generateId: true, passwordHash: loginData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUser(loginData.Login))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(loginData.Login))
                 .ReturnsAsync(employee);
 
             var authResult = await _employeesService.Login(loginData);
@@ -544,7 +544,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsTrue(authResult.Id > 0);
             Assert.IsFalse(string.IsNullOrWhiteSpace(authResult.Token));
 
-            _employeesRepositoryMock.Verify(er => er.GetUser(loginData.Login), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(loginData.Login), Times.Once);
         }
 
         [TestMethod]
@@ -552,7 +552,7 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var loginData = TestFixtures.TestFixtures.GetLoginDataWithRequiredFields();
             Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(generateId: true, passwordHash: loginData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUser(loginData.Login))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(loginData.Login))
                 .ReturnsAsync(employee);
 
             var authResult = await _employeesService.Login(loginData);
@@ -563,7 +563,7 @@ namespace ShopServices.BusinessLogic.MsTests
             authResult.Id.Should().NotBeNull();
             authResult.Id.Should().BeGreaterThan(0);
             authResult.Token.Should().NotBeNullOrWhiteSpace();
-            _employeesRepositoryMock.Verify(er => er.GetUser(loginData.Login), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(loginData.Login), Times.Once);
         }
 
 
@@ -575,7 +575,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => updateResult = await _employeesService.GrantRole(grantRoleData));
             var userId = TestFixtures.TestFixtures.GenerateId();
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(userId), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(userId), Times.Never);
             Assert.IsNotNull(exception);
             Assert.IsNull(updateResult);
             Assert.AreEqual(ResultMessager.GRANTROLEDATA_PARAM_NAME, exception.ParamName);
@@ -589,7 +589,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => updateResult = await _employeesService.GrantRole(grantRoleData));
             var userId = TestFixtures.TestFixtures.GenerateId();
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(userId), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(userId), Times.Never);
 
             exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ResultMessager.GRANTROLEDATA_PARAM_NAME);
             updateResult.Should().BeNull();
@@ -608,7 +608,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.AreEqual(ResultMessager.LOGIN_SHOULD_NOT_BE_EMPTY, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, updateResult.StatusCode);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Never);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
         }
 
@@ -623,7 +623,7 @@ namespace ShopServices.BusinessLogic.MsTests
             updateResult.Message.Should().Be(ResultMessager.LOGIN_SHOULD_NOT_BE_EMPTY);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Never);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
         }
 
@@ -639,7 +639,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.AreEqual(ResultMessager.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, updateResult.StatusCode);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Never);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
         }
 
@@ -654,7 +654,7 @@ namespace ShopServices.BusinessLogic.MsTests
             updateResult.Message.Should().Be(ResultMessager.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Never);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
         }
 
@@ -670,7 +670,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.AreEqual(ResultMessager.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, updateResult.StatusCode);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Never);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
         }
 
@@ -685,7 +685,7 @@ namespace ShopServices.BusinessLogic.MsTests
             updateResult.Message.Should().Be(ResultMessager.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Never);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
         }
 
@@ -696,7 +696,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             Employee employee = null;
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(grantRoleData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(grantRoleData.Id))
                 .ReturnsAsync(employee);
 
             var updateResult = await _employeesService.GrantRole(grantRoleData);
@@ -705,7 +705,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.AreEqual(Core.ResultMessager.USER_NOT_FOUND, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, updateResult.StatusCode);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Once);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
         }
 
@@ -715,7 +715,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             Employee employee = null;
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(grantRoleData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(grantRoleData.Id))
                 .ReturnsAsync(employee);
 
             var updateResult = await _employeesService.GrantRole(grantRoleData);
@@ -724,7 +724,7 @@ namespace ShopServices.BusinessLogic.MsTests
             updateResult.Message.Should().Be(Core.ResultMessager.USER_NOT_FOUND);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Once);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
         }
 
@@ -735,7 +735,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(grantRoleData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(grantRoleData.Id))
                 .ReturnsAsync(employee);
 
             var updateResult = await _employeesService.GrantRole(grantRoleData);
@@ -744,7 +744,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.AreEqual(Core.ResultMessager.LOGIN_MISMATCH, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, updateResult.StatusCode);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Once);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
         }
 
@@ -754,7 +754,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(grantRoleData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(grantRoleData.Id))
                 .ReturnsAsync(employee);
 
             var updateResult = await _employeesService.GrantRole(grantRoleData);
@@ -763,7 +763,7 @@ namespace ShopServices.BusinessLogic.MsTests
             updateResult.Message.Should().Be(Core.ResultMessager.LOGIN_MISMATCH);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Once);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
         }
 
@@ -775,11 +775,11 @@ namespace ShopServices.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.Login);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(grantRoleData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(grantRoleData.Id))
                 .ReturnsAsync(employee);
 
             Employee granter = null;
-            _employeesRepositoryMock.Setup(er => er.GetUser(grantRoleData.GranterId))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
             var updateResult = await _employeesService.GrantRole(grantRoleData);
@@ -788,8 +788,8 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.AreEqual(Core.ResultMessager.GRANTER_NOT_FOUND, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, updateResult.StatusCode);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.GetUser(grantRoleData.GranterId), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(grantRoleData.GranterId), Times.Once);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
         }
 
@@ -799,11 +799,11 @@ namespace ShopServices.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.Login);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(grantRoleData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(grantRoleData.Id))
                 .ReturnsAsync(employee);
 
             Employee granter = null;
-            _employeesRepositoryMock.Setup(er => er.GetUser(grantRoleData.GranterId))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
             var updateResult = await _employeesService.GrantRole(grantRoleData);
@@ -812,8 +812,8 @@ namespace ShopServices.BusinessLogic.MsTests
             updateResult.Message.Should().Be(Core.ResultMessager.GRANTER_NOT_FOUND);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.GetUser(grantRoleData.GranterId), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(grantRoleData.GranterId), Times.Once);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
         }
 
@@ -824,11 +824,11 @@ namespace ShopServices.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.Login);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(grantRoleData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(grantRoleData.Id))
                 .ReturnsAsync(employee);
 
             Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUser(grantRoleData.GranterId))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
             var updateResult = await _employeesService.GrantRole(grantRoleData);
@@ -837,8 +837,8 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.AreEqual(Core.ResultMessager.GRANTERLOGIN_MISMATCH, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, updateResult.StatusCode);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.GetUser(grantRoleData.GranterId), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(grantRoleData.GranterId), Times.Once);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
         }
 
@@ -848,11 +848,11 @@ namespace ShopServices.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.Login);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(grantRoleData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(grantRoleData.Id))
                 .ReturnsAsync(employee);
 
             Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUser(grantRoleData.GranterId))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
             var updateResult = await _employeesService.GrantRole(grantRoleData);
@@ -861,8 +861,8 @@ namespace ShopServices.BusinessLogic.MsTests
             updateResult.Message.Should().Be(Core.ResultMessager.GRANTERLOGIN_MISMATCH);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.GetUser(grantRoleData.GranterId), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(grantRoleData.GranterId), Times.Once);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
         }
 
@@ -873,11 +873,11 @@ namespace ShopServices.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.Login);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(grantRoleData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(grantRoleData.Id))
                 .ReturnsAsync(employee);
 
             Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.GranterLogin);
-            _employeesRepositoryMock.Setup(er => er.GetUser(grantRoleData.GranterId))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
             var updateResult = await _employeesService.GrantRole(grantRoleData);
@@ -886,8 +886,8 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.AreEqual(Core.ResultMessager.PASSWORD_HASH_MISMATCH, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, updateResult.StatusCode);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.GetUser(grantRoleData.GranterId), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(grantRoleData.GranterId), Times.Once);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
         }
 
@@ -897,11 +897,11 @@ namespace ShopServices.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.Login);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(grantRoleData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(grantRoleData.Id))
                 .ReturnsAsync(employee);
 
             Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.GranterLogin);
-            _employeesRepositoryMock.Setup(er => er.GetUser(grantRoleData.GranterId))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
             var updateResult = await _employeesService.GrantRole(grantRoleData);
@@ -910,8 +910,8 @@ namespace ShopServices.BusinessLogic.MsTests
             updateResult.Message.Should().Be(Core.ResultMessager.PASSWORD_HASH_MISMATCH);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.GetUser(grantRoleData.GranterId), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(grantRoleData.GranterId), Times.Once);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Never);
         }
 
@@ -922,11 +922,11 @@ namespace ShopServices.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.Login);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(grantRoleData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(grantRoleData.Id))
                 .ReturnsAsync(employee);
 
             Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash, login: grantRoleData.GranterLogin);
-            _employeesRepositoryMock.Setup(er => er.GetUser(grantRoleData.GranterId))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
             _employeesRepositoryMock.Setup(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId))
@@ -938,8 +938,8 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.AreEqual(Core.ResultMessager.USER_UPDATED, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.GetUser(grantRoleData.GranterId), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(grantRoleData.GranterId), Times.Once);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Once);
         }
 
@@ -949,11 +949,11 @@ namespace ShopServices.BusinessLogic.MsTests
             var grantRoleData = TestFixtures.TestFixtures.GetGrantRoleDataFixture();
 
             Employee employee = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: grantRoleData.Login);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(grantRoleData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(grantRoleData.Id))
                 .ReturnsAsync(employee);
 
             Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(passwordHash: grantRoleData.PasswordHash, login: grantRoleData.GranterLogin);
-            _employeesRepositoryMock.Setup(er => er.GetUser(grantRoleData.GranterId))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(grantRoleData.GranterId))
                 .ReturnsAsync(granter);
 
             _employeesRepositoryMock.Setup(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId))
@@ -965,8 +965,8 @@ namespace ShopServices.BusinessLogic.MsTests
             updateResult.Message.Should().Be(Core.ResultMessager.USER_UPDATED);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
 
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(grantRoleData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.GetUser(grantRoleData.GranterId), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(grantRoleData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(grantRoleData.GranterId), Times.Once);
             _employeesRepositoryMock.Verify(er => er.GrantRole(grantRoleData.Id, grantRoleData.NewRole, grantRoleData.GranterId), Times.Once);
         }
 
@@ -978,7 +978,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Result updateResult = null;
             var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => updateResult = await _employeesService.UpdateAccount(updateAccountData));
 
-            _employeesRepositoryMock.Verify(er => er.UpdateUser(updateAccountData), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.UpdateEmployee(updateAccountData), Times.Never);
             Assert.IsNotNull(exception);
             Assert.IsNull(updateResult);
             Assert.AreEqual(ResultMessager.UPDATEACCOUNTDATA_PARAM_NAME, exception.ParamName);
@@ -991,7 +991,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Result updateResult = null;
             var exception = await Assert.ThrowsExactlyAsync<ArgumentNullException>(async () => updateResult = await _employeesService.UpdateAccount(updateAccountData));
 
-            _employeesRepositoryMock.Verify(er => er.UpdateUser(updateAccountData), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.UpdateEmployee(updateAccountData), Times.Never);
             exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ResultMessager.UPDATEACCOUNTDATA_PARAM_NAME);
             updateResult.Should().BeNull();
             exception.ParamName.Should().Be(ResultMessager.UPDATEACCOUNTDATA_PARAM_NAME);
@@ -1146,12 +1146,12 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture();
 
-            _employeesRepositoryMock.Setup(er => er.UpdateUser(updateAccountData))
+            _employeesRepositoryMock.Setup(er => er.UpdateEmployee(updateAccountData))
                 .ReturnsAsync(new Result { Message = Core.ResultMessager.USER_IS_ACTUAL, StatusCode = System.Net.HttpStatusCode.OK });
 
             var updateResult = await _employeesService.UpdateAccount(updateAccountData);
 
-            _employeesRepositoryMock.Verify(er => er.UpdateUser(updateAccountData), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.UpdateEmployee(updateAccountData), Times.Once);
             Assert.IsNotNull(updateResult);
             Assert.AreEqual(Core.ResultMessager.USER_IS_ACTUAL, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
@@ -1162,12 +1162,12 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture();
 
-            _employeesRepositoryMock.Setup(er => er.UpdateUser(updateAccountData))
+            _employeesRepositoryMock.Setup(er => er.UpdateEmployee(updateAccountData))
                 .ReturnsAsync(new Result { Message = Core.ResultMessager.USER_IS_ACTUAL, StatusCode = System.Net.HttpStatusCode.OK });
 
             var updateResult = await _employeesService.UpdateAccount(updateAccountData);
 
-            _employeesRepositoryMock.Verify(er => er.UpdateUser(updateAccountData), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.UpdateEmployee(updateAccountData), Times.Once);
             updateResult.Should().NotBeNull();
             updateResult.Message.Should().Be(Core.ResultMessager.USER_IS_ACTUAL);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
@@ -1179,12 +1179,12 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture();
 
-            _employeesRepositoryMock.Setup(er => er.UpdateUser(updateAccountData))
+            _employeesRepositoryMock.Setup(er => er.UpdateEmployee(updateAccountData))
                 .ReturnsAsync(new Result { Message = Core.ResultMessager.USER_UPDATED, StatusCode = System.Net.HttpStatusCode.OK });
 
             var updateResult = await _employeesService.UpdateAccount(updateAccountData);
 
-            _employeesRepositoryMock.Verify(er => er.UpdateUser(updateAccountData), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.UpdateEmployee(updateAccountData), Times.Once);
             Assert.IsNotNull(updateResult);
             Assert.AreEqual(Core.ResultMessager.USER_UPDATED, updateResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.OK, updateResult.StatusCode);
@@ -1195,12 +1195,12 @@ namespace ShopServices.BusinessLogic.MsTests
         {
             var updateAccountData = TestFixtures.TestFixtures.GetUpdateAccountDataFixture();
 
-            _employeesRepositoryMock.Setup(er => er.UpdateUser(updateAccountData))
+            _employeesRepositoryMock.Setup(er => er.UpdateEmployee(updateAccountData))
                 .ReturnsAsync(new Result { Message = Core.ResultMessager.USER_UPDATED, StatusCode = System.Net.HttpStatusCode.OK });
 
             var updateResult = await _employeesService.UpdateAccount(updateAccountData);
 
-            _employeesRepositoryMock.Verify(er => er.UpdateUser(updateAccountData), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.UpdateEmployee(updateAccountData), Times.Once);
             updateResult.Should().NotBeNull();
             updateResult.Message.Should().Be(Core.ResultMessager.USER_UPDATED);
             updateResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
@@ -1241,7 +1241,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(ResultMessager.LOGIN_SHOULD_NOT_BE_EMPTY, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, deleteResult.StatusCode);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
         [TestMethod]
@@ -1254,7 +1254,7 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(ResultMessager.LOGIN_SHOULD_NOT_BE_EMPTY);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
 
@@ -1268,7 +1268,7 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(ResultMessager.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, deleteResult.StatusCode);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
         [TestMethod]
@@ -1281,7 +1281,7 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(ResultMessager.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
 
@@ -1291,7 +1291,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             Employee userToDelete = null;
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1299,8 +1299,8 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(Core.ResultMessager.USER_NOT_FOUND, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, deleteResult.StatusCode);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
         [TestMethod]
@@ -1309,7 +1309,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             Employee userToDelete = null;
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1317,8 +1317,8 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(Core.ResultMessager.USER_NOT_FOUND);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
 
@@ -1329,7 +1329,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1337,8 +1337,8 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(Core.ResultMessager.LOGIN_MISMATCH, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, deleteResult.StatusCode);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
         [TestMethod]
@@ -1347,7 +1347,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1355,8 +1355,8 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(Core.ResultMessager.LOGIN_MISMATCH);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
         [TestMethod]
@@ -1365,7 +1365,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true);
 
             Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1373,8 +1373,8 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(ResultMessager.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, deleteResult.StatusCode);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Never);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
         [TestMethod]
@@ -1383,7 +1383,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture(generateGranterId: true);
 
             Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1391,8 +1391,8 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(ResultMessager.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Never);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
 
@@ -1404,10 +1404,10 @@ namespace ShopServices.BusinessLogic.MsTests
             Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
             Employee granter = null;
-            _employeesRepositoryMock.Setup(er => er.GetUser(deleteAccountData.GranterId.Value))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(deleteAccountData.GranterId.Value))
                 .ReturnsAsync(granter);
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1415,9 +1415,9 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(Core.ResultMessager.GRANTER_NOT_FOUND, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, deleteResult.StatusCode);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.GetUser(deleteAccountData.GranterId.Value), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(deleteAccountData.GranterId.Value), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
         [TestMethod]
@@ -1428,10 +1428,10 @@ namespace ShopServices.BusinessLogic.MsTests
             Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
             Employee granter = null;
-            _employeesRepositoryMock.Setup(er => er.GetUser(deleteAccountData.GranterId.Value))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(deleteAccountData.GranterId.Value))
                 .ReturnsAsync(granter);
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1439,9 +1439,9 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(Core.ResultMessager.GRANTER_NOT_FOUND);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.GetUser(deleteAccountData.GranterId.Value), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(deleteAccountData.GranterId.Value), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
 
@@ -1454,11 +1454,11 @@ namespace ShopServices.BusinessLogic.MsTests
                 generateId: true,
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
             Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true, passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUser(deleteAccountData.GranterId.Value))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(deleteAccountData.GranterId.Value))
                 .ReturnsAsync(granter);
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1466,9 +1466,9 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(Core.ResultMessager.GRANTERLOGIN_MISMATCH, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, deleteResult.StatusCode);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.GetUser(deleteAccountData.GranterId.Value), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(deleteAccountData.GranterId.Value), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
         [TestMethod]
@@ -1480,11 +1480,11 @@ namespace ShopServices.BusinessLogic.MsTests
                 generateId: true,
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
             Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true, passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUser(deleteAccountData.GranterId.Value))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(deleteAccountData.GranterId.Value))
                 .ReturnsAsync(granter);
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1492,9 +1492,9 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(Core.ResultMessager.GRANTERLOGIN_MISMATCH);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.GetUser(deleteAccountData.GranterId.Value), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(deleteAccountData.GranterId.Value), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
 
@@ -1507,11 +1507,11 @@ namespace ShopServices.BusinessLogic.MsTests
                 generateId: true,
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
             Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true, login: deleteAccountData.GranterLogin);
-            _employeesRepositoryMock.Setup(er => er.GetUser(deleteAccountData.GranterId.Value))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(deleteAccountData.GranterId.Value))
                 .ReturnsAsync(granter);
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1519,9 +1519,9 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(Core.ResultMessager.PASSWORD_HASH_MISMATCH, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, deleteResult.StatusCode);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.GetUser(deleteAccountData.GranterId.Value), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(deleteAccountData.GranterId.Value), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
         [TestMethod]
@@ -1533,11 +1533,11 @@ namespace ShopServices.BusinessLogic.MsTests
                 generateId: true,
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
             Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true, login: deleteAccountData.GranterLogin);
-            _employeesRepositoryMock.Setup(er => er.GetUser(deleteAccountData.GranterId.Value))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(deleteAccountData.GranterId.Value))
                 .ReturnsAsync(granter);
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1545,9 +1545,9 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(Core.ResultMessager.PASSWORD_HASH_MISMATCH);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.GetUser(deleteAccountData.GranterId.Value), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(deleteAccountData.GranterId.Value), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
 
@@ -1560,12 +1560,12 @@ namespace ShopServices.BusinessLogic.MsTests
                 generateId: true,
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
             Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
             uint ZERO_GRANTER_ID = 0;
-            _employeesRepositoryMock.Setup(er => er.GetUser(ZERO_GRANTER_ID))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(ZERO_GRANTER_ID))
                 .ReturnsAsync(granter);
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1573,9 +1573,9 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(ResultMessager.GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, deleteResult.StatusCode);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Never);
-            _employeesRepositoryMock.Verify(er => er.GetUser(ZERO_GRANTER_ID), Times.Never);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(ZERO_GRANTER_ID), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
         [TestMethod]
@@ -1587,12 +1587,12 @@ namespace ShopServices.BusinessLogic.MsTests
                 generateId: true,
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
             Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
             uint ZERO_GRANTER_ID = 0;
-            _employeesRepositoryMock.Setup(er => er.GetUser(ZERO_GRANTER_ID))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(ZERO_GRANTER_ID))
                 .ReturnsAsync(granter);
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1600,9 +1600,9 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(ResultMessager.GRANTERLOGIN_SHOULD_BE_EMPTY_DELETE);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Never);
-            _employeesRepositoryMock.Verify(er => er.GetUser(ZERO_GRANTER_ID), Times.Never);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(ZERO_GRANTER_ID), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
 
@@ -1612,7 +1612,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: deleteAccountData.Login);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1620,8 +1620,8 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(Core.ResultMessager.PASSWORD_HASH_MISMATCH, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.Forbidden, deleteResult.StatusCode);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
         [TestMethod]
@@ -1630,7 +1630,7 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: deleteAccountData.Login);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1638,8 +1638,8 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(Core.ResultMessager.PASSWORD_HASH_MISMATCH);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.Forbidden);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Never);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Never);
         }
 
         [TestMethod]
@@ -1648,10 +1648,10 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
-            _employeesRepositoryMock.Setup(er => er.DeleteUser(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.DeleteEmployee(deleteAccountData.Id))
                 .ReturnsAsync(new Result { Message = Core.ResultMessager.OK, StatusCode = System.Net.HttpStatusCode.OK });
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1659,8 +1659,8 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(Core.ResultMessager.OK, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.OK, deleteResult.StatusCode);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Once);
         }
 
         [TestMethod]
@@ -1669,10 +1669,10 @@ namespace ShopServices.BusinessLogic.MsTests
             var deleteAccountData = TestFixtures.TestFixtures.GetDeleteAccountDataFixture();
 
             Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(login: deleteAccountData.Login, passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
-            _employeesRepositoryMock.Setup(er => er.DeleteUser(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.DeleteEmployee(deleteAccountData.Id))
                 .ReturnsAsync(new Result { Message = Core.ResultMessager.OK, StatusCode = System.Net.HttpStatusCode.OK });
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1680,8 +1680,8 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(Core.ResultMessager.OK);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Once);
         }
 
 
@@ -1694,15 +1694,15 @@ namespace ShopServices.BusinessLogic.MsTests
                 generateId: true,
                 login: deleteAccountData.Login,
                 passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUser(deleteAccountData.GranterId.Value))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(deleteAccountData.GranterId.Value))
                 .ReturnsAsync(granter);
 
-            _employeesRepositoryMock.Setup(er => er.DeleteUser(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.DeleteEmployee(deleteAccountData.Id))
                 .ReturnsAsync(new Result { Message = Core.ResultMessager.OK, StatusCode = System.Net.HttpStatusCode.OK });
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1710,9 +1710,9 @@ namespace ShopServices.BusinessLogic.MsTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(Core.ResultMessager.OK, deleteResult.Message);
             Assert.AreEqual(System.Net.HttpStatusCode.OK, deleteResult.StatusCode);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.GetUser(deleteAccountData.GranterId.Value), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(deleteAccountData.GranterId.Value), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Once);
         }
 
         [TestMethod]
@@ -1723,15 +1723,15 @@ namespace ShopServices.BusinessLogic.MsTests
             Employee userToDelete = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true,
                 login: deleteAccountData.Login);
-            _employeesRepositoryMock.Setup(er => er.GetUserForUpdate(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.GetEmployeeForUpdate(deleteAccountData.Id))
                 .ReturnsAsync(userToDelete);
 
             Employee granter = TestFixtures.TestFixtures.GetEmployeeFixtureWithRequiredFields(
                 generateId: true, login: deleteAccountData.GranterLogin, passwordHash: deleteAccountData.PasswordHash);
-            _employeesRepositoryMock.Setup(er => er.GetUser(deleteAccountData.GranterId.Value))
+            _employeesRepositoryMock.Setup(er => er.GetEmployee(deleteAccountData.GranterId.Value))
                 .ReturnsAsync(granter);
 
-            _employeesRepositoryMock.Setup(er => er.DeleteUser(deleteAccountData.Id))
+            _employeesRepositoryMock.Setup(er => er.DeleteEmployee(deleteAccountData.Id))
                 .ReturnsAsync(new Result { Message = Core.ResultMessager.OK, StatusCode = System.Net.HttpStatusCode.OK });
 
             var deleteResult = await _employeesService.DeleteAccount(deleteAccountData);
@@ -1739,9 +1739,9 @@ namespace ShopServices.BusinessLogic.MsTests
             deleteResult.Should().NotBeNull();
             deleteResult.Message.Should().Be(Core.ResultMessager.OK);
             deleteResult.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
-            _employeesRepositoryMock.Verify(er => er.GetUserForUpdate(deleteAccountData.Id), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.GetUser(deleteAccountData.GranterId.Value), Times.Once);
-            _employeesRepositoryMock.Verify(er => er.DeleteUser(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployeeForUpdate(deleteAccountData.Id), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.GetEmployee(deleteAccountData.GranterId.Value), Times.Once);
+            _employeesRepositoryMock.Verify(er => er.DeleteEmployee(deleteAccountData.Id), Times.Once);
         }
     }
 }
