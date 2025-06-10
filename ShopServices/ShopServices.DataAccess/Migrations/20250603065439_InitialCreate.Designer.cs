@@ -384,7 +384,7 @@ namespace ShopServices.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("MassInGrams")
-                        .HasColumnType("integet");
+                        .HasColumnType("integer");
 
                     b.Property<string>("PaymentInfo")
                         .IsRequired()
