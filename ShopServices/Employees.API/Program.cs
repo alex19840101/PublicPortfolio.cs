@@ -1,33 +1,24 @@
 using System;
-using System.IO;
-using System.Reflection;
-using System.Security.Claims;
-using System.Text;
-using Asp.Versioning;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Employees.API;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using Employees.API;
+using Serilog;
+using ServiceCollectionsExtensions;
 using ShopServices.BusinessLogic;
 using ShopServices.Core.Repositories;
 using ShopServices.Core.Services;
 using ShopServices.DataAccess;
 using ShopServices.DataAccess.Repositories;
-using Serilog;
-using Serilog.Templates;
-using Serilog.Templates.Themes;
 
-const string DEVELOPER = "Shapovalov Alexey";
-const string SERVICE_NAME = $"ShopServices";
+const string SERVICE_NAME = "Employees.API";
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -41,64 +32,35 @@ try
     IHostEnvironment env = builder.Environment;
 
     builder.Configuration
-        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
-    // Add services to the container.
-    builder.Services.AddSerilog((services, loggerConfiguration) => loggerConfiguration
-            .ReadFrom.Configuration(builder.Configuration)
-            .ReadFrom.Services(services)
-            .Enrich.FromLogContext()
-            .WriteTo.Console(new ExpressionTemplate(
-                template: "[{@t:HH:mm:ss} {@l:u3}{#if @tr is not null} ({substring(@tr,0,4)}:{substring(@sp,0,4)}){#end}] {@m}\n{@x}", // Include trace and span ids when present.
-                theme: TemplateTheme.Code)));
+    builder.Services.AddSerilogging(builder.Configuration);
 
     builder.Services.AddControllers();
 
-    builder.Services.AddAuthorizationBuilder()
-        .AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy =>
-        {
-            policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
-            policy.RequireClaim(ClaimTypes.Role);
-        });
+    builder.Services.AddAuthorizationBuilderForJWT();
 
     builder.Services.AddHttpContextAccessor();
 
     builder.Services.AddScoped<IAuthorizationHandler, RoleAuthorizationHandler>();
-    var tokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidIssuer = builder.Configuration["JWT:Issuer"],
-        ValidateAudience = true,
-        ValidAudience = builder.Configuration["JWT:Audience"],
-        ValidateLifetime = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(builder.Configuration["JWT:KEY"])),
-        ValidateIssuerSigningKey = true
-    };
+    var tokenValidationParameters = builder.Configuration.GetTokenValidationParametersForJWT();
 
-    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer(options =>
-        {
-            options.TokenValidationParameters = tokenValidationParameters;
-            options.IncludeErrorDetails = true;
-            options.SaveToken = true;
-        });
+    builder.Services.AddAuthenticationBuilderForJWT(tokenValidationParameters);
+
     builder.Services.AddOpenApi();
 
     builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
+    builder.Services.AddScoped<ICouriersRepository, CouriersRepository>();
+    builder.Services.AddScoped<IManagersRepository, ManagersRepository>();
     builder.Services.AddScoped<IEmployeesService>(src => new EmployeesService(
         src.GetRequiredService<IEmployeesRepository>(),
+        src.GetRequiredService<ICouriersRepository>(),
+        src.GetRequiredService<IManagersRepository>(),
                     tokenValidationParameters,
                     key: builder.Configuration["JWT:KEY"]!));
 
-    builder.Services.AddSingleton<ICacheService, CacheService>();
-
-    builder.Services.AddStackExchangeRedisCache(options =>
-    {
-        options.Configuration = $"{builder.Configuration.GetValue<string>("Redis:Server")}:{builder.Configuration.GetValue<int>("Redis:Port")}";
-    });
-
-        string dataBaseConnectionStr = builder.Configuration.GetConnectionString("localdb")!;
+    string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ShopServicesEmployees")!;
 
     var isDevelopment = env.IsDevelopment();
 
@@ -112,6 +74,7 @@ try
                     .EnableSensitiveDataLogging();
 
             builder.LogTo(Console.WriteLine);
+            builder.ConfigureWarnings(wcb => wcb.Ignore(RelationalEventId.PendingModelChangesWarning));
         });
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
     }
@@ -128,82 +91,8 @@ try
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<ShopServicesDbContext>();
 
-    #region -------------------------------Swagger-------------------------------
-    const string URL = "https://github.com/alex19840101/PublicPortfolio.cs/compare/ShopServices";
-    builder.Services.AddSwaggerGen(options => // Register the Swagger generator, defining 1 or more Swagger documents
-    {
-        options.SwaggerDoc("v1", new OpenApiInfo
-        {
-            Version = "v1",
-            Title = SERVICE_NAME,
-            Description = $"{SERVICE_NAME} Web API v1",
-            TermsOfService = new Uri(URL),
-            Contact = new OpenApiContact
-            {
-                Name = DEVELOPER,
-                Email = string.Empty,
-                Url = new Uri(URL),
-            },
-            License = new OpenApiLicense
-            {
-                Name = DEVELOPER,
-                Url = new Uri(URL),
-            }
-        });
-
-        options.AddSecurityDefinition($"AuthToken v1",
-                    new OpenApiSecurityScheme
-                    {
-                        In = ParameterLocation.Header,
-                        Type = SecuritySchemeType.Http,
-                        BearerFormat = "JWT",
-                        Scheme = "bearer",
-                        Name = "Authorization",
-                        Description = "Authorization token"
-                    });
-
-
-        //options.OperationFilter<SwaggerCustomFilters.AuthHeaderFilter>();
-
-        // Set the comments path for the Swagger JSON and UI.
-        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-        options.IncludeXmlComments(xmlPath);
-        xmlFile = "ShopServices.Abstractions.xml";
-        xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-        options.IncludeXmlComments(xmlPath);
-        options.CustomSchemaIds(x => x.FullName);
-        options.GeneratePolymorphicSchemas();
-    });
-    builder.Services.AddApiVersioning(
-                        options =>
-                        {
-                            // reporting api versions will return the headers
-                            // "api-supported-versions" and "api-deprecated-versions"
-                            options.ReportApiVersions = true;
-
-                            options.Policies.Sunset(0.9)
-                                            .Effective(DateTimeOffset.Now.AddDays(60))
-                                            .Link("policy.html")
-                                                .Title("Versioning Policy")
-                                                .Type("text/html");
-                        })
-                    .AddMvc()
-                    .AddApiExplorer(
-                        options =>
-                        {
-                            // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
-                            // note: the specified format code will format the version as "'v'major[.minor][-status]"
-                            options.GroupNameFormat = "'v'VVV";
-
-                            // note: this option is only necessary when versioning by url segment. the SubstitutionFormat
-                            // can also be used to control the format of the API version in route templates
-                            options.SubstituteApiVersionInUrl = true;
-                        });
-
-    #endregion -------------------------------Swagger-------------------------------
-
-
+    builder.Services.AddSwaggerAndVersioning(SERVICE_NAME);
+   
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.

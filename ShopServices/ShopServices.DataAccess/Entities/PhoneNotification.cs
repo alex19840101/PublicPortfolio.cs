@@ -10,7 +10,7 @@ namespace ShopServices.DataAccess.Entities
     public class PhoneNotification
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public uint Id { get; private set; }
+        public ulong Id { get; private set; }
         public string SmsFrom { get; private set; } = default!;
         public string SmsTo { get; private set; } = default!;
         public string Message { get; private set; } = default!;

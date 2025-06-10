@@ -6,7 +6,7 @@ namespace ShopServices.DataAccess.Entities
     public class Employee
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public uint Id{ get { return _id; } }
+        public uint Id { get { return _id; } }
         public string Login { get { return _login; } }
         public string Name { get { return _name; } }
         public string Surname { get { return _surname; } }
@@ -88,7 +88,7 @@ namespace ShopServices.DataAccess.Entities
                 !string.Equals(comparedEmployee.PasswordHash, _passwordHash) ||
                 !string.Equals(comparedEmployee.Nick, _nick) ||
                 !string.Equals(comparedEmployee.Phone, _phone) ||
-                !string.Equals(comparedEmployee.Role, _phone) ||
+                !string.Equals(comparedEmployee.Role, _role) ||
                 comparedEmployee.CreatedDt != _createdDt ||
                 comparedEmployee.LastUpdateDt != _lastUpdateDt)
                 return false;

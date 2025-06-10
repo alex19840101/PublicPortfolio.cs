@@ -14,7 +14,7 @@ namespace ShopServices.DataAccess.Entities
         public uint ProductId { get; private set; }
 
         /// <summary> Артикул производителя (при наличии) </summary>
-        public string ArticleNumber { get; set; } = default!;
+        public string? ArticleNumber { get; set; } = default!;
 
         /// <summary> Производитель (бренд) </summary>
         public string Brand { get; set; } = default!;

@@ -23,7 +23,7 @@ namespace ShopServices.DataAccess.Entities
         public string Name { get; private set; }
 
         /// <summary> Параметры товара </summary>
-        public string Params { get; private set; }
+        public string Parameters { get; private set; }
         
         /// <summary> Ссылка </summary>
         public string Url { get; private set; }
@@ -44,11 +44,12 @@ namespace ShopServices.DataAccess.Entities
         public bool Archieved { get; private set; }
 
         /// <summary> Масса, г </summary>
-        public string MassInGrams { get; private set; } = default!;
+        public uint MassInGrams { get; private set; } = default!;
 
         /// <summary> Габариты </summary>
         public string Dimensions { get; private set; } = default!;
 
+        public ICollection<Order>? Orders { get; private set; }
 
         public Product(uint id,
             string articleNumber,
@@ -59,14 +60,14 @@ namespace ShopServices.DataAccess.Entities
             string imageUrl,
             List<uint> goodsGroups,
             bool archieved,
-            string massInGrams,
+            uint massInGrams,
             string dimensions)
         {
             Id = id;
             ArticleNumber = articleNumber;
             Brand = brand;
             Name = name;
-            Params = parameters;
+            Parameters = parameters;
             Url = url;
             ImageUrl = imageUrl;
             GoodsGroups = goodsGroups;

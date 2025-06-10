@@ -10,6 +10,6 @@ namespace ShopServices.DataAccess.Entities
     public class Trade
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public uint Id { get; private set; }
+        public long Id { get; private set; }
     }
 }

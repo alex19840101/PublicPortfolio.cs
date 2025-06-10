@@ -6,7 +6,7 @@ namespace ShopServices.Core.Models
 {
     public class PhoneNotification
     {
-        public uint Id { get; private set; }
+        public ulong Id { get; private set; }
 
         public string SmsFrom { get; private set; }
         public string SmsTo { get; private set; }

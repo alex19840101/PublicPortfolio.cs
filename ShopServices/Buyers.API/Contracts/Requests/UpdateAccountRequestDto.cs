@@ -28,7 +28,7 @@
         /// <summary>
         /// Адрес доставки по умолчанию для покупателя (опционально)
         /// </summary>
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         /// <summary>
         /// Адрес электронной почты (уникальный)*
@@ -43,21 +43,21 @@
         /// <summary>
         /// Новый пароль (если нужна смена пароля)
         /// </summary>
-        public string NewPassword { get; set; }
+        public string? NewPassword { get; set; }
 
         /// <summary>
         /// Новый пароль (повторно)(если нужна смена пароля)
         /// </summary>
-        public string RepeatNewPassword { get; set; }
+        public string? RepeatNewPassword { get; set; }
 
         /// <summary>
         /// Ник
         /// </summary>
-        public string Nick { get; set; }
+        public string? Nick { get; set; }
 
         /// <summary>
         /// Телефон(ы)
         /// </summary>
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
     }
 }

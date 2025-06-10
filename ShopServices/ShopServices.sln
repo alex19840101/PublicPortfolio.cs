@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopServices.BusinessLogic.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestFixtures", "TestFixtures\TestFixtures.csproj", "{DE67B699-1804-4DAB-BC40-EBFDD8FC11B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceCollectionsExtensions", "ServiceCollectionsExtensions\ServiceCollectionsExtensions.csproj", "{7F2AF630-10A9-4096-AAB4-4B0B6EC617F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +131,10 @@ Global
 		{DE67B699-1804-4DAB-BC40-EBFDD8FC11B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE67B699-1804-4DAB-BC40-EBFDD8FC11B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE67B699-1804-4DAB-BC40-EBFDD8FC11B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F2AF630-10A9-4096-AAB4-4B0B6EC617F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F2AF630-10A9-4096-AAB4-4B0B6EC617F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F2AF630-10A9-4096-AAB4-4B0B6EC617F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F2AF630-10A9-4096-AAB4-4B0B6EC617F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -247,7 +247,6 @@ public class BuyersController : ControllerBase
         return new ChangeDiscountGroupsData(
             buyerId: requestDto.Id,
             login: requestDto.Login,
-            passwordHash: SHA256Hasher.GeneratePasswordHash(requestDto.Password, repeatPassword: requestDto.Password),
             discountGroups: requestDto.DiscountGroups,
             granterId: requestDto.GranterId,
             granterLogin: requestDto.GranterLogin);

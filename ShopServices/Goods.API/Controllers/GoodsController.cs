@@ -13,13 +13,18 @@ using ShopServices.Core.Services;
 
 namespace Goods.API.Controllers
 {
+    /// <summary> РљРѕРЅС‚СЂРѕР»Р»РµСЂ СѓРїСЂР°РІР»РµРЅРёСЏ РґР°РЅРЅС‹РјРё РїРѕ С‚РѕРІР°СЂР°Рј </summary>
     [ApiController]
-    [Route("[controller]")]
+    [Asp.Versioning.ApiVersion(1.0)]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
     public class GoodsController : ControllerBase
     {
         private readonly IGoodsService _goodsService;
         private readonly ILogger<GoodsController> _logger;
 
+        /// <summary> РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРЅС‚СЂРѕР»Р»РµСЂР° СѓРїСЂР°РІР»РµРЅРёСЏ РґР°РЅРЅС‹РјРё РїРѕ С‚РѕРІР°СЂР°Рј </summary>
         public GoodsController(
             IGoodsService goodsService,
             ILogger<GoodsController> logger)
@@ -28,8 +33,8 @@ namespace Goods.API.Controllers
             _logger = logger;
         }
 
-        /// <summary> Добавление товара </summary>
-        /// <param name="productDto"> Запрос на добавление товара </param>
+        /// <summary> Р”РѕР±Р°РІР»РµРЅРёРµ С‚РѕРІР°СЂР° </summary>
+        /// <param name="productDto"> Р—Р°РїСЂРѕСЃ РЅР° РґРѕР±Р°РІР»РµРЅРёРµ С‚РѕРІР°СЂР° </param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Created)]
@@ -60,8 +65,8 @@ namespace Goods.API.Controllers
 
         }
 
-        /// <summary> Получение товара по id </summary>
-        /// <param name="id"> id товара </param>
+        /// <summary> РџРѕР»СѓС‡РµРЅРёРµ С‚РѕРІР°СЂР° РїРѕ id </summary>
+        /// <param name="id"> id С‚РѕРІР°СЂР° </param>
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
@@ -78,8 +83,8 @@ namespace Goods.API.Controllers
         }
 
 
-        /// <summary> Получение информации о товарах </summary>
-        /// <param name="articleSubString"> Подстрока артикула производителя </param>
+        /// <summary> РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ С‚РѕРІР°СЂР°С… </summary>
+        /// <param name="articleSubString"> РџРѕРґСЃС‚СЂРѕРєР° Р°СЂС‚РёРєСѓР»Р° РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЏ </param>
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Product>), (int)HttpStatusCode.OK)]
@@ -94,18 +99,18 @@ namespace Goods.API.Controllers
             return productsCollection.GetProductDtos();
         }
 
-        /// <summary> Получение информации о товарах </summary>
-        /// <param name="nameSubString"> Подстрока названия товара </param>
-        /// <param name="brand"> Бренд (производитель) </param>
-        /// <param name="byPage"> Количество товаров на странице </param>
-        /// <param name="page"> Номер страницы </param>
+        /// <summary> РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ С‚РѕРІР°СЂР°С… </summary>
+        /// <param name="nameSubString"> РџРѕРґСЃС‚СЂРѕРєР° РЅР°Р·РІР°РЅРёСЏ С‚РѕРІР°СЂР° </param>
+        /// <param name="brand"> Р‘СЂРµРЅРґ (РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ) </param>
+        /// <param name="byPage"> РљРѕР»РёС‡РµСЃС‚РІРѕ С‚РѕРІР°СЂРѕРІ РЅР° СЃС‚СЂР°РЅРёС†Рµ </param>
+        /// <param name="page"> РќРѕРјРµСЂ СЃС‚СЂР°РЅРёС†С‹ </param>
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Product>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         public async Task<IEnumerable<Product>> GetProducts(
             string nameSubString,
-            string brand = null,
+            string? brand = null,
             uint byPage = 10,
             uint page = 1)
         {
@@ -117,8 +122,8 @@ namespace Goods.API.Controllers
             return productsCollection.GetProductDtos();
         }
 
-        /// <summary> Обновление информации о товаре </summary>
-        /// <param name="productDto"> Информация о товаре для обновления </param>
+        /// <summary> РћР±РЅРѕРІР»РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ С‚РѕРІР°СЂРµ </summary>
+        /// <param name="productDto"> РРЅС„РѕСЂРјР°С†РёСЏ Рѕ С‚РѕРІР°СЂРµ РґР»СЏ РѕР±РЅРѕРІР»РµРЅРёСЏ </param>
         /// <returns></returns>
         [HttpPatch]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
@@ -136,8 +141,8 @@ namespace Goods.API.Controllers
             return Ok(updateResult);
         }
 
-        /// <summary> Удаление (пометка архивным) товара по id </summary>
-        /// <param name="id"> id товара для удаления (архивации) </param>
+        /// <summary> РЈРґР°Р»РµРЅРёРµ (РїРѕРјРµС‚РєР° Р°СЂС…РёРІРЅС‹Рј) С‚РѕРІР°СЂР° РїРѕ id </summary>
+        /// <param name="id"> id С‚РѕРІР°СЂР° РґР»СЏ СѓРґР°Р»РµРЅРёСЏ (Р°СЂС…РёРІР°С†РёРё) </param>
         /// <returns></returns>
         [HttpDelete]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]

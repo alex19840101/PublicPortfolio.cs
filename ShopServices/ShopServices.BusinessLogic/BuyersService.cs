@@ -23,9 +23,9 @@ namespace ShopServices.BusinessLogic
         private readonly string _key;
         private const int LOGIN_DEFAULT_TIMEOUT = 60;
 
-        public BuyersService(IBuyersRepository authRepository, TokenValidationParameters tokenValidationParameters, string key)
+        public BuyersService(IBuyersRepository buyersRepository, TokenValidationParameters tokenValidationParameters, string key)
         {
-            _buyersRepository = authRepository;
+            _buyersRepository = buyersRepository;
             _tokenValidationParameters = tokenValidationParameters;
             _key = key;
         }
@@ -115,31 +115,16 @@ namespace ShopServices.BusinessLogic
             if (string.IsNullOrWhiteSpace(changeDiscountGroupsData.Login))
                 return new Result(ResultMessager.LOGIN_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
-            if (string.IsNullOrWhiteSpace(changeDiscountGroupsData.PasswordHash))
-                return new Result(ResultMessager.PASSWORD_HASH_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
-
             if (string.IsNullOrWhiteSpace(changeDiscountGroupsData.GranterLogin))
                 return new Result(ResultMessager.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
-            var user = await _buyersRepository.GetUser(changeDiscountGroupsData.BuyerId);
+            var user = await _buyersRepository.GetUserForUpdate(changeDiscountGroupsData.BuyerId);
 
             if (user is null)
                 return new Result(message: ResultMessager.USER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
 
             if (!string.Equals(user.Login, changeDiscountGroupsData.Login))
                 return new Result(message: ResultMessager.LOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
-
-            Buyer granter = await _buyersRepository.GetUser(changeDiscountGroupsData.GranterId);
-
-            if (granter is null)
-                return new Result(message: ResultMessager.GRANTER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
-
-            if (!string.Equals(granter.Login, changeDiscountGroupsData.GranterLogin))
-                return new Result(message: ResultMessager.GRANTERLOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
-
-            if (!string.Equals(granter.PasswordHash, changeDiscountGroupsData.PasswordHash))
-                return new Result(message: ResultMessager.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
-
 
             var updateResult = await _buyersRepository.ChangeDiscountGroups(
                 buyerId: changeDiscountGroupsData.BuyerId,
@@ -215,7 +200,7 @@ namespace ShopServices.BusinessLogic
             if (deleteAccountData.GranterId != null && string.IsNullOrWhiteSpace(deleteAccountData.GranterLogin))
                 return new Result(ResultMessager.GRANTERLOGIN_SHOULD_NOT_BE_EMPTY_DELETE, System.Net.HttpStatusCode.BadRequest);
 
-            var user = await _buyersRepository.GetUser(deleteAccountData.Id);
+            var user = await _buyersRepository.GetUserForUpdate(deleteAccountData.Id);
 
             if (user is null)
                 return new Result(message: ResultMessager.USER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
@@ -223,20 +208,7 @@ namespace ShopServices.BusinessLogic
             if (!string.Equals(user.Login, deleteAccountData.Login))
                 return new Result(message: ResultMessager.LOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
 
-            if (deleteAccountData.GranterId != null)
-            {
-                Buyer granter = await _buyersRepository.GetUser(deleteAccountData.GranterId.Value);
-
-                if (granter is null)
-                    return new Result(message: ResultMessager.GRANTER_NOT_FOUND, statusCode: System.Net.HttpStatusCode.NotFound);
-
-                if (!string.Equals(granter.Login, deleteAccountData.GranterLogin))
-                    return new Result(message: ResultMessager.GRANTERLOGIN_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
-
-                if (!string.Equals(granter.PasswordHash, deleteAccountData.PasswordHash))
-                    return new Result(message: ResultMessager.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);
-            }
-            else
+            if (deleteAccountData.GranterId == null) //если же указан GranterId, то данные (Id, хэш пароля) админа/менеджера не проверяем, т.к. не сможем получить их из репозитория покупателей
             {
                 if (!string.Equals(user.PasswordHash, deleteAccountData.PasswordHash))
                     return new Result(message: ResultMessager.PASSWORD_HASH_MISMATCH, statusCode: System.Net.HttpStatusCode.Forbidden);

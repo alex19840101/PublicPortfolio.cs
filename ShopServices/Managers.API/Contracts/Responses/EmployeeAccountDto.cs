@@ -1,9 +1,9 @@
-﻿namespace Couriers.API.Contracts.Responses
+﻿namespace Managers.API.Contracts.Responses
 {
     /// <summary>
-    /// Класс ответа с информацией о пользователе (работнике ((курьере)))
+    /// Класс ответа с информацией о работнике ((менеджере)))
     /// </summary>
-    public class UserInfoResponseDto
+    public class EmployeeAccountDto
     {
         /// <summary>
         /// Уникальный id аккаунта*
@@ -33,15 +33,15 @@
         /// <summary>
         /// Ник
         /// </summary>
-        public string Nick { get; set; }
+        public string? Nick { get; set; }
 
         /// <summary>
         /// Телефон(ы)
         /// </summary>
-        public string Phone { get; set; }
+        public string Phone { get; set; } = default!;
         /// <summary>
         /// Роль
         /// </summary>
-        public string Role { get; set; }
+        public string? Role { get; set; }
     }
 }

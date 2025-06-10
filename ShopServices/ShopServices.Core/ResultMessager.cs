@@ -33,5 +33,12 @@
         public const string DELETEACCOUNTDATA_PARAM_NAME = "deleteAccountData";
         public const string CONFLICT = "Conflict with existing Employee";
         public const string ALREADY_EXISTS = "Employee is already existing";
+
+        public const string UPDATECOURIERREQUEST_PARAM_NAME = "updateCourierRequest";
+        public const string TRANSPORT_FIELD_SHOULD_NOT_BE_EMPTY = "Transport field should be not empty";
+        public const string AREAS_FIELD_SHOULD_NOT_BE_EMPTY = "Areas field should be not empty";
+        public const string DELIVERYTIMESCHEDULE_FIELD_SHOULD_NOT_BE_EMPTY = "DeliveryTimeSchedule field should be not empty";
+
+        public const string EMPLOYEE_IS_NOT_COURIER = "Employee is not courier";
     }
 }

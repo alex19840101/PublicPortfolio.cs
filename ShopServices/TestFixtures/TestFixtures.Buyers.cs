@@ -136,7 +136,6 @@ namespace TestFixtures
             return new ChangeDiscountGroupsData(
                 buyerId: id,
                 login: GenerateStringIfTrueElseReturnNull(generateLogin),
-                passwordHash: passwordHash ?? GenerateStringIfTrueElseReturnNull(generatePasswordHash),
                 discountGroups: generateDiscountGroups ? GenerateIdsList(fixture, (uint)discountGroupsCount) : null,
                 granterId: granterId,
                 granterLogin: GenerateStringIfTrueElseReturnNull(generateGranterLogin));

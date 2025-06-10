@@ -56,7 +56,7 @@ namespace ShopServices.DataAccess.Repositories
 
         public async Task<Result> DeleteUser(uint id)
         {
-            var buyerEntity = await GetBuyerEntity(id);
+            var buyerEntity = await GetBuyerEntity(id, asNoTracking: false);
 
             if (buyerEntity is null)
                 return new Result(ResultMessager.USER_NOT_FOUND, HttpStatusCode.NotFound);
@@ -77,7 +77,16 @@ namespace ShopServices.DataAccess.Repositories
 
         public async Task<Buyer?> GetUser(uint id)
         {
-            var buyerEntity = await GetBuyerEntity(id);
+            var buyerEntity = await GetBuyerEntity(id, asNoTracking: true);
+            if (buyerEntity is null)
+                return null;
+
+            return Buyer(buyerEntity);
+        }
+
+        public async Task<Buyer?> GetUserForUpdate(uint id)
+        {
+            var buyerEntity = await GetBuyerEntity(id, asNoTracking: false);
             if (buyerEntity is null)
                 return null;
 
@@ -95,7 +104,7 @@ namespace ShopServices.DataAccess.Repositories
 
         public async Task<Result> ChangeDiscountGroups(uint id, List<uint> discountGroups, uint granterId)
         {
-            var granterUserEntity = await GetBuyerEntity(granterId);
+            var granterUserEntity = await GetBuyerEntity(granterId, asNoTracking: false);
             if (granterUserEntity is null)
                 return new Result(ResultMessager.GRANTER_NOT_FOUND, HttpStatusCode.Unauthorized);
 
@@ -135,6 +144,7 @@ namespace ShopServices.DataAccess.Repositories
             if (!string.Equals(upd.NewPasswordHash, buyerEntity.PasswordHash)) buyerEntity.UpdatePasswordHash(upd.PasswordHash);
             if (!string.Equals(upd.Nick, buyerEntity.Nick)) buyerEntity.UpdateNick(upd.Nick);
             if (!string.Equals(upd.Phone, buyerEntity.Phone)) buyerEntity.UpdatePhone(upd.Phone);
+            if (!string.Equals(upd.Address, buyerEntity.Address)) buyerEntity.UpdateAddress(upd.Address);
 
             if (_dbContext.ChangeTracker.HasChanges())
             {
@@ -146,9 +156,12 @@ namespace ShopServices.DataAccess.Repositories
             return new Result(ResultMessager.USER_IS_ACTUAL, HttpStatusCode.OK);
         }
 
-        private async Task<Entities.Buyer?> GetBuyerEntity(uint id)
+        private async Task<Entities.Buyer?> GetBuyerEntity(uint id, bool asNoTracking)
         {
-            var query = _dbContext.Buyers.AsNoTracking().Where(b => b.Id == id);
+            var query = asNoTracking ?
+                _dbContext.Buyers.AsNoTracking().Where(b => b.Id == id) :
+                _dbContext.Buyers.Where(b => b.Id == id);
+
             var buyerEntity = await query.SingleOrDefaultAsync();
 
             return buyerEntity;

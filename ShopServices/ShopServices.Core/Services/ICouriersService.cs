@@ -10,8 +10,8 @@ namespace ShopServices.Core.Services
 {
     public interface ICouriersService
     {
-        Task<Courier> GetUserInfo(uint id);
-        Task<Courier> GetUserInfo(string login);
+        Task<Courier> GetCourier(uint id);
+        Task<Courier> GetCourier(string login);
         Task<Result> UpdateCourier(UpdateCourierRequest updateCourierRequest);
     }
 }

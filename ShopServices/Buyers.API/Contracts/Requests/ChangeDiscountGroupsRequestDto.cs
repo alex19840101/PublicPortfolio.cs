@@ -20,7 +20,7 @@ namespace Buyers.API.Contracts.Requests
         /// <summary>
         /// Список id групп скидок для покупателя
         /// </summary>
-        public List<uint> DiscountGroups { get; set; }
+        public List<uint>? DiscountGroups { get; set; }
 
         /// <summary>
         /// Id администратора/менеджера*
@@ -31,10 +31,5 @@ namespace Buyers.API.Contracts.Requests
         /// Логин (уникальное имя аккаунта) администратора/менеджера*
         /// </summary>
         public required string GranterLogin { get; set; }
-
-        /// <summary>
-        /// Пароль администратора/менеджера
-        /// </summary>
-        public required string Password { get; set; }
     }
 }

@@ -7,11 +7,24 @@ namespace ShopServices.Core.Repositories
 {
     public interface IEmployeesRepository
     {
-        Task<AuthResult> AddUser(Employee employee);
-        Task<Employee> GetUser(uint id);
-        Task<Employee> GetUser(string login);
-        Task<Result> UpdateUser(UpdateAccountData employee);
+        /// <summary>
+        /// Добавление цифрового аккаунта абстрактного работника
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
+        Task<AuthResult> AddEmployee(Employee employee);
+        /// <summary> Получение данных по работнику без отслеживания изменений </summary>
+        /// <param name="employeeId"> id работника </param>
+        /// <returns></returns>
+        Task<Employee> GetEmployee(uint employeeId);
+
+        /// <summary> Получение данных по работнику (с отслеживанием изменений для дальнейшего обновления) </summary>
+        /// <param name="employeeId"> id работника </param>
+        /// <returns></returns>
+        Task<Employee> GetEmployeeForUpdate(uint employeeId);
+        Task<Employee> GetEmployee(string employeeLogin);
+        Task<Result> UpdateEmployee(UpdateAccountData employee);
         Task<Result> GrantRole(uint id, string role, uint granterId);
-        Task<Result> DeleteUser(uint id);
+        Task<Result> DeleteEmployee(uint id);
     }
 }

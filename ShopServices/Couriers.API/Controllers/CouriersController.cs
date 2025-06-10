@@ -14,8 +14,12 @@ using ShopServices.Core.Services;
 
 namespace Couriers.API.Controllers
 {
+    /// <summary> Контроллер управления данными курьеров </summary>
     [ApiController]
-    [Route("[controller]")]
+    [Asp.Versioning.ApiVersion(1.0)]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
     [Authorize(Roles ="admin,courier,manager")]
     [Authorize(AuthenticationSchemes = "Bearer")]
     public class CouriersController : ControllerBase
@@ -23,6 +27,8 @@ namespace Couriers.API.Controllers
         private readonly ILogger<CouriersController> _logger;
         private readonly ICouriersService _couriersService;
 
+
+        /// <summary> Конструктор контроллера управления данными курьеров </summary>
         public CouriersController(
             ICouriersService couriersService,
             ILogger<CouriersController> logger)
@@ -31,7 +37,7 @@ namespace Couriers.API.Controllers
             _logger = logger;
         }
 
-
+        /// <summary> Подсказка по регистрации аккаунта курьера </summary>
         [HttpPost]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.NotImplemented)]
@@ -40,6 +46,7 @@ namespace Couriers.API.Controllers
             return new ObjectResult("Use Employees.API/Register") { StatusCode = StatusCodes.Status501NotImplemented };
         }
 
+        /// <summary> Подсказка по удалению аккаунта курьера </summary>
         [HttpDelete]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.NotImplemented)]
@@ -48,46 +55,52 @@ namespace Couriers.API.Controllers
             return new ObjectResult("Use Employees.API/DeleteAccount") { StatusCode = StatusCodes.Status501NotImplemented };
         }
 
-        /// <summary> ��������� ���������� � ��������� ((�������)) �� Id </summary>
+        /// <summary> Получение информации о работнике ((курьере)) по Id </summary>
         [HttpGet]
-        [ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(CourierInfoResponseDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetUserInfoById(uint id)
+        public async Task<IActionResult> GetCourierById(uint id)
         {
-            var employee = await _couriersService.GetUserInfo(id);
+            var employee = await _couriersService.GetCourier(id);
 
             if (employee is null)
                 return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
 
-            return Ok(UserInfoResponseDto(employee));
+            return Ok(GetCourierInfoResponseDto(employee));
         }
 
-        /// <summary> ��������� ���������� � ��������� ((�������)) �� ������ </summary>
+        /// <summary> Получение информации о работнике ((курьере)) по логину </summary>
         [HttpGet]
-        [ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(CourierInfoResponseDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetUserInfoByLogin(string login)
+        public async Task<IActionResult> GetCourierByLogin(string login)
         {
-            var employee = await _couriersService.GetUserInfo(login);
+            var employee = await _couriersService.GetCourier(login);
 
             if (employee is null)
                 return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
 
-            return Ok(UserInfoResponseDto(employee));
+            return Ok(GetCourierInfoResponseDto(employee));
         }
 
+        /// <summary>
+        /// Обновление данных курьера
+        /// </summary>
+        /// <param name="updateCourierRequest"> UpdateCourierRequestDto-Запрос на обновление данных курьера </param>
+        /// <returns></returns>
         [HttpPatch]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> UpdateCourier(UpdateCourierRequestDto updateCourierRequest)
         {
-            var updateResult = await _couriersService.UpdateCourier(UpdateCourierRequest(updateCourierRequest));
+            var updateResult = await _couriersService.UpdateCourier(GetCoreUpdateCourierRequest(updateCourierRequest));
 
             if (updateResult.StatusCode == HttpStatusCode.NotFound)
                 return NotFound(updateResult);
@@ -95,30 +108,19 @@ namespace Couriers.API.Controllers
             if (updateResult.StatusCode == HttpStatusCode.Unauthorized)
                 return new UnauthorizedObjectResult(new Result { Message = updateResult.Message });
 
+            if (updateResult.StatusCode == HttpStatusCode.Conflict)
+                return new ConflictObjectResult(updateResult);
+
             return Ok(updateResult);
         }
 
-
+        /// <summary>
+        /// Маппер UpdateCourierRequestDto - Core.Models.Requests.UpdateCourierRequest
+        /// </summary>
+        /// <param name="requestDto"></param>
+        /// <returns></returns>
         [NonAction]
-        private static UserInfoResponseDto UserInfoResponseDto(Courier courier)
-        {
-            var employee = courier.Employee;
-           
-            return new UserInfoResponseDto
-            {
-                Id = employee.Id,
-                Login = employee.Login,
-                Name = employee.Name,
-                Surname = employee.Surname,
-                Email = employee.Email,
-                Nick = employee.Nick,
-                Phone = employee.Phone,
-                Role = employee.Role
-            };
-        }
-
-        [NonAction]
-        private static UpdateCourierRequest UpdateCourierRequest(UpdateCourierRequestDto requestDto)
+        private static UpdateCourierRequest GetCoreUpdateCourierRequest(UpdateCourierRequestDto requestDto)
         {
             return new UpdateCourierRequest
             {
@@ -127,6 +129,36 @@ namespace Couriers.API.Controllers
                 Transport = requestDto.Transport,
                 Areas = requestDto.Areas,
                 DeliveryTimeSchedule = requestDto.DeliveryTimeSchedule
+            };
+        }
+
+
+        /// <summary>
+        /// Маппер Core.Models.Courier - CourierInfoResponseDto
+        /// </summary>
+        /// <param name="courier"> Core.Models.Courier - курьер </param>
+        /// <returns></returns>
+        [NonAction]
+        private static CourierInfoResponseDto GetCourierInfoResponseDto(Courier courier)
+        {
+            return new CourierInfoResponseDto
+            {
+                Id = courier.Employee.Id,
+                EmployeeAccount = new EmployeeAccountDto
+                {
+                    Id = courier.Employee.Id,
+                    Login = courier.Employee.Login,
+                    Name = courier.Employee.Name,
+                    Surname = courier.Employee.Surname,
+                    Email = courier.Employee.Email,
+                    Nick = courier.Employee.Nick,
+                    Phone = courier.Employee.Phone,
+                    Role = courier.Employee.Role
+                },
+                DriverLicenseCategory = courier.DriverLicenseCategory,
+                Transport = courier.Transport,
+                Areas = courier.Areas,
+                DeliveryTimeSchedule = courier.DeliveryTimeSchedule
             };
         }
     }
