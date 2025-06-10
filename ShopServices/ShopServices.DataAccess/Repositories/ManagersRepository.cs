@@ -39,7 +39,8 @@ namespace ShopServices.DataAccess.Repositories
                 role: employee.Role,
                 granterId: employee.GranterId,
                 createdDt: employee.CreatedDt.ToUniversalTime(),
-                lastUpdateDt: employee.LastUpdateDt?.ToUniversalTime());
+                lastUpdateDt: employee.LastUpdateDt?.ToUniversalTime(),
+                workStatus: "?");
 
             await _dbContext.Managers.AddAsync(newManagerEntity);
             await _dbContext.SaveChangesAsync();
