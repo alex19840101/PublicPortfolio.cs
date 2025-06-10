@@ -1,12 +1,19 @@
-namespace Managers.API.Contracts.Requests
+﻿namespace Managers.API.Contracts.Responses
 {
-    /// <summary> Запрос на обновление данных менеджера </summary>
-    public class UpdateManagerRequestDto
+    /// <summary>
+    /// Класс ответа с информацией о пользователе (работнике ((менеджере)))
+    /// </summary>
+    public class ManagerInfoResponseDto
     {
         /// <summary>
-        /// Id курьера*
+        /// Уникальный id аккаунта*
         /// </summary>
         public uint Id { get; set; }
+
+        /// <summary>
+        /// Информация о работнике (Employee) ((менеджере)))
+        /// </summary>
+        public EmployeeAccountDto EmployeeAccount { get; set; } = default!;
 
         /// <summary> Режим работы/отпуск </summary>
         public string WorkStatus { get; set; } = default!;

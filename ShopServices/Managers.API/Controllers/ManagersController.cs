@@ -55,7 +55,7 @@ namespace Managers.API.Controllers
         
         /// <summary> Получение информации о работнике ((менеджере)) по Id </summary>
         [HttpGet]
-        [ProducesResponseType(typeof(ManagerResponseDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ManagerInfoResponseDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
@@ -71,7 +71,7 @@ namespace Managers.API.Controllers
 
         /// <summary> Получение информации о работнике ((менеджере)) по логину </summary>
         [HttpGet]
-        [ProducesResponseType(typeof(ManagerResponseDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ManagerInfoResponseDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
@@ -118,20 +118,28 @@ namespace Managers.API.Controllers
         /// <param name="manager"> Core.Models.Manager - менеджер </param>
         /// <returns></returns>
         [NonAction]
-        private static ManagerResponseDto GetManagerResponseDto(Manager manager)
+        private static ManagerInfoResponseDto GetManagerResponseDto(Manager manager)
         {
             var employee = manager.Employee;
 
-            return new ManagerResponseDto
+            return new ManagerInfoResponseDto
             {
                 Id = employee.Id,
-                Login = employee.Login,
-                Name = employee.Name,
-                Surname = employee.Surname,
-                Email = employee.Email,
-                Nick = employee.Nick,
-                Phone = employee.Phone,
-                Role = employee.Role
+                EmployeeAccount = new EmployeeAccountDto
+                {
+                    Id = manager.Employee.Id,
+                    Login = manager.Employee.Login,
+                    Name = manager.Employee.Name,
+                    Surname = manager.Employee.Surname,
+                    Email = manager.Employee.Email,
+                    Nick = manager.Employee.Nick,
+                    Phone = manager.Employee.Phone,
+                    Role = manager.Employee.Role
+                },
+                WorkStatus = manager.WorkStatus,
+                ClientGroups = manager.ClientGroups,
+                GoodsCategories = manager.GoodsCategories,
+                Services = manager.Services
             };
         }
 
@@ -146,8 +154,10 @@ namespace Managers.API.Controllers
             return new UpdateManagerRequest
             {
                 Id = requestDto.Id,
-                //Field(s)
-                //...
+                WorkStatus = requestDto.WorkStatus,
+                ClientGroups = requestDto.ClientGroups,
+                GoodsCategories = requestDto.GoodsCategories,
+                Services = requestDto.Services
             };
         }
     }

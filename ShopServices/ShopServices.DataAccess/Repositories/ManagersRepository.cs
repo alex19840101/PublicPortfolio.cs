@@ -39,7 +39,8 @@ namespace ShopServices.DataAccess.Repositories
                 role: employee.Role,
                 granterId: employee.GranterId,
                 createdDt: employee.CreatedDt.ToUniversalTime(),
-                lastUpdateDt: employee.LastUpdateDt?.ToUniversalTime());
+                lastUpdateDt: employee.LastUpdateDt?.ToUniversalTime(),
+                workStatus: "?");
 
             await _dbContext.Managers.AddAsync(newManagerEntity);
             await _dbContext.SaveChangesAsync();
@@ -110,7 +111,10 @@ namespace ShopServices.DataAccess.Repositories
                 return new Result(ResultMessager.EMPLOYEE_IS_NOT_COURIER, System.Net.HttpStatusCode.Conflict);
             }
 
-            //if (!string.Equals(upd.Field, managerEntity.Field)) managerEntity.Field = upd.Field;
+            if (!string.Equals(upd.WorkStatus, managerEntity.WorkStatus)) managerEntity.WorkStatus = upd.WorkStatus;
+            if (!string.Equals(upd.ClientGroups, managerEntity.ClientGroups)) managerEntity.ClientGroups = upd.ClientGroups;
+            if (!string.Equals(upd.GoodsCategories, managerEntity.GoodsCategories)) managerEntity.GoodsCategories = upd.GoodsCategories;
+            if (!string.Equals(upd.Services, managerEntity.Services)) managerEntity.Services = upd.Services;
             if (_dbContext.ChangeTracker.HasChanges())
             {
                 managerEntity.UpdateLastUpdateDt(DateTime.Now.ToUniversalTime());
@@ -131,8 +135,10 @@ namespace ShopServices.DataAccess.Repositories
         private static Manager GetCoreManagerModel(Entities.Manager managerEntity) =>
             new Manager
             {
-                //Field(s)
-                //...
+                WorkStatus = managerEntity.WorkStatus,
+                ClientGroups = managerEntity.ClientGroups,
+                GoodsCategories = managerEntity.GoodsCategories,
+                Services = managerEntity.Services,
 
                 Employee = new Core.Auth.Employee(
                     id: managerEntity.Id,
