@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -13,14 +14,18 @@ using ShopServices.Core.Services;
 
 namespace GoodsGroups.API.Controllers
 {
-    /// <summary> Контроллер для работы с группами (категориями) товаров </summary>
+    /// <summary> РљРѕРЅС‚СЂРѕР»Р»РµСЂ РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РіСЂСѓРїРїР°РјРё (РєР°С‚РµРіРѕСЂРёСЏРјРё) С‚РѕРІР°СЂРѕРІ </summary>
     [ApiController]
-    [Route("[controller]")]
+    [Asp.Versioning.ApiVersion(1.0)]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
     public class GoodsGroupsController : ControllerBase
     {
         private readonly ILogger<GoodsGroupsController> _logger;
         private readonly IGoodsGroupsService _goodsGroupsService;
 
+        /// <summary> РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРЅС‚СЂРѕР»Р»РµСЂР° СѓРїСЂР°РІР»РµРЅРёСЏ РіСЂСѓРїРїР°РјРё (РєР°С‚РµРіРѕСЂРёСЏРјРё) С‚РѕРІР°СЂРѕРІ </summary>
         public GoodsGroupsController(
             IGoodsGroupsService goodsGroupsService,
             ILogger<GoodsGroupsController> logger)
@@ -29,8 +34,8 @@ namespace GoodsGroups.API.Controllers
             _logger = logger;
         }
 
-        /// <summary> Добавление категории </summary>
-        /// <param name="categoryDto"> Запрос на добавление категории </param>
+        /// <summary> Р”РѕР±Р°РІР»РµРЅРёРµ РєР°С‚РµРіРѕСЂРёРё </summary>
+        /// <param name="categoryDto"> Р—Р°РїСЂРѕСЃ РЅР° РґРѕР±Р°РІР»РµРЅРёРµ РєР°С‚РµРіРѕСЂРёРё </param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Created)]
@@ -61,8 +66,8 @@ namespace GoodsGroups.API.Controllers
 
         }
 
-        /// <summary> Получение категории по id </summary>
-        /// <param name="id"> id категории </param>
+        /// <summary> РџРѕР»СѓС‡РµРЅРёРµ РєР°С‚РµРіРѕСЂРёРё РїРѕ id </summary>
+        /// <param name="id"> id РєР°С‚РµРіРѕСЂРёРё </param>
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(Category), (int)HttpStatusCode.OK)]
@@ -79,15 +84,46 @@ namespace GoodsGroups.API.Controllers
         }
 
 
-        /// <summary> Получение информации о категории </summary>
-        /// <param name="articleSubString"> Подстрока названия категории </param>
+        /// <summary> РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РєР°С‚РµРіРѕСЂРёРё </summary>
+        /// <param name="nameSubString"> РќР°Р·РІР°РЅРёРµ РєР°С‚РµРіРѕСЂРёРё </param>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(Category), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> GetCategoryByName(string nameSubString)
+        {
+            var category = await _goodsGroupsService.GetCategoryByName(nameSubString);
+
+            if (category is null)
+                return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
+
+            return Ok(CategoryMapper.GetCategoryDto(category));
+        }
+
+        /// <summary> РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РєР°С‚РµРіРѕСЂРёСЏС… </summary>
+        /// <param name="nameSubString"> РџРѕРґСЃС‚СЂРѕРєР° РЅР°Р·РІР°РЅРёСЏ РєР°С‚РµРіРѕСЂРёРё </param>
+        /// <param name="brand"> РџРѕРґСЃС‚СЂРѕРєР° - Р±СЂРµРЅРґ (РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊ) </param>
+        /// <param name="byPage"> РљРѕР»РёС‡РµСЃС‚РІРѕ С‚РѕРІР°СЂРѕРІ РЅР° СЃС‚СЂР°РЅРёС†Рµ </param>
+        /// <param name="page"> РќРѕРјРµСЂ СЃС‚СЂР°РЅРёС†С‹ </param>
+        /// <param name="ignoreCase"> РРіРЅРѕСЂРёСЂРѕРІР°С‚СЊ Р»Рё СЂРµРіРёСЃС‚СЂ СЃРёРјРІРѕР»РѕРІ </param>
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Category>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
-        public async Task<IEnumerable<Category>> GetCategoryByName(string nameSubString)
+        public async Task<IEnumerable<Category>> GetCategories(
+            string? nameSubString = null,
+            string? brand = null,
+            [Range(1,100)] uint byPage = 10,
+            [Range(1, uint.MaxValue)] uint page = 1,
+            bool ignoreCase = true)
         {
-            var categoriesCollection = await _goodsGroupsService.GetCategoryByName(nameSubString);
+            var categoriesCollection = await _goodsGroupsService.GetCategories(
+                nameSubString: nameSubString,
+                brand: brand,
+                byPage: byPage,
+                page: page,
+                ignoreCase: ignoreCase);
 
             if (!categoriesCollection.Any())
                 return [];
@@ -95,31 +131,8 @@ namespace GoodsGroups.API.Controllers
             return categoriesCollection.GetCategoriesDtos();
         }
 
-        /// <summary> Получение информации о товарах </summary>
-        /// <param name="nameSubString"> Подстрока названия товара </param>
-        /// <param name="brand"> Бренд (производитель) </param>
-        /// <param name="byPage"> Количество товаров на странице </param>
-        /// <param name="page"> Номер страницы </param>
-        /// <returns></returns>
-        [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<Category>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
-        public async Task<IEnumerable<Category>> GetCategorys(
-            string nameSubString,
-            string brand = null,
-            uint byPage = 10,
-            uint page = 1)
-        {
-            var categoriesCollection = await _goodsGroupsService.GetCategories(nameSubString, brand, byPage, page);
-
-            if (!categoriesCollection.Any())
-                return [];
-
-            return categoriesCollection.GetCategoriesDtos();
-        }
-
-        /// <summary> Обновление информации о товаре </summary>
-        /// <param name="categoryDto"> Информация о товаре для обновления </param>
+        /// <summary> РћР±РЅРѕРІР»РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РєР°С‚РµРіРѕСЂРёРё </summary>
+        /// <param name="categoryDto"> РРЅС„РѕСЂРјР°С†РёСЏ Рѕ РєР°С‚РµРіРѕСЂРёРё РґР»СЏ РѕР±РЅРѕРІР»РµРЅРёСЏ </param>
         /// <returns></returns>
         [HttpPatch]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
@@ -137,8 +150,32 @@ namespace GoodsGroups.API.Controllers
             return Ok(updateResult);
         }
 
-        /// <summary> Удаление (пометка архивным) товара по id </summary>
-        /// <param name="id"> id товара для удаления (архивации) </param>
+        /// <summary> РђСЂС…РёРІР°С†РёСЏ РєР°С‚РµРіРѕСЂРёРё РїРѕ id </summary>
+        /// <param name="id"> id РєР°С‚РµРіРѕСЂРёРё РґР»СЏ Р°СЂС…РёРІР°С†РёРё </param>
+        /// <returns></returns>
+        [HttpDelete]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [Authorize(Roles = "admin, developer, manager")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> ArchiveCategory(uint id)
+        {
+            var deleteResult = await _goodsGroupsService.ArchiveCategory(id);
+
+            if (deleteResult.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(deleteResult);
+
+            if (deleteResult.StatusCode == HttpStatusCode.Forbidden)
+                return new ObjectResult(deleteResult) { StatusCode = StatusCodes.Status403Forbidden };
+
+            return Ok(deleteResult);
+        }
+
+        /// <summary> РЈРґР°Р»РµРЅРёРµ РєР°С‚РµРіРѕСЂРёРё РїРѕ id </summary>
+        /// <param name="id"> id РєР°С‚РµРіРѕСЂРёРё РґР»СЏ СѓРґР°Р»РµРЅРёСЏ </param>
         /// <returns></returns>
         [HttpDelete]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]

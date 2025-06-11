@@ -10,15 +10,17 @@ namespace ShopServices.Core.Services
     /// <summary> Интерфейс для работы с группами (категориями) товаров </summary>
     public interface IGoodsGroupsService
     {
-        public Task<Result> AddCategory(Category product);
+        public Task<Result> AddCategory(Category newCategory);
         public Task<Category> GetCategoryById(uint id);
-        public Task<IEnumerable<Category>> GetCategoryByName(string nameSubString);
+        public Task<Category> GetCategoryByName(string nameSubString);
         public Task<IEnumerable<Category>> GetCategories(
-            string nameSubString,
+            string nameSubString = null,
             string brand = null,
             uint byPage = 10,
-            uint page = 1);
-        public Task<Result> UpdateCategory(Category product);
+            uint page = 1,
+            bool ignoreCase = true);
+        public Task<Result> UpdateCategory(Category category);
+        public Task<Result> ArchiveCategory(uint id);
         public Task<Result> DeleteCategory(uint id);
     }
 }
