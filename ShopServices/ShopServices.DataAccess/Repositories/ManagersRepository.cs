@@ -108,7 +108,7 @@ namespace ShopServices.DataAccess.Repositories
                 if (employeeEntity is null)
                     return new Result(ResultMessager.USER_NOT_FOUND, HttpStatusCode.NotFound);
 
-                return new Result(ResultMessager.EMPLOYEE_IS_NOT_COURIER, System.Net.HttpStatusCode.Conflict);
+                return new Result(ResultMessager.EMPLOYEE_IS_NOT_MANAGER, System.Net.HttpStatusCode.Conflict);
             }
 
             if (!string.Equals(upd.WorkStatus, managerEntity.WorkStatus)) managerEntity.WorkStatus = upd.WorkStatus;
