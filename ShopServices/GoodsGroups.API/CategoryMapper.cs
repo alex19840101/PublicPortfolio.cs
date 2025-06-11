@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using ShopServices.Core.Models;
 
@@ -12,12 +11,12 @@ namespace GoodsGroups.API
             return new Contracts.Category
             {
                 Id = coreCategory.Id,
-                Brand = coreCategory.Brand,
                 Name = coreCategory.Name,
+                Brand = coreCategory.Brand,
                 Params = coreCategory.Params,
                 Url = coreCategory.Url,
                 ImageUrl = coreCategory.ImageUrl,
-                Created = coreCategory.Created,
+                Created = coreCategory.Created!.Value,
                 Updated = coreCategory.Updated,
                 Archieved = coreCategory.Archieved
             };
@@ -28,8 +27,8 @@ namespace GoodsGroups.API
             return new Category
             (
                 id: categoryDto.Id,
-                brand: categoryDto.Brand,
-                name: categoryDto.Name,
+                name: categoryDto.Name.Trim(),
+                brand: categoryDto.Brand?.Trim(),
                 parameters: categoryDto.Params,
                 url: categoryDto.Url,
                 imageUrl: categoryDto.ImageUrl,
@@ -52,7 +51,7 @@ namespace GoodsGroups.API
                 Params = coreCategory.Params,
                 Url = coreCategory.Url,
                 ImageUrl = coreCategory.ImageUrl,
-                Created = coreCategory.Created,
+                Created = coreCategory.Created!.Value,
                 Updated = coreCategory.Updated,
                 Archieved = coreCategory.Archieved
             });

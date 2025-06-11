@@ -24,7 +24,7 @@ namespace ShopServices.Core.Models
         public string ImageUrl { get; private set; }
 
         /// <summary> Дата и время создания категории </summary>
-        public DateTime Created { get; private set; }
+        public DateTime? Created { get; private set; }
 
         /// <summary> Дата и время обновления категории (опционально) </summary>
         public DateTime? Updated { get; private set; }
@@ -38,7 +38,9 @@ namespace ShopServices.Core.Models
             string url = null,
             string imageUrl = null,
             string parameters = null,
-            bool archieved = false)
+            bool archieved = false,
+            DateTime? created = null,
+            DateTime? updated = null)
         {
             Id = id;
             Name = name;
@@ -47,6 +49,27 @@ namespace ShopServices.Core.Models
             ImageUrl = imageUrl;
             Params = parameters;
             Archieved = archieved;
+            Created = created;
+            Updated = updated;
+        }
+
+        /// <summary>
+        /// Проверка на равенство (существующей Category) с игнорированием:
+        /// <para> - Id (Id до момента регистрации не определен, как бы равен нулю),</para>
+        /// <para> - Created, Updated, Archieved - не важны для сравнения</para>
+        /// </summary>
+        /// <param name="comparedCategory"> Category для сравнения</param>
+        /// <returns></returns>
+        public bool IsEqualIgnoreIdAndDt(Category comparedCategory)
+        {
+            if (!string.Equals(comparedCategory.Name, Name) ||
+                !string.Equals(comparedCategory.Brand, Brand) ||
+                !string.Equals(comparedCategory.Params, Params) ||
+                !string.Equals(comparedCategory.Url, Url) ||
+                !string.Equals(comparedCategory.ImageUrl, ImageUrl))
+                return false;
+
+            return true;
         }
     }
 }

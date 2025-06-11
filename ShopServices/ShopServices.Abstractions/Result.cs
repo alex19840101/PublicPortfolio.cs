@@ -16,9 +16,11 @@ namespace ShopServices.Abstractions
         /// <summary> HttpStatusCode-код </summary>
         public HttpStatusCode StatusCode { get; set; }
 
+        /// <summary> Результат обработки запроса на создание/изменение/удаление </summary>
         public Result()
         { }
 
+        /// <summary> Результат обработки запроса на создание/изменение/удаление </summary>
         public Result(string message,
             HttpStatusCode statusCode,
             uint? id = null)

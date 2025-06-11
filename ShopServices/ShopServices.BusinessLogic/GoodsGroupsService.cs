@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using ShopServices.Abstractions;
+using ShopServices.Core;
 using ShopServices.Core.Models;
 using ShopServices.Core.Repositories;
 using ShopServices.Core.Services;
@@ -17,38 +17,78 @@ namespace ShopServices.BusinessLogic
         {
             _categoriesRepository = categoriesRepository;
         }
-        public async Task<Result> AddCategory(Category product)
+        public async Task<Result> AddCategory(Category newCategory)
         {
-            throw new NotImplementedException();
+            if (newCategory == null)
+                throw new ArgumentNullException(ResultMessager.NEWCATEGORY_RARAM_NAME);
+
+            if (string.IsNullOrWhiteSpace(newCategory.Name))
+                return new Result(ResultMessager.NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            var existingCategory = await _categoriesRepository.GetCategoryByName(newCategory.Name);
+
+            if (existingCategory != null)
+            {
+                if (!existingCategory.IsEqualIgnoreIdAndDt(newCategory))
+                    return new Result(ResultMessager.CONFLICT, System.Net.HttpStatusCode.Conflict);
+
+                return new Result(ResultMessager.ALREADY_EXISTS, System.Net.HttpStatusCode.Created, id: existingCategory.Id);
+            }
+
+            var createResult = await _categoriesRepository.Create(newCategory);
+
+            return createResult;
+        }
+
+        public async Task<Result> ArchiveCategory(uint id)
+        {
+            return await _categoriesRepository.ArchiveCategoryById(id);
         }
 
         public async Task<Result> DeleteCategory(uint id)
         {
-            throw new NotImplementedException();
+            return await _categoriesRepository.DeleteCategoryById(id);
         }
 
         public async Task<IEnumerable<Category>> GetCategories(
             string nameSubString,
             string brand = null,
             uint byPage = 10,
-            uint page = 1)
+            uint page = 1,
+            bool ignoreCase = true)
         {
-            throw new NotImplementedException();
+            var take = byPage;
+            var skip = page > 1 ? (page - 1) * byPage : 0;
+
+            return await _categoriesRepository.GetCategories(
+                nameSubString,
+                brand,
+                take,
+                skip);
         }
 
         public async Task<Category> GetCategoryById(uint id)
         {
-            throw new NotImplementedException();
+            return await _categoriesRepository.GetCategoryById(id);
         }
 
-        public async Task<IEnumerable<Category>> GetCategoryByName(string nameSubString)
+        public async Task<Category> GetCategoryByName(string name)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(name))
+                return null;
+
+            return await _categoriesRepository.GetCategoryByName(name);
         }
 
-        public async Task<Result> UpdateCategory(Category product)
+        public async Task<Result> UpdateCategory(Category category)
         {
-            throw new NotImplementedException();
+            if (category == null)
+                throw new ArgumentNullException(ResultMessager.CATEGORY_RARAM_NAME);
+
+            if (string.IsNullOrWhiteSpace(category.Name))
+                return new Result(ResultMessager.NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            return await _categoriesRepository.UpdateCategory(category);
         }
     }
 }
