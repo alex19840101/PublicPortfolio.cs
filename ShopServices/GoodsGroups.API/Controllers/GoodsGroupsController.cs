@@ -112,7 +112,7 @@ namespace GoodsGroups.API.Controllers
         [ProducesResponseType(typeof(IEnumerable<Category>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         public async Task<IEnumerable<Category>> GetCategories(
-            string nameSubString,
+            string? nameSubString = null,
             string? brand = null,
             [Range(1,100)] uint byPage = 10,
             [Range(1, uint.MaxValue)] uint page = 1,
