@@ -14,7 +14,7 @@ namespace ShopServices.Core.Services
         public Task<Category> GetCategoryById(uint id);
         public Task<Category> GetCategoryByName(string nameSubString);
         public Task<IEnumerable<Category>> GetCategories(
-            string nameSubString,
+            string nameSubString = null,
             string brand = null,
             uint byPage = 10,
             uint page = 1,

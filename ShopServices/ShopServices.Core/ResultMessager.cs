@@ -32,7 +32,7 @@
         public const string UPDATEACCOUNTDATA_PARAM_NAME = "updateAccountData";
         public const string DELETEACCOUNTDATA_PARAM_NAME = "deleteAccountData";
         public const string CONFLICT = "Conflict with existing entity";
-        public const string ALREADY_EXISTS = "Employee is already existing";
+        public const string ALREADY_EXISTS = "Entity is already existing and is actual";
 
         public const string UPDATECOURIERREQUEST_PARAM_NAME = "updateCourierRequest";
         public const string TRANSPORT_FIELD_SHOULD_NOT_BE_EMPTY = "Transport field should be not empty";
@@ -45,6 +45,6 @@
         public const string CATEGORY_RARAM_NAME = "category";
         public const string NEWCATEGORY_RARAM_NAME = "newCategory";
         public const string CATEGORY_UPDATED = "Category updated";
-        public const string CATEGORY_IS_ACTUAL = "Category  is actual";
+        public const string CATEGORY_IS_ACTUAL = "Category is actual";
     }
 }

@@ -16,7 +16,10 @@ namespace GoodsGroups.API.Controllers
 {
     /// <summary> Контроллер для работы с группами (категориями) товаров </summary>
     [ApiController]
-    [Route("[controller]")]
+    [Asp.Versioning.ApiVersion(1.0)]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
     public class GoodsGroupsController : ControllerBase
     {
         private readonly ILogger<GoodsGroupsController> _logger;
@@ -82,7 +85,7 @@ namespace GoodsGroups.API.Controllers
 
 
         /// <summary> Получение информации о категории </summary>
-        /// <param name="nameSubString"> Подстрока названия категории </param>
+        /// <param name="nameSubString"> Название категории </param>
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(Category), (int)HttpStatusCode.OK)]
@@ -100,7 +103,7 @@ namespace GoodsGroups.API.Controllers
 
         /// <summary> Получение информации о категориях </summary>
         /// <param name="nameSubString"> Подстрока названия категории </param>
-        /// <param name="brand"> Бренд (производитель) </param>
+        /// <param name="brand"> Подстрока - бренд (производитель) </param>
         /// <param name="byPage"> Количество товаров на странице </param>
         /// <param name="page"> Номер страницы </param>
         /// <param name="ignoreCase"> Игнорировать ли регистр символов </param>

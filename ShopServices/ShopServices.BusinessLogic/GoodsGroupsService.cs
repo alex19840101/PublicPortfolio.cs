@@ -51,7 +51,7 @@ namespace ShopServices.BusinessLogic
         }
 
         public async Task<IEnumerable<Category>> GetCategories(
-            string nameSubString,
+            string nameSubString = null,
             string brand = null,
             uint byPage = 10,
             uint page = 1,
