@@ -11,9 +11,10 @@ namespace ShopServices.DataAccess.Entities
     {
         /// <summary> Уникальный идентификатор товара в системе </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(TypeName = "integer")]
         public uint Id { get; private set; }
 
-        /// <summary> Артикул производителя (при наличии) </summary>
+        /// <summary> Артикул производителя </summary>
         public string ArticleNumber { get; private set; }
 
         /// <summary> Производитель (бренд) </summary>
@@ -51,6 +52,13 @@ namespace ShopServices.DataAccess.Entities
 
         public ICollection<Order>? Orders { get; private set; }
 
+        /// <summary> Id текущей цены на товар (из Prices) </summary>
+        [Column(TypeName = "integer")]
+        public uint? PriceId { get; private set; }
+
+        /// <summary> Текущая цена за единицу товара </summary>
+        public decimal? PricePerUnit { get; private set; }
+
         public Product(uint id,
             string articleNumber,
             string brand,
@@ -61,7 +69,9 @@ namespace ShopServices.DataAccess.Entities
             List<uint> goodsGroups,
             bool archieved,
             uint massInGrams,
-            string dimensions)
+            string dimensions,
+            DateTime created,
+            DateTime? updated)
         {
             Id = id;
             ArticleNumber = articleNumber;
@@ -74,6 +84,22 @@ namespace ShopServices.DataAccess.Entities
             Archieved = archieved;
             MassInGrams = massInGrams;
             Dimensions = dimensions;
+            Created = created;
+            Updated = updated;
         }
+
+        public void UpdateUpdatedDt(DateTime? updatedDt) => Updated = updatedDt;
+        public void UpdateName(string newName) => Name = newName;
+        public void UpdateBrand(string newBrand) => Brand = newBrand;
+        public void UpdateParameters(string newParameters) => Parameters = newParameters;
+        public void UpdateUrl(string newUrl) => Url = newUrl;
+        public void UpdateImageUrl(string newImageUrl) => ImageUrl = newImageUrl;
+        public void UpdateArchived(bool newArchived) => Archieved = newArchived;
+        public void UpdateGoodsGroups(List<uint> newGoodsGroups) => GoodsGroups = newGoodsGroups;
+        public void UpdateMassInGrams(uint newMassInGrams) => MassInGrams = newMassInGrams;
+        public void UpdateDimensions(string newDimensions) => Dimensions = newDimensions;
+
+        public void UpdatePriceId(uint? newPriceId) => PriceId = newPriceId;
+        public void UpdatePricePerUnit(decimal? newPricePerUnit) => PricePerUnit = newPricePerUnit;
     }
 }
