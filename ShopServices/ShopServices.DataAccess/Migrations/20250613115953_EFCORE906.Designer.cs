@@ -12,15 +12,15 @@ using ShopServices.DataAccess;
 namespace ShopServices.DataAccess.Migrations
 {
     [DbContext(typeof(ShopServicesDbContext))]
-    [Migration("20250613071417_Product_Add_PriceId_PricePerUnit_integer_ids")]
-    partial class Product_Add_PriceId_PricePerUnit_integer_ids
+    [Migration("20250613115953_EFCORE906")]
+    partial class EFCORE906
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.5")
+                .HasAnnotation("ProductVersion", "9.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -42,9 +42,9 @@ namespace ShopServices.DataAccess.Migrations
 
             modelBuilder.Entity("ShopServices.DataAccess.Entities.Availability", b =>
                 {
-                    b.Property<decimal>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("numeric(20,0)");
+                        .HasColumnType("bigint");
 
                     b.Property<int>("Count")
                         .HasColumnType("integer");
@@ -52,11 +52,11 @@ namespace ShopServices.DataAccess.Migrations
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("ShopId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("ShopId")
+                        .HasColumnType("integer");
 
-                    b.Property<long?>("WarehouseId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("WarehouseId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -82,8 +82,8 @@ namespace ShopServices.DataAccess.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("timestamp with time zone");
 
-                    b.PrimitiveCollection<long[]>("DiscountGroups")
-                        .HasColumnType("bigint[]");
+                    b.PrimitiveCollection<int[]>("DiscountGroups")
+                        .HasColumnType("integer[]");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -205,8 +205,8 @@ namespace ShopServices.DataAccess.Migrations
                     b.Property<int?>("ManagerId")
                         .HasColumnType("int");
 
-                    b.Property<long>("MassInGrams")
-                        .HasColumnType("bigint");
+                    b.Property<int>("MassInGrams")
+                        .HasColumnType("integer");
 
                     b.Property<long>("OrderId")
                         .HasColumnType("bigint");
@@ -232,10 +232,10 @@ namespace ShopServices.DataAccess.Migrations
 
             modelBuilder.Entity("ShopServices.DataAccess.Entities.EmailNotification", b =>
                 {
-                    b.Property<decimal>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("numeric(20,0)");
+                    b.Property<long>("Id")
 
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
@@ -383,8 +383,8 @@ namespace ShopServices.DataAccess.Migrations
                     b.Property<int?>("ManagerId")
                         .HasColumnType("int");
 
-                    b.Property<long>("MassInGrams")
-                        .HasColumnType("bigint");
+                    b.Property<int>("MassInGrams")
+                        .HasColumnType("integer");
 
                     b.Property<string>("PaymentInfo")
                         .IsRequired()
@@ -397,8 +397,8 @@ namespace ShopServices.DataAccess.Migrations
                     b.Property<DateTime?>("Received")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long?>("ShopId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("ShopId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("timestamp with time zone");
@@ -465,9 +465,9 @@ namespace ShopServices.DataAccess.Migrations
 
             modelBuilder.Entity("ShopServices.DataAccess.Entities.PhoneNotification", b =>
                 {
-                    b.Property<decimal>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("numeric(20,0)");
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
@@ -553,17 +553,17 @@ namespace ShopServices.DataAccess.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)");
 
-                    b.PrimitiveCollection<long[]>("GoodsGroups")
+                    b.PrimitiveCollection<int[]>("GoodsGroups")
                         .IsRequired()
-                        .HasColumnType("bigint[]");
+                        .HasColumnType("integer[]");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasMaxLength(2048)
                         .HasColumnType("character varying(2048)");
 
-                    b.Property<long>("MassInGrams")
-                        .HasColumnType("bigint");
+                    b.Property<int>("MassInGrams")
+                        .HasColumnType("ingeger");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -738,13 +738,13 @@ namespace ShopServices.DataAccess.Migrations
                     b.HasOne("ShopServices.DataAccess.Entities.Order", null)
                         .WithMany()
                         .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ShopServices.DataAccess.Entities.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -753,7 +753,7 @@ namespace ShopServices.DataAccess.Migrations
                     b.HasOne("ShopServices.DataAccess.Entities.Buyer", "Buyer")
                         .WithMany("Deliveries")
                         .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ShopServices.DataAccess.Entities.Courier", null)
@@ -772,7 +772,7 @@ namespace ShopServices.DataAccess.Migrations
                     b.HasOne("ShopServices.DataAccess.Entities.Buyer", "Buyer")
                         .WithMany("Orders")
                         .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ShopServices.DataAccess.Entities.Courier", null)
@@ -791,7 +791,7 @@ namespace ShopServices.DataAccess.Migrations
                     b.HasOne("ShopServices.DataAccess.Entities.Employee", null)
                         .WithOne()
                         .HasForeignKey("ShopServices.DataAccess.Entities.Courier", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -800,7 +800,7 @@ namespace ShopServices.DataAccess.Migrations
                     b.HasOne("ShopServices.DataAccess.Entities.Employee", null)
                         .WithOne()
                         .HasForeignKey("ShopServices.DataAccess.Entities.Manager", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
