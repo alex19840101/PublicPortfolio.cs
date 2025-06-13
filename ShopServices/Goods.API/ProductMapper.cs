@@ -20,7 +20,11 @@ namespace Goods.API
                 GoodsGroups = coreProduct.GoodsGroups,
                 Created = coreProduct.Created,
                 Updated = coreProduct.Updated,
-                Archieved = coreProduct.Archieved
+                Archieved = coreProduct.Archieved,
+                MassInGrams = coreProduct.MassInGrams,
+                Dimensions = coreProduct.Dimensions,
+                PriceId = coreProduct.PriceId,
+                PricePerUnit = coreProduct.PricePerUnit
             };
         }
 
@@ -37,7 +41,11 @@ namespace Goods.API
                 goodsGroups: productDto.GoodsGroups,
                 archieved: productDto.Archieved,
                 massInGrams: productDto.MassInGrams,
-                dimensions: productDto.Dimensions);
+                dimensions: productDto.Dimensions,
+                priceId: productDto.PriceId,
+                pricePerUnit: productDto.PricePerUnit,
+                created: productDto.Created,
+                updated: productDto.Updated);
         }
 
         /// <summary>
@@ -59,7 +67,11 @@ namespace Goods.API
                 GoodsGroups = coreProduct.GoodsGroups,
                 Created = coreProduct.Created,
                 Updated = coreProduct.Updated,
-                Archieved = coreProduct.Archieved
+                Archieved = coreProduct.Archieved,
+                MassInGrams = coreProduct.MassInGrams,
+                Dimensions = coreProduct.Dimensions,
+                PriceId = coreProduct.PriceId,
+                PricePerUnit = coreProduct.PricePerUnit,
             });
         }
     }

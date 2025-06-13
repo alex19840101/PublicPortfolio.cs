@@ -9,26 +9,26 @@ namespace Goods.API.Contracts
         /// <summary> *Уникальный идентификатор товара в системе </summary>
         public uint Id { get; set; }
 
-        /// <summary> Артикул производителя (при наличии) </summary>
-        public string ArticleNumber { get; set; }
+        /// <summary> Артикул производителя </summary>
+        public string ArticleNumber { get; set; } = default!;
 
         /// <summary> Производитель (бренд) </summary>
-        public string Brand { get; set; }
+        public string Brand { get; set; } = default!;
 
         /// <summary> *Название товара </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary> Параметры товара </summary>
-        public string Params { get; set; }
-        
+        public string Params { get; set; } = default!;
+
         /// <summary> Ссылка </summary>
-        public string Url { get; set; }
-        
+        public string Url { get; set; } = default!;
+
         /// <summary> Ссылка на фото/изображение товара </summary>
-        public string ImageUrl { get; set; }
+        public string ImageUrl { get; set; } = default!;
 
         /// <summary> Id групп товаров </summary>
-        public List<uint> GoodsGroups { get; set; }
+        public List<uint> GoodsGroups { get; set; } = null!;
 
         /// <summary> Дата и время создания данных о товаре </summary>
         public DateTime Created { get; set; }
@@ -37,12 +37,18 @@ namespace Goods.API.Contracts
         public DateTime? Updated { get; set; }
 
         /// <summary> В архиве ли товар </summary>
-        public bool Archieved { get; set; }
+        public bool Archieved { get; set; } = false;
 
         /// <summary> Масса, г </summary>
         public uint MassInGrams { get; set; }
 
         /// <summary> Габариты </summary>
-        public string Dimensions { get; set; }
+        public string Dimensions { get; set; } = default!;
+
+        /// <summary> Id текущей цены на товар. Изменение цены через Prices.API </summary>
+        public uint? PriceId { get; set; }
+
+        /// <summary> Текущая цена за единицу товара. Изменение цены через Prices.API </summary>
+        public decimal? PricePerUnit { get; set; }
     }
 }

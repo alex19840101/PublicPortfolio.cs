@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -85,13 +86,60 @@ namespace Goods.API.Controllers
 
         /// <summary> Получение информации о товарах </summary>
         /// <param name="articleSubString"> Подстрока артикула производителя </param>
+        /// <param name="brand"> Подстрока - бренд (производитель) </param>
+        /// <param name="byPage"> Количество товаров на странице </param>
+        /// <param name="page"> Номер страницы </param>
+        /// <param name="ignoreCase"> Игнорировать ли регистр символов </param>
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Product>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
-        public async Task<IEnumerable<Product>> GetProductsByArticle(string articleSubString)
+        public async Task<IEnumerable<Product>> GetProductsByArticle(
+            string articleSubString,
+            string? brand = null,
+            [Range(1, 100)] uint byPage = 10,
+            [Range(1, uint.MaxValue)] uint page = 1,
+            bool ignoreCase = true)
         {
-            var productsCollection = await _goodsService.GetProductsByArticle(articleSubString);
+            var productsCollection = await _goodsService.GetProductsByArticle(
+                articleSubString: articleSubString,
+                brand: brand,
+                byPage: byPage,
+                page: page,
+                ignoreCase: ignoreCase);
+
+            if (!productsCollection.Any())
+                return [];
+
+            return productsCollection.GetProductDtos();
+        }
+
+        /// <summary> Получение перечня товаров заданной категории </summary>
+        /// <param name="category"> id категории товаров </param>
+        /// <param name="paramsSubString"> Подстрока параметров товара </param>
+        /// <param name="brand"> Подстрока - бренд (производитель) </param>
+        /// <param name="byPage"> Количество товаров на странице </param>
+        /// <param name="page"> Номер страницы </param>
+        /// <param name="ignoreCase"> Игнорировать ли регистр символов </param>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<Product>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        public async Task<IEnumerable<Product>> GetProductsByCategory(
+            uint category,
+            string? paramsSubString = null,
+            string? brand = null,
+            [Range(1, 100)] uint byPage = 10,
+            [Range(1, uint.MaxValue)] uint page = 1,
+            bool ignoreCase = true)
+        {
+            var productsCollection = await _goodsService.GetProductsByCategory(
+                category: category,
+                paramsSubString: paramsSubString,
+                brand: brand,
+                byPage: byPage,
+                page: page,
+                ignoreCase: ignoreCase);
 
             if (!productsCollection.Any())
                 return [];
@@ -101,20 +149,27 @@ namespace Goods.API.Controllers
 
         /// <summary> Получение информации о товарах </summary>
         /// <param name="nameSubString"> Подстрока названия товара </param>
-        /// <param name="brand"> Бренд (производитель) </param>
+        /// <param name="brand"> Подстрока - бренд (производитель) </param>
         /// <param name="byPage"> Количество товаров на странице </param>
         /// <param name="page"> Номер страницы </param>
+        /// <param name="ignoreCase"> Игнорировать ли регистр символов </param>
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Product>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         public async Task<IEnumerable<Product>> GetProducts(
-            string nameSubString,
+            string? nameSubString = null,
             string? brand = null,
-            uint byPage = 10,
-            uint page = 1)
+            [Range(1, 100)] uint byPage = 10,
+            [Range(1, uint.MaxValue)] uint page = 1,
+            bool ignoreCase = true)
         {
-            var productsCollection = await _goodsService.GetProducts(nameSubString, brand, byPage, page);
+            var productsCollection = await _goodsService.GetProducts(
+                nameSubString: nameSubString,
+                brand: brand,
+                byPage: byPage,
+                page: page,
+                ignoreCase: ignoreCase);
 
             if (!productsCollection.Any())
                 return [];
@@ -141,8 +196,8 @@ namespace Goods.API.Controllers
             return Ok(updateResult);
         }
 
-        /// <summary> Удаление (пометка архивным) товара по id </summary>
-        /// <param name="id"> id товара для удаления (архивации) </param>
+        /// <summary> Архивация товара по id </summary>
+        /// <param name="id"> id товара для архивации </param>
         /// <returns></returns>
         [HttpDelete]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
@@ -152,9 +207,9 @@ namespace Goods.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [Authorize(Roles = "admin, developer, manager")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> DeleteProduct(uint id)
+        public async Task<IActionResult> ArchiveProduct(uint id)
         {
-            var deleteResult = await _goodsService.DeleteProduct(id);
+            var deleteResult = await _goodsService.ArchiveProduct(id);
 
             if (deleteResult.StatusCode == HttpStatusCode.NotFound)
                 return NotFound(deleteResult);
