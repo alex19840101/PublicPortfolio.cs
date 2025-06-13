@@ -257,7 +257,7 @@ namespace ShopServices.DataAccess.Repositories
             {
                 entityProductsLst = await _dbContext.Products
                             .AsNoTracking().Where(expressionWhereGoodsGroupsHasCategory)
-                            .Skip((int)skipCount).Take((int)limitCount).ToListAsync();
+                            .Skip((int)skipCount).Take((int)limitCount).ToListAsync();  //TODO: fix Npgsql.PostgresException: "42883: оператор не существует: integer[] @> bigint[]
 
                 if (entityProductsLst.Count == 0)
                     return [];
