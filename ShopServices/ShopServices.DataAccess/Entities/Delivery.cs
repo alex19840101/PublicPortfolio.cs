@@ -11,6 +11,7 @@ namespace ShopServices.DataAccess.Entities
     {
         /// <summary> Уникальный идентификатор доставки заказа </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(TypeName = "integer")]
         public uint Id { get; private set; }
 
         /// <summary> Уникальный идентификатор покупателя </summary>

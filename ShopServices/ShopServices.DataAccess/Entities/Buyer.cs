@@ -7,6 +7,7 @@ namespace ShopServices.DataAccess.Entities
     public class Buyer
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(TypeName = "integer")]
         public uint Id { get { return _id; } }
         public string Login { get { return _login; } }
         public string Name { get { return _name; } }

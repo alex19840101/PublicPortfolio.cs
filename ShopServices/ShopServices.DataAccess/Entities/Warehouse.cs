@@ -10,6 +10,7 @@ namespace ShopServices.DataAccess.Entities
     public class Warehouse
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(TypeName = "integer")]
         public uint Id { get; private set; }
         public string Name { get; private set; } = default!;
         public string Address { get; private set; } = default!;

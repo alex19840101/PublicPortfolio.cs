@@ -10,13 +10,26 @@ namespace ShopServices.Core.Services
     {
         public Task<Result> AddProduct(Product product);
         public Task<Product> GetProductById(uint id);
-        public Task<IEnumerable<Product>> GetProductsByArticle(string articleSubString);
+        public Task<IEnumerable<Product>> GetProductsByArticle(
+            string articleSubString,
+            string brand = null,
+            uint byPage = 10,
+            uint page = 1,
+            bool ignoreCase = true);
         public Task<IEnumerable<Product>> GetProducts(
             string nameSubString,
             string brand = null,
             uint byPage = 10,
-            uint page = 1);
+            uint page = 1,
+            bool ignoreCase = true);
         public Task<Result> UpdateProduct(Product product);
-        public Task<Result> DeleteProduct(uint id);
+        public Task<Result> ArchiveProduct(uint id);
+        public Task<IEnumerable<Product>> GetProductsByCategory(
+            uint category,
+            string paramsSubString = null,
+            string brand = null,
+            uint byPage = 10,
+            uint page = 1,
+            bool ignoreCase = true);
     }
 }

@@ -7,6 +7,7 @@ namespace ShopServices.DataAccess.Entities
     {
         /// <summary> *Уникальный идентификатор категории (группы) товаров в системе </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(TypeName = "integer")]
         public uint Id { get; private set; }
 
         /// <summary> *Название категории (группы) товаров </summary>

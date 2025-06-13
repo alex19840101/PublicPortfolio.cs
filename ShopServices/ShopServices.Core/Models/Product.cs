@@ -46,6 +46,12 @@ namespace ShopServices.Core.Models
 
         /// <summary> Габариты </summary>
         public string Dimensions { get; private set; }
+        
+        /// <summary> Id текущей цены на товар (из Prices) </summary>
+        public uint? PriceId { get; private set; }
+        
+        /// <summary> Текущая цена за единицу товара </summary>
+        public decimal? PricePerUnit { get; private set; }
 
 
         public Product(uint id,
@@ -58,7 +64,11 @@ namespace ShopServices.Core.Models
             List<uint> goodsGroups,
             bool archieved,
             uint massInGrams,
-            string dimensions)
+            string dimensions,
+            uint? priceId,
+            decimal? pricePerUnit,
+            DateTime? created,
+            DateTime? updated)
         {
             Id = id;
             ArticleNumber = articleNumber;
@@ -71,6 +81,34 @@ namespace ShopServices.Core.Models
             Archieved = archieved;
             MassInGrams = massInGrams;
             Dimensions = dimensions;
+            PriceId = priceId;
+            PricePerUnit = pricePerUnit;
+            if (created != null)
+                Created = created.Value;
+            Updated = updated;
+        }
+
+        /// <summary>
+        /// Проверка на равенство (существующей Product) с игнорированием:
+        /// <para> - Id (Id до момента регистрации не определен, как бы равен нулю),</para>
+        /// <para> - Created, Updated, Archieved - не важны для сравнения</para>
+        /// <para> - GoodsGroups (для упрощения), PriceId, PricePerUnit </para>
+        /// </summary>
+        /// <param name="comparedProduct"> Product для сравнения</param>
+        /// <returns></returns>
+        public bool IsEqualIgnoreIdAndDt(Product comparedProduct)
+        {
+            if (!string.Equals(comparedProduct.Name, Name) ||
+                !string.Equals(comparedProduct.ArticleNumber, ArticleNumber) ||
+                !string.Equals(comparedProduct.Brand, Brand) ||
+                !string.Equals(comparedProduct.Params, Params) ||
+                !string.Equals(comparedProduct.Url, Url) ||
+                !string.Equals(comparedProduct.ImageUrl, ImageUrl) ||
+                !string.Equals(comparedProduct.Dimensions, Dimensions) ||
+                comparedProduct.MassInGrams != MassInGrams)
+                    return false;
+
+            return true;
         }
     }
 }

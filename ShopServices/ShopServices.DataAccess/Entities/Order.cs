@@ -7,6 +7,7 @@ namespace ShopServices.DataAccess.Entities
     public class Order
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(TypeName = "integer")]
         public uint Id { get; private set; }
 
         public uint BuyerId { get; private set; }

@@ -42,9 +42,22 @@
         public const string EMPLOYEE_IS_NOT_COURIER = "Employee is not courier";
         public const string EMPLOYEE_IS_NOT_MANAGER = "Employee is not manager";
 
+        //categories
         public const string CATEGORY_RARAM_NAME = "category";
         public const string NEWCATEGORY_RARAM_NAME = "newCategory";
         public const string CATEGORY_UPDATED = "Category updated";
         public const string CATEGORY_IS_ACTUAL = "Category is actual";
+
+        //products
+        public const string PRODUCT_RARAM_NAME = "product";
+        public const string ARTICLENUMBER_SHOULD_NOT_BE_EMPTY = "ArticleNumber should be not empty";
+        public const string BRAND_SHOULD_NOT_BE_EMPTY = "Brand should be not empty";
+        public const string DIMENSIONS_SHOULD_NOT_BE_EMPTY = "Dimensions should be not empty";
+        public const string GOODGROUPS_SHOULD_NOT_BE_NULL_OR_EMPTY = "GoodsGroups should not be null or empty";
+        public const string PARAMS_SHOULD_NOT_BE_EMPTY = "Params should be not empty";
+        public const string IMAGEURL_SHOULD_NOT_BE_EMPTY = "ImageUrl should be not empty";
+        public const string URL_SHOULD_NOT_BE_EMPTY = "Url should be not empty";
+        public const string PRODUCT_UPDATED = "Product updated";
+        public const string PRODUCT_IS_ACTUAL = "Product is actual";
     }
 }

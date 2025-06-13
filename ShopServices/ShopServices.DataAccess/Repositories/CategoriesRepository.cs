@@ -89,8 +89,8 @@ namespace ShopServices.DataAccess.Repositories
                 return entityCategorysLst.Select(c => GetCoreCategory(c));
             }
             Expression<Func<Entities.Category, bool>> expressionWhereName = ignoreCase ?
-                p => EF.Functions.Like(p.Name.ToLower(), $"%{nameSubString.ToLower()}%") :
-                p => p.Name.Contains(nameSubString);
+                c => EF.Functions.Like(c.Name.ToLower(), $"%{nameSubString.ToLower()}%") :
+                c => c.Name.Contains(nameSubString);
 
             if (string.IsNullOrWhiteSpace(brandSubStr))
             {
@@ -194,7 +194,7 @@ namespace ShopServices.DataAccess.Repositories
         private async Task<Entities.Category?> GetCategoryEntity(uint id, bool asNoTracking)
         {
             var query = asNoTracking ?
-                _dbContext.Categories.AsNoTracking().Where(b => b.Id == id) :
+                _dbContext.Categories.AsNoTracking().Where(c => c.Id == id) :
                 _dbContext.Categories.Where(c => c.Id == id);
 
             var categoryEntity = await query.SingleOrDefaultAsync();
