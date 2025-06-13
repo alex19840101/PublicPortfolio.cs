@@ -8,12 +8,13 @@ namespace ShopServices.DataAccess.Entities
     {
         /// <summary> *Уникальный идентификатор товарной позиции в системе </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(TypeName = "integer")]
         public uint Id { get; set; }
 
         /// <summary> *Уникальный идентификатор товара в системе </summary>
         public uint ProductId { get; private set; }
 
-        /// <summary> Артикул производителя (при наличии) </summary>
+        /// <summary> Артикул производителя </summary>
         public string? ArticleNumber { get; set; } = default!;
 
         /// <summary> Производитель (бренд) </summary>
