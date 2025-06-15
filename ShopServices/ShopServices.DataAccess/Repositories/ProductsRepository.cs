@@ -208,6 +208,22 @@ namespace ShopServices.DataAccess.Repositories
             if (!string.Equals(upd.Dimensions, productEntity.Dimensions)) productEntity.UpdateDimensions(upd.Dimensions);
             if (upd.MassInGrams != productEntity.MassInGrams) productEntity.UpdateMassInGrams(upd.MassInGrams);
 
+            if (upd.PriceId != null && 
+                (upd.PriceId != productEntity.PriceId || upd.PricePerUnit != productEntity.PricePerUnit))
+            {
+                var priceEntity = await _dbContext.Prices
+                .SingleOrDefaultAsync(p => p.Id == upd.PriceId);
+
+                if (priceEntity == null)
+                    return new Result(ResultMessager.PRICE_NOT_FOUND, HttpStatusCode.NotFound);
+
+                if (priceEntity.ProductId != upd.Id)
+                    return new Result(ResultMessager.PRICE_FOR_OTHER_PRODUCT_ID, HttpStatusCode.NotFound);
+
+                if (priceEntity.PricePerUnit != upd.PricePerUnit)
+                    return new Result(ResultMessager.PRICE_PER_UNIT_MISMATCH, HttpStatusCode.NotFound);
+            }
+
             if (upd.PriceId != productEntity.PriceId) productEntity.UpdatePriceId(upd.PriceId);
             if (upd.PricePerUnit != productEntity.PricePerUnit) productEntity.UpdatePricePerUnit(upd.PricePerUnit);
 

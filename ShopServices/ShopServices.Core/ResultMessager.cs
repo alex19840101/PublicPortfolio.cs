@@ -49,6 +49,7 @@
         public const string CATEGORY_IS_ACTUAL = "Category is actual";
 
         //products
+        public const string NEWPRODUCT_RARAM_NAME = "newProduct";
         public const string PRODUCT_RARAM_NAME = "product";
         public const string ARTICLENUMBER_SHOULD_NOT_BE_EMPTY = "ArticleNumber should be not empty";
         public const string BRAND_SHOULD_NOT_BE_EMPTY = "Brand should be not empty";
@@ -59,5 +60,22 @@
         public const string URL_SHOULD_NOT_BE_EMPTY = "Url should be not empty";
         public const string PRODUCT_UPDATED = "Product updated";
         public const string PRODUCT_IS_ACTUAL = "Product is actual";
+        public const string PRODUCT_NOT_FOUND = "Product not found";
+
+        public const string PRICEPERUNIT_SHOULD_BE_NULL_OR_POSITIVE = "PricePerUnit should be null or positive";
+
+        //prices
+        public const string PRICE_NOT_FOUND = "Price not found";
+        public const string PRICE_FOR_OTHER_PRODUCT_ID = "Price for other product id";
+        public const string PRICE_PER_UNIT_MISMATCH = "PricePerUnit mismatch";
+        public const string PRICEPERUNIT_SHOULD_BE_POSITIVE = "PricePerUnit should be positive";
+        public const string CURRENCY_SHOULD_NOT_BE_EMPTY = "Currency should be not empty";
+        public const string UNIT_SHOULD_NOT_BE_EMPTY = "Unit should be not empty";
+        public const string ACTUALFROMDT_SHOULD_BE_GE_NOW = "ActualFromDt should be >= current time";
+        public const string ACTUALTODT_SHOULD_BE_GE_NOW = "ActualToDt should be >= current time";
+        public const string ACTUALFROMDT_SHOULD_BE_LESS_THAN_ACTUALTODT = "ActualFromDt should < ActualToDt";
+        public const string NEWPRICE_RARAM_NAME = "newPrice";
+        public const string ACTUALTODT_UPDATED = "ActualToDt updated";
+        public const string ACTUALTODT_IS_ACTUAL = "ActualToDt is actual";
     }
 }

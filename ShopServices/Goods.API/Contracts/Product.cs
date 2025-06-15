@@ -45,10 +45,12 @@ namespace Goods.API.Contracts
         /// <summary> Габариты </summary>
         public string Dimensions { get; set; } = default!;
 
-        /// <summary> Id текущей цены на товар. Изменение цены через Prices.API </summary>
+        /// <summary> Id текущей цены на товар. Изменение цены методом UpdateProduct
+        /// <para> Создание ценника - через Prices.API/AddPrice </para></summary>
         public uint? PriceId { get; set; }
 
-        /// <summary> Текущая цена за единицу товара. Изменение цены через Prices.API </summary>
+        /// <summary> Текущая цена за единицу товара. Изменение цены методом UpdateProduct
+        /// <para> Создание ценника - через Prices.API/AddPrice </para></summary>
         public decimal? PricePerUnit { get; set; }
     }
 }

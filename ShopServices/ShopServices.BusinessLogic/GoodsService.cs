@@ -22,7 +22,7 @@ namespace ShopServices.BusinessLogic
         public async Task<Result> AddProduct(Product newProduct)
         {
             if (newProduct == null)
-                throw new ArgumentNullException(ResultMessager.NEWCATEGORY_RARAM_NAME);
+                throw new ArgumentNullException(ResultMessager.NEWPRODUCT_RARAM_NAME);
 
             var unValidatedProductResult = UnValidatedProductResult(newProduct);
             if (unValidatedProductResult != null)
@@ -149,6 +149,17 @@ namespace ShopServices.BusinessLogic
 
             if (string.IsNullOrWhiteSpace(product.Dimensions))
                 return new Result(ResultMessager.DIMENSIONS_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            if (product.PriceId != null)
+            {
+                if (product.PricePerUnit == null || product.PricePerUnit <= 0)
+                    return new Result(ResultMessager.PRICEPERUNIT_SHOULD_BE_NULL_OR_POSITIVE, System.Net.HttpStatusCode.BadRequest);
+
+                return null;
+            }
+            //product.PriceId == null
+            if (product.PricePerUnit != null || product.PricePerUnit <= 0)
+                return new Result(ResultMessager.PRICEPERUNIT_SHOULD_BE_NULL_OR_POSITIVE, System.Net.HttpStatusCode.BadRequest);
 
             return null;
         }
