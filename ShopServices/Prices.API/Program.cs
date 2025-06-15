@@ -51,8 +51,10 @@ try
     builder.Services.AddOpenApi();
 
     builder.Services.AddScoped<IPricesRepository, PricesRepository>();
+    builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
     builder.Services.AddScoped<IPricesService>(src => new PricesService(
-        src.GetRequiredService<IPricesRepository>()));
+        src.GetRequiredService<IPricesRepository>(),
+        src.GetRequiredService<IProductsRepository>()));
 
     builder.Services.AddSingleton<ICacheService, CacheService>();
     builder.Services.AddStackExchangeRedisCaching(builder.Configuration);
