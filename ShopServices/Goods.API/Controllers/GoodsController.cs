@@ -40,6 +40,7 @@ namespace Goods.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Conflict)]
         [Authorize(Roles = "admin, developer, manager")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> AddProduct(Product productDto)

@@ -44,6 +44,7 @@ namespace Prices.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Conflict)]
         [Authorize(Roles = "admin, developer, manager")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> AddPrice(AddPriceRequest priceDto)

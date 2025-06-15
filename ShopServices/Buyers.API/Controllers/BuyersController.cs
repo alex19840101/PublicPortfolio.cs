@@ -45,7 +45,11 @@ public class BuyersController : ControllerBase
             return new BadRequestObjectResult(new ProblemDetails { Title = registerResult.Message });
 
         if (registerResult.StatusCode == HttpStatusCode.Conflict)
-            return new ConflictObjectResult(new Result { Message = registerResult.Message });
+            return new ConflictObjectResult(new Result
+            {
+                Message = registerResult.Message,
+                StatusCode = registerResult.StatusCode
+            });
 
         if (registerResult.StatusCode != HttpStatusCode.Created)
             return new ObjectResult(new Result { Message = registerResult.Message }) { StatusCode = StatusCodes.Status500InternalServerError };

@@ -40,6 +40,7 @@ namespace GoodsGroups.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Conflict)]
         [Authorize(Roles = "admin, developer, manager")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> AddCategory(Category categoryDto)
@@ -50,10 +51,18 @@ namespace GoodsGroups.API.Controllers
                 return new BadRequestObjectResult(new ProblemDetails { Title = createResult.Message });
 
             if (createResult.StatusCode == HttpStatusCode.NotFound)
-                return NotFound(new Result { Message = createResult.Message });
+                return NotFound(new Result
+                {
+                    Message = createResult.Message,
+                    StatusCode = createResult.StatusCode
+                });
 
             if (createResult.StatusCode == HttpStatusCode.Conflict)
-                return new ConflictObjectResult(new Result { Message = createResult.Message });
+                return new ConflictObjectResult(new Result
+                {
+                    Message = createResult.Message,
+                    StatusCode = createResult.StatusCode
+                });
 
             var result = new Result
             {
