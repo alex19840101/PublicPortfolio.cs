@@ -23,8 +23,9 @@ namespace Orders.API
                 return Task.CompletedTask;
 
             if (context.User.IsInRole("manager") ||
-                //context.User.IsInRole("developer") ||
-                context.User.IsInRole("admin"))
+                context.User.IsInRole("developer") ||
+                context.User.IsInRole("admin") ||
+                context.User.IsInRole("buyer"))
                 context.Succeed(requirement);
 
             return Task.CompletedTask;

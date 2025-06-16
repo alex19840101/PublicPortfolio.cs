@@ -91,8 +91,10 @@ namespace ShopServices.BusinessLogic
 
             var claims = new List<Claim>
             {
-                //new Claim(ClaimTypes.Name, loginData.Login),
-                new Claim(ClaimTypes.Role, "buyer")
+                new Claim(ClaimTypes.Role, "buyer"),
+                new Claim(ClaimTypes.NameIdentifier, loginData.Login),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.UserData, user.Id.ToString())
             };
 
             var jwt = new JwtSecurityToken(

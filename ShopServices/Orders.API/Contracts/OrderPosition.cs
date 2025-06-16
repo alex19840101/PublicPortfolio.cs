@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace Orders.API.Contracts
+﻿namespace Orders.API.Contracts
 {
     /// <summary> Товарная позиция в заказе </summary>
-    public class ProductData
+    public class OrderPosition
     {
         /// <summary> *Уникальный идентификатор товарной позиции системе </summary>
         public uint Id { get; set; }
@@ -12,17 +10,17 @@ namespace Orders.API.Contracts
         public uint ProductId { get; set; }
 
         /// <summary> Артикул производителя (при наличии) </summary>
-        public string ArticleNumber { get; set; }
+        public string ArticleNumber { get; set; } = default!;
 
         /// <summary> Производитель (бренд) </summary>
-        public string Brand { get; set; }
+        public string Brand { get; set; } = default!;
 
         /// <summary> *Название товара </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary> Параметры товара </summary>
-        public string Params { get; set; }
-        
+        public string Params { get; set; } = default!;
+
         /// <summary> Цена за единицу измерения </summary>
         public decimal Price { get; set; }
 
@@ -33,6 +31,6 @@ namespace Orders.API.Contracts
         public decimal Cost { get; set; }
 
         /// <summary> Валюта </summary>
-        public string Currency { get; set; }
+        public string Currency { get; set; } = default!;
     }
 }

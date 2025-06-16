@@ -77,5 +77,36 @@
         public const string NEWPRICE_RARAM_NAME = "newPrice";
         public const string ACTUALTODT_UPDATED = "ActualToDt updated";
         public const string ACTUALTODT_IS_ACTUAL = "ActualToDt is actual";
+        
+        //orders
+        public const string ORDER_RARAM_NAME = "order";
+        public const string PRICE_SHOULD_BE_POSITIVE = "Price should be positive";
+        public const string QUANTITY_SHOULD_BE_POSITIVE = "Quantity should be positive";
+        public const string COST_SHOULD_BE_POSITIVE = "Cose should be positive";
+        public const string ORDER_POSITIONS_MUST_BE_NOT_NULL = "order.Positions must be not null";
+        public const string ORDER_POSITIONS_MUST_HAVE_POSITION = "order.Positions must have 1 or more position(s)";
+        public const string PRODUCT_IS_ARCHIEVED = "Product is archieved, not available to order";
+        public const string PRICE_ID_IS_NULL = "product.PriceId == null, not available to order";
+        public const string PRICE_PER_UNIT_IS_NULL = "product.PricePerUnit == null, not available to order";
+        public const string BUYER_NOT_FOUND = "Buyer not found";
+        public const string POSITION_CURRENCY_IS_NOT_PRICE_CURRENCY = "OrderPosition.Currency != Price.Currency";
+        public const string ORDER_CURRENCY_IS_NOT_PRICE_CURRENCY = "Order.Currency != Price.Currency";
+        public const string POSITION_PRICE_IS_LESS_THAN_DISCOUNT_PRICEPERUNIT = "OrderPosition.Price < DiscountPricePerUnit";
+        public const string PRICE_PRICEPERUNIT_IS_NOT_EQUAL_PRODUCT_PRICEPERUNIT = "Price.PricePerUnit != Product.PricePerUnit";
+        public const string PRICE_ACTUAL_TO_DT_IS_NOT_ACTUAL = "Price.ActualToDt is not actual (outdated) (price.ActualToDt < Now), not available to order";
+        public const string PRICE_ACTUAL_FROM_DT_IS_NOT_ACTUAL = "Price.ActualFromDt is not actual (Now < price.ActualFromDt), not available to order";
+        public const string BUYER_ID_IS_NOT_ORDER_BUYER_ID = "buyer.Id != order.BuyerId";
+        public const string BUYER_LOGIN_IS_NOT_ORDER_BUYER_LOGIN = "buyer.Login != order.Buyer.Login";
+        public const string BUYER_EMAIL_IS_NOT_ORDER_BUYER_EMAIL = "buyer.Email != order.Buyer.Email";
+        public const string ORDER_BUYER = "order.Buyer";
+        public const string PRODUCT_ID_MISMATCH = "ProductId mismatch";
+        public const string COST_MISMATCH_MORE_THAN_PERMISSIBLE_PRICE_ERROR = "Cost mismatch more then permissible price error";
+        public const string BUYER_IS_BLOCKED = "Buyer is blocked";
+        public const string PAYMENT_INFO_SHOULD_NOT_BE_EMPTY = "PaymentInfo should be not empty";
+        public const string DELIVERY_ADDRESS_SHOULD_NOT_BE_EMPTY = "DeliveryAddress should be not empty";
+        public const string EXTRA_INFO_SHOULD_NOT_BE_EMPTY = "ExtraInfo should be not empty";
+        public const string IMPOSSIBLE_TO_ADD_ARCHIVED_ORDER = "Impossible to add archived order";
+        public const string TIME_DESYNCHRONIZATION_MORE_THAN_PERMISSIBLE_TIME_DESYNC_SECONDS = "Time desynchronization more than permissible time desynchronization limit";
+        public const string PLANNEDDELIVERYTIME_IS_LESS_THEN_NOW = "PlannedDeliveryTime is less then now";
     }
 }

@@ -25,6 +25,9 @@ namespace ShopServices.DataAccess.Configurations
             builder.Property(o => o.PaymentInfo).HasMaxLength(MAX_NAME_LENGTH).IsRequired();
             builder.HasMany(o => o.Products)
                 .WithMany(p => p.Orders);
+
+            builder.HasMany(o => o.Positions)
+                .WithOne(op => op.Order);
         }
     }
 }

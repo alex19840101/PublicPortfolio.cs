@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace ShopServices.Core.Models
 {
@@ -34,5 +34,44 @@ namespace ShopServices.Core.Models
 
         /// <summary> Валюта </summary>
         public string Currency { get; private set; }
+
+        public OrderPosition(
+            uint id,
+            uint productId,
+            string articleNumber,
+            string brand,
+            string name,
+            string parameters,
+            decimal price,
+            float quantity,
+            decimal cost,
+            string currency)
+        {
+            Id = id;
+            ProductId = productId;
+            ArticleNumber = articleNumber;
+            Brand = brand;
+            Name = name;
+            Params = parameters;
+            Price = price;
+            Quantity = quantity;
+            Cost = cost;
+            Currency = currency;
+        }
+
+        /// <summary>
+        /// Заполнение полей товарной позиции данными продукта
+        /// </summary>
+        /// <param name="product"></param>
+        public void FillByProduct(Product product)
+        {
+            if (product.Id != ProductId)
+                throw new InvalidOperationException($"{ResultMessager.PRODUCT_ID_MISMATCH}: product.Id={product.Id} != OrderPosition.ProductId={ProductId}");
+            
+            ArticleNumber = product.ArticleNumber;
+            Brand = product.Brand;
+            Name = product.Name;
+            Params = product.Params;
+        }
     }
 }

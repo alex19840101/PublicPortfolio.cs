@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Orders.API.Contracts
+namespace Orders.API.Contracts.Requests
 {
-    /// <summary> Класс заказа </summary>
-    public class Order
+    /// <summary> Запрос на добавление заказа </summary>
+    public class AddOrderRequest
     {
-        /// <summary> *Уникальный идентификатор заказа в системе </summary>
-        public uint Id { get; set; }
-
         /// <summary> *Уникальный идентификатор покупателя в системе </summary>
         public uint BuyerId { get; set; }
 
         /// <summary> Список товарных позиций в заказе </summary>
-        public List<OrderPosition> Positions { get; set; } = default!;
+        public List<AddOrderPositionRequest> Positions { get; set; } = default!;
 
         /// <summary> Полная стоимость заказа </summary>
         public decimal Cost { get; set; }
@@ -27,17 +24,8 @@ namespace Orders.API.Contracts
         /// <summary> Планируемый срок поставки заказа </summary>
         public DateTime PlannedDeliveryTime { get; set; }
 
-        /// <summary> Дата и время фактической доставки заказа </summary>
-        public DateTime? Delivered { get; set; }
-
-        /// <summary> Дата и время фактического получения (выдачи) заказа </summary>
-        public DateTime? Received { get; set; }
-
-        /// <summary> Дата и время обновления заказа </summary>
-        public DateTime? Updated { get; set; }
-
-        /// <summary> Id курьера, доставляющего заказ </summary>
-        public uint? CourierId { get; set; }
+        /// <summary> Информация по оплате </summary>
+        public string PaymentInfo { get; set; } = default!;
 
         /// <summary> Id доставки заказа </summary>
         public uint? DeliveryId { get; set; }
@@ -48,19 +36,13 @@ namespace Orders.API.Contracts
         /// <summary> Магазин доставки заказа </summary>
         public uint? ShopId { get; set; }
 
-        /// <summary> Id менеджера </summary>
-        public uint? ManagerId { get; set; }
-
         /// <summary> Дополнительная информация </summary>
         public string ExtraInfo { get; set; } = default!;
 
-        /// <summary> В архиве ли (отменен ли) заказ </summary>
-        public bool Archieved { get; set; }
+        /// <summary> Масса, г (предполагается вычисление и заполнение веб-клиентом на основе набора позиций заказа) </summary>
+        public uint? MassInGrams { get; set; }
 
-        /// <summary> Масса, г </summary>
-        public uint MassInGrams { get; set; }
-
-        /// <summary> Габариты </summary>
-        public string Dimensions { get; set; } = default!;
+        /// <summary> Габариты (предполагается вычисление и заполнение веб-клиентом на основе набора позиций заказа) </summary>
+        public string? Dimensions { get; set; }
     }
 }
