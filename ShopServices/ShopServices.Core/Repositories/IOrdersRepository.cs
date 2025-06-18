@@ -9,6 +9,6 @@ namespace ShopServices.Core.Repositories
 {
     public interface IOrdersRepository
     {
-        public Task<Result> Create(Order order);
+        public Task<Result> Create(Order newOrder);
     }
 }

@@ -60,9 +60,9 @@ namespace ShopServices.Core.Models
         }
 
         /// <summary>
-        /// Заполнение полей товарной позиции данными продукта
+        /// Заполнение полей товарной позиции данными товара
         /// </summary>
-        /// <param name="product"></param>
+        /// <param name="product"> Product - товар </param>
         public void FillByProduct(Product product)
         {
             if (product.Id != ProductId)

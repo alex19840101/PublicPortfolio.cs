@@ -96,6 +96,7 @@
         public const string PRICE_ACTUAL_TO_DT_IS_NOT_ACTUAL = "Price.ActualToDt is not actual (outdated) (price.ActualToDt < Now), not available to order";
         public const string PRICE_ACTUAL_FROM_DT_IS_NOT_ACTUAL = "Price.ActualFromDt is not actual (Now < price.ActualFromDt), not available to order";
         public const string BUYER_ID_IS_NOT_ORDER_BUYER_ID = "buyer.Id != order.BuyerId";
+        public const string BUYER_ID_IS_NOT_BUYER_ID = "buyer.Id != Buyer.Id";
         public const string BUYER_LOGIN_IS_NOT_ORDER_BUYER_LOGIN = "buyer.Login != order.Buyer.Login";
         public const string BUYER_EMAIL_IS_NOT_ORDER_BUYER_EMAIL = "buyer.Email != order.Buyer.Email";
         public const string ORDER_BUYER = "order.Buyer";

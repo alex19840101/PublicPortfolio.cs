@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -37,6 +38,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Conflict)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
         [Authorize(Roles = "buyer")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> AddOrder(AddOrderRequest addOrderRequestDto)
@@ -60,6 +63,9 @@ namespace Orders.API.Controllers
                     StatusCode = createResult.StatusCode
                 });
 
+            if (createResult.StatusCode != HttpStatusCode.Created)
+                return new ObjectResult(new Result { Message = createResult.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
+
             var result = new Result
             {
                 Id = createResult!.Id!.Value,
@@ -69,5 +75,173 @@ namespace Orders.API.Controllers
 
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
         }
+
+        [HttpPatch]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
+        [Authorize(Roles = "buyer")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> CancelOrderByBuyer(CancelOrderRequest cancelOrderRequest) { throw new NotImplementedException();}
+
+
+        [HttpPatch]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
+        [Authorize(Roles = "manager")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> CancelOrderByManager(CancelOrderRequest cancelOrderRequest) { throw new NotImplementedException(); }
+
+        [HttpPatch]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
+        [Authorize(Roles = "buyer")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> ConfirmOrderByByer(ConfirmOrderRequest confirmOrderRequest) { throw new NotImplementedException(); }
+
+        [HttpPatch]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
+        [Authorize(Roles = "courier")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> MarkAsDeliveredToBuyer(MarkAsDeliveredRequest markAsDeliveredRequest) { throw new NotImplementedException(); }
+
+        [HttpPatch]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
+        [Authorize(Roles = "manager")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> MarkAsDeliveredToShop(MarkAsDeliveredRequest markAsDeliveredRequest) { throw new NotImplementedException(); }
+
+        [HttpPatch]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
+        [Authorize(Roles = "manager, courier")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> MarkAsReceived(MarkAsReceivedRequest markAsReceivedRequest) { throw new NotImplementedException(); }
+        
+        [HttpPatch]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
+        [Authorize(Roles = "courier")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> UpdateCourierId(UpdateCourierIdRequest updateCourierIdRequest) { throw new NotImplementedException(); }
+
+        [HttpPatch]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
+        [Authorize(Roles = "buyer")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> UpdateDeliveryAddressByBuyer(UpdateDeliveryAddressRequest updateDeliveryAddressRequest) { throw new NotImplementedException(); }
+
+
+        [HttpPatch]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
+        [Authorize(Roles = "manager, courier")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> UpdateDeliveryId(UpdateDeliveryIdRequest updateDeliveryIdRequest) { throw new NotImplementedException(); }
+
+        [HttpPatch]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
+        [Authorize(Roles = "buyer")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> UpdateExtraInfoByBuyer(UpdateExtraInfoRequest updateExtraInfoRequest) { throw new NotImplementedException(); }
+
+        [HttpPatch]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
+        [Authorize(Roles = "manager")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> UpdateManagerId(UpdateManagerIdRequest updateManagerIdRequest) { throw new NotImplementedException(); }
+
+        [HttpPatch]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
+        [Authorize(Roles = "manager, courier")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> UpdateMassInGramsDimensions(UpdateMassInGramsDimensionsRequest updateMassInGramsDimensionsRequest) { throw new NotImplementedException(); }
+
+        [HttpPatch]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
+        [Authorize(Roles = "manager")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> UpdatePaymentInfoByManager(UpdatePaymentInfoByManagerRequest updatePaymentInfoByManagerRequest) { throw new NotImplementedException(); }
+
+
+        [HttpPatch]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
+        [Authorize(Roles = "manager")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> UpdatePlannedDeliveryTimeByManager(UpdatePlannedDeliveryTimeRequest updatePlannedDeliveryTimeRequest) { throw new NotImplementedException(); }
+
+        [HttpPatch]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
+        [Authorize(Roles = "buyer")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> UpdateShopIdByBuyer(UpdateShopIdRequest updateShopIdRequest) { throw new NotImplementedException(); }
     }
 }

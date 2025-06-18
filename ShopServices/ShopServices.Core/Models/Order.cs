@@ -104,5 +104,16 @@ namespace ShopServices.Core.Models
             Delivered = delivered;
             Updated = updated;
         }
+
+        public void UpdateBuyer(Buyer buyer)
+        {
+            if (buyer.Id != BuyerId)
+                throw new InvalidOperationException($"{ResultMessager.BUYER_ID_IS_NOT_ORDER_BUYER_ID}: buyer.Id={buyer.Id} != order.BuyerId={BuyerId}");
+
+            if (buyer.Id != Buyer.Id)
+                throw new InvalidOperationException($"{ResultMessager.BUYER_ID_IS_NOT_BUYER_ID}: buyer.Id={buyer.Id} != Buyer.Id={Buyer.Id}");
+
+            Buyer = buyer;
+        }
     }
 }

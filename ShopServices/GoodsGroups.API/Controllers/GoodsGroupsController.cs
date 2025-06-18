@@ -41,6 +41,7 @@ namespace GoodsGroups.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Conflict)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
         [Authorize(Roles = "admin, developer, manager")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> AddCategory(Category categoryDto)
@@ -63,6 +64,9 @@ namespace GoodsGroups.API.Controllers
                     Message = createResult.Message,
                     StatusCode = createResult.StatusCode
                 });
+
+            if (createResult.StatusCode != HttpStatusCode.Created)
+                return new ObjectResult(new Result { Message = createResult.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
 
             var result = new Result
             {

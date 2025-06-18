@@ -49,7 +49,7 @@ namespace ShopServices.BusinessLogic
             errorResult = UnValidatedBuyerResult(buyer, order.Buyer);
             if (errorResult != null)
                 return errorResult;
-            //order.Buyer = buyer;
+            order.UpdateBuyer(buyer);
 
             decimal totalCost = 0;
             for (int pos = 0;  pos < order.Positions.Count; pos++)
