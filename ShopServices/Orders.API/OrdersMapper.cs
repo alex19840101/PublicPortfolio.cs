@@ -74,5 +74,50 @@ namespace Orders.API
                 massInGrams: addOrderRequestDto.MassInGrams ?? 0,
                 dimensions: addOrderRequestDto.Dimensions);
         }
+
+        /// <summary>
+        /// Маппинг IEnumerable(Core.Models.Order) - IEnumerable(Contracts.Responses.OrderResponseDto)
+        /// </summary>
+        /// <param name="ordersList"> список заказов IEnumerable(Core.Models.Order) </param>
+        /// <returns></returns>
+        internal static IEnumerable<Contracts.Responses.OrderResponseDto> GetOrderDtos(this IEnumerable<Order> ordersList)
+        {
+            return ordersList.Select(coreOrder => new Contracts.Responses.OrderResponseDto
+            {
+                Id = coreOrder.Id,
+                BuyerId = coreOrder.BuyerId,
+
+                Positions = coreOrder.Positions.Select(op => new OrderPositionResponseDto
+                {
+                    Id = op.Id,
+                    ProductId = op.ProductId,
+                    ArticleNumber = op.ArticleNumber,
+                    Brand = op.Brand,
+                    Name = op.Name,
+                    Params = op.Params,
+                    Price = op.Price,
+                    Quantity = op.Quantity,
+                    Cost = op.Cost,
+                    Currency = op.Currency
+                }).ToList(),
+
+                Cost = coreOrder.Cost,
+                Currency = coreOrder.Currency,
+                Created = coreOrder.Created,
+                PlannedDeliveryTime = coreOrder.PlannedDeliveryTime,
+                Delivered = coreOrder.Delivered,
+                Received = coreOrder.Received,
+                Updated = coreOrder.Updated,
+                CourierId = coreOrder.CourierId,
+                DeliveryId = coreOrder.DeliveryId,
+                DeliveryAddress = coreOrder.DeliveryAddress,
+                ShopId = coreOrder.ShopId,
+                ManagerId = coreOrder.ManagerId,
+                ExtraInfo = coreOrder.ExtraInfo,
+                Archieved = coreOrder.Archieved,
+                MassInGrams = coreOrder.MassInGrams,
+                Dimensions = coreOrder.Dimensions
+            });
+        }
     }
 }

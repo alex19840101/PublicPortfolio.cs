@@ -117,13 +117,296 @@ namespace ShopServices.BusinessLogic
             return order;
         }
 
+        public async Task<IEnumerable<Order>> GetOrdersByBuyerId(
+            uint buyerId,
+            uint? buyerIdFromClaim,
+            DateTime actualFromDt,
+            DateTime? actualToDt,
+            uint byPage = 10,
+            uint page = 1)
+        {
+            var take = byPage;
+            var skip = page > 1 ? (page - 1) * byPage : 0;
 
+            if (buyerIdFromClaim != buyerId)
+                return new List<Order>();
+
+            return await _ordersRepository.GetOrdersByBuyerId(
+            buyerId: buyerId,
+            actualFromDt: actualFromDt,
+            actualToDt: actualToDt,
+            take: take,
+            skipCount: skip);
+        }
+
+        public async Task<Result> UpdateShopIdByBuyer(
+            uint buyerIdFromClaim,
+            uint buyerIdFromRequest,
+            uint orderId,
+            uint? shopId)
+        {
+            if (buyerIdFromClaim != buyerIdFromRequest)
+                return new Result(ResultMessager.BUYER_ID_FROM_CLAIM_IS_NOT_FROM_REQUEST, System.Net.HttpStatusCode.Forbidden);
+
+            if (orderId == 0)
+                return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+
+            if (shopId == 0)
+                return new Result(ResultMessager.SHOP_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+
+            return await _ordersRepository.UpdateShopIdByBuyer(
+                buyerId: buyerIdFromClaim,
+                orderId: orderId,
+                shopId: shopId);
+        }
+
+        public async Task<Result> CancelOrderByBuyer(
+            uint buyerIdFromClaim,
+            uint buyerIdFromRequest,
+            uint orderId,
+            string confirmationString)
+        {
+            if (buyerIdFromClaim != buyerIdFromRequest)
+                return new Result(ResultMessager.BUYER_ID_FROM_CLAIM_IS_NOT_FROM_REQUEST, System.Net.HttpStatusCode.Forbidden);
+
+            if (orderId == 0)
+                return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+
+            if (string.IsNullOrWhiteSpace(confirmationString))
+                return new Result(ResultMessager.CONFIRMATION_STRING_SHOULD_BE_NOT_NULL_OR_EMPTY, System.Net.HttpStatusCode.NotFound);
+
+            return await _ordersRepository.CancelOrderByBuyer(
+                buyerIdFromRequest,
+                orderId,
+                confirmationString);
+        }
+
+        public async Task<Result> ConfirmOrderByByer(
+            uint buyerIdFromClaim,
+            uint buyerIdFromRequest,
+            uint orderId,
+            string confirmationString)
+        {
+            if (buyerIdFromClaim != buyerIdFromRequest)
+                return new Result(ResultMessager.BUYER_ID_FROM_CLAIM_IS_NOT_FROM_REQUEST, System.Net.HttpStatusCode.Forbidden);
+
+            if (orderId == 0)
+                return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+
+            if (string.IsNullOrWhiteSpace(confirmationString))
+                return new Result(ResultMessager.CONFIRMATION_STRING_SHOULD_BE_NOT_NULL_OR_EMPTY, System.Net.HttpStatusCode.NotFound);
+
+            return await _ordersRepository.ConfirmOrderByByer(
+                buyerIdFromRequest,
+                orderId,
+                confirmationString);
+        }
+
+        public async Task<Result> UpdateDeliveryAddressByBuyer(
+            uint buyerIdFromClaim,
+            uint buyerIdFromRequest,
+            uint orderId,
+            string deliveryAddress)
+        {
+            if (buyerIdFromClaim != buyerIdFromRequest)
+                return new Result(ResultMessager.BUYER_ID_FROM_CLAIM_IS_NOT_FROM_REQUEST, System.Net.HttpStatusCode.Forbidden);
+
+            if (orderId == 0)
+                return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+            
+            return await _ordersRepository.UpdateDeliveryAddressByBuyer(
+               buyerIdFromRequest,
+               orderId,
+               deliveryAddress);
+        }
+
+        public async Task<Result> UpdateExtraInfoByBuyer(uint buyerIdFromClaim, uint buyerIdFromRequest, uint orderId, string extraInfo)
+        {
+            if (buyerIdFromClaim != buyerIdFromRequest)
+                return new Result(ResultMessager.BUYER_ID_FROM_CLAIM_IS_NOT_FROM_REQUEST, System.Net.HttpStatusCode.Forbidden);
+
+            if (orderId == 0)
+                return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+
+            if (string.IsNullOrWhiteSpace(extraInfo))
+                return new Result(ResultMessager.EXTRA_INFO_SHOULD_BE_NOT_NULL_OR_EMPTY, System.Net.HttpStatusCode.NotFound);
+
+            return await _ordersRepository.UpdateExtraInfoByBuyer(
+               buyerIdFromRequest,
+               orderId,
+               extraInfo);
+        }
+
+        public async Task<Result> CancelOrderByManager(uint? managerId, uint orderId, string confirmationString)
+        {
+            if (managerId == null)
+                return new Result(ResultMessager.MANAGER_ID_IS_NULL, System.Net.HttpStatusCode.BadRequest);
+
+            if (managerId == 0)
+                return new Result(ResultMessager.MANAGER_ID_IS_ZERO, System.Net.HttpStatusCode.BadRequest);
+
+            if (orderId == 0)
+                return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+
+            if (string.IsNullOrWhiteSpace(confirmationString))
+                return new Result(ResultMessager.CONFIRMATION_STRING_SHOULD_BE_NOT_NULL_OR_EMPTY, System.Net.HttpStatusCode.NotFound);
+
+            return await _ordersRepository.CancelOrderByManager(
+                managerId,
+                orderId,
+                confirmationString);
+        }
+
+        public async Task<Result> MarkAsDeliveredToBuyer(uint orderId, string comment, uint? courierId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Result> MarkAsDeliveredToShop(uint orderId, string comment, uint? managerId)
+        {
+            if (managerId == null)
+                return new Result(ResultMessager.MANAGER_ID_IS_NULL, System.Net.HttpStatusCode.BadRequest);
+
+            if (managerId == 0)
+                return new Result(ResultMessager.MANAGER_ID_IS_ZERO, System.Net.HttpStatusCode.BadRequest);
+
+            if (orderId == 0)
+                return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+
+            return await _ordersRepository.MarkAsDeliveredToShop(
+                managerId,
+                orderId,
+                comment);
+        }
+
+        public async Task<Result> MarkAsReceived(uint orderId, string comment, uint? managerId, uint? courierId)
+        {
+            if (managerId == 0)
+                return new Result(ResultMessager.MANAGER_ID_IS_ZERO, System.Net.HttpStatusCode.BadRequest);
+
+            if (courierId == 0)
+                return new Result(ResultMessager.COURIER_ID_IS_ZERO, System.Net.HttpStatusCode.BadRequest);
+
+            if (orderId == 0)
+                return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+
+            return await _ordersRepository.MarkAsReceived(
+                orderId: orderId,
+                comment: comment,
+                managerId: managerId,
+                courierId: courierId);
+        }
+
+        public async Task<Result> UpdateCourierId(uint orderId, string comment, uint? courierId)
+        {
+            if (courierId == 0)
+                return new Result(ResultMessager.COURIER_ID_IS_ZERO, System.Net.HttpStatusCode.BadRequest);
+
+            if (orderId == 0)
+                return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+
+            return await _ordersRepository.UpdateCourierId(
+                orderId: orderId,
+                courierId: courierId,
+                comment: comment);
+        }
+
+        public async Task<Result> UpdateDeliveryId(uint orderId, uint? deliveryId, uint? managerId, uint? courierId)
+        {
+            if (managerId == 0)
+                return new Result(ResultMessager.MANAGER_ID_IS_ZERO, System.Net.HttpStatusCode.BadRequest);
+
+            if (courierId == 0)
+                return new Result(ResultMessager.COURIER_ID_IS_ZERO, System.Net.HttpStatusCode.BadRequest);
+
+            if (orderId == 0)
+                return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+
+            return await _ordersRepository.UpdateDeliveryId(
+                orderId: orderId,
+                deliveryId: deliveryId,
+                managerId: managerId,
+                courierId: courierId);
+        }
+
+        public async Task<Result> UpdateManagerId(uint orderId, string comment, uint managerId)
+        {
+            if (managerId == 0)
+                return new Result(ResultMessager.MANAGER_ID_IS_ZERO, System.Net.HttpStatusCode.BadRequest);
+
+            if (orderId == 0)
+                return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+
+            return await _ordersRepository.UpdateManagerId(
+                managerId: managerId,
+                orderId: orderId,
+                comment: comment);
+        }
+
+        public async Task<Result> UpdateMassInGramsDimensions(uint orderId, uint massInGrams, string dimensions, string comment, uint? managerId, uint? courierId)
+        {
+            if (managerId == 0)
+                return new Result(ResultMessager.MANAGER_ID_IS_ZERO, System.Net.HttpStatusCode.BadRequest);
+
+            if (courierId == 0)
+                return new Result(ResultMessager.COURIER_ID_IS_ZERO, System.Net.HttpStatusCode.BadRequest);
+
+            if (orderId == 0)
+                return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+
+            return await _ordersRepository.UpdateMassInGramsDimensions(
+                orderId: orderId,
+                massInGrams: massInGrams,
+                dimensions: dimensions,
+                managerId: managerId,
+                courierId: courierId,
+                comment: comment);
+        }
+
+        public async Task<Result> UpdatePaymentInfo(uint orderId, string paymentInfo, string comment, uint? managerId, uint? courierId)
+        {
+            if (managerId == 0)
+                return new Result(ResultMessager.MANAGER_ID_IS_ZERO, System.Net.HttpStatusCode.BadRequest);
+
+            if (courierId == 0)
+                return new Result(ResultMessager.COURIER_ID_IS_ZERO, System.Net.HttpStatusCode.BadRequest);
+
+            if (orderId == 0)
+                return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+
+            return await _ordersRepository.UpdatePaymentInfo(
+                orderId: orderId,
+                paymentInfo: paymentInfo,
+                comment: comment,
+                managerId:managerId,
+                courierId: courierId);
+
+        }
+
+        public async Task<Result> UpdatePlannedDeliveryTimeByManager(uint orderId, DateTime plannedDeliveryTime, string comment, uint managerId)
+        {
+            if (managerId == 0)
+                return new Result(ResultMessager.MANAGER_ID_IS_ZERO, System.Net.HttpStatusCode.BadRequest);
+
+            if (orderId == 0)
+                return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+
+            if (plannedDeliveryTime <= DateTime.Now)
+                return new Result(ResultMessager.PLANNED_DELIVERY_TIME_SHOULD_BE_MORE_THAN_NOW, System.Net.HttpStatusCode.BadRequest);
+
+            return await _ordersRepository.UpdatePlannedDeliveryTimeByManager(
+                orderId: orderId,
+                plannedDeliveryTime: plannedDeliveryTime,
+                managerId: managerId,
+                comment: comment);
+        }
+
+        #region private - validators
         /// <summary>
         /// Валидация данных зазаза
         /// </summary>
         /// <param name="order"> Core.Models.Order - заказ (предварительный) </param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         private Result UnValidatedOrderResult(Order order)
         {
             if (order == null)
@@ -137,7 +420,7 @@ namespace ShopServices.BusinessLogic
 
             if (string.IsNullOrWhiteSpace(order.Currency))
                 return new Result(ResultMessager.CURRENCY_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
-            
+
             if (string.IsNullOrWhiteSpace(order.PaymentInfo))
                 return new Result(ResultMessager.PAYMENT_INFO_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
@@ -205,7 +488,7 @@ namespace ShopServices.BusinessLogic
         {
             if (orderPositions == null)
                 return new Result(ResultMessager.ORDER_POSITIONS_MUST_BE_NOT_NULL, System.Net.HttpStatusCode.BadRequest);
-            
+
             if (!orderPositions.Any())
                 return new Result(ResultMessager.ORDER_POSITIONS_MUST_HAVE_POSITION, System.Net.HttpStatusCode.BadRequest);
 
@@ -251,47 +534,6 @@ namespace ShopServices.BusinessLogic
 
             return null;
         }
-
-        public async Task<Result> UpdateShopIdByBuyer(uint buyerIdFromClaim, uint buyerIdFromRequest, uint orderId, uint? shopId)
-        {
-            if (buyerIdFromClaim != buyerIdFromRequest)
-                return new Result(ResultMessager.BUYER_ID_FROM_CLAIM_IS_NOT_FROM_REQUEST, System.Net.HttpStatusCode.Forbidden);
-
-            if (orderId == 0)
-                return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
-
-            if (shopId == 0)
-                return new Result(ResultMessager.SHOP_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
-
-            return await _ordersRepository.UpdateShopIdByBuyer(
-                buyerId: buyerIdFromClaim,
-                orderId: orderId,
-                shopId: shopId);
-        }
-
-        public Task<Result> CancelOrderByBuyer(uint buyerIdFromClaim, uint buyerIdFromRequest, uint orderId, string confirmationString)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Result> ConfirmOrderByByer(uint buyerIdFromClaim, uint buyerIdFromRequest, uint orderId, string confirmationString)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Result> UpdateDeliveryAddressByBuyer(uint buyerIdFromClaim, uint buyerIdFromRequest, uint orderId, string deliveryAddress)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Result> UpdateExtraInfoByBuyer(uint buyerIdFromClaim, uint buyerIdFromRequest, uint orderId, string extraInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Result> CancelOrderByManager(uint? managerId, uint orderId, string confirmationString)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion private - validators
     }
 }

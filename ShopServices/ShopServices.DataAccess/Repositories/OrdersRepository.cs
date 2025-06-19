@@ -95,7 +95,77 @@ namespace ShopServices.DataAccess.Repositories
             throw new NotImplementedException();
         }
 
+        public Task<Result> CancelOrderByBuyer(uint buyerIdFromRequest, uint orderId, string confirmationString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> CancelOrderByManager(uint? managerId, uint orderId, string confirmationString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> ConfirmOrderByByer(uint buyerIdFromRequest, uint orderId, string confirmationString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> MarkAsDeliveredToShop(uint? managerId, uint orderId, string comment)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> MarkAsReceived(uint orderId, string comment, uint? managerId, uint? courierId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> UpdateCourierId(uint orderId, uint? courierId, string comment)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> UpdateDeliveryAddressByBuyer(uint buyerIdFromRequest, uint orderId, string deliveryAddress)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> UpdateDeliveryId(uint orderId, uint? deliveryId, uint? managerId, uint? courierId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> UpdateExtraInfoByBuyer(uint buyerIdFromRequest, uint orderId, string extraInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> UpdateManagerId(uint managerId, uint orderId, string comment)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> UpdateMassInGramsDimensions(uint orderId, uint massInGrams, string dimensions, uint? managerId, uint? courierId, string comment)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> UpdatePaymentInfo(uint orderId, string paymentInfo, string comment, uint? managerId, uint? courierId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> UpdatePlannedDeliveryTimeByManager(uint orderId, DateTime plannedDeliveryTime, uint managerId, string comment)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<Result> UpdateShopIdByBuyer(uint buyerId, uint orderId, uint? shopId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Order>> GetOrdersByBuyerId(uint buyerId, DateTime actualFromDt, DateTime? actualToDt, uint take, uint skipCount)
         {
             throw new NotImplementedException();
         }

@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -101,7 +104,44 @@ namespace Orders.API.Controllers
             return Ok(OrdersMapper.GetOrderResponseDto(order));
         }
 
-        
+        /// <summary> Получение информации о заказах покупателя для указанного временного интервала </summary>
+        /// <param name="buyerId"> id покупателя </param>
+        /// <param name="actualFromDt"> Актуально от какого времени </param>
+        /// <param name="actualToDt"> Актуально до какого времени</param>
+        /// <param name="byPage"> Количество товаров на странице </param>
+        /// <param name="page"> Номер страницы </param>
+        /// <returns> IEnumerable(OrderResponseDto) - перечень заказов покупателя для указанного временного интервала </returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<OrderResponseDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [Authorize(Roles = "buyer")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IEnumerable<OrderResponseDto>> GetOrdersByBuyerId(
+            uint buyerId,
+            DateTime actualFromDt,
+            DateTime? actualToDt,
+            [Range(1, 100)] uint byPage = 10,
+            [Range(1, uint.MaxValue)] uint page = 1)
+        {
+            uint? buyerIdFromClaim = GetBuyerIdFromClaim();
+
+            var ordersCollection = await _ordersService.GetOrdersByBuyerId(
+                buyerId: buyerId,
+                buyerIdFromClaim: buyerIdFromClaim,
+                actualFromDt: actualFromDt,
+                actualToDt: actualToDt,
+                byPage: byPage,
+                page: page);
+
+            if (!ordersCollection.Any())
+                return [];
+
+            return ordersCollection.GetOrderDtos();
+        }
+
         /// <summary> Отмена заказа покупателем </summary>
         /// <param name="cancelOrderRequest"> Запрос на отмену заказа покупателем </param>
         /// <returns></returns>
@@ -221,7 +261,24 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
         [Authorize(Roles = "courier")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> MarkAsDeliveredToBuyer(MarkAsDeliveredRequest markAsDeliveredRequest) { throw new NotImplementedException(); }
+        public async Task<IActionResult> MarkAsDeliveredToBuyer(MarkAsDeliveredRequest markAsDeliveredRequest)
+        {
+            var result = await _ordersService.MarkAsDeliveredToBuyer(
+                    orderId: markAsDeliveredRequest.OrderId,
+                    comment: markAsDeliveredRequest.Comment,
+                    courierId: markAsDeliveredRequest.CourierId);
+
+            if (result.StatusCode == HttpStatusCode.Forbidden)
+                return new ObjectResult(result) { StatusCode = StatusCodes.Status403Forbidden };
+
+            if (result.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(result);
+
+            if (result.StatusCode != HttpStatusCode.OK)
+                return new ObjectResult(new Result { Message = result.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
+
+            return Ok(result);
+        }
 
 
         /// <summary> Отметка заказа как доставленного (в магазин) </summary>
@@ -236,7 +293,24 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
         [Authorize(Roles = "manager")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> MarkAsDeliveredToShop(MarkAsDeliveredRequest markAsDeliveredRequest) { throw new NotImplementedException(); }
+        public async Task<IActionResult> MarkAsDeliveredToShop(MarkAsDeliveredRequest markAsDeliveredRequest)
+        {
+            var result = await _ordersService.MarkAsDeliveredToShop(
+                    orderId: markAsDeliveredRequest.OrderId,
+                    comment: markAsDeliveredRequest.Comment,
+                    managerId: markAsDeliveredRequest.ManagerId);
+
+            if (result.StatusCode == HttpStatusCode.Forbidden)
+                return new ObjectResult(result) { StatusCode = StatusCodes.Status403Forbidden };
+
+            if (result.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(result);
+
+            if (result.StatusCode != HttpStatusCode.OK)
+                return new ObjectResult(new Result { Message = result.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
+
+            return Ok(result);
+        }
 
 
         /// <summary> Отметка заказа как полученного покупателем </summary>
@@ -251,8 +325,29 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
         [Authorize(Roles = "manager, courier")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> MarkAsReceived(MarkAsReceivedRequest markAsReceivedRequest) { throw new NotImplementedException(); }
-        
+        public async Task<IActionResult> MarkAsReceived(MarkAsReceivedRequest markAsReceivedRequest)
+        {
+            var result = await _ordersService.MarkAsReceived(
+                    orderId: markAsReceivedRequest.OrderId,
+                    comment: markAsReceivedRequest.Comment,
+                    managerId: markAsReceivedRequest.ManagerId,
+                    courierId: markAsReceivedRequest.CourierId);
+
+            if (result.StatusCode == HttpStatusCode.Forbidden)
+                return new ObjectResult(result) { StatusCode = StatusCodes.Status403Forbidden };
+
+            if (result.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(result);
+
+            if (result.StatusCode != HttpStatusCode.OK)
+                return new ObjectResult(new Result { Message = result.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
+
+            return Ok(result);
+        }
+
+        /// <summary> Смена/сброс курьера, доставляющего заказ </summary>
+        /// <param name="updateCourierIdRequest"> Запрос для смены/сброса курьера, доставляющего заказ </param>
+        /// <returns></returns>
         [HttpPatch]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -262,7 +357,24 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
         [Authorize(Roles = "courier")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> UpdateCourierId(UpdateCourierIdRequest updateCourierIdRequest) { throw new NotImplementedException(); }
+        public async Task<IActionResult> UpdateCourierId(UpdateCourierIdRequest updateCourierIdRequest)
+        {
+            var result = await _ordersService.UpdateCourierId(
+                    orderId: updateCourierIdRequest.OrderId,
+                    comment: updateCourierIdRequest.Comment,
+                    courierId: updateCourierIdRequest.CourierId);
+
+            if (result.StatusCode == HttpStatusCode.Forbidden)
+                return new ObjectResult(result) { StatusCode = StatusCodes.Status403Forbidden };
+
+            if (result.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(result);
+
+            if (result.StatusCode != HttpStatusCode.OK)
+                return new ObjectResult(new Result { Message = result.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
+
+            return Ok(result);
+        }
 
 
         /// <summary> Изменение адреса доставки заказа (со стороны покупателя) </summary>
@@ -303,6 +415,11 @@ namespace Orders.API.Controllers
         }
 
 
+        /// <summary>
+        /// Смена идентификатора доставки (менеджером/курьером) (в случаях изменений адреса/магазина доставки/отмены заказа...)
+        /// </summary>
+        /// <param name="updateDeliveryIdRequest"> Запрос для смены идентификатора доставки (менеджером/курьером) (в случаях изменений адреса/магазина доставки/отмены заказа...) </param>
+        /// <returns></returns>
         [HttpPatch]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -312,7 +429,25 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
         [Authorize(Roles = "manager, courier")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> UpdateDeliveryId(UpdateDeliveryIdRequest updateDeliveryIdRequest) { throw new NotImplementedException(); }
+        public async Task<IActionResult> UpdateDeliveryId(UpdateDeliveryIdRequest updateDeliveryIdRequest)
+        {
+            var updateResult = await _ordersService.UpdateDeliveryId(
+                orderId: updateDeliveryIdRequest.OrderId,
+                deliveryId: updateDeliveryIdRequest.DeliveryId,
+                managerId: updateDeliveryIdRequest.ManagerId,
+                courierId: updateDeliveryIdRequest.CourierId);
+
+            if (updateResult.StatusCode == HttpStatusCode.Forbidden)
+                return new ObjectResult(updateResult) { StatusCode = StatusCodes.Status403Forbidden };
+
+            if (updateResult.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(updateResult);
+
+            if (updateResult.StatusCode != HttpStatusCode.OK)
+                return new ObjectResult(new Result { Message = updateResult.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
+
+            return Ok(updateResult);
+        }
 
 
         /// <summary> Изменение дополнительной информации в заказе (со стороны покупателя) </summary>
@@ -352,6 +487,10 @@ namespace Orders.API.Controllers
             return Ok(updateResult);
         }
 
+
+        /// <summary> Смена менеджера, обслуживающего заказ </summary>
+        /// <param name="updateManagerIdRequest"> Запрос для смены менеджера, обслуживающего заказ </param>
+        /// <returns></returns>
         [HttpPatch]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -361,8 +500,29 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
         [Authorize(Roles = "manager")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> UpdateManagerId(UpdateManagerIdRequest updateManagerIdRequest) { throw new NotImplementedException(); }
+        public async Task<IActionResult> UpdateManagerId(UpdateManagerIdRequest updateManagerIdRequest)
+        {
+            var result = await _ordersService.UpdateManagerId(
+                    orderId: updateManagerIdRequest.OrderId,
+                    comment: updateManagerIdRequest.Comment,
+                    managerId: updateManagerIdRequest.ManagerId);
 
+            if (result.StatusCode == HttpStatusCode.Forbidden)
+                return new ObjectResult(result) { StatusCode = StatusCodes.Status403Forbidden };
+
+            if (result.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(result);
+
+            if (result.StatusCode != HttpStatusCode.OK)
+                return new ObjectResult(new Result { Message = result.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
+
+            return Ok(result);
+        }
+
+
+        /// <summary> Уточнение массы/габаритов заказа (менеджером/курьером) </summary>
+        /// <param name="updateMassInGramsDimensionsRequest"> Запрос для уточнения массы/габаритов заказа (менеджером/курьером) </param>
+        /// <returns></returns>
         [HttpPatch]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -372,8 +532,66 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
         [Authorize(Roles = "manager, courier")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> UpdateMassInGramsDimensions(UpdateMassInGramsDimensionsRequest updateMassInGramsDimensionsRequest) { throw new NotImplementedException(); }
+        public async Task<IActionResult> UpdateMassInGramsDimensions(UpdateMassInGramsDimensionsRequest updateMassInGramsDimensionsRequest)
+        {
+            var result = await _ordersService.UpdateMassInGramsDimensions(
+                    orderId: updateMassInGramsDimensionsRequest.OrderId,
+                    massInGrams: updateMassInGramsDimensionsRequest.MassInGrams,
+                    dimensions: updateMassInGramsDimensionsRequest.Dimensions,
+                    comment: updateMassInGramsDimensionsRequest.Comment,
+                    managerId: updateMassInGramsDimensionsRequest.ManagerId,
+                    courierId: updateMassInGramsDimensionsRequest.CourierId);
 
+            if (result.StatusCode == HttpStatusCode.Forbidden)
+                return new ObjectResult(result) { StatusCode = StatusCodes.Status403Forbidden };
+
+            if (result.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(result);
+
+            if (result.StatusCode != HttpStatusCode.OK)
+                return new ObjectResult(new Result { Message = result.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
+
+            return Ok(result);
+        }
+
+
+        /// <summary> Обновление информации об оплате (со стороны менеджера/курьера, обслуживающего заказ) </summary>
+        /// <param name="updatePaymentInfoByManagerRequest"> Запрос для обновления информации об оплате (со стороны менеджера/курьера, обслуживающего заказ) </param>
+        /// <returns></returns>
+        [HttpPatch]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
+        [Authorize(Roles = "manager, courier")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> UpdatePaymentInfo(UpdatePaymentInfoByManagerRequest updatePaymentInfoByManagerRequest)
+        {
+            var result = await _ordersService.UpdatePaymentInfo(
+                    orderId: updatePaymentInfoByManagerRequest.OrderId,
+                    paymentInfo: updatePaymentInfoByManagerRequest.PaymentInfo,
+                    comment: updatePaymentInfoByManagerRequest.Comment,
+                    managerId: updatePaymentInfoByManagerRequest.ManagerId,
+                    courierId: updatePaymentInfoByManagerRequest.CourierId);
+
+            if (result.StatusCode == HttpStatusCode.Forbidden)
+                return new ObjectResult(result) { StatusCode = StatusCodes.Status403Forbidden };
+
+            if (result.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(result);
+
+            if (result.StatusCode != HttpStatusCode.OK)
+                return new ObjectResult(new Result { Message = result.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
+
+            return Ok(result);
+        }
+
+
+        /// <summary> Обновление планируемого срока поставки заказа менеджером, обслуживающим заказ </summary>
+        /// <param name="updatePlannedDeliveryTimeRequest"> Запрос для обновления планируемого срока поставки заказа менеджером, обслуживающим заказ</param>
+        /// <returns></returns>
         [HttpPatch]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -383,19 +601,25 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
         [Authorize(Roles = "manager")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> UpdatePaymentInfoByManager(UpdatePaymentInfoByManagerRequest updatePaymentInfoByManagerRequest) { throw new NotImplementedException(); }
+        public async Task<IActionResult> UpdatePlannedDeliveryTimeByManager(UpdatePlannedDeliveryTimeRequest updatePlannedDeliveryTimeRequest)
+        {
+            var result = await _ordersService.UpdatePlannedDeliveryTimeByManager(
+                    orderId: updatePlannedDeliveryTimeRequest.OrderId,
+                    plannedDeliveryTime: updatePlannedDeliveryTimeRequest.PlannedDeliveryTime,
+                    comment: updatePlannedDeliveryTimeRequest.Comment,
+                    managerId: updatePlannedDeliveryTimeRequest.ManagerId);
 
+            if (result.StatusCode == HttpStatusCode.Forbidden)
+                return new ObjectResult(result) { StatusCode = StatusCodes.Status403Forbidden };
 
-        [HttpPatch]
-        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
-        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
-        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "manager")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> UpdatePlannedDeliveryTimeByManager(UpdatePlannedDeliveryTimeRequest updatePlannedDeliveryTimeRequest) { throw new NotImplementedException(); }
+            if (result.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(result);
+
+            if (result.StatusCode != HttpStatusCode.OK)
+                return new ObjectResult(new Result { Message = result.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
+
+            return Ok(result);
+        }
 
 
         /// <summary> Обновление (установка/смена/сброс) магазина выдачи заказа покупателем </summary>

@@ -111,7 +111,12 @@
         public const string TIME_DESYNCHRONIZATION_MORE_THAN_PERMISSIBLE_TIME_DESYNC_SECONDS = "Time desynchronization more than permissible time desynchronization limit";
         public const string PLANNEDDELIVERYTIME_IS_LESS_THEN_NOW = "PlannedDeliveryTime is less then now";
         public const string ORDER_ID_SHOULD_BE_POSITIVE = "orderId should be positive (>0)";
-        
+        public const string CONFIRMATION_STRING_SHOULD_BE_NOT_NULL_OR_EMPTY = "confirmationString should be not null/empty";
+        public const string EXTRA_INFO_SHOULD_BE_NOT_NULL_OR_EMPTY = "extraInfo should be not null/empty";
+        public const string MANAGER_ID_IS_NULL = "managerId is null, should be positive (>0)";
+        public const string MANAGER_ID_IS_ZERO = "managerId is 0, should be positive (>0) or null";
+        public const string COURIER_ID_IS_ZERO = "courierId is 0, should be positive (>0) or null";
+        public const string PLANNED_DELIVERY_TIME_SHOULD_BE_MORE_THAN_NOW = "plannedDeliveryTime should be > Now";
         //shops
         public const string SHOP_ID_SHOULD_BE_POSITIVE = "shopId should be positive (>0)";
     }
