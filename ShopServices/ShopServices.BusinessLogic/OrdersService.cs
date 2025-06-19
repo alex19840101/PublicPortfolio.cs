@@ -104,6 +104,20 @@ namespace ShopServices.BusinessLogic
             return createResult;
         }
 
+        public async Task<Order> GetOrderInfoById(uint orderId, uint? buyerId)
+        {
+            var order = await _ordersRepository.GetOrderInfoById(orderId);
+
+            if (order == null)
+                return null;
+            
+            if (buyerId != null && buyerId != order.BuyerId)
+                return null;
+
+            return order;
+        }
+
+
         /// <summary>
         /// Валидация данных зазаза
         /// </summary>
@@ -236,6 +250,48 @@ namespace ShopServices.BusinessLogic
                 return new Result(ResultMessager.PRICE_PER_UNIT_IS_NULL, System.Net.HttpStatusCode.NotFound);
 
             return null;
+        }
+
+        public async Task<Result> UpdateShopIdByBuyer(uint buyerIdFromClaim, uint buyerIdFromRequest, uint orderId, uint? shopId)
+        {
+            if (buyerIdFromClaim != buyerIdFromRequest)
+                return new Result(ResultMessager.BUYER_ID_FROM_CLAIM_IS_NOT_FROM_REQUEST, System.Net.HttpStatusCode.Forbidden);
+
+            if (orderId == 0)
+                return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+
+            if (shopId == 0)
+                return new Result(ResultMessager.SHOP_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+
+            return await _ordersRepository.UpdateShopIdByBuyer(
+                buyerId: buyerIdFromClaim,
+                orderId: orderId,
+                shopId: shopId);
+        }
+
+        public Task<Result> CancelOrderByBuyer(uint buyerIdFromClaim, uint buyerIdFromRequest, uint orderId, string confirmationString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> ConfirmOrderByByer(uint buyerIdFromClaim, uint buyerIdFromRequest, uint orderId, string confirmationString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> UpdateDeliveryAddressByBuyer(uint buyerIdFromClaim, uint buyerIdFromRequest, uint orderId, string deliveryAddress)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> UpdateExtraInfoByBuyer(uint buyerIdFromClaim, uint buyerIdFromRequest, uint orderId, string extraInfo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> CancelOrderByManager(uint? managerId, uint orderId, string confirmationString)
+        {
+            throw new NotImplementedException();
         }
     }
 }

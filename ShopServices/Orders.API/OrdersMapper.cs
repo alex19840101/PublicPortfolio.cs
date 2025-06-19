@@ -7,11 +7,17 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using System;
+using Orders.API.Contracts.Responses;
 
 namespace Orders.API
 {
     internal static class OrdersMapper
     {
+        internal static OrderResponseDto GetOrderResponseDto(Order coreOrder)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Создание предварительного Core.Models.Order-заказа для добавления заказа
         /// </summary>

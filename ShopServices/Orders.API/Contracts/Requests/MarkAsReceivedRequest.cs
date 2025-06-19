@@ -1,7 +1,7 @@
 ﻿namespace Orders.API.Contracts.Requests
 {
     /// <summary>
-    /// Запрос для отметки заказа как полученного
+    /// Запрос для отметки заказа как полученного покупателем
     /// </summary>
     public class MarkAsReceivedRequest
     {

@@ -97,6 +97,7 @@
         public const string PRICE_ACTUAL_FROM_DT_IS_NOT_ACTUAL = "Price.ActualFromDt is not actual (Now < price.ActualFromDt), not available to order";
         public const string BUYER_ID_IS_NOT_ORDER_BUYER_ID = "buyer.Id != order.BuyerId";
         public const string BUYER_ID_IS_NOT_BUYER_ID = "buyer.Id != Buyer.Id";
+        public const string BUYER_ID_FROM_CLAIM_IS_NOT_FROM_REQUEST = "buyerIdFromClaim != buyerIdFromRequest";
         public const string BUYER_LOGIN_IS_NOT_ORDER_BUYER_LOGIN = "buyer.Login != order.Buyer.Login";
         public const string BUYER_EMAIL_IS_NOT_ORDER_BUYER_EMAIL = "buyer.Email != order.Buyer.Email";
         public const string ORDER_BUYER = "order.Buyer";
@@ -109,5 +110,9 @@
         public const string IMPOSSIBLE_TO_ADD_ARCHIVED_ORDER = "Impossible to add archived order";
         public const string TIME_DESYNCHRONIZATION_MORE_THAN_PERMISSIBLE_TIME_DESYNC_SECONDS = "Time desynchronization more than permissible time desynchronization limit";
         public const string PLANNEDDELIVERYTIME_IS_LESS_THEN_NOW = "PlannedDeliveryTime is less then now";
+        public const string ORDER_ID_SHOULD_BE_POSITIVE = "orderId should be positive (>0)";
+        
+        //shops
+        public const string SHOP_ID_SHOULD_BE_POSITIVE = "shopId should be positive (>0)";
     }
 }

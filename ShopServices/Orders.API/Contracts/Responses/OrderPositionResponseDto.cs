@@ -1,7 +1,7 @@
-﻿namespace Orders.API.Contracts
+﻿namespace Orders.API.Contracts.Responses
 {
     /// <summary> Товарная позиция в заказе </summary>
-    public class OrderPosition
+    public class OrderPositionResponseDto
     {
         /// <summary> *Уникальный идентификатор товарной позиции системе </summary>
         public uint Id { get; set; }

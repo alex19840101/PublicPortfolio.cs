@@ -6,7 +6,7 @@
     public class ConfirmOrderRequest
     {
         /// <summary> *Уникальный идентификатор заказа в системе </summary>
-        public uint Id { get; set; }
+        public uint OrderId { get; set; }
 
         /// <summary> *Уникальный идентификатор покупателя в системе </summary>
         public uint BuyerId { get; set; }

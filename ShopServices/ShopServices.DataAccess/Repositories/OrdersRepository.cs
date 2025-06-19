@@ -89,5 +89,15 @@ namespace ShopServices.DataAccess.Repositories
                 Message = ResultMessager.OK
             };
         }
+
+        public Task<Order> GetOrderInfoById(uint orderId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result> UpdateShopIdByBuyer(uint buyerId, uint orderId, uint? shopId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

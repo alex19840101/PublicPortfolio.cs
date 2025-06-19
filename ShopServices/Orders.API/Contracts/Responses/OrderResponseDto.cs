@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Orders.API.Contracts
+namespace Orders.API.Contracts.Responses
 {
     /// <summary> Класс заказа </summary>
-    public class Order
+    public class OrderResponseDto
     {
         /// <summary> *Уникальный идентификатор заказа в системе </summary>
         public uint Id { get; set; }
@@ -13,7 +13,7 @@ namespace Orders.API.Contracts
         public uint BuyerId { get; set; }
 
         /// <summary> Список товарных позиций в заказе </summary>
-        public List<OrderPosition> Positions { get; set; } = default!;
+        public List<OrderPositionResponseDto> Positions { get; set; } = default!;
 
         /// <summary> Полная стоимость заказа </summary>
         public decimal Cost { get; set; }

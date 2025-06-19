@@ -6,10 +6,10 @@
     public class UpdateShopIdRequest
     {
         /// <summary> *Уникальный идентификатор заказа в системе </summary>
-        public uint Id { get; set; }
+        public required uint OrderId { get; set; }
 
         /// <summary> *Уникальный идентификатор покупателя в системе </summary>
-        public uint BuyerId { get; set; }
+        public required uint BuyerId { get; set; }
 
         /// <summary> Магазин доставки заказа </summary>
         public uint? ShopId { get; set; }
