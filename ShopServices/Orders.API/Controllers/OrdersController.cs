@@ -106,8 +106,8 @@ namespace Orders.API.Controllers
 
         /// <summary> Получение информации о заказах покупателя для указанного временного интервала </summary>
         /// <param name="buyerId"> id покупателя </param>
-        /// <param name="actualFromDt"> Актуально от какого времени </param>
-        /// <param name="actualToDt"> Актуально до какого времени</param>
+        /// <param name="createdFromDt"> Создан от какого времени </param>
+        /// <param name="createdToDt"> Создан до какого времени</param>
         /// <param name="byPage"> Количество товаров на странице </param>
         /// <param name="page"> Номер страницы </param>
         /// <returns> IEnumerable(OrderResponseDto) - перечень заказов покупателя для указанного временного интервала </returns>
@@ -121,8 +121,8 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IEnumerable<OrderResponseDto>> GetOrdersByBuyerId(
             uint buyerId,
-            DateTime actualFromDt,
-            DateTime? actualToDt,
+            DateTime createdFromDt,
+            DateTime? createdToDt,
             [Range(1, 100)] uint byPage = 10,
             [Range(1, uint.MaxValue)] uint page = 1)
         {
@@ -131,8 +131,8 @@ namespace Orders.API.Controllers
             var ordersCollection = await _ordersService.GetOrdersByBuyerId(
                 buyerId: buyerId,
                 buyerIdFromClaim: buyerIdFromClaim,
-                actualFromDt: actualFromDt,
-                actualToDt: actualToDt,
+                createdFromDt: createdFromDt,
+                createdToDt: createdToDt,
                 byPage: byPage,
                 page: page);
 

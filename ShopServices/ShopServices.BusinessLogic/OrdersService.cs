@@ -120,8 +120,8 @@ namespace ShopServices.BusinessLogic
         public async Task<IEnumerable<Order>> GetOrdersByBuyerId(
             uint buyerId,
             uint? buyerIdFromClaim,
-            DateTime actualFromDt,
-            DateTime? actualToDt,
+            DateTime createdFromDt,
+            DateTime? createdToDt,
             uint byPage = 10,
             uint page = 1)
         {
@@ -133,8 +133,8 @@ namespace ShopServices.BusinessLogic
 
             return await _ordersRepository.GetOrdersByBuyerId(
             buyerId: buyerId,
-            actualFromDt: actualFromDt,
-            actualToDt: actualToDt,
+            createdFromDt: createdFromDt,
+            createdToDt: createdToDt,
             take: take,
             skipCount: skip);
         }
@@ -259,7 +259,16 @@ namespace ShopServices.BusinessLogic
 
         public async Task<Result> MarkAsDeliveredToBuyer(uint orderId, string comment, uint? courierId)
         {
-            throw new NotImplementedException();
+            if (courierId == 0)
+                return new Result(ResultMessager.COURIER_ID_IS_ZERO, System.Net.HttpStatusCode.BadRequest);
+
+            if (orderId == 0)
+                return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
+
+            return await _ordersRepository.MarkAsDeliveredToBuyer(
+                orderId: orderId,
+                comment: comment,
+                courierId: courierId);
         }
 
         public async Task<Result> MarkAsDeliveredToShop(uint orderId, string comment, uint? managerId)

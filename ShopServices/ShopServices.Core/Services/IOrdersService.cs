@@ -39,8 +39,8 @@ namespace ShopServices.Core.Services
         Task<IEnumerable<Order>> GetOrdersByBuyerId(
             uint buyerId,
             uint? buyerIdFromClaim,
-            DateTime actualFromDt,
-            DateTime? actualToDt,
+            DateTime createdFromDt,
+            DateTime? createdToDt,
             uint byPage,
             uint page);
 

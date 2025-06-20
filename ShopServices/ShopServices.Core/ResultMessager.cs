@@ -117,6 +117,16 @@
         public const string MANAGER_ID_IS_ZERO = "managerId is 0, should be positive (>0) or null";
         public const string COURIER_ID_IS_ZERO = "courierId is 0, should be positive (>0) or null";
         public const string PLANNED_DELIVERY_TIME_SHOULD_BE_MORE_THAN_NOW = "plannedDeliveryTime should be > Now";
+        public const string ORDER_NOT_FOUND = "Order not found";
+        public const string OTHER_BUYERS_ORDER = "Other buyer's order";
+        public const string CONFIRMATION_STRING_MISMATCH = "confirmationString mismatch";
+        public static readonly string ORDER_CANCELED = "Order canceled";
+        public static readonly string ORDER_CANCELED_EARLIER = "Order canceled earlier";
+        public static readonly string ORDER_CONFIRMED = "Order confirmed";
+        public static readonly string ORDER_CONFIRMED_EARLIER = "Order confirmed earlier";
+        public static readonly string ORDER_RECEIVED_EARLIER = "Order received earlier";
+        public static readonly string ORDER_DELIVERED_EARLIER = "Order delivered earlier";
+        
         //shops
         public const string SHOP_ID_SHOULD_BE_POSITIVE = "shopId should be positive (>0)";
     }

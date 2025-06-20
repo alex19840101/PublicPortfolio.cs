@@ -110,5 +110,10 @@ namespace ShopServices.DataAccess.Entities
             Delivered = delivered;
             Updated = updated;
         }
+
+        /// <summary> Отмена заказа (Archieved = true) </summary>
+        internal void Cancel() => Archieved = true;
+        internal void UpdateUpdatedDt(DateTime updatedDt) => Updated = updatedDt;
+        internal void UpdateManagerId(uint? managerId) => ManagerId = managerId;
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using ShopServices.Abstractions;
 using ShopServices.Core;
 using ShopServices.Core.Models;
@@ -90,84 +92,290 @@ namespace ShopServices.DataAccess.Repositories
             };
         }
 
-        public Task<Order> GetOrderInfoById(uint orderId)
+        public async Task<Order?> GetOrderInfoById(uint orderId)
+        {
+            var orderEntity = await GetOrderEntity(orderId, asNoTracking: true);
+            if (orderEntity is null)
+                return null;
+
+            return GetCoreOrder(orderEntity);
+        }
+
+        public async Task<Result> CancelOrderByBuyer(
+            uint buyerIdFromRequest,
+            uint orderId,
+            string confirmationString)
+        {
+            var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
+            if (orderEntity is null)
+                return new Result(ResultMessager.ORDER_NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (orderEntity.BuyerId != buyerIdFromRequest)
+                return new Result(ResultMessager.OTHER_BUYERS_ORDER, HttpStatusCode.Forbidden);
+
+            if (!string.Equals(confirmationString, $"{orderEntity.BuyerId}/CANCEL{orderEntity.Id}"))
+                return new Result(ResultMessager.CONFIRMATION_STRING_MISMATCH, HttpStatusCode.Forbidden);
+
+            if (!orderEntity.Archieved)
+                orderEntity.Cancel();
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
+                await _dbContext.SaveChangesAsync();
+                return new Result(ResultMessager.ORDER_CANCELED, HttpStatusCode.OK);
+            }
+            return new Result(ResultMessager.ORDER_CANCELED_EARLIER, HttpStatusCode.OK);
+        }
+
+        public async Task<Result> CancelOrderByManager(
+            uint? managerId,
+            uint orderId,
+            string confirmationString)
+        {
+            var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
+            if (orderEntity is null)
+                return new Result(ResultMessager.ORDER_NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (!string.Equals(confirmationString, $"{managerId}/CANCEL/BUYER{orderEntity.BuyerId}/ORDER{orderEntity.Id}"))
+                return new Result(ResultMessager.CONFIRMATION_STRING_MISMATCH, HttpStatusCode.Forbidden);
+
+            if (!orderEntity.Archieved)
+                orderEntity.Cancel();
+
+            if (orderEntity.ManagerId != managerId)
+                orderEntity.UpdateManagerId(managerId);
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
+                await _dbContext.SaveChangesAsync();
+                return new Result(ResultMessager.ORDER_CANCELED, HttpStatusCode.OK);
+            }
+            return new Result(ResultMessager.ORDER_CANCELED_EARLIER, HttpStatusCode.OK);
+        }
+
+        public async Task<Result> ConfirmOrderByByer(
+            uint buyerIdFromRequest,
+            uint orderId,
+            string confirmationString)
+        {
+            var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
+            if (orderEntity is null)
+                return new Result(ResultMessager.ORDER_NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (orderEntity.BuyerId != buyerIdFromRequest)
+                return new Result(ResultMessager.OTHER_BUYERS_ORDER, HttpStatusCode.Forbidden);
+
+            if (!string.Equals(confirmationString, $"{orderEntity.BuyerId}/{orderEntity.Id}"))
+                return new Result(ResultMessager.CONFIRMATION_STRING_MISMATCH, HttpStatusCode.Forbidden);
+
+            if (orderEntity.Archieved)
+                return new Result(ResultMessager.ORDER_CANCELED_EARLIER, HttpStatusCode.Conflict);
+
+            if (orderEntity.Received != null)
+                return new Result(ResultMessager.ORDER_RECEIVED_EARLIER, HttpStatusCode.Conflict);
+
+            if (orderEntity.Delivered != null)
+                return new Result(ResultMessager.ORDER_DELIVERED_EARLIER, HttpStatusCode.Conflict);
+
+            orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                await _dbContext.SaveChangesAsync();
+                return new Result(ResultMessager.ORDER_CONFIRMED, HttpStatusCode.OK);
+            }
+            return new Result(ResultMessager.ORDER_CONFIRMED_EARLIER, HttpStatusCode.OK);
+        }
+
+        public async Task<Result> MarkAsDeliveredToShop(
+            uint? managerId,
+            uint orderId,
+            string comment)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result> CancelOrderByBuyer(uint buyerIdFromRequest, uint orderId, string confirmationString)
+        public async Task<Result> MarkAsReceived(
+            uint orderId,
+            string comment,
+            uint? managerId,
+            uint? courierId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result> CancelOrderByManager(uint? managerId, uint orderId, string confirmationString)
+        public async Task<Result> UpdateCourierId(
+            uint orderId,
+            uint? courierId,
+            string comment)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result> ConfirmOrderByByer(uint buyerIdFromRequest, uint orderId, string confirmationString)
+        public async Task<Result> UpdateDeliveryAddressByBuyer(
+            uint buyerIdFromRequest,
+            uint orderId,
+            string deliveryAddress)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result> MarkAsDeliveredToShop(uint? managerId, uint orderId, string comment)
+        public async Task<Result> UpdateDeliveryId(
+            uint orderId,
+            uint? deliveryId,
+            uint? managerId,
+            uint? courierId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result> MarkAsReceived(uint orderId, string comment, uint? managerId, uint? courierId)
+        public async Task<Result> UpdateExtraInfoByBuyer(
+            uint buyerIdFromRequest,
+            uint orderId,
+            string extraInfo)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result> UpdateCourierId(uint orderId, uint? courierId, string comment)
+        public async Task<Result> UpdateManagerId(
+            uint managerId,
+            uint orderId,
+            string comment)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result> UpdateDeliveryAddressByBuyer(uint buyerIdFromRequest, uint orderId, string deliveryAddress)
+        public async Task<Result> UpdateMassInGramsDimensions(
+            uint orderId,
+            uint massInGrams,
+            string dimensions,
+            uint? managerId,
+            uint? courierId,
+            string comment)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result> UpdateDeliveryId(uint orderId, uint? deliveryId, uint? managerId, uint? courierId)
+        public async Task<Result> UpdatePaymentInfo(
+            uint orderId,
+            string paymentInfo,
+            string comment,
+            uint? managerId,
+            uint? courierId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result> UpdateExtraInfoByBuyer(uint buyerIdFromRequest, uint orderId, string extraInfo)
+        public async Task<Result> UpdatePlannedDeliveryTimeByManager(
+            uint orderId,
+            DateTime plannedDeliveryTime,
+            uint managerId,
+            string comment)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result> UpdateManagerId(uint managerId, uint orderId, string comment)
+        public async Task<Result> UpdateShopIdByBuyer(
+            uint buyerId,
+            uint orderId,
+            uint? shopId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result> UpdateMassInGramsDimensions(uint orderId, uint massInGrams, string dimensions, uint? managerId, uint? courierId, string comment)
+        public async Task<IEnumerable<Order>> GetOrdersByBuyerId(
+            uint buyerId,
+            DateTime createdFromDt,
+            DateTime? createdToDt,
+            uint take,
+            uint skipCount)
+        {
+            List<Entities.Order> entitiesOrders = await GetIQueryableOrdersByByyer(buyerId, createdFromDt, createdToDt)
+                .Skip((int)skipCount)
+                .Take((int)take)
+                .ToListAsync();
+
+            return entitiesOrders.Select(order => GetCoreOrder(order));
+        }
+
+        public async Task<Result> MarkAsDeliveredToBuyer(uint orderId, string comment, uint? courierId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Result> UpdatePaymentInfo(uint orderId, string paymentInfo, string comment, uint? managerId, uint? courierId)
+        /// <summary> Маппер Entities.Order - Core.Models.Order </summary>
+        /// <param name="orderEntity"> Entities.Order - заказ (из БД) </param>
+        /// <returns> Core.Models.Order - заказ </returns>
+        private static Order GetCoreOrder(Entities.Order orderEntity)
         {
-            throw new NotImplementedException();
+            var coreOrderPositions = from op in orderEntity.Positions
+                                     select new OrderPosition
+                                     (
+                                         id: op.Id,
+                                         productId: op.ProductId,
+                                         articleNumber: op.ArticleNumber,
+                                         brand: op.Brand,
+                                         name: op.Name,
+                                         parameters: op.Params,
+                                         price: op.Price,
+                                         quantity: op.Quantity,
+                                         cost: op.Cost,
+                                         currency: op.Currency
+                                     );
+
+
+            return new Order(
+                id: orderEntity.Id,
+                buyerId: orderEntity.BuyerId,
+                buyer: null, //вывод данных покупателя в самом заказе не нужен
+                positions: coreOrderPositions.ToList(),
+                cost: orderEntity.Cost,
+                currency: orderEntity.Currency,
+                created: orderEntity.Created,
+                plannedDeliveryTime: orderEntity.PlannedDeliveryTime,
+                paymentInfo: orderEntity.PaymentInfo,
+                deliveryAddress: orderEntity.DeliveryAddress,
+                shopId: orderEntity.ShopId,
+                extraInfo: orderEntity.ExtraInfo,
+                archieved: orderEntity.Archieved,
+                massInGrams: orderEntity.MassInGrams,
+                dimensions: orderEntity.Dimensions);
         }
 
-        public Task<Result> UpdatePlannedDeliveryTimeByManager(uint orderId, DateTime plannedDeliveryTime, uint managerId, string comment)
+        /// <summary> Получение информации о заказах покупателя для указанного временного интервала </summary>
+        /// <param name="buyerId"> Id покупателя </param>
+        /// <param name="createdFromDt"> Создан от какого времени </param>
+        /// <param name="createdToDt"> Создан до какого времени </param>
+        /// <returns> IQueryable(Entities.Order) </returns>
+        private IQueryable<Entities.Order> GetIQueryableOrdersByByyer(
+            uint buyerId,
+            DateTime createdFromDt,
+            DateTime? createdToDt)
         {
-            throw new NotImplementedException();
+            createdFromDt = createdFromDt.ToUniversalTime();
+            createdToDt = createdToDt?.ToUniversalTime();
+
+            Expression<Func<Entities.Order, bool>> expressionWhereCreatedToDt = createdToDt == null ?
+                    order => (order.Created <= DateTime.Now) :
+                    order => order.Created <= createdToDt;
+
+            return _dbContext.Orders.AsNoTracking()
+                .Where(order => order.BuyerId == buyerId)
+                .Where(order => order.Created >= createdFromDt)
+                .Where(expressionWhereCreatedToDt);
         }
 
-        public Task<Result> UpdateShopIdByBuyer(uint buyerId, uint orderId, uint? shopId)
+        private async Task<Entities.Order?> GetOrderEntity(uint orderId, bool asNoTracking)
         {
-            throw new NotImplementedException();
-        }
+            var query = asNoTracking ?
+                _dbContext.Orders.AsNoTracking().Where(order => order.Id == orderId) :
+                _dbContext.Orders.Where(order => order.Id == orderId);
 
-        public Task<IEnumerable<Order>> GetOrdersByBuyerId(uint buyerId, DateTime actualFromDt, DateTime? actualToDt, uint take, uint skipCount)
-        {
-            throw new NotImplementedException();
+            var orderEntity = await query.SingleOrDefaultAsync();
+
+            return orderEntity;
         }
     }
 }
