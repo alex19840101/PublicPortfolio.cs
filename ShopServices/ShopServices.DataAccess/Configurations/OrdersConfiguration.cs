@@ -9,6 +9,7 @@ namespace ShopServices.DataAccess.Configurations
         private const int MAX_DIMENSIONS_LENGTH = 25;
         private const int MAX_NAME_LENGTH = 255;
         private const int MAX_CURRENCY_LENGTH = 5;
+        private const int MAX_COMMENT_LENGTH = 255;
 
         public void Configure(EntityTypeBuilder<Order> builder)
         {
@@ -23,6 +24,7 @@ namespace ShopServices.DataAccess.Configurations
             builder.Property(o => o.MassInGrams).IsRequired();
             builder.Property(o => o.Dimensions).HasMaxLength(MAX_DIMENSIONS_LENGTH).IsRequired();
             builder.Property(o => o.PaymentInfo).HasMaxLength(MAX_NAME_LENGTH).IsRequired();
+            builder.Property(o => o.Comment).HasMaxLength(MAX_COMMENT_LENGTH);
             builder.HasMany(o => o.Products)
                 .WithMany(p => p.Orders);
 

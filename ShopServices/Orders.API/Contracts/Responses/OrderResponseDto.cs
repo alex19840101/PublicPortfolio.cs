@@ -62,5 +62,8 @@ namespace Orders.API.Contracts.Responses
 
         /// <summary> Габариты </summary>
         public string Dimensions { get; set; } = default!;
+
+        /// <summary> Комментарий </summary>
+        public string? Comment { get; set; }
     }
 }

@@ -104,7 +104,8 @@ namespace ShopServices.DataAccess.Repositories
         public async Task<Result> CancelOrderByBuyer(
             uint buyerIdFromRequest,
             uint orderId,
-            string confirmationString)
+            string confirmationString,
+            string comment)
         {
             var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
             if (orderEntity is null)
@@ -121,17 +122,22 @@ namespace ShopServices.DataAccess.Repositories
 
             if (_dbContext.ChangeTracker.HasChanges())
             {
+                comment = $"CANCELED BY BUYER //{comment}";
+                orderEntity.UpdateComment(comment);
                 orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
+
                 await _dbContext.SaveChangesAsync();
+
                 return new Result(ResultMessager.ORDER_CANCELED, HttpStatusCode.OK);
             }
             return new Result(ResultMessager.ORDER_CANCELED_EARLIER, HttpStatusCode.OK);
         }
 
         public async Task<Result> CancelOrderByManager(
-            uint? managerId,
+            uint managerId,
             uint orderId,
-            string confirmationString)
+            string confirmationString,
+            string comment)
         {
             var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
             if (orderEntity is null)
@@ -148,6 +154,8 @@ namespace ShopServices.DataAccess.Repositories
 
             if (_dbContext.ChangeTracker.HasChanges())
             {
+                comment = $"CANCELED BY MANAGER //{comment}";
+                orderEntity.UpdateComment(comment);
                 orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
                 await _dbContext.SaveChangesAsync();
                 return new Result(ResultMessager.ORDER_CANCELED, HttpStatusCode.OK);
@@ -179,6 +187,8 @@ namespace ShopServices.DataAccess.Repositories
             if (orderEntity.Delivered != null)
                 return new Result(ResultMessager.ORDER_DELIVERED_EARLIER, HttpStatusCode.Conflict);
 
+            var comment = $"CONFIRMED";
+            orderEntity.UpdateComment(comment);
             orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
 
             if (_dbContext.ChangeTracker.HasChanges())
@@ -190,11 +200,33 @@ namespace ShopServices.DataAccess.Repositories
         }
 
         public async Task<Result> MarkAsDeliveredToShop(
-            uint? managerId,
+            uint managerId,
             uint orderId,
             string comment)
         {
-            throw new NotImplementedException();
+            var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
+            if (orderEntity is null)
+                return new Result(ResultMessager.ORDER_NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (orderEntity.ManagerId != managerId)
+                orderEntity.UpdateManagerId(managerId);
+
+            comment = comment ?? "DELIVERED TO SHOP";
+            if (!string.Equals(comment, orderEntity.Comment))
+                orderEntity.UpdateComment(comment);
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                var datetime = DateTime.Now.ToUniversalTime();
+                orderEntity.UpdateDelivered(datetime);
+                orderEntity.UpdateUpdatedDt(datetime);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            if (orderEntity.Archieved) //отмена заказа не помешала его быстрой доставке в магазин
+                return new Result(ResultMessager.ORDER_CANCELED_EARLIER_DELIVERED_TO_SHOP, HttpStatusCode.OK);
+
+            return new Result(ResultMessager.OK, HttpStatusCode.OK);
         }
 
         public async Task<Result> MarkAsReceived(
@@ -203,7 +235,32 @@ namespace ShopServices.DataAccess.Repositories
             uint? managerId,
             uint? courierId)
         {
-            throw new NotImplementedException();
+            var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
+            if (orderEntity is null)
+                return new Result(ResultMessager.ORDER_NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (orderEntity.Archieved)
+                return new Result(ResultMessager.ERROR_ORDER_CANCELED_EARLIER_OR_RECEIVED, HttpStatusCode.Conflict);
+
+            if (managerId != null && orderEntity.ManagerId != managerId)
+                orderEntity.UpdateManagerId(managerId);
+
+            if (courierId != null && orderEntity.CourierId != courierId)
+                orderEntity.UpdateCourierId(courierId);
+
+            comment = comment ?? "RECEIVED BY BUYER";
+            if (!string.Equals(comment, orderEntity.Comment))
+                orderEntity.UpdateComment(comment);
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                var datetime = DateTime.Now.ToUniversalTime();
+                orderEntity.UpdateReceived(datetime);
+                orderEntity.UpdateUpdatedDt(datetime);
+                await _dbContext.SaveChangesAsync();
+                return new Result(ResultMessager.OK, HttpStatusCode.OK);
+            }
+            return new Result(ResultMessager.ORDER_DELIVERED_EARLIER, HttpStatusCode.OK);
         }
 
         public async Task<Result> UpdateCourierId(
@@ -211,7 +268,43 @@ namespace ShopServices.DataAccess.Repositories
             uint? courierId,
             string comment)
         {
-            throw new NotImplementedException();
+            var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
+
+            if (orderEntity is null)
+                return new Result(ResultMessager.ORDER_NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (courierId != null)
+            {
+                if (orderEntity.Archieved)
+                    return new Result(ResultMessager.ORDER_CANCELED_EARLIER, HttpStatusCode.Conflict);
+
+                if (orderEntity.Received != null)
+                    return new Result(ResultMessager.ORDER_RECEIVED_EARLIER, HttpStatusCode.Conflict);
+
+                if (orderEntity.Delivered != null)
+                    return new Result(ResultMessager.ORDER_DELIVERED_EARLIER, HttpStatusCode.Conflict);
+            }
+
+            if (orderEntity.CourierId != courierId)
+            {
+                orderEntity.UpdateCourierId(courierId);
+
+                comment = comment ?? $"CourierId updated //{comment}";
+
+                if (!string.Equals(comment, orderEntity.Comment))
+                    orderEntity.UpdateComment(comment);
+            }
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
+
+                await _dbContext.SaveChangesAsync();
+
+                return new Result(ResultMessager.OK, HttpStatusCode.OK);
+            }
+            
+            return new Result(ResultMessager.ORDER_IS_ACTUAL, HttpStatusCode.OK);
         }
 
         public async Task<Result> UpdateDeliveryAddressByBuyer(
@@ -219,16 +312,78 @@ namespace ShopServices.DataAccess.Repositories
             uint orderId,
             string deliveryAddress)
         {
-            throw new NotImplementedException();
+            var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
+
+            if (orderEntity is null)
+                return new Result(ResultMessager.ORDER_NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (orderEntity.Archieved)
+                return new Result(ResultMessager.ORDER_CANCELED_EARLIER, HttpStatusCode.Conflict);
+
+            if (orderEntity.Received != null)
+                return new Result(ResultMessager.ORDER_RECEIVED_EARLIER, HttpStatusCode.Conflict);
+
+            if (orderEntity.Delivered != null)
+                return new Result(ResultMessager.ORDER_DELIVERED_EARLIER, HttpStatusCode.Conflict);
+
+            if (!string.Equals(deliveryAddress, orderEntity.DeliveryAddress))
+            {
+                orderEntity.UpdateDeliveryAddress(deliveryAddress);
+
+                var comment = "DeliveryAddress upd.";
+
+                if (!string.Equals(comment, orderEntity.Comment))
+                    orderEntity.UpdateComment(comment);
+            }
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
+
+                await _dbContext.SaveChangesAsync();
+
+                return new Result(ResultMessager.OK, HttpStatusCode.OK);
+            }
+
+            return new Result(ResultMessager.ORDER_IS_ACTUAL, HttpStatusCode.OK);
         }
 
         public async Task<Result> UpdateDeliveryId(
             uint orderId,
             uint? deliveryId,
             uint? managerId,
-            uint? courierId)
+            uint? courierId,
+            string comment)
         {
-            throw new NotImplementedException();
+            var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
+            if (orderEntity is null)
+                return new Result(ResultMessager.ORDER_NOT_FOUND, HttpStatusCode.NotFound);
+
+            #region Проверки не требуются (можно актуализировать данные)
+            //if (orderEntity.Received != null)
+            //    return new Result(ResultMessager.ORDER_RECEIVED_EARLIER, HttpStatusCode.Conflict);
+            #endregion Проверки не требуются (можно актуализировать данные)
+
+            if (managerId != null && orderEntity.ManagerId != managerId)
+                orderEntity.UpdateManagerId(managerId);
+
+            if (courierId != null && orderEntity.CourierId != courierId)
+                orderEntity.UpdateCourierId(courierId);
+
+            comment = comment ?? $"DeliveryId | {comment}";
+            if (!string.Equals(comment, orderEntity.Comment))
+                orderEntity.UpdateComment(comment);
+
+            if (deliveryId != orderEntity.DeliveryId)
+                orderEntity.UpdateDeliveryId(deliveryId);
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
+                await _dbContext.SaveChangesAsync();
+                return new Result(ResultMessager.OK, HttpStatusCode.OK);
+            }
+            return new Result(ResultMessager.ORDER_DELIVERED_EARLIER, HttpStatusCode.OK);
         }
 
         public async Task<Result> UpdateExtraInfoByBuyer(
@@ -236,7 +391,40 @@ namespace ShopServices.DataAccess.Repositories
             uint orderId,
             string extraInfo)
         {
-            throw new NotImplementedException();
+            var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
+
+            if (orderEntity is null)
+                return new Result(ResultMessager.ORDER_NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (orderEntity.Archieved)
+                return new Result(ResultMessager.ORDER_CANCELED_EARLIER, HttpStatusCode.Conflict);
+
+            if (orderEntity.Received != null)
+                return new Result(ResultMessager.ORDER_RECEIVED_EARLIER, HttpStatusCode.Conflict);
+
+            if (orderEntity.Delivered != null)
+                return new Result(ResultMessager.ORDER_DELIVERED_EARLIER, HttpStatusCode.Conflict);
+
+            if (!string.Equals(extraInfo, orderEntity.ExtraInfo))
+            {
+                orderEntity.UpdateExtraInfo(extraInfo);
+
+                var comment = "ExtraInfo upd.";
+
+                if (!string.Equals(comment, orderEntity.Comment))
+                    orderEntity.UpdateComment(comment);
+            }
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
+
+                await _dbContext.SaveChangesAsync();
+
+                return new Result(ResultMessager.OK, HttpStatusCode.OK);
+            }
+
+            return new Result(ResultMessager.ORDER_IS_ACTUAL, HttpStatusCode.OK);
         }
 
         public async Task<Result> UpdateManagerId(
@@ -244,7 +432,40 @@ namespace ShopServices.DataAccess.Repositories
             uint orderId,
             string comment)
         {
-            throw new NotImplementedException();
+            var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
+
+            if (orderEntity is null)
+                return new Result(ResultMessager.ORDER_NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (orderEntity.Archieved)
+                return new Result(ResultMessager.ORDER_CANCELED_EARLIER, HttpStatusCode.Conflict);
+
+            if (orderEntity.Received != null)
+                return new Result(ResultMessager.ORDER_RECEIVED_EARLIER, HttpStatusCode.Conflict);
+
+            if (orderEntity.Delivered != null)
+                return new Result(ResultMessager.ORDER_DELIVERED_EARLIER, HttpStatusCode.Conflict);
+
+            if (orderEntity.ManagerId != managerId)
+            {
+                orderEntity.UpdateManagerId(managerId);
+
+                comment = comment ?? $"ManagerId updated //{comment}";
+
+                if (!string.Equals(comment, orderEntity.Comment))
+                    orderEntity.UpdateComment(comment);
+            }
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
+
+                await _dbContext.SaveChangesAsync();
+
+                return new Result(ResultMessager.OK, HttpStatusCode.OK);
+            }
+
+            return new Result(ResultMessager.ORDER_IS_ACTUAL, HttpStatusCode.OK);
         }
 
         public async Task<Result> UpdateMassInGramsDimensions(
@@ -255,7 +476,46 @@ namespace ShopServices.DataAccess.Repositories
             uint? courierId,
             string comment)
         {
-            throw new NotImplementedException();
+            var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
+            if (orderEntity is null)
+                return new Result(ResultMessager.ORDER_NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (orderEntity.Archieved)
+                return new Result(ResultMessager.ORDER_CANCELED_EARLIER, HttpStatusCode.Conflict);
+
+            if (orderEntity.Received != null)
+                return new Result(ResultMessager.ORDER_RECEIVED_EARLIER, HttpStatusCode.Conflict);
+
+            #region //доставка в магазин не мешает уточнить массу и габариты
+            //if (orderEntity.Delivered != null)
+            //    return new Result(ResultMessager.ORDER_DELIVERED_EARLIER, HttpStatusCode.Conflict);
+            #endregion //доставка в магазин не мешает уточнить массу и габариты
+
+            if (managerId != null && orderEntity.ManagerId != managerId)
+                orderEntity.UpdateManagerId(managerId);
+
+            if (courierId != null && orderEntity.CourierId != courierId)
+                orderEntity.UpdateCourierId(courierId);
+
+            if (massInGrams != orderEntity.MassInGrams)
+                orderEntity.UpdateMassInGrams(massInGrams);
+
+            if (!string.Equals(dimensions, orderEntity.Dimensions))
+                orderEntity.UpdateDimensions(dimensions);
+
+            comment = comment ?? "massInGrams/dimensions upd.";
+            if (!string.Equals(comment, orderEntity.Comment))
+                orderEntity.UpdateComment(comment);
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
+                
+                await _dbContext.SaveChangesAsync();
+
+                return new Result(ResultMessager.OK, HttpStatusCode.OK);
+            }
+            return new Result(ResultMessager.ORDER_IS_ACTUAL, HttpStatusCode.OK);
         }
 
         public async Task<Result> UpdatePaymentInfo(
@@ -265,7 +525,32 @@ namespace ShopServices.DataAccess.Repositories
             uint? managerId,
             uint? courierId)
         {
-            throw new NotImplementedException();
+            var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
+            if (orderEntity is null)
+                return new Result(ResultMessager.ORDER_NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (managerId != null && orderEntity.ManagerId != managerId)
+                orderEntity.UpdateManagerId(managerId);
+
+            if (courierId != null && orderEntity.CourierId != courierId)
+                orderEntity.UpdateCourierId(courierId);
+
+            if (!string.Equals(paymentInfo, orderEntity.PaymentInfo))
+                orderEntity.UpdatePaymentInfo(paymentInfo);
+
+            comment = comment ?? $"PaymentInfo |{comment}";
+            if (!string.Equals(comment, orderEntity.Comment))
+                orderEntity.UpdateComment(comment);
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
+
+                await _dbContext.SaveChangesAsync();
+
+                return new Result(ResultMessager.OK, HttpStatusCode.OK);
+            }
+            return new Result(ResultMessager.ORDER_IS_ACTUAL, HttpStatusCode.OK);
         }
 
         public async Task<Result> UpdatePlannedDeliveryTimeByManager(
@@ -274,7 +559,29 @@ namespace ShopServices.DataAccess.Repositories
             uint managerId,
             string comment)
         {
-            throw new NotImplementedException();
+            var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
+            if (orderEntity is null)
+                return new Result(ResultMessager.ORDER_NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (orderEntity.ManagerId != managerId)
+                orderEntity.UpdateManagerId(managerId);
+
+            if (orderEntity.PlannedDeliveryTime.ToLocalTime() != plannedDeliveryTime)
+                orderEntity.UpdatePlannedDeliveryTime(plannedDeliveryTime);
+
+            comment = comment ?? $"PlannedDeliveryTime |{comment}";
+            if (!string.Equals(comment, orderEntity.Comment))
+                orderEntity.UpdateComment(comment);
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
+
+                await _dbContext.SaveChangesAsync();
+
+                return new Result(ResultMessager.OK, HttpStatusCode.OK);
+            }
+            return new Result(ResultMessager.ORDER_IS_ACTUAL, HttpStatusCode.OK);
         }
 
         public async Task<Result> UpdateShopIdByBuyer(
@@ -282,7 +589,47 @@ namespace ShopServices.DataAccess.Repositories
             uint orderId,
             uint? shopId)
         {
-            throw new NotImplementedException();
+            var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
+
+            if (orderEntity is null)
+                return new Result(ResultMessager.ORDER_NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (orderEntity.Archieved)
+                return new Result(ResultMessager.ORDER_CANCELED_EARLIER, HttpStatusCode.Conflict);
+
+            if (orderEntity.Received != null)
+                return new Result(ResultMessager.ORDER_RECEIVED_EARLIER, HttpStatusCode.Conflict);
+
+            if (orderEntity.Delivered != null)
+                return new Result(ResultMessager.ORDER_DELIVERED_EARLIER, HttpStatusCode.Conflict);
+
+            if (shopId != orderEntity.ShopId)
+            {
+                if (shopId != null)
+                {
+                    var shopEntity = _dbContext.Shops.AsNoTracking().Where(shop => shop.Id == shopId).SingleOrDefaultAsync();
+                    if (shopId is null)
+                        return new Result(ResultMessager.SHOP_NOT_FOUND, HttpStatusCode.NotFound);
+                }
+
+                orderEntity.UpdateShopId(shopId);
+
+                var comment = "ShopId upd.";
+
+                if (!string.Equals(comment, orderEntity.Comment))
+                    orderEntity.UpdateComment(comment);
+            }
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
+
+                await _dbContext.SaveChangesAsync();
+
+                return new Result(ResultMessager.OK, HttpStatusCode.OK);
+            }
+
+            return new Result(ResultMessager.ORDER_IS_ACTUAL, HttpStatusCode.OK);
         }
 
         public async Task<IEnumerable<Order>> GetOrdersByBuyerId(
@@ -300,9 +647,34 @@ namespace ShopServices.DataAccess.Repositories
             return entitiesOrders.Select(order => GetCoreOrder(order));
         }
 
-        public async Task<Result> MarkAsDeliveredToBuyer(uint orderId, string comment, uint? courierId)
+        public async Task<Result> MarkAsDeliveredToBuyer(
+            uint orderId,
+            string comment,
+            uint courierId)
         {
-            throw new NotImplementedException();
+            var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
+            if (orderEntity is null)
+                return new Result(ResultMessager.ORDER_NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (orderEntity.Archieved)
+                return new Result(ResultMessager.ERROR_ORDER_CANCELED_EARLIER_OR_DELIVERED, HttpStatusCode.Conflict);
+
+            if (orderEntity.CourierId != courierId)
+                orderEntity.UpdateCourierId(courierId);
+
+            comment = comment ?? "DELIVERED TO BUYER";
+            if (!string.Equals(comment, orderEntity.Comment))
+                orderEntity.UpdateComment(comment);
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                var datetime = DateTime.Now.ToUniversalTime();
+                orderEntity.UpdateDelivered(datetime);
+                orderEntity.UpdateUpdatedDt(datetime);
+                await _dbContext.SaveChangesAsync();
+                return new Result(ResultMessager.OK, HttpStatusCode.OK);
+            }
+            return new Result(ResultMessager.ORDER_DELIVERED_EARLIER, HttpStatusCode.OK);
         }
 
         /// <summary> Маппер Entities.Order - Core.Models.Order </summary>
@@ -341,7 +713,8 @@ namespace ShopServices.DataAccess.Repositories
                 extraInfo: orderEntity.ExtraInfo,
                 archieved: orderEntity.Archieved,
                 massInGrams: orderEntity.MassInGrams,
-                dimensions: orderEntity.Dimensions);
+                dimensions: orderEntity.Dimensions,
+                comment: orderEntity.Comment);
         }
 
         /// <summary> Получение информации о заказах покупателя для указанного временного интервала </summary>

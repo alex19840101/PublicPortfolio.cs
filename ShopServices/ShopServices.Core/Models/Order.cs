@@ -59,6 +59,9 @@ namespace ShopServices.Core.Models
         /// <summary> Дата и время обновления заказа </summary>
         public DateTime? Updated { get; private set; }
 
+        /// <summary> Комментарий </summary>
+        public string Comment { get; private set; }
+
         public Order(
             uint id,
             uint buyerId,
@@ -80,7 +83,8 @@ namespace ShopServices.Core.Models
             uint? courierId = null,
             DateTime? received = null,
             DateTime? delivered = null,
-            DateTime? updated = null)
+            DateTime? updated = null,
+            string comment = null)
         {
             Id = id;
             BuyerId = buyerId;
@@ -103,6 +107,7 @@ namespace ShopServices.Core.Models
             Received = received;
             Delivered = delivered;
             Updated = updated;
+            Comment = comment;
         }
 
         public void UpdateBuyer(Buyer buyer)

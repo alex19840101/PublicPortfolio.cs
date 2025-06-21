@@ -17,13 +17,15 @@ namespace ShopServices.Core.Services
             uint buyerIdFromClaim,
             uint buyerIdFromRequest,
             uint orderId,
-            string confirmationString);
+            string confirmationString,
+            string comment);
 
         /// <summary> Отмена заказа менеджером </summary>
         public Task<Result> CancelOrderByManager(
             uint? managerId,
             uint orderId,
-            string confirmationString);
+            string confirmationString,
+            string comment);
 
         /// <summary> Подтверждение заказа покупателем </summary>
         public Task<Result> ConfirmOrderByByer(
@@ -79,7 +81,8 @@ namespace ShopServices.Core.Services
             uint orderId,
             uint? deliveryId,
             uint? managerId,
-            uint? courierId);
+            uint? courierId,
+            string comment);
 
         /// <summary> Изменение дополнительной информации в заказе (со стороны покупателя) </summary>
         public Task<Result> UpdateExtraInfoByBuyer(

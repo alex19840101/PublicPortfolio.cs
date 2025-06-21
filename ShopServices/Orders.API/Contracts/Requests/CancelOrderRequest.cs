@@ -15,8 +15,13 @@
         public uint? ManagerId { get; set; }
 
         /// <summary>
-        /// Строка подтверждения отмены заказа
+        /// *Строка подтверждения отмены заказа
         /// </summary>
         public string ConfirmationString { get; set; } = default!;
+
+        /// <summary>
+        /// *Комментарий
+        /// </summary>
+        public string Comment { get; set; } = default!;
     }
 }

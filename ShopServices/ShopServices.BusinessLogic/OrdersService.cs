@@ -164,7 +164,8 @@ namespace ShopServices.BusinessLogic
             uint buyerIdFromClaim,
             uint buyerIdFromRequest,
             uint orderId,
-            string confirmationString)
+            string confirmationString,
+            string comment)
         {
             if (buyerIdFromClaim != buyerIdFromRequest)
                 return new Result(ResultMessager.BUYER_ID_FROM_CLAIM_IS_NOT_FROM_REQUEST, System.Net.HttpStatusCode.Forbidden);
@@ -178,7 +179,8 @@ namespace ShopServices.BusinessLogic
             return await _ordersRepository.CancelOrderByBuyer(
                 buyerIdFromRequest,
                 orderId,
-                confirmationString);
+                confirmationString,
+                comment);
         }
 
         public async Task<Result> ConfirmOrderByByer(
@@ -220,7 +222,11 @@ namespace ShopServices.BusinessLogic
                deliveryAddress);
         }
 
-        public async Task<Result> UpdateExtraInfoByBuyer(uint buyerIdFromClaim, uint buyerIdFromRequest, uint orderId, string extraInfo)
+        public async Task<Result> UpdateExtraInfoByBuyer(
+            uint buyerIdFromClaim,
+            uint buyerIdFromRequest,
+            uint orderId,
+            string extraInfo)
         {
             if (buyerIdFromClaim != buyerIdFromRequest)
                 return new Result(ResultMessager.BUYER_ID_FROM_CLAIM_IS_NOT_FROM_REQUEST, System.Net.HttpStatusCode.Forbidden);
@@ -237,7 +243,11 @@ namespace ShopServices.BusinessLogic
                extraInfo);
         }
 
-        public async Task<Result> CancelOrderByManager(uint? managerId, uint orderId, string confirmationString)
+        public async Task<Result> CancelOrderByManager(
+            uint? managerId,
+            uint orderId,
+            string confirmationString,
+            string comment)
         {
             if (managerId == null)
                 return new Result(ResultMessager.MANAGER_ID_IS_NULL, System.Net.HttpStatusCode.BadRequest);
@@ -252,13 +262,17 @@ namespace ShopServices.BusinessLogic
                 return new Result(ResultMessager.CONFIRMATION_STRING_SHOULD_BE_NOT_NULL_OR_EMPTY, System.Net.HttpStatusCode.NotFound);
 
             return await _ordersRepository.CancelOrderByManager(
-                managerId,
+                managerId.Value,
                 orderId,
-                confirmationString);
+                confirmationString,
+                comment);
         }
 
         public async Task<Result> MarkAsDeliveredToBuyer(uint orderId, string comment, uint? courierId)
         {
+            if (courierId == null)
+                return new Result(ResultMessager.COURIER_ID_IS_NULL, System.Net.HttpStatusCode.BadRequest);
+            
             if (courierId == 0)
                 return new Result(ResultMessager.COURIER_ID_IS_ZERO, System.Net.HttpStatusCode.BadRequest);
 
@@ -268,7 +282,7 @@ namespace ShopServices.BusinessLogic
             return await _ordersRepository.MarkAsDeliveredToBuyer(
                 orderId: orderId,
                 comment: comment,
-                courierId: courierId);
+                courierId: courierId.Value);
         }
 
         public async Task<Result> MarkAsDeliveredToShop(uint orderId, string comment, uint? managerId)
@@ -283,7 +297,7 @@ namespace ShopServices.BusinessLogic
                 return new Result(ResultMessager.ORDER_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.NotFound);
 
             return await _ordersRepository.MarkAsDeliveredToShop(
-                managerId,
+                managerId.Value,
                 orderId,
                 comment);
         }
@@ -320,7 +334,7 @@ namespace ShopServices.BusinessLogic
                 comment: comment);
         }
 
-        public async Task<Result> UpdateDeliveryId(uint orderId, uint? deliveryId, uint? managerId, uint? courierId)
+        public async Task<Result> UpdateDeliveryId(uint orderId, uint? deliveryId, uint? managerId, uint? courierId, string comment)
         {
             if (managerId == 0)
                 return new Result(ResultMessager.MANAGER_ID_IS_ZERO, System.Net.HttpStatusCode.BadRequest);
@@ -335,7 +349,8 @@ namespace ShopServices.BusinessLogic
                 orderId: orderId,
                 deliveryId: deliveryId,
                 managerId: managerId,
-                courierId: courierId);
+                courierId: courierId,
+                comment: comment);
         }
 
         public async Task<Result> UpdateManagerId(uint orderId, string comment, uint managerId)

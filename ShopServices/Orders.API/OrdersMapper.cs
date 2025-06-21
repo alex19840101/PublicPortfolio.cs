@@ -52,7 +52,8 @@ namespace Orders.API
                 ExtraInfo = coreOrder.ExtraInfo,
                 Archieved = coreOrder.Archieved,
                 MassInGrams = coreOrder.MassInGrams,
-                Dimensions = coreOrder.Dimensions
+                Dimensions = coreOrder.Dimensions,
+                Comment = coreOrder.Comment,
             };
         }
 

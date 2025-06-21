@@ -11,12 +11,14 @@ namespace ShopServices.Core.Repositories
         public Task<Result> CancelOrderByBuyer(
             uint buyerIdFromRequest,
             uint orderId,
-            string confirmationString);
+            string confirmationString,
+            string comment);
         
         public Task<Result> CancelOrderByManager(
-            uint? managerId,
+            uint managerId,
             uint orderId,
-            string confirmationString);
+            string confirmationString,
+            string comment);
         
         public Task<Result> ConfirmOrderByByer(
             uint buyerIdFromRequest,
@@ -37,10 +39,10 @@ namespace ShopServices.Core.Repositories
         public Task<Result> MarkAsDeliveredToBuyer(
             uint orderId,
             string comment,
-            uint? courierId);
+            uint courierId);
 
         public Task<Result> MarkAsDeliveredToShop(
-            uint? managerId,
+            uint managerId,
             uint orderId,
             string comment);
         
@@ -64,7 +66,8 @@ namespace ShopServices.Core.Repositories
             uint orderId,
             uint? deliveryId,
             uint? managerId,
-            uint? courierId);
+            uint? courierId
+            , string comment);
         public Task<Result> UpdateExtraInfoByBuyer(
             uint buyerIdFromRequest,
             uint orderId,

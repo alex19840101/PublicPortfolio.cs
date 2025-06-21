@@ -165,7 +165,8 @@ namespace Orders.API.Controllers
                 buyerIdFromClaim: buyerId.Value,
                 buyerIdFromRequest: cancelOrderRequest.BuyerId,
                 orderId: cancelOrderRequest.OrderId,
-                confirmationString: cancelOrderRequest.ConfirmationString);
+                confirmationString: cancelOrderRequest.ConfirmationString,
+                comment: cancelOrderRequest.Comment);
 
             if (cancelResult.StatusCode == HttpStatusCode.Forbidden)
                 return new ObjectResult(cancelResult) { StatusCode = StatusCodes.Status403Forbidden };
@@ -197,7 +198,8 @@ namespace Orders.API.Controllers
             var cancelResult = await _ordersService.CancelOrderByManager(
                 managerId: cancelOrderRequest.ManagerId,
                 orderId: cancelOrderRequest.OrderId,
-                confirmationString: cancelOrderRequest.ConfirmationString);
+                confirmationString: cancelOrderRequest.ConfirmationString,
+                comment: cancelOrderRequest.Comment);
 
             if (cancelResult.StatusCode == HttpStatusCode.Forbidden)
                 return new ObjectResult(cancelResult) { StatusCode = StatusCodes.Status403Forbidden };
@@ -249,8 +251,8 @@ namespace Orders.API.Controllers
         }
 
 
-        /// <summary> Отметка заказа как доставленного покупателю </summary>
-        /// <param name="markAsDeliveredRequest"> Запрос для отметки заказа как доставленного (покупателю) </param>
+        /// <summary> Отметка заказа как доставленного в магазин/покупателю </summary>
+        /// <param name="markAsDeliveredRequest"> Запрос для отметки заказа как доставленного в магазин/покупателю </param>
         /// <returns></returns>
         [HttpPatch]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
@@ -435,7 +437,8 @@ namespace Orders.API.Controllers
                 orderId: updateDeliveryIdRequest.OrderId,
                 deliveryId: updateDeliveryIdRequest.DeliveryId,
                 managerId: updateDeliveryIdRequest.ManagerId,
-                courierId: updateDeliveryIdRequest.CourierId);
+                courierId: updateDeliveryIdRequest.CourierId,
+                comment : updateDeliveryIdRequest.Comment);
 
             if (updateResult.StatusCode == HttpStatusCode.Forbidden)
                 return new ObjectResult(updateResult) { StatusCode = StatusCodes.Status403Forbidden };

@@ -120,14 +120,20 @@
         public const string ORDER_NOT_FOUND = "Order not found";
         public const string OTHER_BUYERS_ORDER = "Other buyer's order";
         public const string CONFIRMATION_STRING_MISMATCH = "confirmationString mismatch";
-        public static readonly string ORDER_CANCELED = "Order canceled";
-        public static readonly string ORDER_CANCELED_EARLIER = "Order canceled earlier";
-        public static readonly string ORDER_CONFIRMED = "Order confirmed";
-        public static readonly string ORDER_CONFIRMED_EARLIER = "Order confirmed earlier";
-        public static readonly string ORDER_RECEIVED_EARLIER = "Order received earlier";
-        public static readonly string ORDER_DELIVERED_EARLIER = "Order delivered earlier";
-        
+        public const string ORDER_CANCELED = "Order canceled";
+        public const string ORDER_CANCELED_EARLIER = "Order canceled earlier";
+        public const string ORDER_CONFIRMED = "Order confirmed";
+        public const string ORDER_CONFIRMED_EARLIER = "Order confirmed earlier";
+        public const string ORDER_RECEIVED_EARLIER = "Order received earlier";
+        public const string ORDER_DELIVERED_EARLIER = "Order delivered earlier";
+        public const string ORDER_CANCELED_EARLIER_DELIVERED_TO_SHOP = "Order canceled earlier, but delivered to shop";
+        public const string ERROR_ORDER_CANCELED_EARLIER_OR_RECEIVED = "ERROR: Order canceled earlier OR received";
+        public const string ORDER_IS_ACTUAL = "Order is actual";
+        public const string ERROR_ORDER_CANCELED_EARLIER_OR_DELIVERED = "ERROR: Order canceled earlier OR delivered";
+        public const string COURIER_ID_IS_NULL = "courier is null, expected positive (>0)";
+
         //shops
         public const string SHOP_ID_SHOULD_BE_POSITIVE = "shopId should be positive (>0)";
+        public const string SHOP_NOT_FOUND = "shop (shopId) not found";
     }
 }

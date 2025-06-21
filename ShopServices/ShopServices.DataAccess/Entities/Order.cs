@@ -65,6 +65,9 @@ namespace ShopServices.DataAccess.Entities
         /// <summary> Габариты </summary>
         public string Dimensions { get; private set; } = default!;
 
+        /// <summary> Комментарий </summary>
+        public string? Comment { get; private set; }
+
         public Order(
             uint id,
             uint buyerId,
@@ -86,7 +89,8 @@ namespace ShopServices.DataAccess.Entities
             uint? courierId = null,
             DateTime? received = null,
             DateTime? delivered = null,
-            DateTime? updated = null)
+            DateTime? updated = null,
+            string? comment = null)
         {
             Id = id;
             BuyerId = buyerId;
@@ -109,11 +113,25 @@ namespace ShopServices.DataAccess.Entities
             Received = received;
             Delivered = delivered;
             Updated = updated;
+            Comment = comment;
         }
 
         /// <summary> Отмена заказа (Archieved = true) </summary>
         internal void Cancel() => Archieved = true;
-        internal void UpdateUpdatedDt(DateTime updatedDt) => Updated = updatedDt;
+        internal void UpdateComment(string? comment) => Comment = comment;
+        internal void UpdateCourierId(uint? courierId) => CourierId = courierId;
+        internal void UpdateDelivered(DateTime delivered) => Delivered = delivered;
+        internal void UpdateDeliveryAddress(string? deliveryAddress) => DeliveryAddress = deliveryAddress;
+        internal void UpdateDeliveryId(uint? deliveryId) => DeliveryId = deliveryId;
+        internal void UpdateDimensions(string dimensions) => Dimensions = dimensions;
+        internal void UpdateExtraInfo(string extraInfo) => ExtraInfo = extraInfo;
         internal void UpdateManagerId(uint? managerId) => ManagerId = managerId;
+        internal void UpdateMassInGrams(uint massInGrams) => MassInGrams = massInGrams;
+        internal void UpdatePaymentInfo(string paymentInfo) => PaymentInfo = paymentInfo;
+        internal void UpdatePlannedDeliveryTime(DateTime plannedDeliveryTime) => PlannedDeliveryTime = plannedDeliveryTime;
+        internal void UpdateReceived(DateTime received) => Received = received;
+        internal void UpdateUpdatedDt(DateTime updatedDt) => Updated = updatedDt;
+
+        internal void UpdateShopId(uint? shopId) => ShopId = shopId;
     }
 }

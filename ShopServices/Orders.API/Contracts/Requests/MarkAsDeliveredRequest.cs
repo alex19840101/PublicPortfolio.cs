@@ -1,7 +1,7 @@
 ﻿namespace Orders.API.Contracts.Requests
 {
     /// <summary>
-    /// Запрос для отметки заказа как доставленного
+    /// Запрос для отметки заказа как доставленного в магазин/покупателю
     /// </summary>
     public class MarkAsDeliveredRequest
     {
