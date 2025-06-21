@@ -122,7 +122,7 @@ namespace ShopServices.DataAccess.Repositories
 
             if (_dbContext.ChangeTracker.HasChanges())
             {
-                comment = $"CANCELED BY BUYER //{comment}";
+                comment = $"CANCELED BY BUYER|{comment}";
                 orderEntity.UpdateComment(comment);
                 orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
 
@@ -154,7 +154,7 @@ namespace ShopServices.DataAccess.Repositories
 
             if (_dbContext.ChangeTracker.HasChanges())
             {
-                comment = $"CANCELED BY MANAGER //{comment}";
+                comment = $"CANCELED BY MANAGER|{comment}";
                 orderEntity.UpdateComment(comment);
                 orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
                 await _dbContext.SaveChangesAsync();
@@ -211,7 +211,7 @@ namespace ShopServices.DataAccess.Repositories
             if (orderEntity.ManagerId != managerId)
                 orderEntity.UpdateManagerId(managerId);
 
-            comment = comment ?? "DELIVERED TO SHOP";
+            comment = $"DELIVERED TO SHOP|{comment}";
             if (!string.Equals(comment, orderEntity.Comment))
                 orderEntity.UpdateComment(comment);
 
@@ -248,7 +248,7 @@ namespace ShopServices.DataAccess.Repositories
             if (courierId != null && orderEntity.CourierId != courierId)
                 orderEntity.UpdateCourierId(courierId);
 
-            comment = comment ?? "RECEIVED BY BUYER";
+            comment = $"RECEIVED BY BUYER|{comment}";
             if (!string.Equals(comment, orderEntity.Comment))
                 orderEntity.UpdateComment(comment);
 
@@ -289,7 +289,7 @@ namespace ShopServices.DataAccess.Repositories
             {
                 orderEntity.UpdateCourierId(courierId);
 
-                comment = comment ?? $"CourierId updated //{comment}";
+                comment = comment ?? $"CourierId updated|{comment}";
 
                 if (!string.Equals(comment, orderEntity.Comment))
                     orderEntity.UpdateComment(comment);
@@ -370,7 +370,7 @@ namespace ShopServices.DataAccess.Repositories
             if (courierId != null && orderEntity.CourierId != courierId)
                 orderEntity.UpdateCourierId(courierId);
 
-            comment = comment ?? $"DeliveryId | {comment}";
+            comment = $"DeliveryId|{comment}";
             if (!string.Equals(comment, orderEntity.Comment))
                 orderEntity.UpdateComment(comment);
 
@@ -450,7 +450,7 @@ namespace ShopServices.DataAccess.Repositories
             {
                 orderEntity.UpdateManagerId(managerId);
 
-                comment = comment ?? $"ManagerId updated //{comment}";
+                comment = $"ManagerId updated|{comment}";
 
                 if (!string.Equals(comment, orderEntity.Comment))
                     orderEntity.UpdateComment(comment);
@@ -503,7 +503,7 @@ namespace ShopServices.DataAccess.Repositories
             if (!string.Equals(dimensions, orderEntity.Dimensions))
                 orderEntity.UpdateDimensions(dimensions);
 
-            comment = comment ?? "massInGrams/dimensions upd.";
+            comment = $"massInGrams/dimensions upd.|{comment}";
             if (!string.Equals(comment, orderEntity.Comment))
                 orderEntity.UpdateComment(comment);
 
@@ -538,7 +538,7 @@ namespace ShopServices.DataAccess.Repositories
             if (!string.Equals(paymentInfo, orderEntity.PaymentInfo))
                 orderEntity.UpdatePaymentInfo(paymentInfo);
 
-            comment = comment ?? $"PaymentInfo |{comment}";
+            comment = $"PaymentInfo|{comment}";
             if (!string.Equals(comment, orderEntity.Comment))
                 orderEntity.UpdateComment(comment);
 
@@ -569,7 +569,7 @@ namespace ShopServices.DataAccess.Repositories
             if (orderEntity.PlannedDeliveryTime.ToLocalTime() != plannedDeliveryTime)
                 orderEntity.UpdatePlannedDeliveryTime(plannedDeliveryTime);
 
-            comment = comment ?? $"PlannedDeliveryTime |{comment}";
+            comment = $"PlannedDeliveryTime|{comment}";
             if (!string.Equals(comment, orderEntity.Comment))
                 orderEntity.UpdateComment(comment);
 
@@ -662,7 +662,7 @@ namespace ShopServices.DataAccess.Repositories
             if (orderEntity.CourierId != courierId)
                 orderEntity.UpdateCourierId(courierId);
 
-            comment = comment ?? "DELIVERED TO BUYER";
+            comment = $"DELIVERED TO BUYER|{comment}";
             if (!string.Equals(comment, orderEntity.Comment))
                 orderEntity.UpdateComment(comment);
 
