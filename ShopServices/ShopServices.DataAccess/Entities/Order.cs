@@ -12,17 +12,19 @@ namespace ShopServices.DataAccess.Entities
 
         public uint BuyerId { get; private set; }
 
+        /// <summary> Навигационное свойство: покупатель </summary>
         public Buyer Buyer { get; private set; } = default!;
 
-        /// <summary> Список товарных позиций в заказе </summary>
-        public ICollection<OrderPosition> Positions { get; private set; } = [];
+        /// <summary> Навигационное свойство: список товарных позиций в заказе </summary>
+        public ICollection<OrderPosition> Positions { get; } = [];
 
         public uint? DeliveryId { get; private set; }
 
         public uint? ManagerId { get; private set; }
         public uint? CourierId { get; private set; }
 
-        public ICollection<Product> Products { get; private set; } = [];
+        /// <summary> Навигационное свойство: коллекция товаров из заказа </summary>
+        public ICollection<Product> Products { get; } = [];
 
         /// <summary> Полная стоимость заказа </summary>
         public decimal Cost { get; private set; }
@@ -71,8 +73,6 @@ namespace ShopServices.DataAccess.Entities
         public Order(
             uint id,
             uint buyerId,
-            Buyer buyer,
-            ICollection<OrderPosition> positions,
             decimal cost,
             string currency,
             DateTime created,
@@ -94,8 +94,6 @@ namespace ShopServices.DataAccess.Entities
         {
             Id = id;
             BuyerId = buyerId;
-            Buyer = buyer;
-            Positions = positions;
             Cost = cost;
             Currency = currency;
             Created = created;
@@ -131,7 +129,7 @@ namespace ShopServices.DataAccess.Entities
         internal void UpdatePlannedDeliveryTime(DateTime plannedDeliveryTime) => PlannedDeliveryTime = plannedDeliveryTime;
         internal void UpdateReceived(DateTime received) => Received = received;
         internal void UpdateUpdatedDt(DateTime updatedDt) => Updated = updatedDt;
-
         internal void UpdateShopId(uint? shopId) => ShopId = shopId;
+        internal void SetCost(decimal cost) => Cost = cost;
     }
 }

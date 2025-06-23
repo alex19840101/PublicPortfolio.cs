@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ShopServices.DataAccess;
@@ -11,9 +12,11 @@ using ShopServices.DataAccess;
 namespace ShopServices.DataAccess.Migrations
 {
     [DbContext(typeof(ShopServicesDbContext))]
-    partial class ShopServicesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250622102516_Orders_AddComment_OrderPosition_AddOrderId")]
+    partial class Orders_AddComment_OrderPosition_AddOrderId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -174,11 +177,11 @@ namespace ShopServices.DataAccess.Migrations
 
             modelBuilder.Entity("ShopServices.DataAccess.Entities.Delivery", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -203,7 +206,6 @@ namespace ShopServices.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("MassInGrams")
-                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<long>("OrderId")
@@ -231,10 +233,9 @@ namespace ShopServices.DataAccess.Migrations
             modelBuilder.Entity("ShopServices.DataAccess.Entities.EmailNotification", b =>
                 {
                     b.Property<long>("Id")
+
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
-
-                        NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
@@ -334,11 +335,11 @@ namespace ShopServices.DataAccess.Migrations
 
             modelBuilder.Entity("ShopServices.DataAccess.Entities.Order", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Archieved")
                         .HasColumnType("boolean");
@@ -388,7 +389,6 @@ namespace ShopServices.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("MassInGrams")
-                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<string>("PaymentInfo")
@@ -421,11 +421,11 @@ namespace ShopServices.DataAccess.Migrations
 
             modelBuilder.Entity("ShopServices.DataAccess.Entities.OrderPosition", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ArticleNumber")
                         .HasMaxLength(255)
@@ -479,8 +479,6 @@ namespace ShopServices.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
@@ -516,7 +514,7 @@ namespace ShopServices.DataAccess.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("ActualFromDt")
-						.IsRequired()
+                        .IsRequired()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("ActualToDt")
@@ -585,8 +583,7 @@ namespace ShopServices.DataAccess.Migrations
                         .HasColumnType("character varying(2048)");
 
                     b.Property<int>("MassInGrams")
-                        .IsRequired()
-                        .HasColumnType("integer");
+                        .HasColumnType("ingeger");
 
                     b.Property<string>("Name")
                         .IsRequired()

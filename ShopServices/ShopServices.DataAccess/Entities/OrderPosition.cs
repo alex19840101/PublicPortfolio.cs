@@ -11,7 +11,11 @@ namespace ShopServices.DataAccess.Entities
         [Column(TypeName = "integer")]
         public uint Id { get; private set; }
 
-        public Order Order { get; private set; } = default!;
+        /// <summary> Id заказа </summary>
+        public uint OrderId { get; private set; }
+        
+        /// <summary> Навигационное свойство: заказ </summary>
+        public Order Order { get; } = default!;
 
         /// <summary> *Уникальный идентификатор товара в системе </summary>
         public uint ProductId { get; private set; }
@@ -42,22 +46,24 @@ namespace ShopServices.DataAccess.Entities
 
         public OrderPosition(
             uint id,
+            uint orderId,
             uint productId,
             string articleNumber,
             string brand,
             string name,
-            string parameters,
+            string @params,
             decimal price,
             float quantity,
             decimal cost,
             string currency)
         {
             Id = id;
+            OrderId = orderId;
             ProductId = productId;
             ArticleNumber = articleNumber;
             Brand = brand;
             Name = name;
-            Params = parameters;
+            Params = @params;
             Price = price;
             Quantity = quantity;
             Cost = cost;

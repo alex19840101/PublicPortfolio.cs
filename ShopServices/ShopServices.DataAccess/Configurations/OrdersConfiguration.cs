@@ -25,11 +25,18 @@ namespace ShopServices.DataAccess.Configurations
             builder.Property(o => o.Dimensions).HasMaxLength(MAX_DIMENSIONS_LENGTH).IsRequired();
             builder.Property(o => o.PaymentInfo).HasMaxLength(MAX_NAME_LENGTH).IsRequired();
             builder.Property(o => o.Comment).HasMaxLength(MAX_COMMENT_LENGTH);
+
+            //builder.Property(o => o.Buyer).IsRequired();
+            //builder.Property(o => o.Positions).IsRequired();
+
             builder.HasMany(o => o.Products)
                 .WithMany(p => p.Orders);
 
             builder.HasMany(o => o.Positions)
-                .WithOne(op => op.Order);
+                .WithOne(op => op.Order).IsRequired().OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(o => o.Buyer)
+                .WithMany(b => b.Orders).IsRequired().OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

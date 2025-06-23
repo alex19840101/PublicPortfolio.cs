@@ -26,47 +26,11 @@ namespace ShopServices.DataAccess.Repositories
         {
             ArgumentNullException.ThrowIfNull(newOrder);
 
-            var orderPositionsEntities = from op in newOrder.Positions
-                select new Entities.OrderPosition(
-                id: 0,
-                productId: op.ProductId,
-                articleNumber: op.ArticleNumber,
-                brand: op.Brand,
-                name: op.Name,
-                parameters: op.Params,
-                price: op.Price,
-                quantity: op.Quantity,
-                cost: op.Cost,
-                currency: op.Currency);
-
-            ArgumentNullException.ThrowIfNull(orderPositionsEntities);
-
-            var coreBuyer = newOrder.Buyer;
-
-            var buyerEntity = new Entities.Buyer(
-                id: coreBuyer.Id,
-                login: coreBuyer.Login,
-                name: coreBuyer.Name,
-                surname: coreBuyer.Surname,
-                address: coreBuyer.Address,
-                email: coreBuyer.Email,
-                passwordHash: coreBuyer.PasswordHash,
-                nick: coreBuyer.Nick,
-                phone: coreBuyer.Phones,
-                discountGroups: coreBuyer.DiscountGroups,
-                granterId: coreBuyer.GranterId,
-                createdDt: coreBuyer.Created,
-                lastUpdateDt: coreBuyer.Updated,
-                blocked: coreBuyer.Blocked
-            );
-
             var newOrderEntity = new Entities.Order
             (
                 id: 0,
                 buyerId: newOrder.BuyerId,
-                buyer: buyerEntity,
-                positions: orderPositionsEntities.ToList(),
-                cost: newOrder.Cost,
+                cost: 0m, //стоимость укажем после успешного добавления товарных позиций
                 currency: newOrder.Currency,
                 created: newOrder.Created,
                 plannedDeliveryTime: newOrder.PlannedDeliveryTime,
@@ -80,10 +44,31 @@ namespace ShopServices.DataAccess.Repositories
             );
 
             await _dbContext.Orders.AddAsync(newOrderEntity);
+            await _dbContext.SaveChangesAsync();
+            
+            await _dbContext.Entry(newOrderEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id заказа
+
+            var orderPositionsEntities = from op in newOrder.Positions
+                                         select new Entities.OrderPosition(
+                                         id: 0,
+                                         orderId: newOrderEntity.Id,
+                                         productId: op.ProductId,
+                                         articleNumber: op.ArticleNumber,
+                                         brand: op.Brand,
+                                         name: op.Name,
+                                         @params: op.Params,
+                                         price: op.Price,
+                                         quantity: op.Quantity,
+                                         cost: op.Cost,
+                                         currency: op.Currency);
+
+            ArgumentNullException.ThrowIfNull(orderPositionsEntities);
+
             await _dbContext.OrderPositions.AddRangeAsync(orderPositionsEntities);
+
+            newOrderEntity.SetCost(newOrder.Cost);
             await _dbContext.SaveChangesAsync();
 
-            await _dbContext.Entry(newOrderEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id
             return new Result
             {
                 Id = newOrderEntity.Id,
