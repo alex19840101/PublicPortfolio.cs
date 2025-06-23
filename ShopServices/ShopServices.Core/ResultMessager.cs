@@ -135,5 +135,8 @@
         //shops
         public const string SHOP_ID_SHOULD_BE_POSITIVE = "shopId should be positive (>0)";
         public const string SHOP_NOT_FOUND = "shop (shopId) not found";
+        public static readonly object COURIER_ID_MISMATCH = "courierId mismatch";
+        public static readonly object MANAGER_ID_MISMATCH;
+        public static readonly object BUYER_ID_MISMATCH;
     }
 }

@@ -20,7 +20,7 @@ namespace ShopServices.Core.Repositories
             string confirmationString,
             string comment);
         
-        public Task<Result> ConfirmOrderByByer(
+        public Task<Result> ConfirmOrderByBuyer(
             uint buyerIdFromRequest,
             uint orderId,
             string confirmationString);

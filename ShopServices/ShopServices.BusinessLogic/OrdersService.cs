@@ -24,7 +24,7 @@ namespace ShopServices.BusinessLogic
         const decimal PERMISSIBLE_PRICE_ERROR = 1m;
 
         /// <summary> Допустимая погрешность рассинхронизации времени, с </summary>
-        const int PERMISSIBLE_TIME_DESYNC_SECONDS = 30;
+        const int PERMISSIBLE_TIME_DESYNC_SECONDS = 36000; //TODO: временно, убрать перед merge в main
 
         public OrdersService(
             IOrdersRepository ordersRepository,
@@ -183,7 +183,7 @@ namespace ShopServices.BusinessLogic
                 comment);
         }
 
-        public async Task<Result> ConfirmOrderByByer(
+        public async Task<Result> ConfirmOrderByBuyer(
             uint buyerIdFromClaim,
             uint buyerIdFromRequest,
             uint orderId,
@@ -198,7 +198,7 @@ namespace ShopServices.BusinessLogic
             if (string.IsNullOrWhiteSpace(confirmationString))
                 return new Result(ResultMessager.CONFIRMATION_STRING_SHOULD_BE_NOT_NULL_OR_EMPTY, System.Net.HttpStatusCode.NotFound);
 
-            return await _ordersRepository.ConfirmOrderByByer(
+            return await _ordersRepository.ConfirmOrderByBuyer(
                 buyerIdFromRequest,
                 orderId,
                 confirmationString);

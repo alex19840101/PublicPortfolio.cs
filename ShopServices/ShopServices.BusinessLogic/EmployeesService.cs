@@ -109,7 +109,8 @@ namespace ShopServices.BusinessLogic
             var claims = new List<Claim>
             {
                 //new Claim(ClaimTypes.Name, loginData.Login),
-                new Claim(ClaimTypes.Role, user.Role ?? string.Empty)
+                new Claim(ClaimTypes.Role, user.Role ?? string.Empty),
+                new Claim(ClaimTypes.UserData, user.Id.ToString())
             };
 
             var jwt = new JwtSecurityToken(

@@ -50,6 +50,15 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> AddOrder(AddOrderRequest addOrderRequestDto)
         {
+            uint? buyerId = GetUserIdFromClaim();
+
+            if (buyerId == null)
+                return new ObjectResult(null) { StatusCode = StatusCodes.Status403Forbidden };
+
+            var userIdMismatch = ReturnResultAtBuyerMismatch(buyerId: addOrderRequestDto.BuyerId, userIdFromClaim: buyerId.Value);
+            if (userIdMismatch != null)
+                return new ObjectResult(userIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
+
             var createResult = await _ordersService.AddOrder(OrdersMapper.PrepareCoreOrder(addOrderRequestDto, httpContext: HttpContext));
 
             if (createResult.StatusCode == HttpStatusCode.BadRequest)
@@ -95,7 +104,7 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetOrderInfoById(uint orderId)
         {
-            uint? buyerId = GetBuyerIdFromClaim();
+            uint? buyerId = GetUserIdFromClaim();
             var order = await _ordersService.GetOrderInfoById(orderId, buyerId);
 
             if (order is null)
@@ -126,7 +135,13 @@ namespace Orders.API.Controllers
             [Range(1, 100)] uint byPage = 10,
             [Range(1, uint.MaxValue)] uint page = 1)
         {
-            uint? buyerIdFromClaim = GetBuyerIdFromClaim();
+            uint? buyerIdFromClaim = GetUserIdFromClaim();
+            if (buyerIdFromClaim == null)
+                return [];
+
+            var buyerIdMismatch = ReturnResultAtBuyerMismatch(buyerId, userIdFromClaim: buyerIdFromClaim.Value);
+            if (buyerIdMismatch != null)
+                return [];
 
             var ordersCollection = await _ordersService.GetOrdersByBuyerId(
                 buyerId: buyerId,
@@ -156,10 +171,14 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> CancelOrderByBuyer(CancelOrderRequest cancelOrderRequest)
         {
-            uint? buyerId = GetBuyerIdFromClaim();
+            uint? buyerId = GetUserIdFromClaim();
 
             if (buyerId == null)
                 return new ObjectResult(null) { StatusCode = StatusCodes.Status403Forbidden };
+
+            var buyerIdMismatch = ReturnResultAtBuyerMismatch(buyerId: cancelOrderRequest.BuyerId, userIdFromClaim: buyerId.Value);
+            if (buyerIdMismatch != null)
+                return new ObjectResult(buyerIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
 
             var cancelResult = await _ordersService.CancelOrderByBuyer(
                 buyerIdFromClaim: buyerId.Value,
@@ -195,6 +214,15 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> CancelOrderByManager(CancelOrderRequest cancelOrderRequest)
         {
+            uint? managerId = GetUserIdFromClaim();
+
+            if (managerId == null)
+                return new ObjectResult(null) { StatusCode = StatusCodes.Status403Forbidden };
+
+            var managerIdMismatch = ReturnResultAtManagerMismatch(managerId: cancelOrderRequest.ManagerId, userIdFromClaim: managerId.Value);
+            if (managerIdMismatch != null)
+                return new ObjectResult(managerIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
+
             var cancelResult = await _ordersService.CancelOrderByManager(
                 managerId: cancelOrderRequest.ManagerId,
                 orderId: cancelOrderRequest.OrderId,
@@ -225,14 +253,18 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
         [Authorize(Roles = "buyer")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> ConfirmOrderByByer(ConfirmOrderRequest confirmOrderRequest)
+        public async Task<IActionResult> ConfirmOrderByBuyer(ConfirmOrderRequest confirmOrderRequest)
         {
-            uint? buyerId = GetBuyerIdFromClaim();
+            uint? buyerId = GetUserIdFromClaim();
 
             if (buyerId == null)
                 return new ObjectResult(null) { StatusCode = StatusCodes.Status403Forbidden };
 
-            var confirmResult = await _ordersService.ConfirmOrderByByer(
+            var buyerIdMismatch = ReturnResultAtBuyerMismatch(buyerId: confirmOrderRequest.BuyerId, userIdFromClaim: buyerId.Value);
+            if (buyerIdMismatch != null)
+                return new ObjectResult(buyerIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
+
+            var confirmResult = await _ordersService.ConfirmOrderByBuyer(
                 buyerIdFromClaim: buyerId.Value,
                 buyerIdFromRequest: confirmOrderRequest.BuyerId,
                 orderId: confirmOrderRequest.OrderId,
@@ -265,6 +297,15 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> MarkAsDeliveredToBuyer(MarkAsDeliveredRequest markAsDeliveredRequest)
         {
+            uint? courierId = GetUserIdFromClaim();
+
+            if (courierId == null)
+                return new ObjectResult(null) { StatusCode = StatusCodes.Status403Forbidden };
+
+            var courierIdMismatch = ReturnResultAtCourierMismatch(courierId: markAsDeliveredRequest.CourierId, userIdFromClaim: courierId.Value);
+            if (courierIdMismatch != null)
+                return new ObjectResult(courierIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
+
             var result = await _ordersService.MarkAsDeliveredToBuyer(
                     orderId: markAsDeliveredRequest.OrderId,
                     comment: markAsDeliveredRequest.Comment,
@@ -297,6 +338,15 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> MarkAsDeliveredToShop(MarkAsDeliveredRequest markAsDeliveredRequest)
         {
+            uint? managerId = GetUserIdFromClaim();
+
+            if (managerId == null)
+                return new ObjectResult(null) { StatusCode = StatusCodes.Status403Forbidden };
+
+            var managerIdMismatch = ReturnResultAtManagerMismatch(managerId: markAsDeliveredRequest.ManagerId, userIdFromClaim: managerId.Value);
+            if (managerIdMismatch != null)
+                return new ObjectResult(managerIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
+
             var result = await _ordersService.MarkAsDeliveredToShop(
                     orderId: markAsDeliveredRequest.OrderId,
                     comment: markAsDeliveredRequest.Comment,
@@ -329,6 +379,17 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> MarkAsReceived(MarkAsReceivedRequest markAsReceivedRequest)
         {
+            uint? userId = GetUserIdFromClaim();
+
+            if (userId == null)
+                return new ObjectResult(null) { StatusCode = StatusCodes.Status403Forbidden };
+
+            var userIdMismatch = ReturnResultAtManagerMismatch(managerId: markAsReceivedRequest.ManagerId, userIdFromClaim: userId.Value) ??
+                                       ReturnResultAtCourierMismatch(courierId: markAsReceivedRequest.CourierId, userIdFromClaim: userId.Value);
+            if (userIdMismatch != null)
+                return new ObjectResult(userIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
+
+
             var result = await _ordersService.MarkAsReceived(
                     orderId: markAsReceivedRequest.OrderId,
                     comment: markAsReceivedRequest.Comment,
@@ -361,6 +422,16 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateCourierId(UpdateCourierIdRequest updateCourierIdRequest)
         {
+            uint? courierId = GetUserIdFromClaim();
+
+            if (courierId == null)
+                return new ObjectResult(null) { StatusCode = StatusCodes.Status403Forbidden };
+
+            var courierIdMismatch = ReturnResultAtCourierMismatch(courierId: updateCourierIdRequest.CourierId, userIdFromClaim: courierId.Value);
+            if (courierIdMismatch != null)
+                return new ObjectResult(courierIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
+
+
             var result = await _ordersService.UpdateCourierId(
                     orderId: updateCourierIdRequest.OrderId,
                     comment: updateCourierIdRequest.Comment,
@@ -393,10 +464,14 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateDeliveryAddressByBuyer(UpdateDeliveryAddressRequest updateDeliveryAddressRequest)
         {
-            uint? buyerId = GetBuyerIdFromClaim();
+            uint? buyerId = GetUserIdFromClaim();
 
             if (buyerId == null)
                 return new ObjectResult(null) { StatusCode = StatusCodes.Status403Forbidden };
+
+            var buyerIdMismatch = ReturnResultAtBuyerMismatch(buyerId: updateDeliveryAddressRequest.BuyerId, userIdFromClaim: buyerId.Value);
+            if (buyerIdMismatch != null)
+                return new ObjectResult(buyerIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
 
             var updateResult = await _ordersService.UpdateDeliveryAddressByBuyer(
                 buyerIdFromClaim: buyerId.Value,
@@ -433,6 +508,16 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateDeliveryId(UpdateDeliveryIdRequest updateDeliveryIdRequest)
         {
+            uint? userId = GetUserIdFromClaim();
+
+            if (userId == null)
+                return new ObjectResult(null) { StatusCode = StatusCodes.Status403Forbidden };
+
+            var userIdMismatch = ReturnResultAtManagerMismatch(managerId: updateDeliveryIdRequest.ManagerId, userIdFromClaim: userId.Value) ??
+                                        ReturnResultAtCourierMismatch(courierId: updateDeliveryIdRequest.CourierId, userIdFromClaim: userId.Value);
+            if (userIdMismatch != null)
+                return new ObjectResult(userIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
+
             var updateResult = await _ordersService.UpdateDeliveryId(
                 orderId: updateDeliveryIdRequest.OrderId,
                 deliveryId: updateDeliveryIdRequest.DeliveryId,
@@ -467,10 +552,14 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateExtraInfoByBuyer(UpdateExtraInfoRequest updateExtraInfoRequest)
         {
-            uint? buyerId = GetBuyerIdFromClaim();
+            uint? buyerId = GetUserIdFromClaim();
 
             if (buyerId == null)
                 return new ObjectResult(null) { StatusCode = StatusCodes.Status403Forbidden };
+
+            var buyerIdMismatch = ReturnResultAtBuyerMismatch(buyerId: updateExtraInfoRequest.BuyerId, userIdFromClaim: buyerId.Value);
+            if (buyerIdMismatch != null)
+                return new ObjectResult(buyerIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
 
             var updateResult = await _ordersService.UpdateExtraInfoByBuyer(
                 buyerIdFromClaim: buyerId.Value,
@@ -505,6 +594,15 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateManagerId(UpdateManagerIdRequest updateManagerIdRequest)
         {
+            uint? managerId = GetUserIdFromClaim();
+
+            if (managerId == null)
+                return new ObjectResult(null) { StatusCode = StatusCodes.Status403Forbidden };
+
+            var managerIdMismatch = ReturnResultAtManagerMismatch(managerId: updateManagerIdRequest.ManagerId, userIdFromClaim: managerId.Value);
+            if (managerIdMismatch != null)
+                return new ObjectResult(managerIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
+
             var result = await _ordersService.UpdateManagerId(
                     orderId: updateManagerIdRequest.OrderId,
                     comment: updateManagerIdRequest.Comment,
@@ -537,6 +635,16 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateMassInGramsDimensions(UpdateMassInGramsDimensionsRequest updateMassInGramsDimensionsRequest)
         {
+            uint? userId = GetUserIdFromClaim();
+
+            if (userId == null)
+                return new ObjectResult(null) { StatusCode = StatusCodes.Status403Forbidden };
+
+            var userIdMismatch = ReturnResultAtManagerMismatch(managerId: updateMassInGramsDimensionsRequest.ManagerId, userIdFromClaim: userId.Value) ??
+                                       ReturnResultAtCourierMismatch(courierId: updateMassInGramsDimensionsRequest.CourierId, userIdFromClaim: userId.Value);
+            if (userIdMismatch != null)
+                return new ObjectResult(userIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
+
             var result = await _ordersService.UpdateMassInGramsDimensions(
                     orderId: updateMassInGramsDimensionsRequest.OrderId,
                     massInGrams: updateMassInGramsDimensionsRequest.MassInGrams,
@@ -572,6 +680,16 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdatePaymentInfo(UpdatePaymentInfoByManagerRequest updatePaymentInfoByManagerRequest)
         {
+            uint? userId = GetUserIdFromClaim();
+
+            if (userId == null)
+                return new ObjectResult(null) { StatusCode = StatusCodes.Status403Forbidden };
+
+            var userIdMismatch = ReturnResultAtManagerMismatch(managerId: updatePaymentInfoByManagerRequest.ManagerId, userIdFromClaim: userId.Value) ??
+                                       ReturnResultAtCourierMismatch(courierId: updatePaymentInfoByManagerRequest.CourierId, userIdFromClaim: userId.Value);
+            if (userIdMismatch != null)
+                return new ObjectResult(userIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
+
             var result = await _ordersService.UpdatePaymentInfo(
                     orderId: updatePaymentInfoByManagerRequest.OrderId,
                     paymentInfo: updatePaymentInfoByManagerRequest.PaymentInfo,
@@ -606,6 +724,15 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdatePlannedDeliveryTimeByManager(UpdatePlannedDeliveryTimeRequest updatePlannedDeliveryTimeRequest)
         {
+            uint? managerId = GetUserIdFromClaim();
+
+            if (managerId == null)
+                return new ObjectResult(null) { StatusCode = StatusCodes.Status403Forbidden };
+
+            var managerIdMismatch = ReturnResultAtManagerMismatch(managerId: updatePlannedDeliveryTimeRequest.ManagerId, userIdFromClaim: managerId.Value);
+            if (managerIdMismatch != null)
+                return new ObjectResult(managerIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
+
             var result = await _ordersService.UpdatePlannedDeliveryTimeByManager(
                     orderId: updatePlannedDeliveryTimeRequest.OrderId,
                     plannedDeliveryTime: updatePlannedDeliveryTimeRequest.PlannedDeliveryTime,
@@ -639,10 +766,14 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateShopIdByBuyer(UpdateShopIdRequest updateShopIdRequest)
         {
-            uint? buyerId = GetBuyerIdFromClaim();
+            uint? buyerId = GetUserIdFromClaim();
 
             if (buyerId == null)
                 return new ObjectResult(null) { StatusCode = StatusCodes.Status403Forbidden };
+
+            var buyerIdMismatch = ReturnResultAtBuyerMismatch(buyerId: updateShopIdRequest.BuyerId, userIdFromClaim: buyerId.Value);
+            if (buyerIdMismatch != null)
+                return new ObjectResult(buyerIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
 
             var updateResult = await _ordersService.UpdateShopIdByBuyer(
                 buyerIdFromClaim: buyerId.Value,
@@ -664,13 +795,62 @@ namespace Orders.API.Controllers
 
         
         [NonAction]
-        private uint? GetBuyerIdFromClaim()
+        private uint? GetUserIdFromClaim()
         {
             var idFromClaimParsed = uint.TryParse(HttpContext.User.FindFirst(ClaimTypes.UserData)!.Value, out var idFromClaim);
 
-            uint? buyerId = idFromClaimParsed ? idFromClaim : null;
+            uint? userId = idFromClaimParsed ? idFromClaim : null;
 
-            return buyerId;
+            return userId;
+        }
+
+        [NonAction]
+        private static Result? ReturnResultAtBuyerMismatch(uint? buyerId, uint userIdFromClaim)
+        {
+            if (buyerId is null)
+                return null;
+
+            if (buyerId != userIdFromClaim)
+                return new Result
+                {
+                    Message = $"{ResultMessager.BUYER_ID_MISMATCH}: from Claim.UserData:{userIdFromClaim}, from request:{buyerId}",
+                    StatusCode = HttpStatusCode.Forbidden
+                };
+
+            return null;
+        }
+
+
+        [NonAction]
+        private static Result? ReturnResultAtCourierMismatch(uint? courierId, uint userIdFromClaim)
+        {
+            if (courierId is null)
+                return null;
+
+            if (courierId != userIdFromClaim)
+                return new Result
+                {
+                    Message = $"{ResultMessager.COURIER_ID_MISMATCH}: from Claim.UserData:{userIdFromClaim}, from request:{courierId}",
+                    StatusCode = HttpStatusCode.Forbidden
+                };
+
+            return null;
+        }
+
+        [NonAction]
+        private static Result? ReturnResultAtManagerMismatch(uint? managerId, uint userIdFromClaim)
+        {
+            if (managerId is null)
+                return null;
+
+            if (managerId != userIdFromClaim)
+                return new Result
+                {
+                    Message = $"{ResultMessager.MANAGER_ID_MISMATCH}: from Claim.UserData:{userIdFromClaim}, from request:{managerId}",
+                    StatusCode = HttpStatusCode.Forbidden
+                };
+
+            return null;
         }
     }
 }

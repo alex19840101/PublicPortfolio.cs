@@ -28,7 +28,7 @@ namespace ShopServices.Core.Services
             string comment);
 
         /// <summary> Подтверждение заказа покупателем </summary>
-        public Task<Result> ConfirmOrderByByer(
+        public Task<Result> ConfirmOrderByBuyer(
             uint buyerIdFromClaim,
             uint buyerIdFromRequest,
             uint orderId,

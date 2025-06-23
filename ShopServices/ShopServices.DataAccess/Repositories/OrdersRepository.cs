@@ -148,7 +148,7 @@ namespace ShopServices.DataAccess.Repositories
             return new Result(ResultMessager.ORDER_CANCELED_EARLIER, HttpStatusCode.OK);
         }
 
-        public async Task<Result> ConfirmOrderByByer(
+        public async Task<Result> ConfirmOrderByBuyer(
             uint buyerIdFromRequest,
             uint orderId,
             string confirmationString)
