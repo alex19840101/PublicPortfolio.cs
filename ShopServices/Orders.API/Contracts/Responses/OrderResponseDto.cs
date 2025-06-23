@@ -42,10 +42,10 @@ namespace Orders.API.Contracts.Responses
         /// <summary> Id доставки заказа </summary>
         public uint? DeliveryId { get; set; }
 
-        /// <summary> Адрес доставки заказа (в случае доставки не в магазин) </summary>
-        public string? DeliveryAddress { get; set; }
+        /// <summary> Адрес доставки заказа (магазин/дом/...) </summary>
+        public string DeliveryAddress { get; set; } = default!;
 
-        /// <summary> Магазин доставки заказа </summary>
+        /// <summary> Магазин доставки заказа (в случае доставки в магазин) </summary>
         public uint? ShopId { get; set; }
 
         /// <summary> Id менеджера </summary>

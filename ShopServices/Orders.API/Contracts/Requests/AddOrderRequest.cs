@@ -27,13 +27,10 @@ namespace Orders.API.Contracts.Requests
         /// <summary> Информация по оплате </summary>
         public string PaymentInfo { get; set; } = default!;
 
-        /// <summary> Id доставки заказа </summary>
-        public uint? DeliveryId { get; set; }
+        /// <summary> Адрес доставки заказа (магазин/дом/...) </summary>
+        public string DeliveryAddress { get; set; } = default!;
 
-        /// <summary> Адрес доставки заказа (в случае доставки не в магазин) </summary>
-        public string? DeliveryAddress { get; set; }
-
-        /// <summary> Магазин доставки заказа </summary>
+        /// <summary> Магазин доставки заказа (в случае доставки в магазин) </summary>
         public uint? ShopId { get; set; }
 
         /// <summary> Дополнительная информация </summary>

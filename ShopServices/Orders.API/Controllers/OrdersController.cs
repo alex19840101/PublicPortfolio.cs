@@ -145,7 +145,7 @@ namespace Orders.API.Controllers
         /// <summary> Отмена заказа покупателем </summary>
         /// <param name="cancelOrderRequest"> Запрос на отмену заказа покупателем </param>
         /// <returns></returns>
-        [HttpPatch]
+        [HttpDelete]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
@@ -184,7 +184,7 @@ namespace Orders.API.Controllers
         /// <summary> Отмена заказа менеджером </summary>
         /// <param name="cancelOrderRequest"> Запрос на отмену заказа менеджером </param>
         /// <returns></returns>
-        [HttpPatch]
+        [HttpDelete]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]

@@ -82,7 +82,7 @@
         public const string ORDER_RARAM_NAME = "order";
         public const string PRICE_SHOULD_BE_POSITIVE = "Price should be positive";
         public const string QUANTITY_SHOULD_BE_POSITIVE = "Quantity should be positive";
-        public const string COST_SHOULD_BE_POSITIVE = "Cose should be positive";
+        public const string COST_SHOULD_BE_POSITIVE = "Cost should be positive";
         public const string ORDER_POSITIONS_MUST_BE_NOT_NULL = "order.Positions must be not null";
         public const string ORDER_POSITIONS_MUST_HAVE_POSITION = "order.Positions must have 1 or more position(s)";
         public const string PRODUCT_IS_ARCHIEVED = "Product is archieved, not available to order";
