@@ -9,7 +9,7 @@ namespace ShopServices.Core.Models
         public uint Id { get; private set; }
         public uint ProductId { get; private set; }
 
-        /// <summary> Цена за единицу измерения </summary>
+        /// <summary> Цена за единицу измерения товара </summary>
         public decimal PricePerUnit { get; private set; }
 
         /// <summary> Валюта </summary>

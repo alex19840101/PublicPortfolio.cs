@@ -73,7 +73,7 @@ namespace ShopServices.BusinessLogic
             productId: productId,
             actualFromDt: actualFromDt,
             actualToDt: actualToDt,
-            take: byPage,
+            take: take,
             skipCount: skip);
         }
 

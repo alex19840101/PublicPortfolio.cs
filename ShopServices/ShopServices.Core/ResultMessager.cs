@@ -77,5 +77,66 @@
         public const string NEWPRICE_RARAM_NAME = "newPrice";
         public const string ACTUALTODT_UPDATED = "ActualToDt updated";
         public const string ACTUALTODT_IS_ACTUAL = "ActualToDt is actual";
+        
+        //orders
+        public const string ORDER_RARAM_NAME = "order";
+        public const string PRICE_SHOULD_BE_POSITIVE = "Price should be positive";
+        public const string QUANTITY_SHOULD_BE_POSITIVE = "Quantity should be positive";
+        public const string COST_SHOULD_BE_POSITIVE = "Cost should be positive";
+        public const string ORDER_POSITIONS_MUST_BE_NOT_NULL = "order.Positions must be not null";
+        public const string ORDER_POSITIONS_MUST_HAVE_POSITION = "order.Positions must have 1 or more position(s)";
+        public const string PRODUCT_IS_ARCHIEVED = "Product is archieved, not available to order";
+        public const string PRICE_ID_IS_NULL = "product.PriceId == null, not available to order";
+        public const string PRICE_PER_UNIT_IS_NULL = "product.PricePerUnit == null, not available to order";
+        public const string BUYER_NOT_FOUND = "Buyer not found";
+        public const string POSITION_CURRENCY_IS_NOT_PRICE_CURRENCY = "OrderPosition.Currency != Price.Currency";
+        public const string ORDER_CURRENCY_IS_NOT_PRICE_CURRENCY = "Order.Currency != Price.Currency";
+        public const string POSITION_PRICE_IS_LESS_THAN_DISCOUNT_PRICEPERUNIT = "OrderPosition.Price < DiscountPricePerUnit";
+        public const string PRICE_PRICEPERUNIT_IS_NOT_EQUAL_PRODUCT_PRICEPERUNIT = "Price.PricePerUnit != Product.PricePerUnit";
+        public const string PRICE_ACTUAL_TO_DT_IS_NOT_ACTUAL = "Price.ActualToDt is not actual (outdated) (price.ActualToDt < Now), not available to order";
+        public const string PRICE_ACTUAL_FROM_DT_IS_NOT_ACTUAL = "Price.ActualFromDt is not actual (Now < price.ActualFromDt), not available to order";
+        public const string BUYER_ID_IS_NOT_ORDER_BUYER_ID = "buyer.Id != order.BuyerId";
+        public const string BUYER_ID_IS_NOT_BUYER_ID = "buyer.Id != Buyer.Id";
+        public const string BUYER_ID_FROM_CLAIM_IS_NOT_FROM_REQUEST = "buyerIdFromClaim != buyerIdFromRequest";
+        public const string BUYER_LOGIN_IS_NOT_ORDER_BUYER_LOGIN = "buyer.Login != order.Buyer.Login";
+        public const string BUYER_EMAIL_IS_NOT_ORDER_BUYER_EMAIL = "buyer.Email != order.Buyer.Email";
+        public const string ORDER_BUYER = "order.Buyer";
+        public const string PRODUCT_ID_MISMATCH = "ProductId mismatch";
+        public const string COST_MISMATCH_MORE_THAN_PERMISSIBLE_PRICE_ERROR = "Cost mismatch more then permissible price error";
+        public const string BUYER_IS_BLOCKED = "Buyer is blocked";
+        public const string PAYMENT_INFO_SHOULD_NOT_BE_EMPTY = "PaymentInfo should be not empty";
+        public const string DELIVERY_ADDRESS_SHOULD_NOT_BE_EMPTY = "DeliveryAddress should be not empty";
+        public const string EXTRA_INFO_SHOULD_NOT_BE_EMPTY = "ExtraInfo should be not empty";
+        public const string IMPOSSIBLE_TO_ADD_ARCHIVED_ORDER = "Impossible to add archived order";
+        public const string TIME_DESYNCHRONIZATION_MORE_THAN_PERMISSIBLE_TIME_DESYNC_SECONDS = "Time desynchronization more than permissible time desynchronization limit";
+        public const string PLANNEDDELIVERYTIME_IS_LESS_THEN_NOW = "PlannedDeliveryTime is less then now";
+        public const string ORDER_ID_SHOULD_BE_POSITIVE = "orderId should be positive (>0)";
+        public const string CONFIRMATION_STRING_SHOULD_BE_NOT_NULL_OR_EMPTY = "confirmationString should be not null/empty";
+        public const string EXTRA_INFO_SHOULD_BE_NOT_NULL_OR_EMPTY = "extraInfo should be not null/empty";
+        public const string MANAGER_ID_IS_NULL = "managerId is null, should be positive (>0)";
+        public const string MANAGER_ID_IS_ZERO = "managerId is 0, should be positive (>0) or null";
+        public const string COURIER_ID_IS_ZERO = "courierId is 0, should be positive (>0) or null";
+        public const string PLANNED_DELIVERY_TIME_SHOULD_BE_MORE_THAN_NOW = "plannedDeliveryTime should be > Now";
+        public const string ORDER_NOT_FOUND = "Order not found";
+        public const string OTHER_BUYERS_ORDER = "Other buyer's order";
+        public const string CONFIRMATION_STRING_MISMATCH = "confirmationString mismatch";
+        public const string ORDER_CANCELED = "Order canceled";
+        public const string ORDER_CANCELED_EARLIER = "Order canceled earlier";
+        public const string ORDER_CONFIRMED = "Order confirmed";
+        public const string ORDER_CONFIRMED_EARLIER = "Order confirmed earlier";
+        public const string ORDER_RECEIVED_EARLIER = "Order received earlier";
+        public const string ORDER_DELIVERED_EARLIER = "Order delivered earlier";
+        public const string ORDER_CANCELED_EARLIER_DELIVERED_TO_SHOP = "Order canceled earlier, but delivered to shop";
+        public const string ERROR_ORDER_CANCELED_EARLIER_OR_RECEIVED = "ERROR: Order canceled earlier OR received";
+        public const string ORDER_IS_ACTUAL = "Order is actual";
+        public const string ERROR_ORDER_CANCELED_EARLIER_OR_DELIVERED = "ERROR: Order canceled earlier OR delivered";
+        public const string COURIER_ID_IS_NULL = "courier is null, expected positive (>0)";
+
+        //shops
+        public const string SHOP_ID_SHOULD_BE_POSITIVE = "shopId should be positive (>0)";
+        public const string SHOP_NOT_FOUND = "shop (shopId) not found";
+        public static readonly object COURIER_ID_MISMATCH = "courierId mismatch";
+        public static readonly object MANAGER_ID_MISMATCH;
+        public static readonly object BUYER_ID_MISMATCH;
     }
 }

@@ -50,7 +50,7 @@ namespace ShopServices.Core.Models
         /// <summary> Id текущей цены на товар (из Prices) </summary>
         public uint? PriceId { get; private set; }
         
-        /// <summary> Текущая цена за единицу товара </summary>
+        /// <summary> Текущая цена за единицу измерения товара </summary>
         public decimal? PricePerUnit { get; private set; }
 
 

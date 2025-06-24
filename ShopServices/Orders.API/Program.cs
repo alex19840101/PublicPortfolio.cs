@@ -51,8 +51,14 @@ try
     builder.Services.AddOpenApi();
 
     builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
+    builder.Services.AddScoped<IBuyersRepository, BuyersRepository>();
+    builder.Services.AddScoped<IPricesRepository, PricesRepository>();
+    builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
     builder.Services.AddScoped<IOrdersService>(src => new OrdersService(
-        src.GetRequiredService<IOrdersRepository>()));
+        src.GetRequiredService<IOrdersRepository>(),
+        src.GetRequiredService<IBuyersRepository>(),
+        src.GetRequiredService<IPricesRepository>(),
+        src.GetRequiredService<IProductsRepository>()));
 
     string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ShopServices")!;
 
