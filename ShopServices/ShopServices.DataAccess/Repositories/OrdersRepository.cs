@@ -459,7 +459,8 @@ namespace ShopServices.DataAccess.Repositories
             string dimensions,
             uint? managerId,
             uint? courierId,
-            string comment)
+            string comment,
+            uint? deliveryId)
         {
             var orderEntity = await GetOrderEntity(orderId, asNoTracking: false);
             if (orderEntity is null)
@@ -716,7 +717,7 @@ namespace ShopServices.DataAccess.Repositories
             createdToDt = createdToDt?.ToUniversalTime();
 
             Expression<Func<Entities.Order, bool>> expressionWhereCreatedToDt = createdToDt == null ?
-                    order => (order.Created <= DateTime.Now) :
+                    order => (order.Created <= DateTime.Now.ToUniversalTime()) :
                     order => order.Created <= createdToDt;
 
             return _dbContext.Orders.AsNoTracking()

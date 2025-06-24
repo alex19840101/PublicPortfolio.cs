@@ -84,7 +84,8 @@ namespace ShopServices.Core.Repositories
             string dimensions,
             uint? managerId,
             uint? courierId,
-            string comment);
+            string comment,
+            uint? deliveryId);
 
         public Task<Result> UpdatePaymentInfo(
             uint orderId,

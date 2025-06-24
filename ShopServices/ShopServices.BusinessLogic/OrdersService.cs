@@ -367,7 +367,14 @@ namespace ShopServices.BusinessLogic
                 comment: comment);
         }
 
-        public async Task<Result> UpdateMassInGramsDimensions(uint orderId, uint massInGrams, string dimensions, string comment, uint? managerId, uint? courierId)
+        public async Task<Result> UpdateMassInGramsDimensions(
+            uint orderId,
+            uint massInGrams,
+            string dimensions,
+            string comment,
+            uint? managerId,
+            uint? courierId,
+            uint? deliveryId)
         {
             if (managerId == 0)
                 return new Result(ResultMessager.MANAGER_ID_IS_ZERO, System.Net.HttpStatusCode.BadRequest);
@@ -384,7 +391,8 @@ namespace ShopServices.BusinessLogic
                 dimensions: dimensions,
                 managerId: managerId,
                 courierId: courierId,
-                comment: comment);
+                comment: comment,
+                deliveryId: deliveryId);
         }
 
         public async Task<Result> UpdatePaymentInfo(uint orderId, string paymentInfo, string comment, uint? managerId, uint? courierId)

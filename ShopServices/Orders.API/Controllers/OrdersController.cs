@@ -104,8 +104,12 @@ namespace Orders.API.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetOrderInfoById(uint orderId)
         {
-            uint? buyerId = GetUserIdFromClaim();
-            var order = await _ordersService.GetOrderInfoById(orderId, buyerId);
+            uint? userId = GetUserIdFromClaim();
+            var role = HttpContext.User.FindFirst(ClaimTypes.Role)!.Value;
+            if (!string.Equals(role, "buyer"))
+                userId = null;
+
+            var order = await _ordersService.GetOrderInfoById(orderId, userId);
 
             if (order is null)
                 return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
@@ -651,7 +655,8 @@ namespace Orders.API.Controllers
                     dimensions: updateMassInGramsDimensionsRequest.Dimensions,
                     comment: updateMassInGramsDimensionsRequest.Comment,
                     managerId: updateMassInGramsDimensionsRequest.ManagerId,
-                    courierId: updateMassInGramsDimensionsRequest.CourierId);
+                    courierId: updateMassInGramsDimensionsRequest.CourierId,
+                    deliveryId: updateMassInGramsDimensionsRequest.DeliveryId);
 
             if (result.StatusCode == HttpStatusCode.Forbidden)
                 return new ObjectResult(result) { StatusCode = StatusCodes.Status403Forbidden };

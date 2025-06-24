@@ -104,7 +104,8 @@ namespace ShopServices.Core.Services
             string dimensions,
             string comment,
             uint? managerId,
-            uint? courierId);
+            uint? courierId,
+            uint? deliveryId);
 
         /// <summary> Обновление информации об оплате (со стороны менеджера/курьера, обслуживающего заказ) </summary>
         public Task<Result> UpdatePaymentInfo(
