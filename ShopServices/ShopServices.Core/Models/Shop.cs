@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ShopServices.Core.Models
 {
@@ -12,5 +10,31 @@ namespace ShopServices.Core.Models
         public string Phone { get; private set; }
         public string Email { get; private set; }
         public string Url { get; private set; }
+
+        /// <summary> Дата и время создания записи в БД </summary>
+        public DateTime? CreatedDt { get; private set; }
+
+        /// <summary> Дата и время обновления записи в БД (опционально) </summary>
+        public DateTime? Updated { get; private set; }
+
+        public Shop(
+            uint id,
+            string name,
+            string address,
+            string phone,
+            string email,
+            string url,
+            DateTime? createdDt = null,
+            DateTime? updated = null)
+        {
+            Id = id;
+            Name = name;
+            Address = address;
+            Phone = phone;
+            Email = email;
+            Url = url;
+            CreatedDt = createdDt;
+            Updated = updated;
+        }
     }
 }
