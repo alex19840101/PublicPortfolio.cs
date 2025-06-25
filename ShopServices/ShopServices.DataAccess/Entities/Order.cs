@@ -18,6 +18,9 @@ namespace ShopServices.DataAccess.Entities
         /// <summary> Навигационное свойство: список товарных позиций в заказе </summary>
         public ICollection<OrderPosition> Positions { get; } = [];
 
+        /// <summary> Навигационное свойство: доставка </summary>
+        public Delivery? Delivery { get; private set; }
+
         public uint? DeliveryId { get; private set; }
 
         public uint? ManagerId { get; private set; }
@@ -52,6 +55,10 @@ namespace ShopServices.DataAccess.Entities
 
         /// <summary> Адрес доставки заказа (в случае доставки не в магазин) </summary>
         public string? DeliveryAddress { get; private set; }
+
+        /// <summary> Навигационное свойство: магазин доставки заказа </summary>
+        public Shop? Shop { get; private set; }
+
         /// <summary> Магазин доставки заказа </summary>
         public uint? ShopId { get; private set; }
 
