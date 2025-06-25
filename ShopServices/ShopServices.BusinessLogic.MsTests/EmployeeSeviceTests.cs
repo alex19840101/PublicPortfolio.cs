@@ -273,7 +273,7 @@ namespace ShopServices.BusinessLogic.MsTests
         }
 
         [DataTestMethod]
-        [DataRow("courier")]
+        [DataRow(Roles.Courier)]
         [DataRow(" courier ")]
         [DataRow(" CourieR ")]
         public async Task Register_EmployeeIsValidCourierAndFull_ShouldReturnOk(string role)
@@ -296,7 +296,7 @@ namespace ShopServices.BusinessLogic.MsTests
 
 
         [DataTestMethod]
-        [DataRow("manager")]
+        [DataRow(Roles.Manager)]
         [DataRow(" manager ")]
         [DataRow(" manaGer ")]
         public async Task Register_EmployeeIsValidManagerAndFull_ShouldReturnOk(string role)

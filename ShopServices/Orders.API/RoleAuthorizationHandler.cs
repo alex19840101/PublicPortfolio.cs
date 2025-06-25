@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
+using ShopServices.Core.Auth;
 
 namespace Orders.API
 {
@@ -22,10 +23,10 @@ namespace Orders.API
             if (context.User == null)
                 return Task.CompletedTask;
 
-            if (context.User.IsInRole("manager") ||
-                context.User.IsInRole("developer") ||
-                context.User.IsInRole("admin") ||
-                context.User.IsInRole("buyer"))
+            if (context.User.IsInRole(Roles.Manager) ||
+                context.User.IsInRole(Roles.Developer) ||
+                context.User.IsInRole(Roles.Admin) ||
+                context.User.IsInRole(Roles.Buyer))
                 context.Succeed(requirement);
 
             return Task.CompletedTask;

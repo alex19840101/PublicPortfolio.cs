@@ -168,7 +168,7 @@ public class BuyersController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = Roles.Admin)]
     [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<IActionResult> GetUserInfoById(uint id)
     {
@@ -186,7 +186,7 @@ public class BuyersController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = Roles.Admin)]
     [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<IActionResult> GetUserInfoByLogin(string login)
     {
@@ -269,7 +269,9 @@ public class BuyersController : ControllerBase
                 passwordHash: SHA256Hasher.GeneratePasswordHash(requestDto.ExistingPassword, repeatPassword: requestDto.ExistingPassword),
                 newPasswordHash: requestDto.NewPassword != null ? SHA256Hasher.GeneratePasswordHash(requestDto.NewPassword, repeatPassword: requestDto.RepeatNewPassword) : null,
                 nick: requestDto.Nick,
-                phone: requestDto.Phone);
+                phone: requestDto.Phone,
+                shopId: null,
+                warehouseId: null);
     }
 
     [NonAction]

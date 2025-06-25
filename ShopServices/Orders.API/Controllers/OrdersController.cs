@@ -13,6 +13,7 @@ using Orders.API.Contracts.Requests;
 using Orders.API.Contracts.Responses;
 using ShopServices.Abstractions;
 using ShopServices.Core;
+using ShopServices.Core.Auth;
 using ShopServices.Core.Services;
 
 namespace Orders.API.Controllers
@@ -46,7 +47,7 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Conflict)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "buyer")]
+        [Authorize(Roles = Roles.Buyer)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> AddOrder(AddOrderRequest addOrderRequestDto)
         {
@@ -106,7 +107,7 @@ namespace Orders.API.Controllers
         {
             uint? userId = GetUserIdFromClaim();
             var role = HttpContext.User.FindFirst(ClaimTypes.Role)!.Value;
-            if (!string.Equals(role, "buyer"))
+            if (!string.Equals(role, Roles.Buyer))
                 userId = null;
 
             var order = await _ordersService.GetOrderInfoById(orderId, userId);
@@ -130,7 +131,7 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        [Authorize(Roles = "buyer")]
+        [Authorize(Roles = Roles.Buyer)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IEnumerable<OrderResponseDto>> GetOrdersByBuyerId(
             uint buyerId,
@@ -171,7 +172,7 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "buyer")]
+        [Authorize(Roles = Roles.Buyer)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> CancelOrderByBuyer(CancelOrderRequest cancelOrderRequest)
         {
@@ -214,7 +215,7 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "manager")]
+        [Authorize(Roles = Roles.Manager)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> CancelOrderByManager(CancelOrderRequest cancelOrderRequest)
         {
@@ -255,7 +256,7 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "buyer")]
+        [Authorize(Roles = Roles.Buyer)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> ConfirmOrderByBuyer(ConfirmOrderRequest confirmOrderRequest)
         {
@@ -297,7 +298,7 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "courier")]
+        [Authorize(Roles = Roles.Courier)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> MarkAsDeliveredToBuyer(MarkAsDeliveredRequest markAsDeliveredRequest)
         {
@@ -338,7 +339,7 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "manager")]
+        [Authorize(Roles = Roles.Manager)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> MarkAsDeliveredToShop(MarkAsDeliveredRequest markAsDeliveredRequest)
         {
@@ -422,7 +423,7 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "courier")]
+        [Authorize(Roles = Roles.Courier)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateCourierId(UpdateCourierIdRequest updateCourierIdRequest)
         {
@@ -464,7 +465,7 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "buyer")]
+        [Authorize(Roles = Roles.Buyer)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateDeliveryAddressByBuyer(UpdateDeliveryAddressRequest updateDeliveryAddressRequest)
         {
@@ -552,7 +553,7 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "buyer")]
+        [Authorize(Roles = Roles.Buyer)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateExtraInfoByBuyer(UpdateExtraInfoRequest updateExtraInfoRequest)
         {
@@ -594,7 +595,7 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "manager")]
+        [Authorize(Roles = Roles.Manager)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateManagerId(UpdateManagerIdRequest updateManagerIdRequest)
         {
@@ -725,7 +726,7 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "manager")]
+        [Authorize(Roles = Roles.Manager)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdatePlannedDeliveryTimeByManager(UpdatePlannedDeliveryTimeRequest updatePlannedDeliveryTimeRequest)
         {
@@ -767,7 +768,7 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "buyer")]
+        [Authorize(Roles = Roles.Buyer)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> UpdateShopIdByBuyer(UpdateShopIdRequest updateShopIdRequest)
         {

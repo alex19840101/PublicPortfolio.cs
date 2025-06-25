@@ -40,7 +40,10 @@ namespace ShopServices.DataAccess.Repositories
                 granterId: employee.GranterId,
                 createdDt: employee.CreatedDt.ToUniversalTime(),
                 lastUpdateDt: employee.LastUpdateDt?.ToUniversalTime(),
-                workStatus: "?");
+                workStatus: "?",
+                shopId: employee.ShopId,
+                warehouseId: employee.WarehouseId
+                );
 
             await _dbContext.Managers.AddAsync(newManagerEntity);
             await _dbContext.SaveChangesAsync();
@@ -153,7 +156,9 @@ namespace ShopServices.DataAccess.Repositories
                     role: managerEntity.Role,
                     granterId: managerEntity.GranterId,
                     createdDt: managerEntity.CreatedDt.ToLocalTime(),
-                    lastUpdateDt: managerEntity.LastUpdateDt?.ToLocalTime())
+                    lastUpdateDt: managerEntity.LastUpdateDt?.ToLocalTime(),
+                    shopId: managerEntity.ShopId,
+                    warehouseId: managerEntity.WarehouseId)
 
             };
     }

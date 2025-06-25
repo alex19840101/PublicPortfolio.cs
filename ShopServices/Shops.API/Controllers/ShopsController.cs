@@ -11,7 +11,6 @@ namespace Shops.API.Controllers
     [Consumes("application/json")]
     public class ShopsController : ControllerBase
     {
-
         private readonly ILogger<ShopsController> _logger;
 
         /// <summary> Конструктор контроллера управления данными магазинов </summary>

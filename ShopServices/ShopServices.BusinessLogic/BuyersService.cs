@@ -91,7 +91,7 @@ namespace ShopServices.BusinessLogic
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Role, "buyer"),
+                new Claim(ClaimTypes.Role, Roles.Buyer),
                 new Claim(ClaimTypes.NameIdentifier, loginData.Login),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.UserData, user.Id.ToString())

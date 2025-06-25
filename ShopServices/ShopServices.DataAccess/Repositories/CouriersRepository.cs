@@ -39,7 +39,9 @@ namespace ShopServices.DataAccess.Repositories
                 role: employee.Role,
                 granterId: employee.GranterId,
                 createdDt: employee.CreatedDt.ToUniversalTime(),
-                lastUpdateDt: employee.LastUpdateDt?.ToUniversalTime())
+                lastUpdateDt: employee.LastUpdateDt?.ToUniversalTime(),
+                shopId: employee.ShopId,
+                warehouseId: employee.WarehouseId)
             {
                 Transport = "?",
                 Areas = "?",
@@ -164,7 +166,9 @@ namespace ShopServices.DataAccess.Repositories
                     role: courierEntity.Role,
                     granterId: courierEntity.GranterId,
                     createdDt: courierEntity.CreatedDt.ToLocalTime(),
-                    lastUpdateDt: courierEntity.LastUpdateDt?.ToLocalTime())
+                    lastUpdateDt: courierEntity.LastUpdateDt?.ToLocalTime(),
+                    shopId: courierEntity.ShopId,
+                    warehouseId: courierEntity.WarehouseId)
 
             };
     }
