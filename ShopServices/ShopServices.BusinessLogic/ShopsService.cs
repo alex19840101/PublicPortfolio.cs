@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using ShopServices.Abstractions;
+using ShopServices.Core;
 using ShopServices.Core.Models;
 using ShopServices.Core.Repositories;
 using ShopServices.Core.Services;
@@ -18,24 +19,63 @@ namespace ShopServices.BusinessLogic
             _shopsRepository = shopsRepository;
         }
 
-        public async Task<Result> AddShop(Shop shop)
+        public async Task<Result> AddShop(Shop newShop)
         {
-            throw new NotImplementedException();
+            if (newShop == null)
+                throw new ArgumentNullException(ResultMessager.NEW_SHOP_RARAM_NAME);
+
+            if (string.IsNullOrWhiteSpace(newShop.Name))
+                return new Result(ResultMessager.NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            var existingShop = await _shopsRepository.GetShopByAddress(newShop.Address);
+
+            if (existingShop != null)
+            {
+                if (!existingShop.IsEqualIgnoreIdAndDt(newShop))
+                    return new Result(ResultMessager.CONFLICT, System.Net.HttpStatusCode.Conflict);
+
+                return new Result(ResultMessager.ALREADY_EXISTS, System.Net.HttpStatusCode.Created, id: existingShop.Id);
+            }
+
+            var createResult = await _shopsRepository.Create(newShop);
+
+            return createResult;
         }
 
         public async Task<Result> ArchiveShop(uint shopId)
         {
-            throw new NotImplementedException();
+            return await _shopsRepository.ArchiveShopById(shopId);
         }
 
         public async Task<Shop> GetShopById(uint shopId)
         {
-            throw new NotImplementedException();
+            return await _shopsRepository.GetShopById(shopId);
         }
 
         public async Task<Result> UpdateShop(Shop shop)
         {
-            throw new NotImplementedException();
+            if (shop == null)
+                throw new ArgumentNullException(ResultMessager.SHOP_RARAM_NAME);
+
+            if (string.IsNullOrWhiteSpace(shop.Name))
+                return new Result(ResultMessager.NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            if (string.IsNullOrWhiteSpace(shop.Address))
+                return new Result(ResultMessager.ADDRESS_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            if (string.IsNullOrWhiteSpace(shop.Url))
+                return new Result(ResultMessager.URL_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            if (string.IsNullOrWhiteSpace(shop.Phone))
+                return new Result(ResultMessager.PHONE_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            if (string.IsNullOrWhiteSpace(shop.Email))
+                return new Result(ResultMessager.EMAIL_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            if (string.IsNullOrWhiteSpace(shop.WorkSchedule))
+                return new Result(ResultMessager.WORK_SCHEDULE_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
+            return await _shopsRepository.UpdateShop(shop);
         }
     }
 }

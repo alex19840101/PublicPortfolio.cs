@@ -49,5 +49,14 @@ namespace ShopServices.DataAccess.Entities
             Archived = archived;
             WorkSchedule = workSchedule;
         }
+
+        internal void Archive() => Archived = true;
+        internal void UpdateAddress(string address) => Address = address;
+        internal void UpdateEmail(string email) => Email = email;
+        internal void UpdateName(string name) => Name = name;
+        internal void UpdatePhone(string phone) => Phone = phone;
+                internal void UpdateUpdatedDt(DateTime updatedDt) => Updated = updatedDt;
+        internal void UpdateUrl(string url) => Url = url;
+        internal void UpdateWorkSchedule(string workSchedule) => WorkSchedule = workSchedule;
     }
 }
