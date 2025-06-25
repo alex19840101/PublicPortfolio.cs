@@ -20,7 +20,7 @@ namespace Managers.API.Controllers
     [Route("api/v{version:apiVersion}/[controller]/[action]")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [Authorize(Roles = "admin,manager,manager")]
+    [Authorize(Roles = $"{Roles.Admin}, {Roles.Developer}, {Roles.Manager}")]
     [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
     public class ManagersController : ControllerBase
     {
