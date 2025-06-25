@@ -152,6 +152,7 @@ namespace GoodsGroups.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [Authorize(Roles = $"{Roles.Admin}, {Roles.Developer}, {Roles.Manager}")]
         [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> UpdateCategory(Category categoryDto)
@@ -160,6 +161,9 @@ namespace GoodsGroups.API.Controllers
 
             if (updateResult.StatusCode == HttpStatusCode.NotFound)
                 return NotFound(updateResult);
+
+            if (updateResult.StatusCode == HttpStatusCode.Forbidden)
+                return new ObjectResult(updateResult) { StatusCode = StatusCodes.Status403Forbidden };
 
             return Ok(updateResult);
         }
