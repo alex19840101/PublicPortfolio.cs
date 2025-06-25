@@ -19,6 +19,22 @@ namespace Shops.API
                 url: addShopRequestDto.Url);
         }
 
+        internal static Contracts.Responses.ShopResponseDto GetShopDto(Shop coreShop)
+        {
+            return new Contracts.Responses.ShopResponseDto
+            {
+                Id = coreShop.Id,
+                Name = coreShop.Name,
+                Address = coreShop.Address,
+                Phone = coreShop.Phone,
+                Email = coreShop.Email,
+                Url = coreShop.Url,
+                CreatedDt = coreShop.CreatedDt!.Value,
+                UpdatedDt = coreShop.Updated
+            };
+        }
+
+
         /// <summary>
         /// Маппинг IEnumerable(Core.Models.Shop) - IEnumerable(Contracts.Responses.ShopResponseDto)
         /// </summary>
@@ -35,7 +51,7 @@ namespace Shops.API
                 Email = coreShop.Email,
                 Url = coreShop.Url,
                 CreatedDt = coreShop.CreatedDt!.Value,
-                UpdatedDt = coreShop.Updated,
+                UpdatedDt = coreShop.Updated
             });
         }
     }

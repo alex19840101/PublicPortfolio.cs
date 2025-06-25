@@ -20,6 +20,22 @@ namespace Warehouses.API
                 url: addWarehouseRequestDto.Url);
         }
 
+        internal static Contracts.Responses.WarehouseResponseDto GetWarehouseDto(Warehouse coreWarehouse)
+        {
+            return new Contracts.Responses.WarehouseResponseDto
+            {
+                Id = coreWarehouse.Id,
+                Name = coreWarehouse.Name,
+                Address = coreWarehouse.Address,
+                Phone = coreWarehouse.Phone,
+                Email = coreWarehouse.Email,
+                Url = coreWarehouse.Url,
+                CreatedDt = coreWarehouse.CreatedDt!.Value,
+                UpdatedDt = coreWarehouse.Updated
+            };
+        }
+
+
         /// <summary>
         /// Маппинг IEnumerable(Core.Models.Warehouse) - IEnumerable(Contracts.Responses.WarehouseResponseDto)
         /// </summary>
@@ -36,7 +52,7 @@ namespace Warehouses.API
                 Email = coreWarehouse.Email,
                 Url = coreWarehouse.Url,
                 CreatedDt = coreWarehouse.CreatedDt!.Value,
-                UpdatedDt = coreWarehouse.Updated,
+                UpdatedDt = coreWarehouse.Updated
             });
         }
     }
