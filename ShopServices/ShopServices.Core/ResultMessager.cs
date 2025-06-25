@@ -138,5 +138,17 @@
         public const string COURIER_ID_MISMATCH = "courierId mismatch";
         public const string MANAGER_ID_MISMATCH = "managerId mismatch";
         public const string BUYER_ID_MISMATCH = "buyerId mismatch";
+        public const string NEW_SHOP_RARAM_NAME = "newShop";
+        public const string SHOP_RARAM_NAME = "shop";
+        public const string PHONE_SHOULD_NOT_BE_EMPTY = "Phone should be not empty";
+        public const string WORK_SCHEDULE_SHOULD_NOT_BE_EMPTY = "WorkSchedule should be not empty";
+        public const string SHOP_IS_ACTUAL = "Shop is actual";
+        public const string SHOP_UPDATED = "Shop updated";
+
+        //warehouses
+        public const string NEW_WAREHOUSE_RARAM_NAME = "newWarehouse";
+        public const string WAREHOUSE_RARAM_NAME = "warehouse";
+        public const string WAREHOUSE_IS_ACTUAL = "Warehouse is actual";
+        public const string WAREHOUSE_UPDATED = "Warehouse updated";
     }
 }

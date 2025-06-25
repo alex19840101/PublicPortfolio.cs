@@ -46,5 +46,25 @@ namespace ShopServices.Core.Models
             Archived = archived;
             WorkSchedule = workSchedule;
         }
+
+        /// <summary>
+        /// Проверка на равенство (существующего Warehouse) с игнорированием:
+        /// <para> - Id (Id до момента регистрации не определен, как бы равен нулю),</para>
+        /// <para> - Created, Updated, Archived - не важны для сравнения</para>
+        /// </summary>
+        /// <param name="comparedWarehouse"> Warehouse для сравнения</param>
+        /// <returns></returns>
+        public bool IsEqualIgnoreIdAndDt(Warehouse comparedWarehouse)
+        {
+            if (!string.Equals(comparedWarehouse.Name, Name) ||
+                !string.Equals(comparedWarehouse.Address, Address) ||
+                !string.Equals(comparedWarehouse.Phone, Phone) ||
+                !string.Equals(comparedWarehouse.Email, Email) ||
+                !string.Equals(comparedWarehouse.Url, Url) ||
+                !string.Equals(comparedWarehouse.WorkSchedule, WorkSchedule))
+                return false;
+
+            return true;
+        }
     }
 }
