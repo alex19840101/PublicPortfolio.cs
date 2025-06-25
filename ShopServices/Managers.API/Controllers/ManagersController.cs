@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ShopServices.Abstractions;
 using ShopServices.Core;
+using ShopServices.Core.Auth;
 using ShopServices.Core.Models;
 using ShopServices.Core.Models.Requests;
 using ShopServices.Core.Services;
@@ -20,7 +21,7 @@ namespace Managers.API.Controllers
     [Produces("application/json")]
     [Consumes("application/json")]
     [Authorize(Roles = "admin,manager,manager")]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
     public class ManagersController : ControllerBase
     {
         private readonly ILogger<ManagersController> _logger;

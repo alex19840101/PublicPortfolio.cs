@@ -99,7 +99,7 @@ public class EmployeesController : ControllerBase
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Unauthorized)]
     [Authorize(Roles = Roles.Admin)]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
     public async Task<IActionResult> GrantRole(GrantRoleRequestDto request)
     {
         var grantResult = await _employeesService.GrantRole(GetCoreGrantRoleData(request));
@@ -168,7 +168,7 @@ public class EmployeesController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
     [Authorize(Roles = Roles.Admin)]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
     public async Task<IActionResult> GetUserInfoById(uint id)
     {
         var employee = await _employeesService.GetUserInfo(id);
@@ -186,7 +186,7 @@ public class EmployeesController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
     [Authorize(Roles = Roles.Admin)]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
     public async Task<IActionResult> GetUserInfoByLogin(string login)
     {
         var employee = await _employeesService.GetUserInfo(login);

@@ -12,6 +12,7 @@ using Prices.API.Contracts.Requests;
 using Prices.API.Contracts.Responses;
 using ShopServices.Abstractions;
 using ShopServices.Core;
+using ShopServices.Core.Auth;
 using ShopServices.Core.Services;
 
 namespace Prices.API.Controllers
@@ -46,8 +47,8 @@ namespace Prices.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Conflict)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "admin, developer, manager")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = $"{Roles.Admin}, {Roles.Developer}, {Roles.Manager}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> AddPrice(AddPriceRequest priceDto)
         {
             var createResult = await _priceService.AddPrice(PriceMapper.GetCorePrice(priceDto));
@@ -136,8 +137,8 @@ namespace Prices.API.Controllers
         [HttpPatch]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.NotImplemented)]
-        [Authorize(Roles = "admin, developer, manager")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = $"{Roles.Admin}, {Roles.Developer}, {Roles.Manager}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public IActionResult ChangePriceForProduct()
         {
             return new ObjectResult("Use Goods.API/UpdateProduct: (priceId, pricePerUnit)") { StatusCode = StatusCodes.Status501NotImplemented };
@@ -148,8 +149,8 @@ namespace Prices.API.Controllers
         [HttpPatch]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.NotImplemented)]
-        [Authorize(Roles = "admin, developer, manager")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = $"{Roles.Admin}, {Roles.Developer}, {Roles.Manager}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public IActionResult ResetPriceForProduct()
         {
             return new ObjectResult("Use Goods.API/UpdateProduct: (priceId = null, pricePerUnit = null)") { StatusCode = StatusCodes.Status501NotImplemented };
@@ -163,8 +164,8 @@ namespace Prices.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        [Authorize(Roles = "admin, developer, manager")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = $"{Roles.Admin}, {Roles.Developer}, {Roles.Manager}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> UpdateActualToDt(UpdateActualToDtRequest updateActualToDtRequest)
         {
             var updateResult = await _priceService.UpdateActualToDt(

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ShopServices.Abstractions;
 using ShopServices.Core;
+using ShopServices.Core.Auth;
 using ShopServices.Core.Services;
 
 namespace Goods.API.Controllers
@@ -42,8 +43,8 @@ namespace Goods.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Conflict)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "admin, developer, manager")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = $"{Roles.Admin}, {Roles.Developer}, {Roles.Manager}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> AddProduct(Product productDto)
         {
             var createResult = await _goodsService.AddProduct(ProductMapper.GetCoreProduct(productDto));
@@ -197,8 +198,8 @@ namespace Goods.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        [Authorize(Roles = "admin, developer, manager")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = $"{Roles.Admin}, {Roles.Developer}, {Roles.Manager}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> UpdateProduct(Product productDto)
         {
             var updateResult = await _goodsService.UpdateProduct(ProductMapper.GetCoreProduct(productDto));
@@ -218,8 +219,8 @@ namespace Goods.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        [Authorize(Roles = "admin, developer, manager")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = $"{Roles.Admin}, {Roles.Developer}, {Roles.Manager}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> ArchiveProduct(uint id)
         {
             var deleteResult = await _goodsService.ArchiveProduct(id);
