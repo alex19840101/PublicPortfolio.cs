@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using ShopServices.Core.Auth;
 
-namespace Warehouse.API
+namespace Warehouses.API
 {
     /// <summary>
     /// Класс для авторизации по ролям в методах, требующих авторизацию

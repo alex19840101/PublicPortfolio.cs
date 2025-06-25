@@ -1,5 +1,4 @@
 using System;
-using Warehouse.API;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -17,8 +16,9 @@ using ShopServices.Core.Repositories;
 using ShopServices.Core.Services;
 using ShopServices.DataAccess;
 using ShopServices.DataAccess.Repositories;
+using Warehouses.API;
 
-const string SERVICE_NAME = "Warehouse.API";
+const string SERVICE_NAME = "Warehouses.API";
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
