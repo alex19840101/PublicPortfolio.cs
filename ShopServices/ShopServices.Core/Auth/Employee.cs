@@ -17,6 +17,8 @@ namespace ShopServices.Core.Auth
         public uint? GranterId { get { return _granterId; } }
         public DateTime CreatedDt { get { return _createdDt; } }
         public DateTime? LastUpdateDt { get { return _lastUpdateDt; } }
+        public uint? ShopId { get { return _shopId; } }
+        public uint? WarehouseId { get { return _warehouseId; } }
 
         private readonly uint _id;
         private string _login;
@@ -31,6 +33,8 @@ namespace ShopServices.Core.Auth
         private uint? _granterId;
         private readonly DateTime _createdDt;
         private DateTime? _lastUpdateDt;
+        private uint? _shopId;
+        private uint? _warehouseId;
 
         public Employee(
             uint id,
@@ -45,7 +49,9 @@ namespace ShopServices.Core.Auth
             string role,
             uint? granterId,
             DateTime createdDt,
-            DateTime? lastUpdateDt)
+            DateTime? lastUpdateDt,
+            uint? shopId,
+            uint? warehouseId)
         {
             _id = id;
             _login = login;
@@ -60,6 +66,8 @@ namespace ShopServices.Core.Auth
             _granterId = granterId;
             _createdDt = createdDt;
             _lastUpdateDt = lastUpdateDt;
+            _shopId = shopId;
+            _warehouseId = warehouseId;
         }
 
         public void UpdateLogin(string newLogin) => _login = newLogin;
@@ -73,6 +81,8 @@ namespace ShopServices.Core.Auth
         public void UpdateRole(string newRole) => _role = newRole;
         public void UpdateGranterId(uint granterId) => _granterId = granterId;
         public void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
+        public void UpdateShopId(uint? shopId) => _shopId = shopId;
+        public void UpdateWarehouseId(uint? warehouseId) => _warehouseId = warehouseId;
 
         public override bool Equals(object obj)
         {

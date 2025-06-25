@@ -24,7 +24,24 @@ namespace ShopServices.DataAccess.Entities
             uint? granterId,
             DateTime createdDt,
             DateTime? lastUpdateDt,
-            string workStatus) : base(id, login, name, surname, address, email, passwordHash, nick, phone, role, granterId, createdDt, lastUpdateDt)
+            string workStatus,
+            uint? shopId,
+            uint? warehouseId) : base(
+                id: id,
+                login: login,
+                name: name,
+                surname: surname,
+                address: address,
+                email: email,
+                passwordHash: passwordHash,
+                nick: nick,
+                phone: phone,
+                role: role,
+                granterId: granterId,
+                createdDt: createdDt,
+                lastUpdateDt: lastUpdateDt,
+                shopId: shopId,
+                warehouseId: warehouseId)
         {
             WorkStatus = workStatus;
         }

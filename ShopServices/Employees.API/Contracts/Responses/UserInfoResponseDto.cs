@@ -43,5 +43,10 @@
         /// Роль
         /// </summary>
         public string? Role { get; set; }
+
+        /// <summary> Id магазина (если есть привязка работника к магазину) </summary>
+        public uint? ShopId { get; set; }
+        /// <summary> Id склада (если есть привязка работника к складу) </summary>
+        public uint? WarehouseId { get; set; }
     }
 }

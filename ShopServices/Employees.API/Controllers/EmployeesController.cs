@@ -212,7 +212,9 @@ public class EmployeesController : ControllerBase
             role: request.RequestedRole,
             granterId: null,
             createdDt: DateTime.Now,
-            lastUpdateDt: null);
+            lastUpdateDt: null,
+            shopId: request.ShopId,
+            warehouseId: request.WarehouseId);
 
     [NonAction]
     private static LoginData GetCoreLoginData(LoginRequestDto request)
@@ -271,6 +273,8 @@ public class EmployeesController : ControllerBase
                 newPasswordHash: requestDto.NewPassword != null ? SHA256Hasher.GeneratePasswordHash(requestDto.NewPassword, repeatPassword: requestDto.RepeatNewPassword) : null,
                 nick: requestDto.Nick,
                 phone: requestDto.Phone,
+                shopId: requestDto.ShopId,
+                warehouseId: requestDto.WarehouseId,
                 requestedRole: requestDto.RequestedRole);
     }
 
@@ -285,6 +289,8 @@ public class EmployeesController : ControllerBase
             Email = employee.Email,
             Nick = employee.Nick,
             Phone = employee.Phone,
-            Role = employee.Role
+            Role = employee.Role,
+            ShopId = employee.ShopId,
+            WarehouseId = employee.WarehouseId,
         };
 }
