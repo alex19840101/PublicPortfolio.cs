@@ -16,7 +16,9 @@ namespace Shops.API
                 address: addShopRequestDto.Address,
                 phone: addShopRequestDto.Phone,
                 email: addShopRequestDto.Email,
-                url: addShopRequestDto.Url);
+                url: addShopRequestDto.Url,
+                archived: false,
+                workSchedule: addShopRequestDto.WorkSchedule);
         }
 
         internal static Contracts.Responses.ShopResponseDto GetShopDto(Shop coreShop)
@@ -30,8 +32,21 @@ namespace Shops.API
                 Email = coreShop.Email,
                 Url = coreShop.Url,
                 CreatedDt = coreShop.CreatedDt!.Value,
-                UpdatedDt = coreShop.Updated
+                UpdatedDt = coreShop.Updated,
+                WorkSchedule = coreShop.WorkSchedule
             };
+        }
+
+        internal static Shop GetCoreShop(UpdateShopRequestDto updateShopRequestDto)
+        {
+            return new Shop(
+                id: updateShopRequestDto.Id,
+                name: updateShopRequestDto.Name,
+                address: updateShopRequestDto.Address,
+                phone: updateShopRequestDto.Phone,
+                email: updateShopRequestDto.Email,
+                url: updateShopRequestDto.Url,
+                workSchedule: updateShopRequestDto.WorkSchedule);
         }
 
 
@@ -51,7 +66,8 @@ namespace Shops.API
                 Email = coreShop.Email,
                 Url = coreShop.Url,
                 CreatedDt = coreShop.CreatedDt!.Value,
-                UpdatedDt = coreShop.Updated
+                UpdatedDt = coreShop.Updated,
+                WorkSchedule = coreShop.WorkSchedule
             });
         }
     }

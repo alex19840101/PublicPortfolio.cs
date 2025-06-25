@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using ShopServices.Core.Models;
 using Warehouses.API.Contracts.Requests;
-using Warehouses.API.Contracts.Responses;
 
 namespace Warehouses.API
 {
@@ -17,7 +15,20 @@ namespace Warehouses.API
                 address: addWarehouseRequestDto.Address,
                 phone: addWarehouseRequestDto.Phone,
                 email: addWarehouseRequestDto.Email,
-                url: addWarehouseRequestDto.Url);
+                url: addWarehouseRequestDto.Url,
+                workSchedule: addWarehouseRequestDto.WorkSchedule);
+        }
+
+        internal static Warehouse GetCoreWarehouse(UpdateWarehouseRequestDto updateWarehouseRequestDto)
+        {
+            return new Warehouse(
+                id: updateWarehouseRequestDto.Id,
+                name: updateWarehouseRequestDto.Name,
+                address: updateWarehouseRequestDto.Address,
+                phone: updateWarehouseRequestDto.Phone,
+                email: updateWarehouseRequestDto.Email,
+                url: updateWarehouseRequestDto.Url,
+                workSchedule: updateWarehouseRequestDto.WorkSchedule);
         }
 
         internal static Contracts.Responses.WarehouseResponseDto GetWarehouseDto(Warehouse coreWarehouse)
@@ -31,7 +42,8 @@ namespace Warehouses.API
                 Email = coreWarehouse.Email,
                 Url = coreWarehouse.Url,
                 CreatedDt = coreWarehouse.CreatedDt!.Value,
-                UpdatedDt = coreWarehouse.Updated
+                UpdatedDt = coreWarehouse.Updated,
+                WorkSchedule = coreWarehouse.WorkSchedule
             };
         }
 
@@ -52,7 +64,8 @@ namespace Warehouses.API
                 Email = coreWarehouse.Email,
                 Url = coreWarehouse.Url,
                 CreatedDt = coreWarehouse.CreatedDt!.Value,
-                UpdatedDt = coreWarehouse.Updated
+                UpdatedDt = coreWarehouse.Updated,
+                WorkSchedule = coreWarehouse.WorkSchedule
             });
         }
     }

@@ -462,7 +462,7 @@ namespace ShopServices.BusinessLogic
             if (string.IsNullOrWhiteSpace(order.ExtraInfo))
                 return new Result(ResultMessager.EXTRA_INFO_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
-            if (order.Archieved)
+            if (order.Archived)
                 return new Result(ResultMessager.IMPOSSIBLE_TO_ADD_ARCHIVED_ORDER, System.Net.HttpStatusCode.BadRequest);
 
             if (Math.Abs((DateTime.Now - order.Created).TotalSeconds) > PERMISSIBLE_TIME_DESYNC_SECONDS)
@@ -555,7 +555,7 @@ namespace ShopServices.BusinessLogic
             if (product == null)
                 return new Result(ResultMessager.PRODUCT_NOT_FOUND, System.Net.HttpStatusCode.NotFound);
 
-            if (product.Archieved)
+            if (product.Archived)
                 return new Result(ResultMessager.PRODUCT_IS_ARCHIEVED, System.Net.HttpStatusCode.NotFound);
 
             if (product.PriceId == null)

@@ -30,7 +30,7 @@ namespace ShopServices.Core.Models
         public DateTime? Updated { get; private set; }
 
         /// <summary> В архиве ли категория </summary>
-        public bool Archieved { get; private set; }
+        public bool Archived { get; private set; }
 
         public Category(uint id,
             string name,
@@ -38,7 +38,7 @@ namespace ShopServices.Core.Models
             string url = null,
             string imageUrl = null,
             string parameters = null,
-            bool archieved = false,
+            bool archived = false,
             DateTime? created = null,
             DateTime? updated = null)
         {
@@ -48,7 +48,7 @@ namespace ShopServices.Core.Models
             Url = url;
             ImageUrl = imageUrl;
             Params = parameters;
-            Archieved = archieved;
+            Archived = archived;
             Created = created;
             Updated = updated;
         }
@@ -56,7 +56,7 @@ namespace ShopServices.Core.Models
         /// <summary>
         /// Проверка на равенство (существующей Category) с игнорированием:
         /// <para> - Id (Id до момента регистрации не определен, как бы равен нулю),</para>
-        /// <para> - Created, Updated, Archieved - не важны для сравнения</para>
+        /// <para> - Created, Updated, Archived - не важны для сравнения</para>
         /// </summary>
         /// <param name="comparedCategory"> Category для сравнения</param>
         /// <returns></returns>

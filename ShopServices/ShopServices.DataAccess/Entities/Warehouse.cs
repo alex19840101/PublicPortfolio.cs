@@ -13,7 +13,13 @@ namespace ShopServices.DataAccess.Entities
         public string Phone { get; private set; } = default!;
         public string Email { get; private set; } = default!;
         public string Url { get; private set; } = default!;
-        
+
+        /// <summary> В архиве (удален) ли склад </summary>
+        public bool Archived { get; private set; }
+
+        /// <summary> Режим работы склада </summary>
+        public string WorkSchedule { get; private set; }
+
         /// <summary> Дата и время создания записи в БД </summary>
         public DateTime? CreatedDt { get; private set; }
 
@@ -28,7 +34,9 @@ namespace ShopServices.DataAccess.Entities
            string email,
            string url,
            DateTime? createdDt = null,
-           DateTime? updated = null)
+           DateTime? updated = null,
+           bool archived = false,
+           string workSchedule = "")
         {
             Id = id;
             Name = name;
@@ -38,6 +46,8 @@ namespace ShopServices.DataAccess.Entities
             Url = url;
             CreatedDt = createdDt;
             Updated = updated;
+            Archived = archived;
+            WorkSchedule = workSchedule;
         }
     }
 }

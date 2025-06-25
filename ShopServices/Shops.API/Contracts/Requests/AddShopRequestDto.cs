@@ -16,5 +16,8 @@
         public string Email { get; set; } = default!;
         /// <summary> *URL магазина </summary>
         public string Url { get; set; } = default!;
+
+        /// <summary> *Режим работы магазина </summary>
+        public string WorkSchedule { get; set; } = default!;
     }
 }

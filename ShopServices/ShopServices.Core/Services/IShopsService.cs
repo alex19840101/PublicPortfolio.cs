@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ShopServices.Abstractions;
 using ShopServices.Core.Models;
 
@@ -11,5 +8,14 @@ namespace ShopServices.Core.Services
     {
         /// <summary> Добавление магазина </summary>
         public Task<Result> AddShop(Shop shop);
+
+        /// <summary> Архивация (удаление) магазина по id </summary>
+        public Task<Result> ArchiveShop(uint shopId);
+
+        /// <summary> Получение информации о магазине </summary>
+        public Task<Shop> GetShopById(uint shopId);
+
+        /// <summary> Обновление информации о магазине </summary>
+        public Task<Result> UpdateShop(Shop shop);
     }
 }

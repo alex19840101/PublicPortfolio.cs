@@ -32,7 +32,7 @@ namespace ShopServices.DataAccess.Repositories
                 Params = newCategory.Params,
                 Url = newCategory.Url,
                 ImageUrl = newCategory.ImageUrl,
-                Archieved = newCategory.Archieved,
+                Archieved = newCategory.Archived,
                 Created = DateTime.Now.ToUniversalTime(),
                 Updated = newCategory.Updated?.ToUniversalTime(),
             };
@@ -140,7 +140,7 @@ namespace ShopServices.DataAccess.Repositories
             if (!string.Equals(upd.Params, categoryEntity.Params)) categoryEntity.Params = upd.Params;
             if (!string.Equals(upd.Url, categoryEntity.Url)) categoryEntity.Url = upd.Url;
             if (!string.Equals(upd.ImageUrl, categoryEntity.ImageUrl)) categoryEntity.ImageUrl = upd.ImageUrl;
-            if (!string.Equals(upd.Archieved, categoryEntity.Archieved)) categoryEntity.Archieved=upd.Archieved;
+            if (!string.Equals(upd.Archived, categoryEntity.Archieved)) categoryEntity.Archieved=upd.Archived;
 
             if (_dbContext.ChangeTracker.HasChanges())
             {
@@ -210,7 +210,7 @@ namespace ShopServices.DataAccess.Repositories
                 url: categoryEntity.Url,
                 imageUrl: categoryEntity.ImageUrl,
                 parameters: categoryEntity.Params,
-                archieved: categoryEntity.Archieved,
+                archived: categoryEntity.Archieved,
                 created: categoryEntity.Created.ToLocalTime(),
                 updated: categoryEntity.Updated?.ToLocalTime());
     }

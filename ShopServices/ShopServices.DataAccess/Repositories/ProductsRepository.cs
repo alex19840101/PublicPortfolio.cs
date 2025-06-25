@@ -35,7 +35,7 @@ namespace ShopServices.DataAccess.Repositories
                 url: newProduct.Url,
                 imageUrl: newProduct.ImageUrl,
                 goodsGroups: newProduct.GoodsGroups,
-                archieved: newProduct.Archieved,
+                archieved: newProduct.Archived,
                 massInGrams: newProduct.MassInGrams,
                 dimensions: newProduct.Dimensions,
                 created: DateTime.Now.ToUniversalTime(),
@@ -203,7 +203,7 @@ namespace ShopServices.DataAccess.Repositories
             if (!string.Equals(upd.Params, productEntity.Parameters)) productEntity.UpdateParameters(upd.Params);
             if (!string.Equals(upd.Url, productEntity.Url)) productEntity.UpdateUrl( upd.Url);
             if (!string.Equals(upd.ImageUrl, productEntity.ImageUrl)) productEntity.UpdateImageUrl(upd.ImageUrl);
-            if (!string.Equals(upd.Archieved, productEntity.Archieved)) productEntity.UpdateArchived(upd.Archieved);
+            if (!string.Equals(upd.Archived, productEntity.Archieved)) productEntity.UpdateArchived(upd.Archived);
             
             if (!string.Equals(upd.Dimensions, productEntity.Dimensions)) productEntity.UpdateDimensions(upd.Dimensions);
             if (upd.MassInGrams != productEntity.MassInGrams) productEntity.UpdateMassInGrams(upd.MassInGrams);
@@ -328,7 +328,7 @@ namespace ShopServices.DataAccess.Repositories
                 url: productEntity.Url,
                 imageUrl: productEntity.ImageUrl,
                 goodsGroups: productEntity.GoodsGroups,
-                archieved: productEntity.Archieved,
+                archived: productEntity.Archieved,
                 massInGrams: productEntity.MassInGrams,
                 dimensions: productEntity.Dimensions,
                 priceId: productEntity.PriceId,

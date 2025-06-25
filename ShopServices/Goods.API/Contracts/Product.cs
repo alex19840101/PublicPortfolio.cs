@@ -37,7 +37,7 @@ namespace Goods.API.Contracts
         public DateTime? Updated { get; set; }
 
         /// <summary> В архиве ли товар </summary>
-        public bool Archieved { get; set; } = false;
+        public bool Archived { get; set; } = false;
 
         /// <summary> Масса, г </summary>
         public uint MassInGrams { get; set; }

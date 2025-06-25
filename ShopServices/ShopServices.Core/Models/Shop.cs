@@ -17,6 +17,12 @@ namespace ShopServices.Core.Models
         /// <summary> Дата и время обновления записи в БД (опционально) </summary>
         public DateTime? Updated { get; private set; }
 
+        /// <summary> В архиве (удален) ли магазин </summary>
+        public bool Archived { get; private set; }
+
+        /// <summary> Режим работы магазина </summary>
+        public string WorkSchedule { get; private set; }
+
         public Shop(
             uint id,
             string name,
@@ -25,7 +31,9 @@ namespace ShopServices.Core.Models
             string email,
             string url,
             DateTime? createdDt = null,
-            DateTime? updated = null)
+            DateTime? updated = null,
+            bool archived = false,
+            string workSchedule = null)
         {
             Id = id;
             Name = name;
@@ -35,6 +43,8 @@ namespace ShopServices.Core.Models
             Url = url;
             CreatedDt = createdDt;
             Updated = updated;
+            Archived = archived;
+            WorkSchedule = workSchedule;
         }
     }
 }

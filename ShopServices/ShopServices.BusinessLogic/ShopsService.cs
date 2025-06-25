@@ -22,5 +22,20 @@ namespace ShopServices.BusinessLogic
         {
             throw new NotImplementedException();
         }
+
+        public async Task<Result> ArchiveShop(uint shopId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Shop> GetShopById(uint shopId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<Result> UpdateShop(Shop shop)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
