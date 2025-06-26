@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Buyers.API", "Buyers.API\Bu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warehouses.API", "Warehouse.API\Warehouses.API.csproj", "{B53712B2-FD5F-45E3-89AC-FBB6E29D4C3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delivery.API", "Delivery.API\Delivery.API.csproj", "{2A39A1E9-7E2B-40BC-8A72-E70F5FB95838}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deliveries.API", "Delivery.API\Deliveries.API.csproj", "{2A39A1E9-7E2B-40BC-8A72-E70F5FB95838}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trade.API", "Trade.API\Trade.API.csproj", "{6A57135E-FC83-4543-89D5-22198BD5F63C}"
 EndProject

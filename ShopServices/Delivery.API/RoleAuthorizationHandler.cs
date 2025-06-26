@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using ShopServices.Core.Auth;
 
-namespace Delivery.API
+namespace Deliveries.API
 {
     /// <summary>
     /// Класс для авторизации по ролям в методах, требующих авторизацию

@@ -1,5 +1,5 @@
 using System;
-using Delivery.API;
+using Deliveries.API;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -18,7 +18,7 @@ using ShopServices.Core.Services;
 using ShopServices.DataAccess;
 using ShopServices.DataAccess.Repositories;
 
-const string SERVICE_NAME = "Delivery.API";
+const string SERVICE_NAME = "Deliveries.API";
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
