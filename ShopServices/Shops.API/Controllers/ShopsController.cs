@@ -47,7 +47,7 @@ namespace Shops.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
         [Authorize(Roles = $"{Roles.Admin}, {Roles.Manager}")]
         [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
-        public async Task<IActionResult> AddOrder(AddShopRequestDto addShopRequestDto)
+        public async Task<IActionResult> AddShop(AddShopRequestDto addShopRequestDto)
         {
             var createResult = await _shopsService.AddShop(ShopsMapper.PrepareCoreShop(addShopRequestDto));
 

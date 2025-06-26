@@ -46,7 +46,7 @@ namespace Warehouses.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
         [Authorize(Roles = $"{Roles.Admin}, {Roles.Manager}")]
         [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
-        public async Task<IActionResult> AddOrder(AddWarehouseRequestDto addWarehouseRequestDto)
+        public async Task<IActionResult> AddWarehouse(AddWarehouseRequestDto addWarehouseRequestDto)
         {
             var createResult = await _warehouseService.AddWarehouse(WarehousesMapper.PrepareCoreWarehouse(addWarehouseRequestDto));
 
