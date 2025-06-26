@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -87,6 +90,39 @@ namespace Warehouses.API.Controllers
                 return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
 
             return Ok(WarehousesMapper.GetWarehouseDto(warehouse));
+        }
+
+        /// <summary> Получение информации о складах </summary>
+        /// <param name="regionCode"> Код города/населенного пункта </param>
+        /// <param name="nameSubString"> Подстрока названия склада </param>
+        /// <param name="addressSubString"> Подстрока - адрес </param>
+        /// <param name="byPage"> Количество на странице </param>
+        /// <param name="page"> Номер страницы </param>
+        /// <param name="ignoreCase"> Игнорировать ли регистр символов </param>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<WarehouseResponseDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        public async Task<IEnumerable<WarehouseResponseDto>> GetWarehouses(
+            uint? regionCode = null,
+            string? nameSubString = null,
+            string? addressSubString = null,
+            [Range(1, 100)] uint byPage = 10,
+            [Range(1, uint.MaxValue)] uint page = 1,
+            bool ignoreCase = true)
+        {
+            var shopsCollection = await _warehouseService.GetWarehouses(
+                regionCode: regionCode,
+                nameSubString: nameSubString,
+                addressSubString: addressSubString,
+                byPage: byPage,
+                page: page,
+                ignoreCase: ignoreCase);
+
+            if (!shopsCollection.Any())
+                return [];
+
+            return shopsCollection.GetWarehousesDtos();
         }
 
         /// <summary> Архивация (удаление) склада по id </summary>

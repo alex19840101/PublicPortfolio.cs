@@ -56,7 +56,7 @@ namespace Warehouses.API
         /// </summary>
         /// <param name="warehousesList"> список складов IEnumerable(Core.Models.Warehouse) </param>
         /// <returns></returns>
-        internal static IEnumerable<Contracts.Responses.WarehouseResponseDto> GetWarehouseDtos(this IEnumerable<Warehouse> warehousesList)
+        internal static IEnumerable<Contracts.Responses.WarehouseResponseDto> GetWarehousesDtos(this IEnumerable<Warehouse> warehousesList)
         {
             return warehousesList.Select(coreWarehouse => new Contracts.Responses.WarehouseResponseDto
             {

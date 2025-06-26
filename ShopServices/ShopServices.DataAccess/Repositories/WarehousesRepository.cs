@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -83,6 +84,71 @@ namespace ShopServices.DataAccess.Repositories
                 return null;
 
             return GetCoreWarehouse(warehouseEntity);
+        }
+
+        public async Task<IEnumerable<Warehouse>> GetWarehouses(
+            uint? regionCode,
+            string nameSubString,
+            string addressSubStr,
+            uint take,
+            uint skipCount,
+            bool ignoreCase = true)
+        {
+            var limitCount = take > 100 ? 100 : take;
+            List<Entities.Warehouse> entityWarehousesLst;
+
+            if (string.IsNullOrWhiteSpace(addressSubStr) && string.IsNullOrWhiteSpace(nameSubString))
+            {
+                entityWarehousesLst = regionCode == null ?
+                    await _dbContext.Warehouses.AsNoTracking()
+                    .Skip((int)skipCount).Take((int)limitCount).ToListAsync() :
+
+                    await _dbContext.Warehouses.AsNoTracking().Where(w => w.RegionCode == regionCode)
+                    .Skip((int)skipCount).Take((int)limitCount).ToListAsync();
+
+                if (entityWarehousesLst.Count == 0)
+                    return [];
+
+                return entityWarehousesLst.Select(s => GetCoreWarehouse(s));
+            }
+            Expression<Func<Entities.Warehouse, bool>> expressionWhereName = ignoreCase ?
+                s => EF.Functions.Like(s.Name.ToLower(), $"%{nameSubString.ToLower()}%") :
+                w => w.Name.Contains(nameSubString);
+
+            if (string.IsNullOrWhiteSpace(addressSubStr))
+            {
+                entityWarehousesLst = await _dbContext.Warehouses
+                        .AsNoTracking()
+                        .Where(w => w.RegionCode == regionCode)
+                        .Where(expressionWhereName).Skip((int)skipCount).Take((int)limitCount).ToListAsync();
+
+                if (entityWarehousesLst.Count == 0)
+                    return [];
+
+                return entityWarehousesLst.Select(s => GetCoreWarehouse(s));
+            }
+
+            //addressSubStr задан
+            Expression<Func<Entities.Warehouse, bool>> expressionWhereAddress = ignoreCase ?
+                s => EF.Functions.Like(s.Address!.ToLower(), $"%{addressSubStr.ToLower()}%") :
+                w => w.Address!.Contains(addressSubStr);
+
+            entityWarehousesLst = string.IsNullOrWhiteSpace(nameSubString) ?
+                await _dbContext.Warehouses
+                        .AsNoTracking()
+                        .Where(w => w.RegionCode == regionCode)
+                        .Where(expressionWhereAddress).Skip((int)skipCount).Take((int)limitCount).ToListAsync() :
+                await _dbContext.Warehouses
+                        .AsNoTracking()
+                        .Where(w => w.RegionCode == regionCode)
+                        .Where(expressionWhereAddress)
+                        .Where(expressionWhereName).Skip((int)skipCount).Take((int)limitCount)
+                        .ToListAsync();
+
+            if (entityWarehousesLst.Count == 0)
+                return [];
+
+            return entityWarehousesLst.Select(s => GetCoreWarehouse(s));
         }
 
         public async Task<Result> UpdateWarehouse(Warehouse upd)
