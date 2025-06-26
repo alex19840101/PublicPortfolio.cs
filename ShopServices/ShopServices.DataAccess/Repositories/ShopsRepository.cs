@@ -46,6 +46,7 @@ namespace ShopServices.DataAccess.Repositories
             var newShopEntity = new Entities.Shop(
                 id: 0,
                 name: newShop.Name,
+                regionCode: newShop.RegionCode,
                 address: newShop.Address,
                 phone: newShop.Phone,
                 email: newShop.Email,
@@ -96,6 +97,7 @@ namespace ShopServices.DataAccess.Repositories
                 return new Result(ResultMessager.NOT_FOUND, HttpStatusCode.NotFound);
 
             if (!string.Equals(upd.Name, shopEntity.Name)) shopEntity.UpdateName(upd.Name);
+            if (upd.RegionCode != shopEntity.RegionCode) shopEntity.UpdateRegionCode(upd.RegionCode);
             if (!string.Equals(upd.Address, shopEntity.Address)) shopEntity.UpdateAddress(upd.Address);
             if (!string.Equals(upd.Phone, shopEntity.Phone)) shopEntity.UpdatePhone(upd.Phone);
             if (!string.Equals(upd.Email, shopEntity.Email)) shopEntity.UpdateEmail(upd.Email);
@@ -128,6 +130,7 @@ namespace ShopServices.DataAccess.Repositories
             new Shop(
                 id: shopEntity.Id,
                 name: shopEntity.Name,
+                regionCode: shopEntity.RegionCode,
                 address: shopEntity.Address,
                 phone: shopEntity.Phone,
                 email: shopEntity.Email,

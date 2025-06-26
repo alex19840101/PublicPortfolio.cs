@@ -13,6 +13,7 @@ namespace Shops.API
             return new Shop(
                 id: 0,
                 name: addShopRequestDto.Name,
+                regionCode: addShopRequestDto.RegionCode,
                 address: addShopRequestDto.Address,
                 phone: addShopRequestDto.Phone,
                 email: addShopRequestDto.Email,
@@ -27,6 +28,7 @@ namespace Shops.API
             {
                 Id = coreShop.Id,
                 Name = coreShop.Name,
+                RegionCode = coreShop.RegionCode,
                 Address = coreShop.Address,
                 Phone = coreShop.Phone,
                 Email = coreShop.Email,
@@ -42,6 +44,7 @@ namespace Shops.API
             return new Shop(
                 id: updateShopRequestDto.Id,
                 name: updateShopRequestDto.Name,
+                regionCode: updateShopRequestDto.RegionCode,
                 address: updateShopRequestDto.Address,
                 phone: updateShopRequestDto.Phone,
                 email: updateShopRequestDto.Email,
@@ -61,6 +64,7 @@ namespace Shops.API
             {
                 Id = coreShop.Id,
                 Name = coreShop.Name,
+                RegionCode = coreShop.RegionCode,
                 Address = coreShop.Address,
                 Phone = coreShop.Phone,
                 Email = coreShop.Email,

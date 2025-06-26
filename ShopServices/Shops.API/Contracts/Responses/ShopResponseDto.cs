@@ -10,7 +10,10 @@ namespace Shops.API.Contracts.Responses
         
         /// <summary> *Название магазина </summary>
         public string Name { get; set; } = default!;
-        
+
+        /// <summary> Код города/населенного пункта </summary>
+        public uint RegionCode { get; set; } = default!;
+
         /// <summary> *Адрес магазина </summary>
         public string Address { get; set; } = default!;
 
