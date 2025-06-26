@@ -58,7 +58,7 @@ namespace Shops.API
         /// </summary>
         /// <param name="shopsList"> список магазинов IEnumerable(Core.Models.Shop) </param>
         /// <returns></returns>
-        internal static IEnumerable<Contracts.Responses.ShopResponseDto> GetShopDtos(this IEnumerable<Shop> shopsList)
+        internal static IEnumerable<Contracts.Responses.ShopResponseDto> GetShopsDtos(this IEnumerable<Shop> shopsList)
         {
             return shopsList.Select(coreShop => new Contracts.Responses.ShopResponseDto
             {

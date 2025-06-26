@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -87,6 +90,40 @@ namespace Shops.API.Controllers
 
             return Ok(ShopsMapper.GetShopDto(shop));
         }
+
+        /// <summary> Получение информации о магазинах </summary>
+        /// <param name="regionCode"> Код города/населенного пункта </param>
+        /// <param name="nameSubString"> Подстрока названия магазина </param>
+        /// <param name="addressSubString"> Подстрока - адрес </param>
+        /// <param name="byPage"> Количество на странице </param>
+        /// <param name="page"> Номер страницы </param>
+        /// <param name="ignoreCase"> Игнорировать ли регистр символов </param>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<ShopResponseDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        public async Task<IEnumerable<ShopResponseDto>> GetShops(
+            uint? regionCode = null,
+            string? nameSubString = null,
+            string? addressSubString = null,
+            [Range(1, 100)] uint byPage = 10,
+            [Range(1, uint.MaxValue)] uint page = 1,
+            bool ignoreCase = true)
+        {
+            var shopsCollection = await _shopsService.GetShops(
+                regionCode: regionCode,
+                nameSubString: nameSubString,
+                addressSubString: addressSubString,
+                byPage: byPage,
+                page: page,
+                ignoreCase: ignoreCase);
+
+            if (!shopsCollection.Any())
+                return [];
+
+            return shopsCollection.GetShopsDtos();
+        }
+
 
         /// <summary> Архивация (удаление) магазина по id </summary>
         /// <param name="id"> id магазина для архивации </param>

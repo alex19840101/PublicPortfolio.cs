@@ -12,6 +12,13 @@ namespace ShopServices.Core.Repositories
         public Task<Result> Create(Shop newShop);
         public Task<Shop> GetShopByAddress(string address);
         public Task<Shop> GetShopById(uint shopId);
+        public Task<IEnumerable<Shop>> GetShops(
+            uint? regionCode,
+            string nameSubString,
+            string addressSubString,
+            uint take,
+            uint skipCount,
+            bool ignoreCase = true);
         public Task<Result> UpdateShop(Shop shop);
         public Task<Result> ArchiveShopById(uint shopId);
     }

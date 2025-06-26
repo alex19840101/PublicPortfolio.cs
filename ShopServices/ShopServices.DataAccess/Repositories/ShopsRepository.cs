@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -84,6 +85,71 @@ namespace ShopServices.DataAccess.Repositories
                 return null;
 
             return GetCoreShop(shopEntity);
+        }
+
+        public async Task<IEnumerable<Shop>> GetShops(
+            uint? regionCode,
+            string nameSubString,
+            string addressSubStr,
+            uint take,
+            uint skipCount,
+            bool ignoreCase = true)
+        {
+            var limitCount = take > 100 ? 100 : take;
+            List<Entities.Shop> entityShopsLst;
+
+            if (string.IsNullOrWhiteSpace(addressSubStr) && string.IsNullOrWhiteSpace(nameSubString))
+            {
+                entityShopsLst = regionCode == null ?
+                    await _dbContext.Shops.AsNoTracking()
+                    .Skip((int)skipCount).Take((int)limitCount).ToListAsync() :
+                    
+                    await _dbContext.Shops.AsNoTracking().Where(s => s.RegionCode == regionCode)
+                    .Skip((int)skipCount).Take((int)limitCount).ToListAsync();
+
+                if (entityShopsLst.Count == 0)
+                    return [];
+
+                return entityShopsLst.Select(s => GetCoreShop(s));
+            }
+            Expression<Func<Entities.Shop, bool>> expressionWhereName = ignoreCase ?
+                s => EF.Functions.Like(s.Name.ToLower(), $"%{nameSubString.ToLower()}%") :
+                s => s.Name.Contains(nameSubString);
+
+            if (string.IsNullOrWhiteSpace(addressSubStr))
+            {
+                entityShopsLst = await _dbContext.Shops
+                        .AsNoTracking()
+                        .Where(s => s.RegionCode == regionCode)
+                        .Where(expressionWhereName).Skip((int)skipCount).Take((int)limitCount).ToListAsync();
+
+                if (entityShopsLst.Count == 0)
+                    return [];
+
+                return entityShopsLst.Select(s => GetCoreShop(s));
+            }
+
+            //addressSubStr задан
+            Expression<Func<Entities.Shop, bool>> expressionWhereAddress = ignoreCase ?
+                s => EF.Functions.Like(s.Address!.ToLower(), $"%{addressSubStr.ToLower()}%") :
+                s => s.Address!.Contains(addressSubStr);
+
+            entityShopsLst = string.IsNullOrWhiteSpace(nameSubString) ?
+                await _dbContext.Shops
+                        .AsNoTracking()
+                        .Where(s => s.RegionCode == regionCode)
+                        .Where(expressionWhereAddress).Skip((int)skipCount).Take((int)limitCount).ToListAsync() :
+                await _dbContext.Shops
+                        .AsNoTracking()
+                        .Where(s => s.RegionCode == regionCode)
+                        .Where(expressionWhereAddress)
+                        .Where(expressionWhereName).Skip((int)skipCount).Take((int)limitCount)
+                        .ToListAsync();
+
+            if (entityShopsLst.Count == 0)
+                return [];
+
+            return entityShopsLst.Select(s => GetCoreShop(s));
         }
 
         public async Task<Result> UpdateShop(Shop upd)

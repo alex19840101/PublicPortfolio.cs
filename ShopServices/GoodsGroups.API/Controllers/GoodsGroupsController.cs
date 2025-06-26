@@ -118,7 +118,7 @@ namespace GoodsGroups.API.Controllers
         /// <summary> Получение информации о категориях </summary>
         /// <param name="nameSubString"> Подстрока названия категории </param>
         /// <param name="brand"> Подстрока - бренд (производитель) </param>
-        /// <param name="byPage"> Количество товаров на странице </param>
+        /// <param name="byPage"> Количество категорий на странице </param>
         /// <param name="page"> Номер страницы </param>
         /// <param name="ignoreCase"> Игнорировать ли регистр символов </param>
         /// <returns></returns>

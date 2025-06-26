@@ -52,6 +52,25 @@ namespace ShopServices.BusinessLogic
             return await _shopsRepository.GetShopById(shopId);
         }
 
+        public async Task<IEnumerable<Shop>> GetShops(
+            uint? regionCode = null,
+            string nameSubString = null,
+            string addressSubString = null,
+            uint byPage = 10,
+            uint page = 1,
+            bool ignoreCase = true)
+        {
+            var take = byPage;
+            var skip = page > 1 ? (page - 1) * byPage : 0;
+
+            return await _shopsRepository.GetShops(
+                regionCode: regionCode,
+                nameSubString: nameSubString,
+                addressSubString: addressSubString,
+                take: take,
+                skipCount: skip);
+        }
+
         public async Task<Result> UpdateShop(Shop shop)
         {
             if (shop == null)
