@@ -10,7 +10,10 @@ namespace Warehouses.API.Contracts.Responses
         
         /// <summary> *Название склада </summary>
         public string Name { get; set; } = default!;
-        
+
+        /// <summary> Код города/населенного пункта </summary>
+        public uint RegionCode { get; set; } = default!;
+
         /// <summary> *Адрес склада </summary>
         public string Address { get; set; } = default!;
 

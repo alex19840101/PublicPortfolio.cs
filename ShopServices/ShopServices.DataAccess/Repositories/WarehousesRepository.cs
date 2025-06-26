@@ -45,6 +45,7 @@ namespace ShopServices.DataAccess.Repositories
             var newWarehouseEntity = new Entities.Warehouse(
                 id: 0,
                 name: newWarehouse.Name,
+                regionCode: newWarehouse.RegionCode,
                 address: newWarehouse.Address,
                 phone: newWarehouse.Phone,
                 email: newWarehouse.Email,
@@ -95,6 +96,7 @@ namespace ShopServices.DataAccess.Repositories
                 return new Result(ResultMessager.NOT_FOUND, HttpStatusCode.NotFound);
 
             if (!string.Equals(upd.Name, warehouseEntity.Name)) warehouseEntity.UpdateName(upd.Name);
+            if (upd.RegionCode != warehouseEntity.RegionCode) warehouseEntity.UpdateRegionCode(upd.RegionCode);
             if (!string.Equals(upd.Address, warehouseEntity.Address)) warehouseEntity.UpdateAddress(upd.Address);
             if (!string.Equals(upd.Phone, warehouseEntity.Phone)) warehouseEntity.UpdatePhone(upd.Phone);
             if (!string.Equals(upd.Email, warehouseEntity.Email)) warehouseEntity.UpdateEmail(upd.Email);
@@ -126,6 +128,7 @@ namespace ShopServices.DataAccess.Repositories
             new Warehouse(
                 id: warehouseEntity.Id,
                 name: warehouseEntity.Name,
+                regionCode: warehouseEntity.RegionCode,
                 address: warehouseEntity.Address,
                 phone: warehouseEntity.Phone,
                 email: warehouseEntity.Email,

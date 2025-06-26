@@ -12,6 +12,7 @@ namespace Warehouses.API
             return new Warehouse(
                 id: 0,
                 name: addWarehouseRequestDto.Name,
+                regionCode: addWarehouseRequestDto.RegionCode,
                 address: addWarehouseRequestDto.Address,
                 phone: addWarehouseRequestDto.Phone,
                 email: addWarehouseRequestDto.Email,
@@ -24,6 +25,7 @@ namespace Warehouses.API
             return new Warehouse(
                 id: updateWarehouseRequestDto.Id,
                 name: updateWarehouseRequestDto.Name,
+                regionCode: updateWarehouseRequestDto.RegionCode,
                 address: updateWarehouseRequestDto.Address,
                 phone: updateWarehouseRequestDto.Phone,
                 email: updateWarehouseRequestDto.Email,
@@ -37,6 +39,7 @@ namespace Warehouses.API
             {
                 Id = coreWarehouse.Id,
                 Name = coreWarehouse.Name,
+                RegionCode = coreWarehouse.RegionCode,
                 Address = coreWarehouse.Address,
                 Phone = coreWarehouse.Phone,
                 Email = coreWarehouse.Email,
@@ -59,6 +62,7 @@ namespace Warehouses.API
             {
                 Id = coreWarehouse.Id,
                 Name = coreWarehouse.Name,
+                RegionCode = coreWarehouse.RegionCode,
                 Address = coreWarehouse.Address,
                 Phone = coreWarehouse.Phone,
                 Email = coreWarehouse.Email,

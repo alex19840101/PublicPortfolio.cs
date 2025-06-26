@@ -9,6 +9,9 @@ namespace ShopServices.DataAccess.Entities
         [Column(TypeName = "integer")]
         public uint Id { get; private set; }
         public string Name { get; private set; } = default!;
+        /// <summary> Код города/населенного пункта </summary>
+        [Column(TypeName = "integer")]
+        public uint RegionCode { get; private set; } = default!;
         public string Address { get; private set; } = default!;
         public string Phone { get; private set; } = default!;
         public string Email { get; private set; } = default!;
@@ -29,6 +32,7 @@ namespace ShopServices.DataAccess.Entities
         public Warehouse(
            uint id,
            string name,
+           uint regionCode,
            string address,
            string phone,
            string email,
@@ -40,6 +44,7 @@ namespace ShopServices.DataAccess.Entities
         {
             Id = id;
             Name = name;
+            RegionCode = regionCode;
             Address = address;
             Phone = phone;
             Email = email;
@@ -55,6 +60,7 @@ namespace ShopServices.DataAccess.Entities
         internal void UpdateEmail(string email) => Email = email;
         internal void UpdateName(string name) => Name = name;
         internal void UpdatePhone(string phone) => Phone = phone;
+        internal void UpdateRegionCode(uint regionCode) => RegionCode = regionCode;
         internal void UpdateUpdatedDt(DateTime updatedDt) => Updated = updatedDt;
         internal void UpdateUrl(string url) => Url = url;
         internal void UpdateWorkSchedule(string workSchedule) => WorkSchedule = workSchedule;

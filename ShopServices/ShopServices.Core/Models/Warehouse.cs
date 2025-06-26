@@ -6,6 +6,8 @@ namespace ShopServices.Core.Models
     {
         public uint Id { get; private set; }
         public string Name { get; private set; }
+        /// <summary> Код города/населенного пункта </summary>
+        public uint RegionCode { get; private set; } = default!;
         public string Address { get; private set; }
         public string Phone { get; private set; }
         public string Email { get; private set; }
@@ -26,6 +28,7 @@ namespace ShopServices.Core.Models
         public Warehouse(
            uint id,
            string name,
+           uint regionCode,
            string address,
            string phone,
            string email,
@@ -37,6 +40,7 @@ namespace ShopServices.Core.Models
         {
             Id = id;
             Name = name;
+            RegionCode = regionCode;
             Address = address;
             Phone = phone;
             Email = email;
@@ -57,6 +61,7 @@ namespace ShopServices.Core.Models
         public bool IsEqualIgnoreIdAndDt(Warehouse comparedWarehouse)
         {
             if (!string.Equals(comparedWarehouse.Name, Name) ||
+                comparedWarehouse.RegionCode != RegionCode ||
                 !string.Equals(comparedWarehouse.Address, Address) ||
                 !string.Equals(comparedWarehouse.Phone, Phone) ||
                 !string.Equals(comparedWarehouse.Email, Email) ||
