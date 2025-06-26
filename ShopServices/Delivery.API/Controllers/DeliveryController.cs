@@ -81,12 +81,12 @@ namespace Deliveries.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetDeliveryById(uint deliveryId)
         {
-            var shop = await _deliveryService.GetDeliveryById(deliveryId);
+            var delivery = await _deliveryService.GetDeliveryById(deliveryId);
 
-            if (shop is null)
+            if (delivery is null)
                 return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
 
-            return Ok(DeliveriesMapper.GetDeliveryDto(shop));
+            return Ok(DeliveriesMapper.GetDeliveryDto(delivery));
         }
 
         /// <summary> Получение информации о перевозках (доставках) </summary>
