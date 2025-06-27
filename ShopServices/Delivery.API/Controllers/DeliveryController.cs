@@ -79,6 +79,8 @@ namespace Deliveries.API.Controllers
         [ProducesResponseType(typeof(DeliveryDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [Authorize(Roles = $"{Roles.Courier},{Roles.Manager}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> GetDeliveryById(uint deliveryId)
         {
             var delivery = await _deliveryService.GetDeliveryById(deliveryId);
@@ -90,8 +92,9 @@ namespace Deliveries.API.Controllers
         }
 
         /// <summary> Получение информации о перевозках (доставках) </summary>
-        /// <param name="orderId"> Id заказа </param>
-        /// <param name="addressSubString"> Подстрока - адрес </param>
+        /// <param name="regionCode"> (Опционально) Код города/населенного пункта </param>
+        /// <param name="buyerId"> (Опционально) Id покупателя </param>
+        /// <param name="addressSubString"> (Опционально) Подстрока - адрес </param>
         /// <param name="byPage"> Количество на странице </param>
         /// <param name="page"> Номер страницы </param>
         /// <param name="ignoreCase"> Игнорировать ли регистр символов </param>
@@ -99,19 +102,49 @@ namespace Deliveries.API.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<DeliveryDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [Authorize(Roles = $"{Roles.Courier},{Roles.Manager}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IEnumerable<DeliveryDto>> GetDeliveries(
-            uint? orderId = null,
+            uint? regionCode,
+            uint? buyerId,
             string? addressSubString = null,
             [Range(1, 100)] uint byPage = 10,
             [Range(1, uint.MaxValue)] uint page = 1,
             bool ignoreCase = true)
         {
             var deliveriesCollection = await _deliveryService.GetDeliveries(
-                regionCode: orderId,
+                regionCode: regionCode,
+                buyerId: buyerId,
                 addressSubString: addressSubString,
                 byPage: byPage,
                 page: page,
                 ignoreCase: ignoreCase);
+
+            if (!deliveriesCollection.Any())
+                return [];
+
+            return deliveriesCollection.GetDeliveriesDtos();
+        }
+
+        /// <summary> Получение информации о перевозках (доставках) заказа </summary>
+        /// <param name="orderId"> Id заказа </param>
+        /// <param name="byPage"> Количество на странице </param>
+        /// <param name="page"> Номер страницы </param>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<DeliveryDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [Authorize(Roles = $"{Roles.Courier},{Roles.Manager}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
+        public async Task<IEnumerable<DeliveryDto>> GetDeliveriesForOrder(
+            uint orderId,
+            [Range(1, 100)] uint byPage = 10,
+            [Range(1, uint.MaxValue)] uint page = 1)
+        {
+            var deliveriesCollection = await _deliveryService.GetDeliveriesForOrder(
+                orderId: orderId,
+                byPage: byPage,
+                page: page);
 
             if (!deliveriesCollection.Any())
                 return [];
@@ -127,7 +160,7 @@ namespace Deliveries.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
-        [Authorize(Roles = $"{Roles.Manager}, {Roles.Courier}")]
+        [Authorize(Roles = $"{Roles.Manager},{Roles.Courier}")]
         [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> UpdateDelivery(DeliveryDto updateRequestDto)
         {

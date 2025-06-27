@@ -1,4 +1,5 @@
 ﻿using System;
+using ShopServices.Core.Enums;
 
 namespace Deliveries.API.Contracts
 {
@@ -58,7 +59,8 @@ namespace Deliveries.API.Contracts
 
         /// <summary> Комментарий </summary>
         public string Comment { get; set; } = default!;
-        /// <summary> Статус </summary>
-        public uint Status { get; set; }
+        /// <summary> Статус доставки по DeliveryStatus </summary>
+        /// <see cref="ShopServices.Core.Enums.DeliveryStatus"/>
+        public DeliveryStatus Status { get; set; }
     }
 }

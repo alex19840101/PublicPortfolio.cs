@@ -13,10 +13,15 @@ namespace ShopServices.Core.Services
         public Task<Delivery> GetDeliveryById(uint deliveryId);
         public Task<IEnumerable<Delivery>> GetDeliveries(
             uint? regionCode,
+            uint? buyerId,
             string addressSubString = null,
             uint byPage = 10,
             uint page = 1,
             bool ignoreCase = true);
+        public Task<IEnumerable<Delivery>> GetDeliveriesForOrder(
+            uint orderId,
+            uint byPage = 10,
+            uint page = 1);
         public Task<Result> UpdateDelivery(Delivery delivery);
         public Task<Result> ArchiveDelivery(uint deliveryId);
     }

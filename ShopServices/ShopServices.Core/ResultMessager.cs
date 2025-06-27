@@ -150,5 +150,13 @@
         public const string WAREHOUSE_RARAM_NAME = "warehouse";
         public const string WAREHOUSE_IS_ACTUAL = "Warehouse is actual";
         public const string WAREHOUSE_UPDATED = "Warehouse updated";
+        
+        //deliveries
+        public const string DELIVERY_RARAM_NAME = "delivery";
+        public const string MASS_IN_GRAMS_SHOULD_BE_POSITIVE = "delivery.MassInGrams should be positive";
+        public const string COMMENT_SHOULD_NOT_BE_EMPTY = "Comment should not be empty";
+        public const string DELIVERY_ID_SHOULD_BE_POSITIVE = "delivery.Id == 0, should be positive";
+        public const string DELIVERY_STATUS_SHOULD_BE_TOADD = "delivery.Status should be ToAdd";
+        public const string REGIONCODE_SHOULD_BE_POSITIVE = "delivery.RegionCode == 0, should be positive";
     }
 }

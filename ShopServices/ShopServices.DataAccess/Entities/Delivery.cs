@@ -15,12 +15,12 @@ namespace ShopServices.DataAccess.Entities
         public uint Id { get; private set; }
 
         /// <summary> Уникальный идентификатор покупателя </summary>
-        public uint BuyerId { get; private set; }
+        public uint BuyerId { get; }
         
         /// <summary> Уникальный идентификатор заказа </summary>
-        public uint OrderId { get; private set; }
+        public uint OrderId { get; }
 
-        public Buyer Buyer { get; private set; } = default!;
+        public Buyer Buyer { get; } = default!;
 
         /// <summary> Код города/населенного пункта </summary>
         [Column(TypeName = "integer")]
@@ -64,6 +64,8 @@ namespace ShopServices.DataAccess.Entities
         /// <summary> Комментарий </summary>
         public string Comment { get; private set; } = default!;
 
+        /// <summary> Статус доставки по DeliveryStatus </summary>
+        /// <see cref="ShopServices.Core.Enums.DeliveryStatus"/>
         [Column(TypeName = "integer")]
         public uint Status { get; private set; }
 
@@ -108,5 +110,21 @@ namespace ShopServices.DataAccess.Entities
             Comment = comment;
             Status = status;
         }
+
+        internal void UpdateAddress(string address) => Address = address;
+        internal void UpdateComment(string comment) => Comment = comment;
+        internal void UpdateCourierId(uint? courierId) => CourierId = courierId;
+        internal void UpdateDimensions(string dimensions) => Dimensions = dimensions;
+        internal void UpdateFromShopId(uint? fromShopId) => FromShopId = fromShopId;
+        internal void UpdateFromWarehouseId(uint? fromWarehouseId) => FromWarehouseId = fromWarehouseId;
+        internal void UpdateManagerId(uint managerId) => ManagerId = managerId;
+        internal void UpdateMassInGrams(uint massInGrams) => MassInGrams = massInGrams;
+        internal void UpdatePaymentInfo(string paymentInfo) => PaymentInfo = paymentInfo;
+        internal void UpdateRegionCode(uint regionCode) => RegionCode = regionCode;
+        internal void UpdateStatus(uint status) => Status = status;
+        internal void UpdateToShopId(uint? toShopId) => ToShopId = toShopId;
+        internal void UpdateToWarehouseId(uint? toWarehouseId) => ToWarehouseId = toWarehouseId;
+        internal void UpdateTransferId(uint? transferId) => TransferId = transferId;
+        internal void UpdateUpdatedDt(DateTime updatedDt) => Updated = updatedDt;
     }
 }

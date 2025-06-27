@@ -1,4 +1,5 @@
 ﻿using System;
+using ShopServices.Core.Enums;
 
 namespace ShopServices.Core.Models
 {
@@ -8,10 +9,10 @@ namespace ShopServices.Core.Models
         public uint Id { get; private set; }
 
         /// <summary> Уникальный идентификатор покупателя </summary>
-        public uint BuyerId { get; private set; }
+        public uint BuyerId { get; }
         
         /// <summary> Уникальный идентификатор заказа </summary>
-        public uint OrderId { get; private set; }
+        public uint OrderId { get; }
 
         /// <summary> Код города/населенного пункта </summary>
         public uint RegionCode { get; private set; } = default!;
@@ -49,8 +50,9 @@ namespace ShopServices.Core.Models
 
         /// <summary> Комментарий </summary>
         public string Comment { get; private set; } = default!;
-
-        public uint Status { get; private set; }
+        /// <summary> Статус доставки по DeliveryStatus </summary>
+        /// <see cref="DeliveryStatus"/>
+        public DeliveryStatus Status { get; private set; }
 
         public Delivery(
            uint id,
@@ -68,7 +70,7 @@ namespace ShopServices.Core.Models
            uint? fromShopId,
            uint? toShopId,
            string comment,
-           uint status,
+           DeliveryStatus status,
            uint? transferId,
            DateTime? createdDt = null,
            DateTime? updated = null)
