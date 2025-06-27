@@ -444,7 +444,7 @@ namespace ShopServices.BusinessLogic
             if (order == null)
                 throw new ArgumentNullException(ResultMessager.ORDER_RARAM_NAME);
 
-            if (order.BuyerId <= 0)
+            if (order.BuyerId == 0)
                 return new Result(ResultMessager.BUYER_NOT_FOUND, System.Net.HttpStatusCode.NotFound);
 
             if (order.Cost <= 0)
