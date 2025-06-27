@@ -178,10 +178,10 @@ namespace ShopServices.DataAccess.Repositories
             {
                 deliveryEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
                 await _dbContext.SaveChangesAsync();
-                return new Result(ResultMessager.SHOP_UPDATED, HttpStatusCode.OK);
+                return new Result(ResultMessager.DELIVERY_UPDATED, HttpStatusCode.OK);
             }
 
-            return new Result(ResultMessager.SHOP_IS_ACTUAL, HttpStatusCode.OK);
+            return new Result(ResultMessager.DELIVERY_IS_ACTUAL, HttpStatusCode.OK);
         }
         
         public async Task<Result> ArchiveDeliveryById(uint deliveryId)

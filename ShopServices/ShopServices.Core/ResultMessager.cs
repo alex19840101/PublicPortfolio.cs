@@ -158,5 +158,7 @@
         public const string DELIVERY_ID_SHOULD_BE_POSITIVE = "delivery.Id == 0, should be positive";
         public const string DELIVERY_STATUS_SHOULD_BE_TOADD = "delivery.Status should be ToAdd";
         public const string REGIONCODE_SHOULD_BE_POSITIVE = "delivery.RegionCode == 0, should be positive";
+        public const string DELIVERY_UPDATED = "Delivery updated";
+        public const string DELIVERY_IS_ACTUAL = "Delivery is actual";
     }
 }
