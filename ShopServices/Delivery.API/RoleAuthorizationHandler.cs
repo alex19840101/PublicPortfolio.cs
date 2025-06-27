@@ -24,8 +24,9 @@ namespace Deliveries.API
                 return Task.CompletedTask;
 
             if (context.User.IsInRole(Roles.Manager) ||
+                context.User.IsInRole(Roles.Courier))
                 //context.User.IsInRole(Roles.Developer) ||
-                context.User.IsInRole(Roles.Admin))
+                //context.User.IsInRole(Roles.Admin))
                 context.Succeed(requirement);
 
             return Task.CompletedTask;
