@@ -68,7 +68,8 @@ namespace ShopServices.BusinessLogic
                 nameSubString: nameSubString,
                 addressSubString: addressSubString,
                 take: take,
-                skipCount: skip);
+                skipCount: skip,
+                ignoreCase: ignoreCase);
         }
 
         public async Task<Result> UpdateShop(Shop shop)

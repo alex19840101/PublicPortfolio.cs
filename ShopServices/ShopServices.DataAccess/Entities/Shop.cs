@@ -61,7 +61,7 @@ namespace ShopServices.DataAccess.Entities
         internal void UpdateName(string name) => Name = name;
         internal void UpdatePhone(string phone) => Phone = phone;
         internal void UpdateRegionCode(uint regionCode) => RegionCode = regionCode;
-                internal void UpdateUpdatedDt(DateTime updatedDt) => Updated = updatedDt;
+        internal void UpdateUpdatedDt(DateTime updatedDt) => Updated = updatedDt;
         internal void UpdateUrl(string url) => Url = url;
         internal void UpdateWorkSchedule(string workSchedule) => WorkSchedule = workSchedule;
     }
