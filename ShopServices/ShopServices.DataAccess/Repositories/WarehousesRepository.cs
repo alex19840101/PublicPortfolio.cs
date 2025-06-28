@@ -32,6 +32,7 @@ namespace ShopServices.DataAccess.Repositories
             if (!entityWarehouse.Archived)
             {
                 entityWarehouse.Archive();
+                entityWarehouse.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
 
                 await _dbContext.SaveChangesAsync();
             }
@@ -51,7 +52,8 @@ namespace ShopServices.DataAccess.Repositories
                 phone: newWarehouse.Phone,
                 email: newWarehouse.Email,
                 url: newWarehouse.Url,
-                workSchedule: newWarehouse.WorkSchedule);
+                workSchedule: newWarehouse.WorkSchedule,
+                createdDt: DateTime.Now.ToUniversalTime());
 
             await _dbContext.Warehouses.AddAsync(newWarehouseEntity);
             await _dbContext.SaveChangesAsync();
@@ -67,7 +69,7 @@ namespace ShopServices.DataAccess.Repositories
 
         public async Task<Warehouse?> GetWarehouseByAddress(string address)
         {
-            var query = _dbContext.Warehouses.AsNoTracking().Where(s => s.Address.Equals(address, StringComparison.OrdinalIgnoreCase));
+            var query = _dbContext.Warehouses.AsNoTracking().Where(w => EF.Functions.Like(w.Address.ToLower(), $"%{address.ToLower()}%"));
 
             var warehouseEntity = await query.SingleOrDefaultAsync();
 

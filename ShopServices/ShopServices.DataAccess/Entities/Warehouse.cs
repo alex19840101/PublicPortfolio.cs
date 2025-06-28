@@ -11,7 +11,7 @@ namespace ShopServices.DataAccess.Entities
         public string Name { get; private set; } = default!;
         /// <summary> Код города/населенного пункта </summary>
         [Column(TypeName = "integer")]
-        public uint RegionCode { get; private set; } = default!;
+        public uint RegionCode { get; private set; }
         public string Address { get; private set; } = default!;
         public string Phone { get; private set; } = default!;
         public string Email { get; private set; } = default!;

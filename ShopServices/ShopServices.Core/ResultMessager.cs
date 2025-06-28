@@ -147,6 +147,7 @@
 
         //warehouses
         public const string NEW_WAREHOUSE_RARAM_NAME = "newWarehouse";
+        public const string WAREHOUSE_ID_SHOULD_BE_POSITIVE = "warehouse.Id == 0, should be positive (>0)";
         public const string WAREHOUSE_RARAM_NAME = "warehouse";
         public const string WAREHOUSE_IS_ACTUAL = "Warehouse is actual";
         public const string WAREHOUSE_UPDATED = "Warehouse updated";

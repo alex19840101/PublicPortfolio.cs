@@ -7,7 +7,7 @@
         public string Name { get; set; } = default!;
 
         /// <summary> *Код города/населенного пункта </summary>
-        public uint RegionCode { get; private set; } = default!;
+        public uint RegionCode { get; set; }
 
         /// <summary> *Адрес склада </summary>
         public string Address { get; set; } = default!;

@@ -21,11 +21,9 @@ namespace ShopServices.BusinessLogic
 
         public async Task<Result> AddWarehouse(Warehouse newWarehouse)
         {
-            if (newWarehouse == null)
-                throw new ArgumentNullException(ResultMessager.NEW_WAREHOUSE_RARAM_NAME);
-
-            if (string.IsNullOrWhiteSpace(newWarehouse.Name))
-                return new Result(ResultMessager.NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+            var errorResult = UnValidatedWarehouseResult(newWarehouse, checkWarehouseId: false);
+            if (errorResult != null)
+                return errorResult;
 
             var existingCategory = await _warehousesRepository.GetWarehouseByAddress(newWarehouse.Address);
 
@@ -74,17 +72,34 @@ namespace ShopServices.BusinessLogic
 
         public async Task<Result> UpdateWarehouse(Warehouse warehouse)
         {
+            var errorResult = UnValidatedWarehouseResult(warehouse);
+            if (errorResult != null)
+                return errorResult;
+
+            return await _warehousesRepository.UpdateWarehouse(warehouse);
+        }
+
+        /// <summary> Валидация данных склада </summary>
+        /// <param name="warehouse"> Данные склада </param>
+        /// <param name="checkWarehouseId"> Проверять ли, что warehouse.Id > 0 </param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        private Result UnValidatedWarehouseResult(Warehouse warehouse, bool checkWarehouseId = true)
+        {
             if (warehouse == null)
-                throw new ArgumentNullException(ResultMessager.WAREHOUSE_RARAM_NAME);
+                throw new ArgumentNullException(ResultMessager.SHOP_RARAM_NAME);
+
+            if (checkWarehouseId && warehouse.Id == 0)
+                return new Result(ResultMessager.WAREHOUSE_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.BadRequest);
 
             if (string.IsNullOrWhiteSpace(warehouse.Name))
                 return new Result(ResultMessager.NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
+            if (warehouse.RegionCode == 0)
+                return new Result(ResultMessager.REGIONCODE_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.BadRequest);
+
             if (string.IsNullOrWhiteSpace(warehouse.Address))
                 return new Result(ResultMessager.ADDRESS_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
-
-            if (string.IsNullOrWhiteSpace(warehouse.Url))
-                return new Result(ResultMessager.URL_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
             if (string.IsNullOrWhiteSpace(warehouse.Phone))
                 return new Result(ResultMessager.PHONE_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
@@ -92,10 +107,13 @@ namespace ShopServices.BusinessLogic
             if (string.IsNullOrWhiteSpace(warehouse.Email))
                 return new Result(ResultMessager.EMAIL_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
+            if (string.IsNullOrWhiteSpace(warehouse.Url))
+                return new Result(ResultMessager.URL_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
             if (string.IsNullOrWhiteSpace(warehouse.WorkSchedule))
                 return new Result(ResultMessager.WORK_SCHEDULE_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
-            return await _warehousesRepository.UpdateWarehouse(warehouse);
+            return null;
         }
     }
 }
