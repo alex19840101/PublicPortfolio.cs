@@ -103,6 +103,8 @@ namespace Warehouses.API.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<WarehouseResponseDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [Authorize(Roles = $"{Roles.Admin}, {Roles.Courier}, {Roles.Developer}, {Roles.Manager}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IEnumerable<WarehouseResponseDto>> GetWarehouses(
             uint? regionCode = null,
             string? nameSubString = null,
