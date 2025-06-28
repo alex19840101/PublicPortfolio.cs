@@ -33,6 +33,7 @@ namespace ShopServices.DataAccess.Repositories
             if (!entityShop.Archived)
             {
                 entityShop.Archive();
+                entityShop.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
 
                 await _dbContext.SaveChangesAsync();
             }
@@ -52,7 +53,8 @@ namespace ShopServices.DataAccess.Repositories
                 phone: newShop.Phone,
                 email: newShop.Email,
                 url: newShop.Url,
-                workSchedule: newShop.WorkSchedule);
+                workSchedule: newShop.WorkSchedule,
+                createdDt: DateTime.Now.ToUniversalTime());
             
             await _dbContext.Shops.AddAsync(newShopEntity);
             await _dbContext.SaveChangesAsync();
@@ -68,7 +70,7 @@ namespace ShopServices.DataAccess.Repositories
 
         public async Task<Shop?> GetShopByAddress(string address)
         {
-            var query = _dbContext.Shops.AsNoTracking().Where(s => s.Address.Equals(address, StringComparison.OrdinalIgnoreCase));
+            var query = _dbContext.Shops.AsNoTracking().Where(s => EF.Functions.Like(s.Address.ToLower(), $"%{address.ToLower()}%"));
             
             var shopEntity = await query.SingleOrDefaultAsync();
             

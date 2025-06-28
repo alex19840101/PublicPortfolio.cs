@@ -21,11 +21,9 @@ namespace ShopServices.BusinessLogic
 
         public async Task<Result> AddShop(Shop newShop)
         {
-            if (newShop == null)
-                throw new ArgumentNullException(ResultMessager.NEW_SHOP_RARAM_NAME);
-
-            if (string.IsNullOrWhiteSpace(newShop.Name))
-                return new Result(ResultMessager.NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+            var errorResult = UnValidatedShopResult(newShop, checkShopId: false);
+            if (errorResult != null)
+                return errorResult;
 
             var existingShop = await _shopsRepository.GetShopByAddress(newShop.Address);
 
@@ -74,17 +72,34 @@ namespace ShopServices.BusinessLogic
 
         public async Task<Result> UpdateShop(Shop shop)
         {
+            var errorResult = UnValidatedShopResult(shop);
+            if (errorResult != null)
+                return errorResult;
+
+            return await _shopsRepository.UpdateShop(shop);
+        }
+
+        /// <summary> Валидация данных магазина </summary>
+        /// <param name="shop"> Данные магазина </param>
+        /// <param name="checkShopId"> Проверять ли, что shop.Id > 0 </param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        private Result UnValidatedShopResult(Shop shop, bool checkShopId = true)
+        {
             if (shop == null)
                 throw new ArgumentNullException(ResultMessager.SHOP_RARAM_NAME);
+            
+            if (checkShopId && shop.Id == 0)
+                return new Result(ResultMessager.SHOP_ID_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.BadRequest);
 
             if (string.IsNullOrWhiteSpace(shop.Name))
                 return new Result(ResultMessager.NAME_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
+            if (shop.RegionCode == 0)
+                return new Result(ResultMessager.REGIONCODE_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.BadRequest);
+
             if (string.IsNullOrWhiteSpace(shop.Address))
                 return new Result(ResultMessager.ADDRESS_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
-
-            if (string.IsNullOrWhiteSpace(shop.Url))
-                return new Result(ResultMessager.URL_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
             if (string.IsNullOrWhiteSpace(shop.Phone))
                 return new Result(ResultMessager.PHONE_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
@@ -92,10 +107,13 @@ namespace ShopServices.BusinessLogic
             if (string.IsNullOrWhiteSpace(shop.Email))
                 return new Result(ResultMessager.EMAIL_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
+            if (string.IsNullOrWhiteSpace(shop.Url))
+                return new Result(ResultMessager.URL_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
+
             if (string.IsNullOrWhiteSpace(shop.WorkSchedule))
                 return new Result(ResultMessager.WORK_SCHEDULE_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);
 
-            return await _shopsRepository.UpdateShop(shop);
+            return null;
         }
     }
 }
