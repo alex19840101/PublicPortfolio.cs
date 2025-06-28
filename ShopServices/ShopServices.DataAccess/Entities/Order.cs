@@ -20,7 +20,8 @@ namespace ShopServices.DataAccess.Entities
 
         /// <summary> Навигационное свойство: доставка </summary>
         public Delivery? Delivery { get; private set; }
-
+        /// <summary> Навигационное свойство: коллекция перевозок </summary>
+        public ICollection<Delivery>? Deliveries { get; }
         public uint? DeliveryId { get; private set; }
 
         public uint? ManagerId { get; private set; }

@@ -37,6 +37,9 @@ namespace ShopServices.DataAccess.Configurations
 
             builder.HasOne(o => o.Buyer)
                 .WithMany(b => b.Orders).IsRequired().OnDelete(DeleteBehavior.NoAction);
+
+            //builder.HasOne(o => o.Delivery)
+            //    .WithOne(delivery => delivery.Order).IsRequired(false).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

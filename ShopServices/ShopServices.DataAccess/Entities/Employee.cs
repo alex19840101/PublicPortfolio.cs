@@ -17,15 +17,18 @@ namespace ShopServices.DataAccess.Entities
         public string? Nick { get { return _nick; } }
         public string? Phone { get { return _phone; } }
         public string? Role { get { return _role; } }
-        public uint? GranterId{ get { return _granterId; } }
+        public uint? GranterId { get { return _granterId; } }
         public DateTime CreatedDt { get { return _createdDt; } }
         public DateTime? LastUpdateDt { get { return _lastUpdateDt; } }
 
         [Column(TypeName = "integer")]
-        public uint? ShopId { get { return _shopId; } }
+        public uint? ShopId { get { return _shopId; } set { _shopId = value; } }
 
         [Column(TypeName = "integer")]
-        public uint? WarehouseId { get { return _warehouseId; } }
+        public uint? WarehouseId { get { return _warehouseId; } set { _warehouseId = value; } }
+
+        public Shop? Shop { get; set; }
+        public Warehouse? Warehouse { get; set; }
 
         private readonly uint _id;
         private string _login;

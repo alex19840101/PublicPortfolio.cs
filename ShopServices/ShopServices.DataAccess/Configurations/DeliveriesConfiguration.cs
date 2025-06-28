@@ -17,6 +17,11 @@ namespace ShopServices.DataAccess.Configurations
             builder.Property(d => d.PaymentInfo).HasMaxLength(MAX_NAME_LENGTH).IsRequired();
             builder.Property(d => d.MassInGrams).IsRequired();
             builder.Property(d => d.Dimensions).HasMaxLength(MAX_DIMENSIONS_LENGTH).IsRequired();
+
+            builder.HasOne(d => d.Order)
+                .WithMany(order => order.Deliveries)
+                .HasForeignKey(d => d.OrderId)
+                .IsRequired(true).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

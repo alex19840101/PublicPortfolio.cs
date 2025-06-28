@@ -45,7 +45,8 @@ namespace ShopServices.DataAccess.Repositories
                 toShopId: newDelivery.ToShopId,
                 comment: newDelivery.Comment,
                 status: (uint)newDelivery.Status,
-                transferId: newDelivery.TransferId
+                transferId: newDelivery.TransferId,
+                created: DateTime.Now.ToUniversalTime()
             );
 
             await _dbContext.Deliveries.AddAsync(newDeliveryEntity);

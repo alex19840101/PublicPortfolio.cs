@@ -15,12 +15,14 @@ namespace ShopServices.DataAccess.Entities
         public uint Id { get; private set; }
 
         /// <summary> Уникальный идентификатор покупателя </summary>
-        public uint BuyerId { get; }
-        
-        /// <summary> Уникальный идентификатор заказа </summary>
-        public uint OrderId { get; }
+        public uint BuyerId { get; private set; }
 
+        /// <summary> Уникальный идентификатор заказа </summary>
+        public uint OrderId { get; private set; }
+        public Order Order { get; } = default!;
         public Buyer Buyer { get; } = default!;
+        public Manager? Manager { get; private set; }
+        public Courier? Courier { get; private set; }
 
         /// <summary> Код города/населенного пункта </summary>
         [Column(TypeName = "integer")]
@@ -39,6 +41,7 @@ namespace ShopServices.DataAccess.Entities
         public string PaymentInfo { get; private set; } = default!;
 
         /// <summary> Масса, г </summary>
+        [Column(TypeName = "integer")]
         public uint MassInGrams { get; private set; } = default!;
 
         /// <summary> Габариты </summary>
@@ -75,7 +78,7 @@ namespace ShopServices.DataAccess.Entities
            uint orderId,
            uint regionCode,
            string address,
-           uint managerId,
+           uint? managerId,
            uint? courierId,
            string paymentInfo,
            uint massInGrams,
@@ -87,7 +90,7 @@ namespace ShopServices.DataAccess.Entities
            string comment,
            uint status,
            uint? transferId,
-           DateTime? created = null,
+           DateTime created,
            DateTime? updated = null)
         {
             Id = id;
@@ -100,7 +103,7 @@ namespace ShopServices.DataAccess.Entities
             PaymentInfo = paymentInfo;
             MassInGrams = massInGrams;
             Dimensions = dimensions;
-            Created = created!.Value;
+            Created = created;
             Updated = updated;
             FromWarehouseId = fromWarehouseId;
             ToWarehouseId = toWarehouseId;
