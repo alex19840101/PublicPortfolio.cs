@@ -26,7 +26,7 @@ Warehouse
 ```csharp
 Buyers.API
 Couriers.API
-Delivery.API
+Deliveries.API
 Employees.API
 Goods.API
 GoodsGroups.API
@@ -36,7 +36,7 @@ Orders.API
 Prices.API
 Shops.API
 Trade.API
-Warehouse.API
+Warehouses.API
 ```
 
 ## **Projects:**
