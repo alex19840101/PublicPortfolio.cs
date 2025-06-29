@@ -15,7 +15,7 @@ namespace ShopServices.Core.Models
         public uint OrderId { get; }
 
         /// <summary> Код города/населенного пункта </summary>
-        public uint RegionCode { get; private set; } = default!;
+        public uint RegionCode { get; private set; }
 
         /// <summary> Адрес доставки заказа </summary>
         public string Address { get; private set; } = default!;

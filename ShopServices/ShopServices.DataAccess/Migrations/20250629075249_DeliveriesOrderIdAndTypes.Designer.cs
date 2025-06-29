@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ShopServices.DataAccess;
@@ -11,9 +12,11 @@ using ShopServices.DataAccess;
 namespace ShopServices.DataAccess.Migrations
 {
     [DbContext(typeof(ShopServicesDbContext))]
-    partial class ShopServicesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250629075249_DeliveriesOrderIdAndTypes")]
+    partial class DeliveriesOrderIdAndTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

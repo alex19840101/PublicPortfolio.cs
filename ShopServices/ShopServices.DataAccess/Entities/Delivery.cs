@@ -26,7 +26,7 @@ namespace ShopServices.DataAccess.Entities
 
         /// <summary> Код города/населенного пункта </summary>
         [Column(TypeName = "integer")]
-        public uint RegionCode { get; private set; } = default!;
+        public uint RegionCode { get; private set; }
 
         /// <summary> Адрес доставки заказа </summary>
         public string Address { get; private set; } = default!;
@@ -42,7 +42,7 @@ namespace ShopServices.DataAccess.Entities
 
         /// <summary> Масса, г </summary>
         [Column(TypeName = "integer")]
-        public uint MassInGrams { get; private set; } = default!;
+        public uint MassInGrams { get; private set; }
 
         /// <summary> Габариты </summary>
         public string Dimensions { get; private set; } = default!;

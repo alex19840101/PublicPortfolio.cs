@@ -33,6 +33,7 @@ namespace ShopServices.DataAccess.Entities
         public string ImageUrl { get; private set; }
 
         /// <summary> Id групп товаров </summary>
+        [Column(TypeName = "integer[]")]
         public List<uint> GoodsGroups { get; private set; }
 
         /// <summary> Дата и время создания данных о товаре </summary>
@@ -45,6 +46,7 @@ namespace ShopServices.DataAccess.Entities
         public bool Archieved { get; private set; }
 
         /// <summary> Масса, г </summary>
+        [Column(TypeName = "integer")]
         public uint MassInGrams { get; private set; } = default!;
 
         /// <summary> Габариты </summary>

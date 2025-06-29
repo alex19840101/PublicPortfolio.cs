@@ -13,7 +13,7 @@ namespace ShopServices.DataAccess.Entities
         public uint BuyerId { get; private set; }
 
         /// <summary> Навигационное свойство: покупатель </summary>
-        public Buyer Buyer { get; private set; } = default!;
+        public Buyer Buyer { get; private set; }
 
         /// <summary> Навигационное свойство: список товарных позиций в заказе </summary>
         public ICollection<OrderPosition> Positions { get; } = [];
@@ -70,7 +70,8 @@ namespace ShopServices.DataAccess.Entities
         public bool Archieved { get; private set; }
 
         /// <summary> Масса, г </summary>
-        public uint MassInGrams { get; private set; } = default!;
+        [Column(TypeName = "integer")]
+        public uint MassInGrams { get; private set; }
 
         /// <summary> Габариты </summary>
         public string Dimensions { get; private set; } = default!;

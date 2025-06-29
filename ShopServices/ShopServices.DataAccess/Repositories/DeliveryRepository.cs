@@ -196,7 +196,7 @@ namespace ShopServices.DataAccess.Repositories
             if (entityDelivery.Status != (uint)DeliveryStatus.Canceled)
             {
                 entityDelivery.UpdateStatus((uint)DeliveryStatus.Canceled);
-
+                entityDelivery.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
                 await _dbContext.SaveChangesAsync();
             }
 

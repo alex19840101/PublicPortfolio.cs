@@ -66,7 +66,7 @@ try
         builder.Services.AddDbContext<ShopServicesDbContext>(builder =>
         {
             builder.UseNpgsql(connectionString: dataBaseConnectionStr, o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
-                    .LogTo(Console.WriteLine, LogLevel.Information)
+                    .LogTo(Console.WriteLine, LogLevel.Trace)
                     .EnableSensitiveDataLogging();
 
             builder.LogTo(Console.WriteLine);
