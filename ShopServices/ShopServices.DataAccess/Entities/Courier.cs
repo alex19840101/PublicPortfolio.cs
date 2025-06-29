@@ -11,7 +11,37 @@ namespace ShopServices.DataAccess.Entities
     [Table("Couriers")]
     public class Courier : Employee
     {
-        public Courier(uint id, string login, string name, string surname, string address, string email, string passwordHash, string? nick, string? phone, string? role, uint? granterId, DateTime createdDt, DateTime? lastUpdateDt) : base(id, login, name, surname, address, email, passwordHash, nick, phone, role, granterId, createdDt, lastUpdateDt)
+        public Courier(
+            uint id,
+            string login,
+            string name,
+            string surname,
+            string address,
+            string email,
+            string passwordHash,
+            string? nick,
+            string? phone,
+            string? role,
+            uint? granterId,
+            DateTime createdDt,
+            DateTime? lastUpdateDt,
+            uint? shopId,
+            uint? warehouseId) : base(
+                id: id,
+                login: login,
+                name: name,
+                surname: surname,
+                address: address,
+                email: email,
+                passwordHash: passwordHash,
+                nick: nick,
+                phone: phone,
+                role: role,
+                granterId: granterId,
+                createdDt: createdDt,
+                lastUpdateDt: lastUpdateDt,
+                shopId: shopId,
+                warehouseId: warehouseId)
         {
         }
 

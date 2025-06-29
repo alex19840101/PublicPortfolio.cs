@@ -31,6 +31,6 @@ namespace GoodsGroups.API.Contracts
         public DateTime? Updated { get; set; }
 
         /// <summary> В архиве ли категория </summary>
-        public bool Archieved { get; set; } = false;
+        public bool Archived { get; set; } = false;
     }
 }

@@ -1,5 +1,5 @@
 using System;
-using Delivery.API;
+using Deliveries.API;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -18,7 +18,7 @@ using ShopServices.Core.Services;
 using ShopServices.DataAccess;
 using ShopServices.DataAccess.Repositories;
 
-const string SERVICE_NAME = "Delivery.API";
+const string SERVICE_NAME = "Deliveries.API";
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -51,8 +51,10 @@ try
     builder.Services.AddOpenApi();
 
     builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
+    builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
     builder.Services.AddScoped<IDeliveryService>(src => new DeliveryService(
-        src.GetRequiredService<IDeliveryRepository>()));
+        src.GetRequiredService<IDeliveryRepository>(),
+        src.GetRequiredService<IOrdersRepository>()));
 
     string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ShopServices")!;
 
@@ -64,7 +66,7 @@ try
         builder.Services.AddDbContext<ShopServicesDbContext>(builder =>
         {
             builder.UseNpgsql(connectionString: dataBaseConnectionStr, o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
-                    .LogTo(Console.WriteLine, LogLevel.Information)
+                    .LogTo(Console.WriteLine, LogLevel.Trace)
                     .EnableSensitiveDataLogging();
 
             builder.LogTo(Console.WriteLine);

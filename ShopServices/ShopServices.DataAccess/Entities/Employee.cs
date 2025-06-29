@@ -17,9 +17,18 @@ namespace ShopServices.DataAccess.Entities
         public string? Nick { get { return _nick; } }
         public string? Phone { get { return _phone; } }
         public string? Role { get { return _role; } }
-        public uint? GranterId{ get { return _granterId; } }
+        public uint? GranterId { get { return _granterId; } }
         public DateTime CreatedDt { get { return _createdDt; } }
         public DateTime? LastUpdateDt { get { return _lastUpdateDt; } }
+
+        [Column(TypeName = "integer")]
+        public uint? ShopId { get { return _shopId; } set { _shopId = value; } }
+
+        [Column(TypeName = "integer")]
+        public uint? WarehouseId { get { return _warehouseId; } set { _warehouseId = value; } }
+
+        public Shop? Shop { get; set; }
+        public Warehouse? Warehouse { get; set; }
 
         private readonly uint _id;
         private string _login;
@@ -34,6 +43,8 @@ namespace ShopServices.DataAccess.Entities
         private uint? _granterId;
         private readonly DateTime _createdDt;
         private DateTime? _lastUpdateDt;
+        private uint? _shopId;
+        private uint? _warehouseId;
 
         public Employee(
             uint id,
@@ -48,7 +59,9 @@ namespace ShopServices.DataAccess.Entities
             string? role,
             uint? granterId,
             DateTime createdDt,
-            DateTime? lastUpdateDt)
+            DateTime? lastUpdateDt,
+            uint? shopId,
+            uint? warehouseId)
         {
             _id = id;
             _login = login;
@@ -63,19 +76,23 @@ namespace ShopServices.DataAccess.Entities
             _granterId = granterId;
             _createdDt = createdDt;
             _lastUpdateDt = lastUpdateDt;
+            _shopId = shopId;
+            _warehouseId = warehouseId;
         }
 
-        public void UpdateLogin(string newLogin) => _login = newLogin;
-        public void UpdateName(string newName) => _name = newName;
-        public void UpdateSurname(string newSurname) => _surname = newSurname;
-		public void UpdateAddress(string newAddress) => _address = newAddress;
-		public void UpdateEmail(string newEmail) => _email = newEmail;
-        public void UpdatePasswordHash(string newPasswordHash) => _passwordHash = newPasswordHash;
-        public void UpdateNick(string? newNick) => _nick = newNick;
-        public void UpdatePhone(string? newPhone) => _phone = newPhone;
-        public void UpdateRole(string? newRole) => _role = newRole;
-        public void UpdateGranterId(uint granterId) => _granterId = granterId;
-        public void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
+        internal void UpdateLogin(string newLogin) => _login = newLogin;
+        internal void UpdateName(string newName) => _name = newName;
+        internal void UpdateSurname(string newSurname) => _surname = newSurname;
+		internal void UpdateAddress(string newAddress) => _address = newAddress;
+		internal void UpdateEmail(string newEmail) => _email = newEmail;
+        internal void UpdatePasswordHash(string newPasswordHash) => _passwordHash = newPasswordHash;
+        internal void UpdateNick(string? newNick) => _nick = newNick;
+        internal void UpdatePhone(string? newPhone) => _phone = newPhone;
+        internal void UpdateRole(string? newRole) => _role = newRole;
+        internal void UpdateGranterId(uint granterId) => _granterId = granterId;
+        internal void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
+        internal void UpdateShopId(uint? shopId) => _shopId = shopId;
+        internal void UpdateWarehouseId(uint? warehouseId) => _warehouseId = warehouseId;
 
         public override bool Equals(object obj)
         {

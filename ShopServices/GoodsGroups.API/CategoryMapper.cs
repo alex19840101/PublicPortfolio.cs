@@ -18,7 +18,7 @@ namespace GoodsGroups.API
                 ImageUrl = coreCategory.ImageUrl,
                 Created = coreCategory.Created!.Value,
                 Updated = coreCategory.Updated,
-                Archieved = coreCategory.Archieved
+                Archived = coreCategory.Archived
             };
         }
 
@@ -32,7 +32,7 @@ namespace GoodsGroups.API
                 parameters: categoryDto.Params,
                 url: categoryDto.Url,
                 imageUrl: categoryDto.ImageUrl,
-                archieved: categoryDto.Archieved
+                archived: categoryDto.Archived
             );
         }
 
@@ -53,7 +53,7 @@ namespace GoodsGroups.API
                 ImageUrl = coreCategory.ImageUrl,
                 Created = coreCategory.Created!.Value,
                 Updated = coreCategory.Updated,
-                Archieved = coreCategory.Archieved
+                Archived = coreCategory.Archived
             });
         }
     }

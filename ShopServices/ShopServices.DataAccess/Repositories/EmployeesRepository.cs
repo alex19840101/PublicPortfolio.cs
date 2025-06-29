@@ -37,7 +37,9 @@ namespace ShopServices.DataAccess.Repositories
                 role: employee.Role,
                 granterId: employee.GranterId,
                 createdDt: employee.CreatedDt.ToUniversalTime(),
-                lastUpdateDt: employee.LastUpdateDt?.ToUniversalTime());
+                lastUpdateDt: employee.LastUpdateDt?.ToUniversalTime(),
+                shopId: employee.ShopId,
+                warehouseId: employee.WarehouseId);
 
             await _dbContext.Employees.AddAsync(newEmployeeEntity);
             await _dbContext.SaveChangesAsync();
@@ -135,6 +137,9 @@ namespace ShopServices.DataAccess.Repositories
             if (!string.Equals(upd.Phone, employeeEntity.Phone)) employeeEntity.UpdatePhone(upd.Phone);
             if (!string.Equals(upd.Address, employeeEntity.Address)) employeeEntity.UpdateAddress(upd.Address);
             if (!string.Equals(upd.RequestedRole, employeeEntity.Role)) employeeEntity.UpdateRole(newRole: $"?{upd.RequestedRole}"); //? - запрошенная пользователем роль утверждается администратором
+            
+            if (upd.ShopId != employeeEntity.ShopId) employeeEntity.UpdateShopId(upd.ShopId);
+            if (upd.WarehouseId != employeeEntity.WarehouseId) employeeEntity.UpdateWarehouseId(upd.WarehouseId);
 
             if (_dbContext.ChangeTracker.HasChanges())
             {
@@ -179,7 +184,9 @@ namespace ShopServices.DataAccess.Repositories
                 role: userEntity.Role,
                 granterId: userEntity.GranterId,
                 createdDt: userEntity.CreatedDt.ToLocalTime(),
-                lastUpdateDt: userEntity.LastUpdateDt?.ToLocalTime());
+                lastUpdateDt: userEntity.LastUpdateDt?.ToLocalTime(),
+                shopId: userEntity.ShopId,
+                warehouseId: userEntity.WarehouseId);
 
     }
 }

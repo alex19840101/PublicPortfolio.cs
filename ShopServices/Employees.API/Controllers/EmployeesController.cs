@@ -98,8 +98,8 @@ public class EmployeesController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Unauthorized)]
-    [Authorize(Roles = "admin")]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(Roles = Roles.Admin)]
+    [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
     public async Task<IActionResult> GrantRole(GrantRoleRequestDto request)
     {
         var grantResult = await _employeesService.GrantRole(GetCoreGrantRoleData(request));
@@ -167,8 +167,8 @@ public class EmployeesController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-    [Authorize(Roles = "admin")]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(Roles = Roles.Admin)]
+    [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
     public async Task<IActionResult> GetUserInfoById(uint id)
     {
         var employee = await _employeesService.GetUserInfo(id);
@@ -185,8 +185,8 @@ public class EmployeesController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-    [Authorize(Roles = "admin")]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(Roles = Roles.Admin)]
+    [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
     public async Task<IActionResult> GetUserInfoByLogin(string login)
     {
         var employee = await _employeesService.GetUserInfo(login);
@@ -212,7 +212,9 @@ public class EmployeesController : ControllerBase
             role: request.RequestedRole,
             granterId: null,
             createdDt: DateTime.Now,
-            lastUpdateDt: null);
+            lastUpdateDt: null,
+            shopId: request.ShopId,
+            warehouseId: request.WarehouseId);
 
     [NonAction]
     private static LoginData GetCoreLoginData(LoginRequestDto request)
@@ -271,6 +273,8 @@ public class EmployeesController : ControllerBase
                 newPasswordHash: requestDto.NewPassword != null ? SHA256Hasher.GeneratePasswordHash(requestDto.NewPassword, repeatPassword: requestDto.RepeatNewPassword) : null,
                 nick: requestDto.Nick,
                 phone: requestDto.Phone,
+                shopId: requestDto.ShopId,
+                warehouseId: requestDto.WarehouseId,
                 requestedRole: requestDto.RequestedRole);
     }
 
@@ -285,6 +289,8 @@ public class EmployeesController : ControllerBase
             Email = employee.Email,
             Nick = employee.Nick,
             Phone = employee.Phone,
-            Role = employee.Role
+            Role = employee.Role,
+            ShopId = employee.ShopId,
+            WarehouseId = employee.WarehouseId,
         };
 }

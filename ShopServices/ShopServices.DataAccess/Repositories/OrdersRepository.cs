@@ -714,7 +714,7 @@ namespace ShopServices.DataAccess.Repositories
                 deliveryAddress: orderEntity.DeliveryAddress,
                 shopId: orderEntity.ShopId,
                 extraInfo: orderEntity.ExtraInfo,
-                archieved: orderEntity.Archieved,
+                archived: orderEntity.Archieved,
                 massInGrams: orderEntity.MassInGrams,
                 dimensions: orderEntity.Dimensions,
                 comment: orderEntity.Comment);

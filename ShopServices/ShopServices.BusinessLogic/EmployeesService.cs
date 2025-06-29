@@ -76,10 +76,10 @@ namespace ShopServices.BusinessLogic
 
             AuthResult registerResult;
 
-            if (string.Equals(rolePost?.ToLowerInvariant().Trim(), "manager"))
+            if (string.Equals(rolePost?.ToLowerInvariant().Trim(), Roles.Manager))
                 return await _managersRepository.AddManager(employee);
 
-            if (string.Equals(rolePost?.ToLowerInvariant().Trim(), "courier"))
+            if (string.Equals(rolePost?.ToLowerInvariant().Trim(), Roles.Courier))
                 return await _couriersRepository.AddCourier(employee);
 
             registerResult = await _employeesRepository.AddEmployee(employee);

@@ -38,7 +38,7 @@ namespace ShopServices.Core.Models
         public string ExtraInfo { get; private set; }
 
         /// <summary> В архиве ли (отменен ли) заказ </summary>
-        public bool Archieved { get; private set; }
+        public bool Archived { get; private set; }
 
         /// <summary> Масса, г </summary>
         public uint MassInGrams { get; private set; }
@@ -75,7 +75,7 @@ namespace ShopServices.Core.Models
             string deliveryAddress,
             uint? shopId,
             string extraInfo,
-            bool archieved,
+            bool archived,
             uint massInGrams,
             string dimensions,
             uint? deliveryId = null,
@@ -98,7 +98,7 @@ namespace ShopServices.Core.Models
             DeliveryAddress = deliveryAddress;
             ShopId = shopId;
             ExtraInfo = extraInfo;
-            Archieved = archieved;
+            Archived = archived;
             MassInGrams = massInGrams;
             Dimensions = dimensions;
             DeliveryId = deliveryId;

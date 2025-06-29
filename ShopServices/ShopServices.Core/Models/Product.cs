@@ -39,7 +39,7 @@ namespace ShopServices.Core.Models
         public DateTime? Updated { get; private set; }
 
         /// <summary> В архиве ли товар </summary>
-        public bool Archieved { get; private set; }
+        public bool Archived { get; private set; }
         
         /// <summary> Масса, г </summary>
         public uint MassInGrams { get; private set; }
@@ -62,7 +62,7 @@ namespace ShopServices.Core.Models
             string url,
             string imageUrl,
             List<uint> goodsGroups,
-            bool archieved,
+            bool archived,
             uint massInGrams,
             string dimensions,
             uint? priceId,
@@ -78,7 +78,7 @@ namespace ShopServices.Core.Models
             Url = url;
             ImageUrl = imageUrl;
             GoodsGroups = goodsGroups;
-            Archieved = archieved;
+            Archived = archived;
             MassInGrams = massInGrams;
             Dimensions = dimensions;
             PriceId = priceId;
@@ -91,7 +91,7 @@ namespace ShopServices.Core.Models
         /// <summary>
         /// Проверка на равенство (существующей Product) с игнорированием:
         /// <para> - Id (Id до момента регистрации не определен, как бы равен нулю),</para>
-        /// <para> - Created, Updated, Archieved - не важны для сравнения</para>
+        /// <para> - Created, Updated, Archived - не важны для сравнения</para>
         /// <para> - GoodsGroups (для упрощения), PriceId, PricePerUnit </para>
         /// </summary>
         /// <param name="comparedProduct"> Product для сравнения</param>

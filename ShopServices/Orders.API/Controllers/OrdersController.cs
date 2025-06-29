@@ -13,6 +13,7 @@ using Orders.API.Contracts.Requests;
 using Orders.API.Contracts.Responses;
 using ShopServices.Abstractions;
 using ShopServices.Core;
+using ShopServices.Core.Auth;
 using ShopServices.Core.Services;
 
 namespace Orders.API.Controllers
@@ -46,8 +47,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Conflict)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "buyer")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = Roles.Buyer)]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> AddOrder(AddOrderRequest addOrderRequestDto)
         {
             uint? buyerId = GetUserIdFromClaim();
@@ -100,13 +101,13 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        [Authorize(Roles = "buyer, manager, courier")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = $"{Roles.Buyer}, {Roles.Manager}, {Roles.Courier}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> GetOrderInfoById(uint orderId)
         {
             uint? userId = GetUserIdFromClaim();
             var role = HttpContext.User.FindFirst(ClaimTypes.Role)!.Value;
-            if (!string.Equals(role, "buyer"))
+            if (!string.Equals(role, Roles.Buyer))
                 userId = null;
 
             var order = await _ordersService.GetOrderInfoById(orderId, userId);
@@ -130,8 +131,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        [Authorize(Roles = "buyer")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = Roles.Buyer)]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IEnumerable<OrderResponseDto>> GetOrdersByBuyerId(
             uint buyerId,
             DateTime createdFromDt,
@@ -171,8 +172,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "buyer")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = Roles.Buyer)]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> CancelOrderByBuyer(CancelOrderRequest cancelOrderRequest)
         {
             uint? buyerId = GetUserIdFromClaim();
@@ -214,8 +215,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "manager")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = Roles.Manager)]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> CancelOrderByManager(CancelOrderRequest cancelOrderRequest)
         {
             uint? managerId = GetUserIdFromClaim();
@@ -255,8 +256,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "buyer")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = Roles.Buyer)]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> ConfirmOrderByBuyer(ConfirmOrderRequest confirmOrderRequest)
         {
             uint? buyerId = GetUserIdFromClaim();
@@ -297,8 +298,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "courier")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = Roles.Courier)]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> MarkAsDeliveredToBuyer(MarkAsDeliveredRequest markAsDeliveredRequest)
         {
             uint? courierId = GetUserIdFromClaim();
@@ -338,8 +339,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "manager")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = Roles.Manager)]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> MarkAsDeliveredToShop(MarkAsDeliveredRequest markAsDeliveredRequest)
         {
             uint? managerId = GetUserIdFromClaim();
@@ -379,8 +380,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "manager, courier")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = $"{Roles.Manager}, {Roles.Courier}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> MarkAsReceived(MarkAsReceivedRequest markAsReceivedRequest)
         {
             uint? userId = GetUserIdFromClaim();
@@ -422,8 +423,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "courier")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = Roles.Courier)]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> UpdateCourierId(UpdateCourierIdRequest updateCourierIdRequest)
         {
             uint? courierId = GetUserIdFromClaim();
@@ -464,8 +465,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "buyer")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = Roles.Buyer)]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> UpdateDeliveryAddressByBuyer(UpdateDeliveryAddressRequest updateDeliveryAddressRequest)
         {
             uint? buyerId = GetUserIdFromClaim();
@@ -508,8 +509,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "manager, courier")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = $"{Roles.Manager}, {Roles.Courier}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> UpdateDeliveryId(UpdateDeliveryIdRequest updateDeliveryIdRequest)
         {
             uint? userId = GetUserIdFromClaim();
@@ -552,8 +553,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "buyer")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = Roles.Buyer)]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> UpdateExtraInfoByBuyer(UpdateExtraInfoRequest updateExtraInfoRequest)
         {
             uint? buyerId = GetUserIdFromClaim();
@@ -594,8 +595,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "manager")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = Roles.Manager)]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> UpdateManagerId(UpdateManagerIdRequest updateManagerIdRequest)
         {
             uint? managerId = GetUserIdFromClaim();
@@ -635,8 +636,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "manager, courier")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = $"{Roles.Manager}, {Roles.Courier}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> UpdateMassInGramsDimensions(UpdateMassInGramsDimensionsRequest updateMassInGramsDimensionsRequest)
         {
             uint? userId = GetUserIdFromClaim();
@@ -681,8 +682,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "manager, courier")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = $"{Roles.Manager}, {Roles.Courier}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> UpdatePaymentInfo(UpdatePaymentInfoByManagerRequest updatePaymentInfoByManagerRequest)
         {
             uint? userId = GetUserIdFromClaim();
@@ -725,8 +726,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "manager")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = Roles.Manager)]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> UpdatePlannedDeliveryTimeByManager(UpdatePlannedDeliveryTimeRequest updatePlannedDeliveryTimeRequest)
         {
             uint? managerId = GetUserIdFromClaim();
@@ -767,8 +768,8 @@ namespace Orders.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "buyer")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = Roles.Buyer)]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> UpdateShopIdByBuyer(UpdateShopIdRequest updateShopIdRequest)
         {
             uint? buyerId = GetUserIdFromClaim();

@@ -1,8 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
+using ShopServices.Core.Auth;
 
-namespace Warehouse.API
+namespace Warehouses.API
 {
     /// <summary>
     /// Класс для авторизации по ролям в методах, требующих авторизацию
@@ -22,9 +23,9 @@ namespace Warehouse.API
             if (context.User == null)
                 return Task.CompletedTask;
 
-            if (context.User.IsInRole("manager") ||
-                context.User.IsInRole("developer") ||
-                context.User.IsInRole("admin"))
+            if (context.User.IsInRole(Roles.Manager) ||
+                context.User.IsInRole(Roles.Developer) ||
+                context.User.IsInRole(Roles.Admin))
                 context.Succeed(requirement);
 
             return Task.CompletedTask;

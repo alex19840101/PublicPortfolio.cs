@@ -10,6 +10,7 @@ namespace ShopServices.DataAccess.Entities
     public class EmailNotification
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(TypeName = "bigint")]
         public ulong Id { get; private set; }
         public string EmailFrom { get; private set; } = default!;
         public string EmailTo { get; private set; } = default!;

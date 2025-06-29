@@ -51,7 +51,9 @@ namespace TestFixtures
                 role: GenerateStringIfTrueElseReturnNull(generateRole),
                 granterId: granterId,
                 createdDt: DateTime.Now,
-                lastUpdateDt: DateTime.Now);
+                lastUpdateDt: DateTime.Now,
+                shopId: fixture.Create<uint>(),
+                warehouseId: fixture.Create<uint>());
 
             //local
             string GenerateStringIfTrueElseReturnNull(bool flag) =>
@@ -86,7 +88,9 @@ namespace TestFixtures
                 role: null,
                 granterId: null,
                 createdDt: DateTime.Now,
-                lastUpdateDt: null);
+                lastUpdateDt: null,
+                shopId: null,
+                warehouseId: null);
 
             //local
             string GenerateStringIfTrueElseReturnNull(bool flag) =>
@@ -189,7 +193,9 @@ namespace TestFixtures
                 newPasswordHash: newPasswordHash ?? GenerateStringIfTrueElseReturnNull(generateNewPasswordHash),
                 nick: null,
                 phone: null,
-                requestedRole: null);
+                requestedRole: null,
+                shopId: fixture.Create<uint>(),
+                warehouseId: fixture.Create<uint>());
 
             //local
             string GenerateStringIfTrueElseReturnNull(bool flag) =>

@@ -17,6 +17,7 @@ namespace ShopServices.DataAccess.Entities
         public string PasswordHash { get { return _passwordHash; } }
         public string? Nick { get { return _nick; } }
         public string? Phone { get { return _phone; } }
+        [Column(TypeName = "integer[]")]
         public List<uint>? DiscountGroups { get { return _discountGroups; } }
         public uint? GranterId{ get { return _granterId; } }
         public DateTime CreatedDt { get { return _createdDt; } }

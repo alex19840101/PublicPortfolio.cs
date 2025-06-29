@@ -50,7 +50,7 @@ namespace Orders.API
                 ShopId = coreOrder.ShopId,
                 ManagerId = coreOrder.ManagerId,
                 ExtraInfo = coreOrder.ExtraInfo,
-                Archieved = coreOrder.Archieved,
+                Archived = coreOrder.Archived,
                 MassInGrams = coreOrder.MassInGrams,
                 Dimensions = coreOrder.Dimensions,
                 Comment = coreOrder.Comment,
@@ -107,7 +107,7 @@ namespace Orders.API
                 deliveryAddress: addOrderRequestDto.DeliveryAddress,
                 shopId: addOrderRequestDto.ShopId,
                 extraInfo: addOrderRequestDto.ExtraInfo,
-                archieved: false,
+                archived: false,
                 massInGrams: addOrderRequestDto.MassInGrams ?? 0,
                 dimensions: addOrderRequestDto.Dimensions);
         }
@@ -149,7 +149,7 @@ namespace Orders.API
                 ShopId = coreOrder.ShopId,
                 ManagerId = coreOrder.ManagerId,
                 ExtraInfo = coreOrder.ExtraInfo,
-                Archieved = coreOrder.Archieved,
+                Archived = coreOrder.Archived,
                 MassInGrams = coreOrder.MassInGrams,
                 Dimensions = coreOrder.Dimensions
             });

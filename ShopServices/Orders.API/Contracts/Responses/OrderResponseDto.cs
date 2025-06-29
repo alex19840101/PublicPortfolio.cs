@@ -55,7 +55,7 @@ namespace Orders.API.Contracts.Responses
         public string ExtraInfo { get; set; } = default!;
 
         /// <summary> В архиве ли (отменен ли) заказ </summary>
-        public bool Archieved { get; set; }
+        public bool Archived { get; set; }
 
         /// <summary> Масса, г </summary>
         public uint MassInGrams { get; set; }

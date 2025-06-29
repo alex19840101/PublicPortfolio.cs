@@ -13,11 +13,15 @@ namespace ShopServices.DataAccess.Entities
         public uint BuyerId { get; private set; }
 
         /// <summary> Навигационное свойство: покупатель </summary>
-        public Buyer Buyer { get; private set; } = default!;
+        public Buyer Buyer { get; private set; }
 
         /// <summary> Навигационное свойство: список товарных позиций в заказе </summary>
         public ICollection<OrderPosition> Positions { get; } = [];
 
+        /// <summary> Навигационное свойство: доставка </summary>
+        public Delivery? Delivery { get; private set; }
+        /// <summary> Навигационное свойство: коллекция перевозок </summary>
+        public ICollection<Delivery>? Deliveries { get; }
         public uint? DeliveryId { get; private set; }
 
         public uint? ManagerId { get; private set; }
@@ -52,6 +56,10 @@ namespace ShopServices.DataAccess.Entities
 
         /// <summary> Адрес доставки заказа (в случае доставки не в магазин) </summary>
         public string? DeliveryAddress { get; private set; }
+
+        /// <summary> Навигационное свойство: магазин доставки заказа </summary>
+        public Shop? Shop { get; private set; }
+
         /// <summary> Магазин доставки заказа </summary>
         public uint? ShopId { get; private set; }
 
@@ -62,7 +70,8 @@ namespace ShopServices.DataAccess.Entities
         public bool Archieved { get; private set; }
 
         /// <summary> Масса, г </summary>
-        public uint MassInGrams { get; private set; } = default!;
+        [Column(TypeName = "integer")]
+        public uint MassInGrams { get; private set; }
 
         /// <summary> Габариты </summary>
         public string Dimensions { get; private set; } = default!;

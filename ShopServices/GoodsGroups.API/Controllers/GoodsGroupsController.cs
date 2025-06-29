@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ShopServices.Abstractions;
 using ShopServices.Core;
+using ShopServices.Core.Auth;
 using ShopServices.Core.Services;
 
 namespace GoodsGroups.API.Controllers
@@ -42,8 +43,8 @@ namespace GoodsGroups.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Conflict)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = "admin, developer, manager")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = $"{Roles.Admin}, {Roles.Developer}, {Roles.Manager}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> AddCategory(Category categoryDto)
         {
             var createResult = await _goodsGroupsService.AddCategory(CategoryMapper.GetCoreCategory(categoryDto));
@@ -117,7 +118,7 @@ namespace GoodsGroups.API.Controllers
         /// <summary> Получение информации о категориях </summary>
         /// <param name="nameSubString"> Подстрока названия категории </param>
         /// <param name="brand"> Подстрока - бренд (производитель) </param>
-        /// <param name="byPage"> Количество товаров на странице </param>
+        /// <param name="byPage"> Количество категорий на странице </param>
         /// <param name="page"> Номер страницы </param>
         /// <param name="ignoreCase"> Игнорировать ли регистр символов </param>
         /// <returns></returns>
@@ -151,14 +152,18 @@ namespace GoodsGroups.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        [Authorize(Roles = "admin, developer, manager")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [Authorize(Roles = $"{Roles.Admin}, {Roles.Developer}, {Roles.Manager}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> UpdateCategory(Category categoryDto)
         {
             var updateResult = await _goodsGroupsService.UpdateCategory(CategoryMapper.GetCoreCategory(categoryDto));
 
             if (updateResult.StatusCode == HttpStatusCode.NotFound)
                 return NotFound(updateResult);
+
+            if (updateResult.StatusCode == HttpStatusCode.Forbidden)
+                return new ObjectResult(updateResult) { StatusCode = StatusCodes.Status403Forbidden };
 
             return Ok(updateResult);
         }
@@ -172,8 +177,8 @@ namespace GoodsGroups.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        [Authorize(Roles = "admin, developer, manager")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = $"{Roles.Admin}, {Roles.Developer}, {Roles.Manager}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> ArchiveCategory(uint id)
         {
             var deleteResult = await _goodsGroupsService.ArchiveCategory(id);
@@ -196,8 +201,8 @@ namespace GoodsGroups.API.Controllers
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-        [Authorize(Roles = "admin, developer, manager")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = $"{Roles.Admin}, {Roles.Developer}, {Roles.Manager}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> DeleteCategory(uint id)
         {
             var deleteResult = await _goodsGroupsService.DeleteCategory(id);

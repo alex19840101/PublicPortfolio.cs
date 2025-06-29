@@ -85,7 +85,7 @@
         public const string COST_SHOULD_BE_POSITIVE = "Cost should be positive";
         public const string ORDER_POSITIONS_MUST_BE_NOT_NULL = "order.Positions must be not null";
         public const string ORDER_POSITIONS_MUST_HAVE_POSITION = "order.Positions must have 1 or more position(s)";
-        public const string PRODUCT_IS_ARCHIEVED = "Product is archieved, not available to order";
+        public const string PRODUCT_IS_ARCHIEVED = "Product is archived, not available to order";
         public const string PRICE_ID_IS_NULL = "product.PriceId == null, not available to order";
         public const string PRICE_PER_UNIT_IS_NULL = "product.PricePerUnit == null, not available to order";
         public const string BUYER_NOT_FOUND = "Buyer not found";
@@ -135,8 +135,31 @@
         //shops
         public const string SHOP_ID_SHOULD_BE_POSITIVE = "shopId should be positive (>0)";
         public const string SHOP_NOT_FOUND = "shop (shopId) not found";
-        public static readonly object COURIER_ID_MISMATCH = "courierId mismatch";
-        public static readonly object MANAGER_ID_MISMATCH;
-        public static readonly object BUYER_ID_MISMATCH;
+        public const string COURIER_ID_MISMATCH = "courierId mismatch";
+        public const string MANAGER_ID_MISMATCH = "managerId mismatch";
+        public const string BUYER_ID_MISMATCH = "buyerId mismatch";
+        public const string NEW_SHOP_RARAM_NAME = "newShop";
+        public const string SHOP_RARAM_NAME = "shop";
+        public const string PHONE_SHOULD_NOT_BE_EMPTY = "Phone should be not empty";
+        public const string WORK_SCHEDULE_SHOULD_NOT_BE_EMPTY = "WorkSchedule should be not empty";
+        public const string SHOP_IS_ACTUAL = "Shop is actual";
+        public const string SHOP_UPDATED = "Shop updated";
+
+        //warehouses
+        public const string NEW_WAREHOUSE_RARAM_NAME = "newWarehouse";
+        public const string WAREHOUSE_ID_SHOULD_BE_POSITIVE = "warehouse.Id == 0, should be positive (>0)";
+        public const string WAREHOUSE_RARAM_NAME = "warehouse";
+        public const string WAREHOUSE_IS_ACTUAL = "Warehouse is actual";
+        public const string WAREHOUSE_UPDATED = "Warehouse updated";
+        
+        //deliveries
+        public const string DELIVERY_RARAM_NAME = "delivery";
+        public const string MASS_IN_GRAMS_SHOULD_BE_POSITIVE = "delivery.MassInGrams should be positive";
+        public const string COMMENT_SHOULD_NOT_BE_EMPTY = "Comment should not be empty";
+        public const string DELIVERY_ID_SHOULD_BE_POSITIVE = "delivery.Id == 0, should be positive";
+        public const string DELIVERY_STATUS_SHOULD_BE_TOADD = "delivery.Status should be ToAdd";
+        public const string REGIONCODE_SHOULD_BE_POSITIVE = "delivery.RegionCode == 0, should be positive";
+        public const string DELIVERY_UPDATED = "Delivery updated";
+        public const string DELIVERY_IS_ACTUAL = "Delivery is actual";
     }
 }

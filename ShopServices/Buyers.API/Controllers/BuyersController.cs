@@ -99,8 +99,8 @@ public class BuyersController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Unauthorized)]
-    [Authorize(Roles = "admin, manager")]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(Roles = $"{Roles.Admin}, {Roles.Manager}")]
+    [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
     public async Task<IActionResult> ChangeDiscountGroups(ChangeDiscountGroupsRequestDto request)
     {
         var grantResult = await _buyersService.ChangeDiscountGroups(ChangeDiscountGroupsData(request));
@@ -168,8 +168,8 @@ public class BuyersController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-    [Authorize(Roles = "admin")]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(Roles = Roles.Admin)]
+    [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
     public async Task<IActionResult> GetUserInfoById(uint id)
     {
         var buyer = await _buyersService.GetUserInfo(id);
@@ -186,8 +186,8 @@ public class BuyersController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
     [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
-    [Authorize(Roles = "admin")]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(Roles = Roles.Admin)]
+    [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
     public async Task<IActionResult> GetUserInfoByLogin(string login)
     {
         var buyer = await _buyersService.GetUserInfo(login);
@@ -269,7 +269,9 @@ public class BuyersController : ControllerBase
                 passwordHash: SHA256Hasher.GeneratePasswordHash(requestDto.ExistingPassword, repeatPassword: requestDto.ExistingPassword),
                 newPasswordHash: requestDto.NewPassword != null ? SHA256Hasher.GeneratePasswordHash(requestDto.NewPassword, repeatPassword: requestDto.RepeatNewPassword) : null,
                 nick: requestDto.Nick,
-                phone: requestDto.Phone);
+                phone: requestDto.Phone,
+                shopId: null,
+                warehouseId: null);
     }
 
     [NonAction]

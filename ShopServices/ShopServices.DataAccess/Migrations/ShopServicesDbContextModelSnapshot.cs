@@ -43,6 +43,8 @@ namespace ShopServices.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
                     b.Property<int>("Count")
                         .HasColumnType("integer");
 
@@ -174,11 +176,11 @@ namespace ShopServices.DataAccess.Migrations
 
             modelBuilder.Entity("ShopServices.DataAccess.Entities.Delivery", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -187,6 +189,11 @@ namespace ShopServices.DataAccess.Migrations
 
                     b.Property<int>("BuyerId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<int?>("CourierId")
                         .HasColumnType("int");
@@ -199,20 +206,40 @@ namespace ShopServices.DataAccess.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)");
 
+                    b.Property<int?>("FromShopId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("FromWarehouseId")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("ManagerId")
                         .HasColumnType("int");
 
                     b.Property<int>("MassInGrams")
-                        .IsRequired()
                         .HasColumnType("integer");
 
-                    b.Property<long>("OrderId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("OrderId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("PaymentInfo")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
+
+                    b.Property<int>("RegionCode")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("ToShopId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("ToWarehouseId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("TransferId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("timestamp with time zone");
@@ -225,6 +252,8 @@ namespace ShopServices.DataAccess.Migrations
 
                     b.HasIndex("ManagerId");
 
+                    b.HasIndex("OrderId");
+
                     b.ToTable("Deliveries");
                 });
 
@@ -234,7 +263,7 @@ namespace ShopServices.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                        NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
@@ -318,14 +347,24 @@ namespace ShopServices.DataAccess.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<int?>("ShopId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<int?>("WarehouseId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasAlternateKey("Login");
+
+                    b.HasIndex("ShopId");
+
+                    b.HasIndex("WarehouseId");
 
                     b.ToTable("Employees");
 
@@ -334,11 +373,11 @@ namespace ShopServices.DataAccess.Migrations
 
             modelBuilder.Entity("ShopServices.DataAccess.Entities.Order", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Archieved")
                         .HasColumnType("boolean");
@@ -374,6 +413,9 @@ namespace ShopServices.DataAccess.Migrations
                     b.Property<long?>("DeliveryId")
                         .HasColumnType("bigint");
 
+                    b.Property<int?>("DeliveryId1")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Dimensions")
                         .IsRequired()
                         .HasMaxLength(25)
@@ -388,7 +430,6 @@ namespace ShopServices.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("MassInGrams")
-                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<string>("PaymentInfo")
@@ -414,18 +455,22 @@ namespace ShopServices.DataAccess.Migrations
 
                     b.HasIndex("CourierId");
 
+                    b.HasIndex("DeliveryId1");
+
                     b.HasIndex("ManagerId");
+
+                    b.HasIndex("ShopId");
 
                     b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("ShopServices.DataAccess.Entities.OrderPosition", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ArticleNumber")
                         .HasMaxLength(255)
@@ -516,7 +561,6 @@ namespace ShopServices.DataAccess.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("ActualFromDt")
-						.IsRequired()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("ActualToDt")
@@ -585,7 +629,6 @@ namespace ShopServices.DataAccess.Migrations
                         .HasColumnType("character varying(2048)");
 
                     b.Property<int>("MassInGrams")
-                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
@@ -630,6 +673,12 @@ namespace ShopServices.DataAccess.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<bool>("Archived")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("CreatedDt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(254)
@@ -645,10 +694,21 @@ namespace ShopServices.DataAccess.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<int>("RegionCode")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasMaxLength(2048)
                         .HasColumnType("character varying(2048)");
+
+                    b.Property<string>("WorkSchedule")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.HasKey("Id");
 
@@ -681,6 +741,12 @@ namespace ShopServices.DataAccess.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<bool>("Archived")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("CreatedDt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(254)
@@ -696,10 +762,21 @@ namespace ShopServices.DataAccess.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<int>("RegionCode")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasMaxLength(2048)
                         .HasColumnType("character varying(2048)");
+
+                    b.Property<string>("WorkSchedule")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.HasKey("Id");
 
@@ -761,33 +838,58 @@ namespace ShopServices.DataAccess.Migrations
                     b.HasOne("ShopServices.DataAccess.Entities.Order", null)
                         .WithMany()
                         .HasForeignKey("OrdersId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ShopServices.DataAccess.Entities.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductsId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("ShopServices.DataAccess.Entities.Delivery", b =>
                 {
-                    b.HasOne("ShopServices.DataAccess.Entities.Buyer", "Buyer")
+                    b.HasOne("ShopServices.DataAccess.Entities.Buyer", null)
                         .WithMany("Deliveries")
                         .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShopServices.DataAccess.Entities.Courier", null)
+                    b.HasOne("ShopServices.DataAccess.Entities.Courier", "Courier")
                         .WithMany("Deliveries")
                         .HasForeignKey("CourierId");
 
-                    b.HasOne("ShopServices.DataAccess.Entities.Manager", null)
+                    b.HasOne("ShopServices.DataAccess.Entities.Manager", "Manager")
                         .WithMany("Deliveries")
                         .HasForeignKey("ManagerId");
 
-                    b.Navigation("Buyer");
+                    b.HasOne("ShopServices.DataAccess.Entities.Order", "Order")
+                        .WithMany("Deliveries")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Courier");
+
+                    b.Navigation("Manager");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("ShopServices.DataAccess.Entities.Employee", b =>
+                {
+                    b.HasOne("ShopServices.DataAccess.Entities.Shop", "Shop")
+                        .WithMany()
+                        .HasForeignKey("ShopId");
+
+                    b.HasOne("ShopServices.DataAccess.Entities.Warehouse", "Warehouse")
+                        .WithMany()
+                        .HasForeignKey("WarehouseId");
+
+                    b.Navigation("Shop");
+
+                    b.Navigation("Warehouse");
                 });
 
             modelBuilder.Entity("ShopServices.DataAccess.Entities.Order", b =>
@@ -802,11 +904,23 @@ namespace ShopServices.DataAccess.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("CourierId");
 
+                    b.HasOne("ShopServices.DataAccess.Entities.Delivery", "Delivery")
+                        .WithMany()
+                        .HasForeignKey("DeliveryId1");
+
                     b.HasOne("ShopServices.DataAccess.Entities.Manager", null)
                         .WithMany("Orders")
                         .HasForeignKey("ManagerId");
 
+                    b.HasOne("ShopServices.DataAccess.Entities.Shop", "Shop")
+                        .WithMany()
+                        .HasForeignKey("ShopId");
+
                     b.Navigation("Buyer");
+
+                    b.Navigation("Delivery");
+
+                    b.Navigation("Shop");
                 });
 
             modelBuilder.Entity("ShopServices.DataAccess.Entities.OrderPosition", b =>
@@ -825,7 +939,7 @@ namespace ShopServices.DataAccess.Migrations
                     b.HasOne("ShopServices.DataAccess.Entities.Employee", null)
                         .WithOne()
                         .HasForeignKey("ShopServices.DataAccess.Entities.Courier", "Id")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -834,7 +948,7 @@ namespace ShopServices.DataAccess.Migrations
                     b.HasOne("ShopServices.DataAccess.Entities.Employee", null)
                         .WithOne()
                         .HasForeignKey("ShopServices.DataAccess.Entities.Manager", "Id")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -847,6 +961,8 @@ namespace ShopServices.DataAccess.Migrations
 
             modelBuilder.Entity("ShopServices.DataAccess.Entities.Order", b =>
                 {
+                    b.Navigation("Deliveries");
+
                     b.Navigation("Positions");
                 });
 

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ShopServices.Abstractions;
 using ShopServices.Core;
+using ShopServices.Core.Auth;
 using ShopServices.Core.Models;
 using ShopServices.Core.Models.Requests;
 using ShopServices.Core.Services;
@@ -20,8 +21,8 @@ namespace Couriers.API.Controllers
     [Route("api/v{version:apiVersion}/[controller]/[action]")]
     [Produces("application/json")]
     [Consumes("application/json")]
-    [Authorize(Roles ="admin,courier,manager")]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(Roles =$"{Roles.Admin},{Roles.Courier},{Roles.Manager}")]
+    [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
     public class CouriersController : ControllerBase
     {
         private readonly ILogger<CouriersController> _logger;
