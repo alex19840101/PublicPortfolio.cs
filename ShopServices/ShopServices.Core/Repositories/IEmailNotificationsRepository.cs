@@ -16,5 +16,13 @@ namespace ShopServices.Core.Repositories
             uint? orderId,
             uint take,
             uint skipCount);
+
+        public Task<Result> UpdateSent(
+            ulong notificationId,
+            DateTime sent);
+
+        public Task<Result> SaveUnsuccessfulAttempt(
+            ulong notificationId,
+            DateTime lastUnsuccessfulAttempt);
     }
 }

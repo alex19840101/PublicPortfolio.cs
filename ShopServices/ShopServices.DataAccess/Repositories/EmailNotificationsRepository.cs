@@ -77,6 +77,46 @@ namespace ShopServices.DataAccess.Repositories
             return entityNotificationsLst.Select(emailNotification => GetCoreNotification(emailNotification));
         }
 
+        public async Task<Result> UpdateSent(ulong notificationId, DateTime sent)
+        {
+            var emailNotificationEntity = await _dbContext.EmailNotifications
+                .Where(en => en.Id == notificationId).SingleOrDefaultAsync();
+
+            if (emailNotificationEntity is null)
+                return new Result(ResultMessager.NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (emailNotificationEntity.Sent == null)
+                emailNotificationEntity.UpdateSent(sent.ToUniversalTime());
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                await _dbContext.SaveChangesAsync();
+                return new Result(ResultMessager.OK, HttpStatusCode.OK);
+            }
+
+            return new Result(ResultMessager.EMAIL_NOTIFICATION_SENT_EARLIER, HttpStatusCode.OK);
+        }
+
+        public async Task<Result> SaveUnsuccessfulAttempt(ulong notificationId, DateTime lastUnsuccessfulAttempt)
+        {
+            var emailNotificationEntity = await _dbContext.EmailNotifications
+                .Where(en => en.Id == notificationId).SingleOrDefaultAsync();
+
+            if (emailNotificationEntity is null)
+                return new Result(ResultMessager.NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (emailNotificationEntity.LastUnsuccessfulAttempt?.ToLocalTime() != lastUnsuccessfulAttempt)
+                emailNotificationEntity.UnsuccessfulAttempt(lastUnsuccessfulAttempt.ToUniversalTime());
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                await _dbContext.SaveChangesAsync();
+                return new Result(ResultMessager.OK, HttpStatusCode.OK);
+            }
+
+            return new Result(ResultMessager.UNSUCCESSFULL_ATTEMPT_SAVED_EARLIER, HttpStatusCode.OK);
+        }
+
         /// <summary>
         /// Маппер Entities.EmailNotification - ShopServices.Core.Models.Notification
         /// </summary>

@@ -91,5 +91,11 @@ namespace ShopServices.DataAccess.Entities
             UnsuccessfulAttempts = unsuccessfulAttempts;
             LastUnsuccessfulAttempt = lastUnsuccessfulAttempt;
         }
+        internal void UpdateSent(DateTime sent) => Sent = sent;
+        internal void UnsuccessfulAttempt(DateTime lastUnsuccessfulAttempt)
+        {
+            LastUnsuccessfulAttempt = lastUnsuccessfulAttempt;
+            UnsuccessfulAttempts++;
+        }
     }
 }
