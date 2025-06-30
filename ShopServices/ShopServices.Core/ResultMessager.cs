@@ -175,5 +175,8 @@
         public const string NOTIFICATION_SENT_SHOULD_BE_NULL = "notification.Sent != null, should be null to AddNotification";
         public const string NOTIFICATION_LAST_ATTEMPT_SHOULD_BE_NULL = "notification.LastUnsuccessfulAttempt != null, should be null to AddNotification";
         public const string NOTIFICATION_UNSUCCESSFUL_ATTEMPTS_SHOULD_BE_ZERO = "notification.UnsuccessfulAttempts != 0, should be 0 to AddNotification";
+        public const string EMAIL_NOTIFICATION_SENT_EARLIER = "Email notification sent earlier";
+        public const string PHONE_NOTIFICATION_SENT_EARLIER = "Phone notification sent earlier";
+        public const string UNSUCCESSFULL_ATTEMPT_SAVED_EARLIER = "Unsuccessful attempt saved earlier";
     }
 }
