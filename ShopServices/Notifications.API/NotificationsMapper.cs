@@ -30,14 +30,36 @@ namespace Notifications.API
             };
         }
 
-        internal static Notification PrepareCoreNotification(AddNotificationRequestDto addNotificationRequestDto)
+        /// <summary>
+        /// Маппер-формирователь Core.Models.Notification-модели нового уведомления
+        /// </summary>
+        /// <param name="addNotificationRequestDto"></param>
+        /// <param name="employeeId"> Id работника </param>
+        /// <returns></returns>
+        internal static Notification PrepareCoreNotification(
+            AddNotificationRequestDto addNotificationRequestDto,
+            uint employeeId)
         {
-            throw new NotImplementedException();
+            if (addNotificationRequestDto.NotificationMethod != ShopServices.Core.Enums.NotificationMethod.Email)
+                addNotificationRequestDto.Message = $"{addNotificationRequestDto.Topic}.{addNotificationRequestDto.Message}";
+
+            return new Notification(
+                id: 0,
+                notificationMethod: addNotificationRequestDto.NotificationMethod,
+                modelEntityType: addNotificationRequestDto.ModelEntityType,
+                buyerId: addNotificationRequestDto.BuyerId,
+                changedEntityId: addNotificationRequestDto.ChangedEntityId,
+                sender: addNotificationRequestDto.From,
+                recipient: addNotificationRequestDto.To,
+                topic: addNotificationRequestDto.Topic,
+                message: addNotificationRequestDto.Message,
+                created: DateTime.Now,
+                creator: $"Employee {employeeId} Notifications.API");
         }
 
 
         /// <summary>
-        /// Маппинг IEnumerable(Core.Models.Shop) - IEnumerable(Contracts.Responses.NotificationDataResponseDto)
+        /// Маппинг IEnumerable(Core.Models.Notification) - IEnumerable(Contracts.Responses.NotificationDataResponseDto)
         /// </summary>
         /// <param name="notificationsList"> список уведомлений IEnumerable(Core.Models.Notification) </param>
         /// <returns></returns>

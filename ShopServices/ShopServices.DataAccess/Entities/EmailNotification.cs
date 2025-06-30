@@ -45,6 +45,22 @@ namespace ShopServices.DataAccess.Entities
         /// <summary> Дата и время последней неудачной отправки уведомления </summary>
         public DateTime? LastUnsuccessfulAttempt { get; private set; }
 
+        /// <summary>
+        /// ShopServices.DataAccess.Entities.EmailNotification - конструктор уведомления
+        /// </summary>
+        /// <param name="id"> Id однократного уведомления в таблице телефонных уведомлений PhoneNotifications </param>
+        /// <param name="modelEntityType"> Тип измененной модели (сущности) (для классификации уведомлений) по <see cref="Enums.ModelEntityType"/> </param>
+        /// <param name="buyerId"> Уникальный идентификатор покупателя </param>
+        /// <param name="changedEntityId"> Id измененной сущности в БД </param>
+        /// <param name="emailFrom"> E-mail отправителя уведомления (сообщения) </param>
+        /// <param name="emailTo"> E-mail получателя уведомления (сообщения) </param>
+        /// <param name="topic"> Тема уведомления (сообщения) </param>
+        /// <param name="message"> Сообщение </param>
+        /// <param name="created"> Дата и время создания уведомления </param>
+        /// <param name="creator"> Создатель (автор) уведомления </param>
+        /// <param name="sent"> Дата и время отправки уведомления </param>
+        /// <param name="unsuccessfulAttempts"> Количество сделанных неудачных попыток отправки уведомления</param>
+        /// <param name="lastUnsuccessfulAttempt"> Дата и время последней неудачной отправки уведомления </param>
         public EmailNotification(
             ulong id,
             uint modelEntityType,
@@ -52,6 +68,7 @@ namespace ShopServices.DataAccess.Entities
             ulong changedEntityId,
             string emailFrom,
             string emailTo,
+            string topic,
             string message,
             DateTime created,
             string creator,
@@ -66,6 +83,7 @@ namespace ShopServices.DataAccess.Entities
             ChangedEntityId = changedEntityId;
             EmailFrom = emailFrom;
             EmailTo = emailTo;
+            Topic = topic;
             Message = message;
             Created = created;
             Creator = creator;

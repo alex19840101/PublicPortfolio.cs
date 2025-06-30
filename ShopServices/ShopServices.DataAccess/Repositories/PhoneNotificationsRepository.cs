@@ -94,6 +94,7 @@ namespace ShopServices.DataAccess.Repositories
                 changedEntityId: phoneNotificationEntity.ChangedEntityId,
                 sender: phoneNotificationEntity.SmsFrom,
                 recipient: phoneNotificationEntity.SmsTo,
+                topic: string.Empty,
                 message: phoneNotificationEntity.Message,
                 created: phoneNotificationEntity.Created,
                 creator: phoneNotificationEntity.Creator,

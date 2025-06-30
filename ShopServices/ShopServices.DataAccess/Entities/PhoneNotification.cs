@@ -47,6 +47,22 @@ namespace ShopServices.DataAccess.Entities
         /// <summary> Дата и время последней неудачной отправки уведомления </summary>
         public DateTime? LastUnsuccessfulAttempt { get; private set; }
 
+        /// <summary>
+        /// ShopServices.DataAccess.Entities.PhoneNotification - конструктор уведомления
+        /// </summary>
+        /// <param name="id"> Id однократного уведомления в таблице телефонных уведомлений PhoneNotifications </param>
+        /// <param name="notificationMethod"> *Метод уведомления по <see cref="ShopServices.Core.Enums.NotificationMethod"/> </param>
+        /// <param name="modelEntityType"> Тип измененной модели (сущности) (для классификации уведомлений) по <see cref="Enums.ModelEntityType"/> </param>
+        /// <param name="buyerId"> Уникальный идентификатор покупателя </param>
+        /// <param name="changedEntityId"> Id измененной сущности в БД </param>
+        /// <param name="smsFrom"> Телефонный номер отправителя уведомления (сообщения) </param>
+        /// <param name="smsTo"> Телефонный номер получателя уведомления (сообщения) </param>
+        /// <param name="message"> Сообщение </param>
+        /// <param name="created"> Дата и время создания уведомления </param>
+        /// <param name="creator"> Создатель (автор) уведомления </param>
+        /// <param name="sent"> Дата и время отправки уведомления </param>
+        /// <param name="unsuccessfulAttempts"> Количество сделанных неудачных попыток отправки уведомления</param>
+        /// <param name="lastUnsuccessfulAttempt"> Дата и время последней неудачной отправки уведомления </param>
         public PhoneNotification(
             ulong id,
             uint notificationMethod,

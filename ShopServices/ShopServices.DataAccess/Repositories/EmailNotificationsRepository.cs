@@ -31,6 +31,7 @@ namespace ShopServices.DataAccess.Repositories
                 changedEntityId: newNotification.ChangedEntityId,
                 emailFrom: newNotification.Sender,
                 emailTo: newNotification.Recipient,
+                topic: newNotification.Topic,
                 message: newNotification.Message,
                 created: DateTime.Now.ToUniversalTime(),
                 creator: newNotification.Creator);
@@ -91,6 +92,7 @@ namespace ShopServices.DataAccess.Repositories
                 changedEntityId: emailNotificationEntity.ChangedEntityId,
                 sender: emailNotificationEntity.EmailFrom,
                 recipient: emailNotificationEntity.EmailTo,
+                topic: emailNotificationEntity.Topic,
                 message: emailNotificationEntity.Message,
                 created: emailNotificationEntity.Created,
                 creator: emailNotificationEntity.Creator,
