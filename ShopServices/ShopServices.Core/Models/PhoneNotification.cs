@@ -1,21 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ShopServices.Core.Models
+﻿namespace ShopServices.Core.Models
 {
-    public class PhoneNotification
+    /// <summary> Класс однократного уведомления по телефону (SMS/Telegram) </summary>
+    public class PhoneNotification : Notification
     {
-        public ulong Id { get; private set; }
-
-        public string SmsFrom { get; private set; }
-        public string SmsTo { get; private set; }
-        public string Message { get; private set; }
-
-        /// <summary> Дата и время создания уведомления </summary>
-        public DateTime Created { get; private set; }
-
-        /// <summary> Дата и время отправки уведомления </summary>
-        public DateTime? Sent { get; set; }
     }
 }

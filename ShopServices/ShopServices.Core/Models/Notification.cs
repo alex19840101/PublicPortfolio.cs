@@ -1,0 +1,52 @@
+﻿using System;
+using ShopServices.Core.Enums;
+
+namespace ShopServices.Core.Models
+{
+    /// <summary> Класс однократного уведомления </summary>
+    public class Notification
+    {
+        public ulong Id { get; private set; }
+
+        /// <summary> *Метод уведомления по <see cref="ShopServices.Core.Enums.NotificationMethod"/> </summary>
+        public NotificationMethod NotificationMethod { get; private set; }
+
+        /// <summary> Тип измененной модели (сущности) (для классификации уведомлений) по <see cref="Enums.ModelEntityType"/> </summary>
+        public ModelEntityType ModelEntityType { get; private set; }
+
+        /// <summary> Id измененной сущности в БД </summary>
+        public ulong ChangedEntityId { get; private set; }
+
+        /// <summary> Уникальный идентификатор покупателя </summary>
+        public uint? BuyerId { get; private set; }
+
+        /// <summary> Отправитель уведомления (сообщения) (E-mail/телефон) </summary>
+        public string Sender { get; private set; }
+
+        /// <summary> Получатель уведомления (сообщения) (E-mail/телефон) </summary>
+        public string Recipient { get; private set; }
+        public string Message { get; private set; }
+        
+        /// <summary> Тема сообщения (в E-mail - отдельно, в SMS/Telegram-сообщении - в начале сообщения) </summary>
+        public string Topic { get; private set; }
+
+        /// <summary> Дата и время создания уведомления </summary>
+        public DateTime Created { get; private set; }
+
+        /// <summary> Создатель (автор) уведомления </summary>
+        public string Creator { get; private set; }
+
+        /// <summary> Дата и время отправки уведомления </summary>
+        public DateTime? Sent { get; set; }
+
+        public ulong UnsuccessfulAttempts { get; private set; } = 0;
+
+        /// <summary> Дата и время последней неудачной отправки уведомления </summary>
+        public DateTime? LastUnsuccessfulAttempt { get; set; }
+
+        public bool Any()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

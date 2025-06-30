@@ -12,14 +12,37 @@ namespace ShopServices.DataAccess.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column(TypeName = "bigint")]
         public ulong Id { get; private set; }
+
+        /// <summary> Тип измененной модели (сущности) (для классификации уведомлений) по <see cref="Core.Enums.ModelEntityType"/> </summary>
+        [Column(TypeName = "integer")]
+        public uint ModelEntityType { get; private set; }
+
+        /// <summary> Уникальный идентификатор покупателя </summary>
+        [Column(TypeName = "integer")]
+        public uint? BuyerId { get; private set; }
+
+        /// <summary> Id измененной сущности в БД </summary>
+        [Column(TypeName = "bigint")]
+        public ulong ChangedEntityId { get; private set; }
+
         public string EmailFrom { get; private set; } = default!;
         public string EmailTo { get; private set; } = default!;
         public string Message { get; private set; } = default!;
+        public string Topic { get; private set; } = default!;
 
         /// <summary> Дата и время создания уведомления </summary>
         public DateTime Created { get; private set; }
 
+        /// <summary> Создатель (автор) уведомления </summary>
+        public string Creator { get; private set; } = default!;
+
         /// <summary> Дата и время отправки уведомления </summary>
         public DateTime? Sent { get; set; }
+
+        [Column(TypeName = "integer")]
+        public ulong UnsuccessfulAttempts { get; private set; } = 0;
+
+        /// <summary> Дата и время последней неудачной отправки уведомления </summary>
+        public DateTime? LastUnsuccessfulAttempt { get; set; }
     }
 }
