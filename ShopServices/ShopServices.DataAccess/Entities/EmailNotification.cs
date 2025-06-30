@@ -37,12 +37,41 @@ namespace ShopServices.DataAccess.Entities
         public string Creator { get; private set; } = default!;
 
         /// <summary> Дата и время отправки уведомления </summary>
-        public DateTime? Sent { get; set; }
+        public DateTime? Sent { get; private set; }
 
         [Column(TypeName = "integer")]
-        public ulong UnsuccessfulAttempts { get; private set; } = 0;
+        public uint UnsuccessfulAttempts { get; private set; } = 0;
 
         /// <summary> Дата и время последней неудачной отправки уведомления </summary>
-        public DateTime? LastUnsuccessfulAttempt { get; set; }
+        public DateTime? LastUnsuccessfulAttempt { get; private set; }
+
+        public EmailNotification(
+            ulong id,
+            uint modelEntityType,
+            uint? buyerId,
+            ulong changedEntityId,
+            string emailFrom,
+            string emailTo,
+            string message,
+            DateTime created,
+            string creator,
+            DateTime? sent = null,
+            uint unsuccessfulAttempts = 0,
+            DateTime? lastUnsuccessfulAttempt = null
+            )
+        {
+            Id = id;
+            ModelEntityType = modelEntityType;
+            BuyerId = buyerId;
+            ChangedEntityId = changedEntityId;
+            EmailFrom = emailFrom;
+            EmailTo = emailTo;
+            Message = message;
+            Created = created;
+            Creator = creator;
+            Sent = sent;
+            UnsuccessfulAttempts = unsuccessfulAttempts;
+            LastUnsuccessfulAttempt = lastUnsuccessfulAttempt;
+        }
     }
 }
