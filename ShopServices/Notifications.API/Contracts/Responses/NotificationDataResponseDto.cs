@@ -42,8 +42,8 @@ namespace Notifications.API.Contracts.Responses
         /// <summary> Дата и время отправки уведомления </summary>
         public DateTime? Sent { get; set; }
 
-        /// <summary> Количество неудачных попыток отправки уведомления </summary>
-        public ulong UnsuccessfulAttempts { get; set; }
+        /// <summary> Количество сделанных неудачных попыток отправки уведомления </summary>
+        public uint UnsuccessfulAttempts { get; set; }
 
         /// <summary> Дата и время последней неудачной попытки отправки уведомления </summary>
         public DateTime? LastUnsuccessfulAttempt { get; set; }

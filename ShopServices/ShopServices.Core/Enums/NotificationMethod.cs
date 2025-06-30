@@ -1,6 +1,6 @@
 ﻿namespace ShopServices.Core.Enums
 {
-    public enum NotificationMethod
+    public enum NotificationMethod : byte
     {
         None = 0,
 

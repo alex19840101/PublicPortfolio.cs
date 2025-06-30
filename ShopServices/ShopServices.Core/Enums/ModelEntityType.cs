@@ -1,7 +1,7 @@
 ﻿namespace ShopServices.Core.Enums
 {
     /// <summary> Тип модели (сущности) (для классификации уведомлений) </summary>
-    public enum ModelEntityType
+    public enum ModelEntityType : byte
     {
         None = 0,
 

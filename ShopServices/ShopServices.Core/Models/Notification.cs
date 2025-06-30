@@ -38,15 +38,42 @@ namespace ShopServices.Core.Models
 
         /// <summary> Дата и время отправки уведомления </summary>
         public DateTime? Sent { get; set; }
-
-        public ulong UnsuccessfulAttempts { get; private set; } = 0;
+        
+        /// <summary> Количество сделанных неудачных попыток отправки уведомления </summary>
+        public uint UnsuccessfulAttempts { get; private set; } = 0;
 
         /// <summary> Дата и время последней неудачной отправки уведомления </summary>
         public DateTime? LastUnsuccessfulAttempt { get; set; }
 
-        public bool Any()
+        public Notification(
+            ulong id,
+            NotificationMethod notificationMethod,
+            ModelEntityType modelEntityType,
+            uint? buyerId,
+            ulong changedEntityId,
+            string sender,
+            string recipient,
+            string message,
+            DateTime created,
+            string creator,
+            DateTime? sent = null,
+            uint unsuccessfulAttempts = 0,
+            DateTime? lastUnsuccessfulAttempt = null
+            )
         {
-            throw new NotImplementedException();
+            Id = id;
+            NotificationMethod = notificationMethod;
+            ModelEntityType = modelEntityType;
+            BuyerId = buyerId;
+            ChangedEntityId = changedEntityId;
+            Sender = sender;
+            Recipient = recipient;
+            Message = message;
+            Created = created;
+            Creator = creator;
+            Sent = sent;
+            UnsuccessfulAttempts = unsuccessfulAttempts;
+            LastUnsuccessfulAttempt = lastUnsuccessfulAttempt;
         }
     }
 }
