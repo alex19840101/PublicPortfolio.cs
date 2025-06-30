@@ -79,6 +79,46 @@ namespace ShopServices.DataAccess.Repositories
             return phoneNotificationsLst.Select(phoneNotification => GetCoreNotification(phoneNotification));
         }
 
+        public async Task<Result> UpdateSent(ulong notificationId, DateTime sent)
+        {
+            var phoneNotificationEntity = await _dbContext.PhoneNotifications
+                .Where(en => en.Id == notificationId).SingleOrDefaultAsync();
+
+            if (phoneNotificationEntity is null)
+                return new Result(ResultMessager.NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (phoneNotificationEntity.Sent == null)
+                phoneNotificationEntity.UpdateSent(sent.ToUniversalTime());
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                await _dbContext.SaveChangesAsync();
+                return new Result(ResultMessager.OK, HttpStatusCode.OK);
+            }
+
+            return new Result(ResultMessager.PHONE_NOTIFICATION_SENT_EARLIER, HttpStatusCode.OK);
+        }
+
+        public async Task<Result> SaveUnsuccessfulAttempt(ulong notificationId, DateTime lastUnsuccessfulAttempt)
+        {
+            var phoneNotificationEntity = await _dbContext.PhoneNotifications
+                .Where(en => en.Id == notificationId).SingleOrDefaultAsync();
+
+            if (phoneNotificationEntity is null)
+                return new Result(ResultMessager.NOT_FOUND, HttpStatusCode.NotFound);
+
+            if (phoneNotificationEntity.LastUnsuccessfulAttempt?.ToLocalTime() != lastUnsuccessfulAttempt)
+                phoneNotificationEntity.UnsuccessfulAttempt(lastUnsuccessfulAttempt.ToUniversalTime());
+
+            if (_dbContext.ChangeTracker.HasChanges())
+            {
+                await _dbContext.SaveChangesAsync();
+                return new Result(ResultMessager.OK, HttpStatusCode.OK);
+            }
+
+            return new Result(ResultMessager.UNSUCCESSFULL_ATTEMPT_SAVED_EARLIER, HttpStatusCode.OK);
+        }
+
         /// <summary>
         /// Маппер Entities.PhoneNotification - ShopServices.Core.Models.Notification
         /// </summary>
