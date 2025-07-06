@@ -89,7 +89,7 @@ namespace ShopServices.Core.Auth
         internal void UpdateTelegramChatId(long? telegramChatId) => _telegramChatId = telegramChatId;
         /// <summary> Обновить настройки способов уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
         internal void UpdateNotificationMethods(List<NotificationMethod> notificationMethods) => _notificationMethods = notificationMethods;
-        internal void UpdateRole(string newRole) => _role = newRole;
+        public void UpdateRole(string newRole) => _role = newRole;
         internal void UpdateGranterId(uint granterId) => _granterId = granterId;
         internal void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
         internal void UpdateShopId(uint? shopId) => _shopId = shopId;
