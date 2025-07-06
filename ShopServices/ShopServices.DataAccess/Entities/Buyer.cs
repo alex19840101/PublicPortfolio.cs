@@ -17,6 +17,11 @@ namespace ShopServices.DataAccess.Entities
         public string PasswordHash { get { return _passwordHash; } }
         public string? Nick { get { return _nick; } }
         public string? Phone { get { return _phone; } }
+        public long? TelegramChatId { get { return _telegramChatId; } }
+
+        /// <summary> Способы уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
+        [Column(TypeName = "smallint[]")]
+        public List<byte> NotificationMethods { get { return _notificationMethods; } }
         [Column(TypeName = "integer[]")]
         public List<uint>? DiscountGroups { get { return _discountGroups; } }
         public uint? GranterId{ get { return _granterId; } }
@@ -37,6 +42,9 @@ namespace ShopServices.DataAccess.Entities
         private string _passwordHash;
         private string? _nick;
         private string? _phone;
+        private long? _telegramChatId;
+        /// <summary> Способы уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
+        private List<byte> _notificationMethods;
         private List<uint>? _discountGroups;
         private uint? _granterId;
         private readonly DateTime _createdDt;
@@ -83,6 +91,9 @@ namespace ShopServices.DataAccess.Entities
         public void UpdatePasswordHash(string newPasswordHash) => _passwordHash = newPasswordHash;
         public void UpdateNick(string? newNick) => _nick = newNick;
         public void UpdatePhone(string? newPhone) => _phone = newPhone;
+        public void UpdateTelegramChatId(long? telegramChatId) => _telegramChatId = telegramChatId;
+        /// <summary> Обновить настройки способов уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
+        public void UpdateNotificationMethods(List<byte> notificationMethods) => _notificationMethods = notificationMethods;
         public void UpdateDiscountGroups(List<uint>? discountGroups) => _discountGroups = discountGroups;
         public void UpdateGranterId(uint granterId) => _granterId = granterId;
         public void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
