@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoFixture;
 using ShopServices.Core.Auth;
+using ShopServices.Core.Enums;
 
 namespace TestFixtures
 {
@@ -48,6 +49,8 @@ namespace TestFixtures
                 passwordHash: passwordHash ?? GenerateStringIfTrueElseReturnNull(generatePasswordHash),
                 nick: GenerateStringIfTrueElseReturnNull(generateNick),
                 phone: GenerateStringIfTrueElseReturnNull(generatePhone),
+                telegramChatId: null,
+                notificationMethods: new List<NotificationMethod> { NotificationMethod.Email, NotificationMethod.SMS },
                 role: GenerateStringIfTrueElseReturnNull(generateRole),
                 granterId: granterId,
                 createdDt: DateTime.Now,
@@ -85,6 +88,8 @@ namespace TestFixtures
                 passwordHash: passwordHash ?? GenerateStringIfTrueElseReturnNull(generatePasswordHash),
                 nick: null,
                 phone: null,
+                telegramChatId: null,
+                notificationMethods: new List<NotificationMethod> { NotificationMethod.Email, NotificationMethod.SMS },
                 role: null,
                 granterId: null,
                 createdDt: DateTime.Now,

@@ -8,7 +8,7 @@ namespace ShopServices.Abstractions
     public class Result
     {
         /// <summary> Id сущности </summary>
-        public uint? Id { get; set; }
+        public ulong? Id { get; set; }
 
         /// <summary> Сообщение о результате создания/изменения/удаления </summary>
         public string Message { get; set; }

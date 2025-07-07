@@ -1,4 +1,6 @@
-﻿using ShopServices.Core.Auth;
+﻿using System.Linq;
+using ShopServices.Core.Auth;
+using ShopServices.Core.Enums;
 using ShopServices.Core.Models;
 
 namespace Buyers.API
@@ -33,6 +35,8 @@ namespace Buyers.API
                 address: buyerDto.Address,
                 email: buyerDto.Email,
                 phones: buyerDto.Phones,
+                telegramChatId: null,
+                notificationMethods: buyerDto.NotificationMethods?.Select(nm => (NotificationMethod)nm).ToList(),
                 passwordHash: SHA256Hasher.GeneratePasswordHash(buyerDto.Password, buyerDto.RepeatPassword),
                 created: buyerDto.Created,
                 updated: buyerDto.Updated,

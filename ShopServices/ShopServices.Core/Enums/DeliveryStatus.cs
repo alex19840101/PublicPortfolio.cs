@@ -1,6 +1,6 @@
 ﻿namespace ShopServices.Core.Enums
 {
-    /// <summary> Статус доставки (перевозки) </summary>
+    /// <summary> Статус доставки (перевозки) заказа(ов) </summary>
     public enum DeliveryStatus : uint
     {
         /// <summary> Создается (добавляется) </summary>

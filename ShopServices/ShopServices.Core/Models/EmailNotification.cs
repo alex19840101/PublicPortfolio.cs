@@ -1,20 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using ShopServices.Core.Enums;
 
 namespace ShopServices.Core.Models
 {
-    public class EmailNotification
+    /// <summary> Класс однократного E-mail-уведомления </summary>
+    public class EmailNotification : Notification
     {
-        public ulong Id { get; private set; }
-        public string EmailFrom { get; private set; }
-        public string EmailTo { get; private set; }
-        public string Message { get; private set; }
-
-        /// <summary> Дата и время создания уведомления </summary>
-        public DateTime Created { get; private set; }
-
-        /// <summary> Дата и время отправки уведомления </summary>
-        public DateTime? Sent { get; set; }
+        public EmailNotification(
+            ulong id,
+            NotificationMethod notificationMethod,
+            ModelEntityType modelEntityType,
+            uint? buyerId,
+            ulong changedEntityId,
+            string sender,
+            string recipient,
+            string topic,
+            string message,
+            DateTime created,
+            string creator,
+            DateTime? sent = null,
+            uint unsuccessfulAttempts = 0,
+            DateTime? lastUnsuccessfulAttempt = null) : base(
+                id,
+                notificationMethod,
+                modelEntityType,
+                buyerId,
+                changedEntityId,
+                sender,
+                recipient,
+                topic,
+                message,
+                created,
+                creator,
+                sent,
+                unsuccessfulAttempts,
+                lastUnsuccessfulAttempt)
+        {
+        }
     }
 }

@@ -1,21 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using ShopServices.Core.Enums;
 
 namespace ShopServices.Core.Models
 {
-    public class PhoneNotification
+    /// <summary> Класс однократного уведомления по телефону (SMS/Telegram) </summary>
+    public class PhoneNotification : Notification
     {
-        public ulong Id { get; private set; }
-
-        public string SmsFrom { get; private set; }
-        public string SmsTo { get; private set; }
-        public string Message { get; private set; }
-
-        /// <summary> Дата и время создания уведомления </summary>
-        public DateTime Created { get; private set; }
-
-        /// <summary> Дата и время отправки уведомления </summary>
-        public DateTime? Sent { get; set; }
+        public PhoneNotification(
+            ulong id,
+            NotificationMethod notificationMethod,
+            ModelEntityType modelEntityType,
+            uint? buyerId,
+            ulong changedEntityId,
+            string sender,
+            string recipient,
+            string topic,
+            string message,
+            DateTime created,
+            string creator,
+            DateTime? sent = null,
+            uint unsuccessfulAttempts = 0,
+            DateTime? lastUnsuccessfulAttempt = null) : base(
+                id,
+                notificationMethod,
+                modelEntityType,
+                buyerId,
+                changedEntityId,
+                sender,
+                recipient,
+                topic,
+                message,
+                created,
+                creator,
+                sent,
+                unsuccessfulAttempts,
+                lastUnsuccessfulAttempt)
+        {
+        }
     }
 }

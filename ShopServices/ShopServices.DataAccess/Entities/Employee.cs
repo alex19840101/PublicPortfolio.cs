@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopServices.DataAccess.Entities
@@ -16,6 +17,10 @@ namespace ShopServices.DataAccess.Entities
         public string PasswordHash { get { return _passwordHash; } }
         public string? Nick { get { return _nick; } }
         public string? Phone { get { return _phone; } }
+        public long? TelegramChatId { get { return _telegramChatId; } }
+        /// <summary> Способы уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
+        [Column(TypeName = "smallint[]")]
+        public List<byte>? NotificationMethods { get { return _notificationMethods; } }
         public string? Role { get { return _role; } }
         public uint? GranterId { get { return _granterId; } }
         public DateTime CreatedDt { get { return _createdDt; } }
@@ -39,6 +44,9 @@ namespace ShopServices.DataAccess.Entities
         private string _passwordHash;
         private string? _nick;
         private string? _phone;
+        /// <summary> Способы уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
+        private List<byte>? _notificationMethods;
+        private long? _telegramChatId;
         private string? _role;
         private uint? _granterId;
         private readonly DateTime _createdDt;
@@ -56,6 +64,8 @@ namespace ShopServices.DataAccess.Entities
             string passwordHash,
             string? nick,
             string? phone,
+            long? telegramChatId,
+            List<byte>? notificationMethods,
             string? role,
             uint? granterId,
             DateTime createdDt,
@@ -72,6 +82,8 @@ namespace ShopServices.DataAccess.Entities
             _passwordHash = passwordHash;
             _nick = nick;
             _phone = phone;
+            _telegramChatId = telegramChatId;
+            _notificationMethods = notificationMethods;
             _role = role;
             _granterId = granterId;
             _createdDt = createdDt;
@@ -88,6 +100,9 @@ namespace ShopServices.DataAccess.Entities
         internal void UpdatePasswordHash(string newPasswordHash) => _passwordHash = newPasswordHash;
         internal void UpdateNick(string? newNick) => _nick = newNick;
         internal void UpdatePhone(string? newPhone) => _phone = newPhone;
+        internal void UpdateTelegramChatId(long? telegramChatId) => _telegramChatId = telegramChatId;
+        /// <summary> Обновить настройки способов уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
+        internal void UpdateNotificationMethods(List<byte> notificationMethods) => _notificationMethods = notificationMethods;
         internal void UpdateRole(string? newRole) => _role = newRole;
         internal void UpdateGranterId(uint granterId) => _granterId = granterId;
         internal void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;

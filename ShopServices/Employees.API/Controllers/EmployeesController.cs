@@ -11,6 +11,8 @@ using ShopServices.Core;
 using ShopServices.Core.Services;
 using ShopServices.Abstractions.Auth;
 using Employees.API.Contracts.Requests;
+using ShopServices.Core.Enums;
+using System.Collections.Generic;
 
 namespace Employees.API.Controllers;
 
@@ -209,6 +211,8 @@ public class EmployeesController : ControllerBase
             passwordHash: SHA256Hasher.GeneratePasswordHash(request.Password, request.RepeatPassword),
             nick: request.Nick,
             phone: request.Phone,
+            telegramChatId: null,
+            notificationMethods: [NotificationMethod.Email, NotificationMethod.SMS],
             role: request.RequestedRole,
             granterId: null,
             createdDt: DateTime.Now,
@@ -289,6 +293,7 @@ public class EmployeesController : ControllerBase
             Email = employee.Email,
             Nick = employee.Nick,
             Phone = employee.Phone,
+            NotificationMethods = employee.NotificationMethods,
             Role = employee.Role,
             ShopId = employee.ShopId,
             WarehouseId = employee.WarehouseId,

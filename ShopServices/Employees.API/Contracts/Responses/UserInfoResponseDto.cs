@@ -1,4 +1,7 @@
-﻿namespace Employees.API.Contracts.Responses
+﻿using System.Collections.Generic;
+using ShopServices.Core.Enums;
+
+namespace Employees.API.Contracts.Responses
 {
     /// <summary>
     /// Класс ответа с информацией о пользователе
@@ -39,6 +42,10 @@
         /// Телефон(ы)
         /// </summary>
         public string Phone { get; set; } = default!;
+
+        /// <summary> Способы уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
+        public List<NotificationMethod>? NotificationMethods { get; set; }
+
         /// <summary>
         /// Роль
         /// </summary>

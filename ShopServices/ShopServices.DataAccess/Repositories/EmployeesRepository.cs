@@ -8,6 +8,7 @@ using ShopServices.Core.Auth;
 using ShopServices.Core.Repositories;
 using ShopServices.Abstractions.Auth;
 using ShopServices.Abstractions;
+using ShopServices.Core.Enums;
 
 namespace ShopServices.DataAccess.Repositories
 {
@@ -34,6 +35,8 @@ namespace ShopServices.DataAccess.Repositories
                 passwordHash: employee.PasswordHash,
                 nick: employee.Nick,
                 phone: employee.Phone,
+                telegramChatId: employee.TelegramChatId,
+                notificationMethods: employee.NotificationMethods?.Select(n => (byte)n).ToList(),
                 role: employee.Role,
                 granterId: employee.GranterId,
                 createdDt: employee.CreatedDt.ToUniversalTime(),
@@ -181,6 +184,8 @@ namespace ShopServices.DataAccess.Repositories
                 passwordHash: userEntity.PasswordHash,
                 nick: userEntity.Nick,
                 phone: userEntity.Phone,
+                telegramChatId: userEntity.TelegramChatId,
+                notificationMethods: userEntity.NotificationMethods?.Select(nm => (NotificationMethod)nm).ToList(),
                 role: userEntity.Role,
                 granterId: userEntity.GranterId,
                 createdDt: userEntity.CreatedDt.ToLocalTime(),

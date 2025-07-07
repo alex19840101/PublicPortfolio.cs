@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ShopServices.Core.Enums;
 
 namespace ShopServices.Core.Models
 {
@@ -27,7 +28,9 @@ namespace ShopServices.Core.Models
         
         /// <summary> Телефон(ы) </summary>
         public string Phones { get; private set; }
-        
+        public long? TelegramChatId { get; private set; }
+        /// <summary> Способы уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
+        public List<NotificationMethod> NotificationMethods { get; private set; }
         /// <summary> Хэш пароля </summary>
         public string PasswordHash { get; private set; }
 
@@ -52,6 +55,8 @@ namespace ShopServices.Core.Models
             string address,
             string email,
             string phones,
+            long? telegramChatId,
+            List<NotificationMethod> notificationMethods,
             string passwordHash,
             DateTime created,
             DateTime? updated,
@@ -67,6 +72,8 @@ namespace ShopServices.Core.Models
             Address = address;
             Email = email;
             Phones = phones;
+            TelegramChatId = telegramChatId;
+            NotificationMethods = notificationMethods;
             PasswordHash = passwordHash;
             Nick = nick;
             Created = created;

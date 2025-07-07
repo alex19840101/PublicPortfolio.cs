@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ShopServices.Core.Enums;
 
 namespace Buyers.API.Contracts
 {
@@ -29,6 +30,8 @@ namespace Buyers.API.Contracts
         
         /// <summary> Телефон(ы) </summary>
         public string Phones { get; set; }
+        /// <summary> Способы уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
+        public List<NotificationMethod>? NotificationMethods { get; set; }
 
         /// <summary> Пароль для регистрации/входа* </summary>
         public string Password { get; set; }

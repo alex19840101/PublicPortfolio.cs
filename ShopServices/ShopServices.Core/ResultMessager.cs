@@ -133,7 +133,7 @@
         public const string COURIER_ID_IS_NULL = "courier is null, expected positive (>0)";
 
         //shops
-        public const string SHOP_ID_SHOULD_BE_POSITIVE = "shopId should be positive (>0)";
+        public const string SHOP_ID_SHOULD_BE_POSITIVE = "shop.Id == 0, should be positive (>0)";
         public const string SHOP_NOT_FOUND = "shop (shopId) not found";
         public const string COURIER_ID_MISMATCH = "courierId mismatch";
         public const string MANAGER_ID_MISMATCH = "managerId mismatch";
@@ -161,5 +161,22 @@
         public const string REGIONCODE_SHOULD_BE_POSITIVE = "delivery.RegionCode == 0, should be positive";
         public const string DELIVERY_UPDATED = "Delivery updated";
         public const string DELIVERY_IS_ACTUAL = "Delivery is actual";
+
+        //NOTIFICATIONS
+        public const string NOTIFICATION_RARAM_NAME = "notification";
+        public const string NOTIFICATION_ID_SHOULD_BE_POSITIVE = "notification.Id == 0, should be positive (>0)";
+        public const string NOTIFICATION_SENDER_SHOULD_NOT_BE_EMPTY = "notification.Sender(From) should be not empty";
+        public const string NOTIFICATION_RECIPIENT_SHOULD_NOT_BE_EMPTY = "notification.Recipient(To) should be not empty";
+        public const string NOTIFICATION_MESSAGE_SHOULD_NOT_BE_EMPTY = "notification.Message should be not empty";
+        public const string NOTIFICATION_TOPIC_SHOULD_NOT_BE_EMPTY = "notification.Topic should be not empty";
+        public const string NOTIFICATION_CREATOR_SHOULD_NOT_BE_EMPTY = "notification.Creator should be not empty";
+        public const string CHANGED_ENTITY_ID_SHOULD_BE_POSITIVE = "notification.ChangedEntityId == 0, should be positive (>0)";
+        public const string NOTIFICATION_CREATED_IN_FUTURE = "notification.Created > Now"; 
+        public const string NOTIFICATION_SENT_SHOULD_BE_NULL = "notification.Sent != null, should be null to AddNotification";
+        public const string NOTIFICATION_LAST_ATTEMPT_SHOULD_BE_NULL = "notification.LastUnsuccessfulAttempt != null, should be null to AddNotification";
+        public const string NOTIFICATION_UNSUCCESSFUL_ATTEMPTS_SHOULD_BE_ZERO = "notification.UnsuccessfulAttempts != 0, should be 0 to AddNotification";
+        public const string EMAIL_NOTIFICATION_SENT_EARLIER = "Email notification sent earlier";
+        public const string PHONE_NOTIFICATION_SENT_EARLIER = "Phone notification sent earlier";
+        public const string UNSUCCESSFULL_ATTEMPT_SAVED_EARLIER = "Unsuccessful attempt saved earlier";
     }
 }

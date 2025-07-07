@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using ShopServices.Core.Enums;
 
 namespace ShopServices.Core.Auth
 {
@@ -13,6 +15,9 @@ namespace ShopServices.Core.Auth
         public string PasswordHash { get { return _passwordHash; } }
         public string Nick { get { return _nick; } }
         public string Phone { get { return _phone; } }
+        public long? TelegramChatId { get { return _telegramChatId; } }
+        /// <summary> Способы уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
+        public List<NotificationMethod> NotificationMethods { get { return _notificationMethods; } }
         public string Role { get { return _role; } }
         public uint? GranterId { get { return _granterId; } }
         public DateTime CreatedDt { get { return _createdDt; } }
@@ -29,6 +34,9 @@ namespace ShopServices.Core.Auth
         private string _passwordHash;
         private string _nick;
         private string _phone;
+        public long? _telegramChatId;
+        /// <summary> Способы уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
+        private List<NotificationMethod> _notificationMethods;
         private string _role;
         private uint? _granterId;
         private readonly DateTime _createdDt;
@@ -46,6 +54,8 @@ namespace ShopServices.Core.Auth
             string passwordHash,
             string nick,
             string phone,
+            long? telegramChatId,
+            List<NotificationMethod> notificationMethods,
             string role,
             uint? granterId,
             DateTime createdDt,
@@ -62,6 +72,8 @@ namespace ShopServices.Core.Auth
             _passwordHash = passwordHash;
             _nick = nick;
             _phone = phone;
+            _telegramChatId = telegramChatId;
+            _notificationMethods = notificationMethods;
             _role = role;
             _granterId = granterId;
             _createdDt = createdDt;
@@ -70,19 +82,22 @@ namespace ShopServices.Core.Auth
             _warehouseId = warehouseId;
         }
 
-        public void UpdateLogin(string newLogin) => _login = newLogin;
-        public void UpdateName(string newName) => _name = newName;
-        public void UpdateSurname(string newSurname) => _surname = newSurname;
-        public void UpdateAddress(string newAddress) => _address = newAddress;
-        public void UpdateEmail(string newEmail) => _email = newEmail;
-        public void UpdatePasswordHash(string newPasswordHash) => _passwordHash = newPasswordHash;
-        public void UpdateNick(string newNick) => _nick = newNick;
-        public void UpdatePhone(string newPhone) => _phone = newPhone;
+        internal void UpdateLogin(string newLogin) => _login = newLogin;
+        internal void UpdateName(string newName) => _name = newName;
+        internal void UpdateSurname(string newSurname) => _surname = newSurname;
+        internal void UpdateAddress(string newAddress) => _address = newAddress;
+        internal void UpdateEmail(string newEmail) => _email = newEmail;
+        internal void UpdatePasswordHash(string newPasswordHash) => _passwordHash = newPasswordHash;
+        internal void UpdateNick(string newNick) => _nick = newNick;
+        internal void UpdatePhone(string newPhone) => _phone = newPhone;
+        internal void UpdateTelegramChatId(long? telegramChatId) => _telegramChatId = telegramChatId;
+        /// <summary> Обновить настройки способов уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
+        internal void UpdateNotificationMethods(List<NotificationMethod> notificationMethods) => _notificationMethods = notificationMethods;
         public void UpdateRole(string newRole) => _role = newRole;
-        public void UpdateGranterId(uint granterId) => _granterId = granterId;
-        public void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
-        public void UpdateShopId(uint? shopId) => _shopId = shopId;
-        public void UpdateWarehouseId(uint? warehouseId) => _warehouseId = warehouseId;
+        internal void UpdateGranterId(uint granterId) => _granterId = granterId;
+        internal void UpdateLastUpdateDt(DateTime? lastUpdateDt) => _lastUpdateDt = lastUpdateDt;
+        internal void UpdateShopId(uint? shopId) => _shopId = shopId;
+        internal void UpdateWarehouseId(uint? warehouseId) => _warehouseId = warehouseId;
 
         public override bool Equals(object obj)
         {

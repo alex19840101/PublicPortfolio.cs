@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using System;
 using Orders.API.Contracts.Responses;
+using ShopServices.Core.Enums;
 
 namespace Orders.API
 {
@@ -75,6 +76,8 @@ namespace Orders.API
                 address: null,
                 email: httpContext.User.FindFirst(ClaimTypes.Email)!.Value,
                 phones: null,
+                telegramChatId: null,
+                notificationMethods: [NotificationMethod.Email, NotificationMethod.SMS],
                 passwordHash: null,
                 created: DateTime.Now,
                 updated: null);
