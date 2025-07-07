@@ -73,8 +73,8 @@ namespace ServiceCollectionsExtensions
                     xmlFile = "ShopServices.Abstractions.xml";
                     xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                     options.IncludeXmlComments(xmlPath);
-                    options.CustomSchemaIds(x => x.FullName);
                 }
+                options.CustomSchemaIds(x => x.FullName);
                 //options.GeneratePolymorphicSchemas();
             });
             serviceCollection.AddApiVersioning(
