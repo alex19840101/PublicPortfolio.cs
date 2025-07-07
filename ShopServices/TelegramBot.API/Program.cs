@@ -23,7 +23,7 @@ builder.Services.AddSwaggerAndVersioning(SERVICE_NAME, includeAbstractionsXml: f
 
 builder.Services.Configure<TelegramBotClientOptionsSettings>(config: builder.Configuration.GetSection(key: APPSETTINGS_BOT_SECTION));
 
-builder.Services.AddHttpClient(name: "TestTelegram.Bot.Client")
+builder.Services.AddHttpClient(name: "ShopServices.Telegram.Bot.Client")
     .AddTypedClient<Telegram.Bot.ITelegramBotClient>(factory: (HttpClient httpClient, IServiceProvider serviceProvider) =>
     {
         var botSettings = serviceProvider.GetRequiredService<IOptions<TelegramBotClientOptionsSettings>>().Value;
