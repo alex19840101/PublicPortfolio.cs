@@ -54,6 +54,8 @@ namespace ShopServices.Core.Auth
             string passwordHash,
             string nick,
             string phone,
+            long? telegramChatId,
+            List<NotificationMethod> notificationMethods,
             string role,
             uint? granterId,
             DateTime createdDt,
@@ -70,6 +72,8 @@ namespace ShopServices.Core.Auth
             _passwordHash = passwordHash;
             _nick = nick;
             _phone = phone;
+            _telegramChatId = telegramChatId;
+            _notificationMethods = notificationMethods;
             _role = role;
             _granterId = granterId;
             _createdDt = createdDt;

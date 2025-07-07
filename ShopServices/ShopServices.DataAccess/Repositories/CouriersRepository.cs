@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using ShopServices.Abstractions;
 using ShopServices.Abstractions.Auth;
 using ShopServices.Core;
 using ShopServices.Core.Auth;
+using ShopServices.Core.Enums;
 using ShopServices.Core.Models;
 using ShopServices.Core.Models.Requests;
 using ShopServices.Core.Repositories;
@@ -165,6 +167,8 @@ namespace ShopServices.DataAccess.Repositories
                     passwordHash: courierEntity.PasswordHash,
                     nick: courierEntity.Nick,
                     phone: courierEntity.Phone,
+                    telegramChatId: courierEntity.TelegramChatId,
+                    notificationMethods: courierEntity.NotificationMethods?.Select(nm => (NotificationMethod)nm).ToList(),
                     role: courierEntity.Role,
                     granterId: courierEntity.GranterId,
                     createdDt: courierEntity.CreatedDt.ToLocalTime(),

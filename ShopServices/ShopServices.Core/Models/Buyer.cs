@@ -55,6 +55,8 @@ namespace ShopServices.Core.Models
             string address,
             string email,
             string phones,
+            long? telegramChatId,
+            List<NotificationMethod> notificationMethods,
             string passwordHash,
             DateTime created,
             DateTime? updated,
@@ -70,6 +72,8 @@ namespace ShopServices.Core.Models
             Address = address;
             Email = email;
             Phones = phones;
+            TelegramChatId = telegramChatId;
+            NotificationMethods = notificationMethods;
             PasswordHash = passwordHash;
             Nick = nick;
             Created = created;

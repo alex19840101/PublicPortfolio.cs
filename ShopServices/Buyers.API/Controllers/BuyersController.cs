@@ -12,6 +12,7 @@ using ShopServices.Core.Services;
 using ShopServices.Abstractions.Auth;
 using Buyers.API.Contracts.Requests;
 using ShopServices.Core.Models;
+using ShopServices.Core.Enums;
 
 namespace Buyers.API.Controllers;
 
@@ -210,6 +211,8 @@ public class BuyersController : ControllerBase
             passwordHash: SHA256Hasher.GeneratePasswordHash(request.Password, request.RepeatPassword),
             nick: request.Nick,
             phones: request.Phone,
+            telegramChatId: null,
+            notificationMethods: [NotificationMethod.Email, NotificationMethod.SMS],
             granterId: null,
             created: DateTime.Now,
             updated: null);
@@ -284,6 +287,7 @@ public class BuyersController : ControllerBase
             Surname = buyer.Surname,
             Email = buyer.Email,
             Nick = buyer.Nick,
-            Phone = buyer.Phones
+            Phone = buyer.Phones,
+            NotificationMethods = buyer.NotificationMethods
         };
 }
