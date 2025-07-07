@@ -20,8 +20,12 @@ namespace ServiceCollectionsExtensions
         /// </summary>
         /// <param name="serviceCollection"> IServiceCollection-коллекция сервисов </param>
         /// <param name="serviceName"> название сервиса (API) </param>
+        /// <param name="includeAbstractionsXml"> включать ли ShopServices.Abstractions.xml в Swagger(OpenAPI)-документацию </param>
         /// <returns> IServiceCollection-коллекция сервисов </returns>
-        public static IServiceCollection AddSwaggerAndVersioning(this IServiceCollection serviceCollection, string serviceName)
+        public static IServiceCollection AddSwaggerAndVersioning(
+            this IServiceCollection serviceCollection,
+            string serviceName,
+            bool includeAbstractionsXml = true)
         {
             const string DEVELOPER = "Shapovalov Alexey";
             const string URL = "https://github.com/alex19840101/PublicPortfolio.cs/tree/main/ShopServices";
@@ -64,11 +68,14 @@ namespace ServiceCollectionsExtensions
                 var xmlFile = $"{serviceName}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 options.IncludeXmlComments(xmlPath);
-                xmlFile = "ShopServices.Abstractions.xml";
-                xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                options.IncludeXmlComments(xmlPath);
-                options.CustomSchemaIds(x => x.FullName);
-                options.GeneratePolymorphicSchemas();
+                if (includeAbstractionsXml)
+                { 
+                    xmlFile = "ShopServices.Abstractions.xml";
+                    xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                    options.IncludeXmlComments(xmlPath);
+                    options.CustomSchemaIds(x => x.FullName);
+                }
+                //options.GeneratePolymorphicSchemas();
             });
             serviceCollection.AddApiVersioning(
                                 options =>
