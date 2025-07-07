@@ -27,6 +27,9 @@ namespace ShopServices.DataAccess.Configurations
 
             builder.Property(e => e.Nick).HasMaxLength(MAX_NAME_LENGTH);
             builder.Property(e => e.Phone).HasMaxLength(MAX_NAME_LENGTH);
+            builder.Property(e => e.TelegramChatId).HasField("_telegramChatId");
+            builder.Property(e => e.NotificationMethods).HasField("_notificationMethods");
+
             builder.Property(e => e.Role).HasMaxLength(MAX_NAME_LENGTH);
             
             builder.Property(e => e.CreatedDt).HasMaxLength(DATETIME_LENGTH).IsRequired();

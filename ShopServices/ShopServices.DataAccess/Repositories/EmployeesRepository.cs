@@ -34,6 +34,8 @@ namespace ShopServices.DataAccess.Repositories
                 passwordHash: employee.PasswordHash,
                 nick: employee.Nick,
                 phone: employee.Phone,
+                telegramChatId: employee.TelegramChatId,
+                notificationMethods: employee.NotificationMethods.Select(n => (byte)n).ToList(),
                 role: employee.Role,
                 granterId: employee.GranterId,
                 createdDt: employee.CreatedDt.ToUniversalTime(),

@@ -20,7 +20,7 @@ namespace ShopServices.DataAccess.Entities
         public long? TelegramChatId { get { return _telegramChatId; } }
         /// <summary> Способы уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
         [Column(TypeName = "smallint[]")]
-        public List<byte> NotificationMethods { get { return _notificationMethods; } }
+        public List<byte>? NotificationMethods { get { return _notificationMethods; } }
         public string? Role { get { return _role; } }
         public uint? GranterId { get { return _granterId; } }
         public DateTime CreatedDt { get { return _createdDt; } }
@@ -45,7 +45,7 @@ namespace ShopServices.DataAccess.Entities
         private string? _nick;
         private string? _phone;
         /// <summary> Способы уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
-        private List<byte> _notificationMethods;
+        private List<byte>? _notificationMethods;
         private long? _telegramChatId;
         private string? _role;
         private uint? _granterId;
@@ -64,6 +64,8 @@ namespace ShopServices.DataAccess.Entities
             string passwordHash,
             string? nick,
             string? phone,
+            long? telegramChatId,
+            List<byte>? notificationMethods,
             string? role,
             uint? granterId,
             DateTime createdDt,
@@ -80,6 +82,8 @@ namespace ShopServices.DataAccess.Entities
             _passwordHash = passwordHash;
             _nick = nick;
             _phone = phone;
+            _telegramChatId = telegramChatId;
+            _notificationMethods = notificationMethods;
             _role = role;
             _granterId = granterId;
             _createdDt = createdDt;
