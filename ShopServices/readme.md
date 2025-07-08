@@ -35,6 +35,7 @@ Notifications.API
 Orders.API
 Prices.API
 Shops.API
+TelegramBot.API
 Trade.API
 Warehouses.API
 ```
@@ -57,6 +58,7 @@ ShopServices.BusinessLogic\
 ShopServices.BusinessLogic.MsTests\
 ShopServices.Core\
 ShopServices.DataAccess\
+TelegramBot.API\
 TestFixtures\
 TestResults\
 Trade.API\
@@ -92,3 +94,6 @@ Using in APIs projects //TODO: auth. in GrpcService(s), GrpcClient(s)
 **- Unit Tests for Busines Logic services:**
 - MsTest tests (BuyerSeviceTests, EmployeeSeviceTests);
 - using extra NuGet packages: Moq, AutoFixture, FluentAssertions (methods versions with FluentAssertions and without FluentAssertions in AuthServiceTests).
+
+**- Notifications:
+- Telegram (using Telegram.Bot v22.6.0 in TelegramBot.API)
