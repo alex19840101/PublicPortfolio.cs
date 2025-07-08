@@ -138,6 +138,7 @@ namespace ShopServices.DataAccess.Repositories
             if (!string.Equals(upd.NewPasswordHash, employeeEntity.PasswordHash)) employeeEntity.UpdatePasswordHash(upd.PasswordHash);
             if (!string.Equals(upd.Nick, employeeEntity.Nick)) employeeEntity.UpdateNick(upd.Nick);
             if (!string.Equals(upd.Phone, employeeEntity.Phone)) employeeEntity.UpdatePhone(upd.Phone);
+            if (upd.TelegramChatId != employeeEntity.TelegramChatId) employeeEntity.UpdateTelegramChatId(upd.TelegramChatId);
             if (!string.Equals(upd.Address, employeeEntity.Address)) employeeEntity.UpdateAddress(upd.Address);
             if (!string.Equals(upd.RequestedRole, employeeEntity.Role)) employeeEntity.UpdateRole(newRole: $"?{upd.RequestedRole}"); //? - запрошенная пользователем роль утверждается администратором
             

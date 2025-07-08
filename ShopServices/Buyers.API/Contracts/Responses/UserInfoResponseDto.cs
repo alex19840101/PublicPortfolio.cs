@@ -42,6 +42,12 @@ namespace Buyers.API.Contracts.Responses
         /// Телефон(ы)
         /// </summary>
         public string? Phone { get; set; }
+
+        /// <summary>
+        /// Код привязки Telegram-уведомлений к чату в Telegram
+        /// </summary>
+        public long? TelegramChatId { get; set; }
+
         /// <summary> Способы уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
         public List<NotificationMethod>? NotificationMethods { get; set; }
     }

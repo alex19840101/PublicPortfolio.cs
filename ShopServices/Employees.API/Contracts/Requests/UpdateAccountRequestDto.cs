@@ -61,6 +61,11 @@
         public string? Phone { get; set; }
 
         /// <summary>
+        /// Код привязки Telegram-уведомлений к чату в Telegram
+        /// </summary>
+        public long? TelegramChatId { get; set; }
+
+        /// <summary>
         /// Роль
         /// </summary>
         public string? RequestedRole { get; set; }
