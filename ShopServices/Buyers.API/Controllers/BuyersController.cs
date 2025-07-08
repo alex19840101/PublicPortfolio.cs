@@ -273,6 +273,7 @@ public class BuyersController : ControllerBase
                 newPasswordHash: requestDto.NewPassword != null ? SHA256Hasher.GeneratePasswordHash(requestDto.NewPassword, repeatPassword: requestDto.RepeatNewPassword) : null,
                 nick: requestDto.Nick,
                 phone: requestDto.Phone,
+                telegramChatId: requestDto.TelegramChatId,
                 shopId: null,
                 warehouseId: null);
     }
@@ -288,6 +289,7 @@ public class BuyersController : ControllerBase
             Email = buyer.Email,
             Nick = buyer.Nick,
             Phone = buyer.Phones,
+            TelegramChatId = buyer.TelegramChatId,
             NotificationMethods = buyer.NotificationMethods
         };
 }

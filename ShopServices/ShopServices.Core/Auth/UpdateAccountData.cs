@@ -12,6 +12,7 @@
         public string NewPasswordHash { get { return _newPasswordHash; } }
         public string Nick { get { return _nick; } }
         public string Phone { get { return _phone; } }
+        public long? TelegramChatId { get { return _telegramChatId; } }
         public string RequestedRole { get { return _requestedRole; } }
         public uint? ShopId { get { return _shopId; } }
         public uint? WarehouseId { get { return _warehouseId; } }
@@ -26,6 +27,7 @@
         private readonly string _newPasswordHash;
         private readonly string _nick;
         private readonly string _phone;
+        private readonly long? _telegramChatId;
         private readonly string _requestedRole;
         private readonly uint? _shopId;
         private readonly uint? _warehouseId;
@@ -41,6 +43,7 @@
             string newPasswordHash,
             string nick,
             string phone,
+            long? telegramChatId,
             uint? shopId,
             uint? warehouseId,
             string requestedRole = null)
@@ -55,6 +58,7 @@
             _newPasswordHash = newPasswordHash;
             _nick = nick;
             _phone = phone;
+            _telegramChatId = telegramChatId;
             _requestedRole = requestedRole;
             _shopId = shopId;
             _warehouseId = warehouseId;

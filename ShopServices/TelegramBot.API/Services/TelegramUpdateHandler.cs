@@ -68,7 +68,13 @@ public class TelegramUpdateHandler : IUpdateHandler
         if (string.IsNullOrWhiteSpace(message.Text))
             return;
 
-        await _telegramNotificationService.SendMessage(message.Chat, $"RECEIVED MESSAGE: {message.Text}");
+        if (string.Equals(message.Text, "/start"))
+        {
+            await _telegramNotificationService.SendMessage(message.Chat, $"В личном кабинете подтвердите привязку к чату кодом {message.Chat.Id}");
+            return;
+        }
+
+        await _telegramNotificationService.SendMessage(message.Chat, $"> \"{message.Text}\"");
     }
 
     /// <summary> Обработчик неизвестного типа обновлений из Telegram </summary>
