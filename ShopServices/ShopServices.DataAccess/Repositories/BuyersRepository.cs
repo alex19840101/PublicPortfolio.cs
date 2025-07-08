@@ -147,7 +147,7 @@ namespace ShopServices.DataAccess.Repositories
             if (!string.Equals(upd.NewPasswordHash, buyerEntity.PasswordHash)) buyerEntity.UpdatePasswordHash(upd.PasswordHash);
             if (!string.Equals(upd.Nick, buyerEntity.Nick)) buyerEntity.UpdateNick(upd.Nick);
             if (!string.Equals(upd.Phone, buyerEntity.Phone)) buyerEntity.UpdatePhone(upd.Phone);
-            if (!string.Equals(upd.TelegramChatId, buyerEntity.TelegramChatId)) buyerEntity.UpdateTelegramChatId(upd.TelegramChatId);
+            if (upd.TelegramChatId != buyerEntity.TelegramChatId) buyerEntity.UpdateTelegramChatId(upd.TelegramChatId);
             if (!string.Equals(upd.Address, buyerEntity.Address)) buyerEntity.UpdateAddress(upd.Address);
 
             if (_dbContext.ChangeTracker.HasChanges())
