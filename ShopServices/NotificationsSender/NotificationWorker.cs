@@ -21,7 +21,7 @@ namespace NotificationsSender
 {
     internal class NotificationWorker : BackgroundService
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IServiceScopeFactory _scopeFactory;
 
         private readonly GrpcTgNotifications.GrpcTgNotificationsClient _grpcClient;
         //private readonly INotificationsSenderService _notificationsSenderService;
@@ -32,12 +32,12 @@ namespace NotificationsSender
         private ulong _minPhoneNotificationId = 0;
 
         public NotificationWorker(
-            IServiceProvider serviceProvider,
+            IServiceScopeFactory scopeFactory,
             GrpcTgNotifications.GrpcTgNotificationsClient grpcClient,
             //INotificationsSenderService notificationsSenderService,
             Serilog.ILogger logger)
         {
-            _serviceProvider = serviceProvider;
+            _scopeFactory = scopeFactory;
 
             _grpcClient = grpcClient;
             //_notificationsSenderService = notificationsSenderService;
@@ -55,7 +55,7 @@ namespace NotificationsSender
                         _logger.Information("Worker running at: {time}", DateTimeOffset.Now);
                     }
 
-                    await using var scope = _serviceProvider.CreateAsyncScope();
+                    await using var scope = _scopeFactory.CreateAsyncScope();
                     var dbContext = scope.ServiceProvider.GetRequiredService<ShopServicesDbContext>();
                     var phoneNotificationsRepository = scope.ServiceProvider.GetRequiredService<IPhoneNotificationsRepository>();
                     var emailNotificationsRepository = scope.ServiceProvider.GetRequiredService<IEmailNotificationsRepository>();
