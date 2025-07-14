@@ -24,5 +24,9 @@ namespace ShopServices.Core.Repositories
         public Task<Result> SaveUnsuccessfulAttempt(
             ulong notificationId,
             DateTime lastUnsuccessfulAttempt);
+
+        public Task<IEnumerable<Notification>> GetEmailNotificationsToSend(
+            ulong minNotificationId,
+            uint take = 1000);
     }
 }

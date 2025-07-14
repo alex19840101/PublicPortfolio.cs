@@ -11,5 +11,7 @@ namespace ShopServices.Core.Auth
         public const string Courier = "courier";
         public const string Developer = "developer";
         public const string Manager = "manager";
+
+        public const string NotificationsSender = "notificationsSender";
     }
 }

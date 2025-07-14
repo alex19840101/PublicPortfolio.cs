@@ -1,0 +1,24 @@
+syntax = "proto3";
+import "google/protobuf/wrappers.proto"; 
+option csharp_namespace = "TelegramBot.API.Services.gRPC.Notifications";
+
+package ShSTgBot;
+
+service GrpcTgNotifications{
+	// gRPC-запрос на сообщение-уведомление для отправки в Telegram
+	rpc SendNotification(SendTgNotificationRequest) returns (ResultReply);
+}
+
+// "Сообщение" в составе gPRC-сообщения, содержащее id чата Telegram и сообщение-уведомление
+message SendTgNotificationRequest {
+	sint64 chat_id = 1;
+	string message = 2;
+	string secret = 3;
+}
+
+// Ответное gPRC-сообщение на запрос на Telegram-уведомление
+message ResultReply {
+	int32 message_id = 1;	
+	string message = 2;
+	int32 status_code = 3;
+}
