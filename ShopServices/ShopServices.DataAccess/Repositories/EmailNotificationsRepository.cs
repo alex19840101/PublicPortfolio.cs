@@ -16,6 +16,7 @@ namespace ShopServices.DataAccess.Repositories
     public class EmailNotificationsRepository : IEmailNotificationsRepository
     {
         private readonly ShopServicesDbContext _dbContext;
+        private const int MAX_RETRY_COUNT = 10;
 
         public EmailNotificationsRepository(ShopServicesDbContext dbContext)
         {
@@ -75,6 +76,19 @@ namespace ShopServices.DataAccess.Repositories
                     .Skip((int)skipCount).Take((int)limitCount).ToListAsync();
 
             return entityNotificationsLst.Select(emailNotification => GetCoreNotification(emailNotification));
+        }
+
+        public async Task<IEnumerable<Notification>> GetEmailNotificationsToSend(
+            ulong minNotificationId,
+            uint take = 1000)
+        {
+            var limitCount = take > 1000 ? 1000 : take;
+            List<Entities.EmailNotification> phoneNotificationsLst = await _dbContext.EmailNotifications.AsNoTracking()
+                .Where(emailNotification => emailNotification.Id >= minNotificationId && emailNotification.UnsuccessfulAttempts < MAX_RETRY_COUNT)
+                .OrderBy(emailNotification => emailNotification.Id)
+                .Take((int)limitCount).ToListAsync();
+
+            return phoneNotificationsLst.Select(emailNotification => GetCoreNotification(emailNotification));
         }
 
         public async Task<Result> UpdateSent(ulong notificationId, DateTime sent)

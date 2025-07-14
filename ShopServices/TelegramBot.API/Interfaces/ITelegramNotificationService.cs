@@ -11,7 +11,7 @@ namespace TelegramBot.API.Interfaces
         /// <param name="text"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public Task<Telegram.Bot.Types.Message> SendMessage(
+        public Task<Telegram.Bot.Types.Message?> SendMessage(
             Telegram.Bot.Types.ChatId chatId,
             string text,
             CancellationToken cancellationToken = default);

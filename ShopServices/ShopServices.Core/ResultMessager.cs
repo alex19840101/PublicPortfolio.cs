@@ -178,5 +178,6 @@
         public const string EMAIL_NOTIFICATION_SENT_EARLIER = "Email notification sent earlier";
         public const string PHONE_NOTIFICATION_SENT_EARLIER = "Phone notification sent earlier";
         public const string UNSUCCESSFULL_ATTEMPT_SAVED_EARLIER = "Unsuccessful attempt saved earlier";
+        public const string SENDRESULT_IS_NULL_TELEGRAM = "sendResult == null at telegram notification";
     }
 }

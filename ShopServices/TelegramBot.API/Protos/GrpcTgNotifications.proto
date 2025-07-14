@@ -13,6 +13,7 @@ service GrpcTgNotifications{
 message SendTgNotificationRequest {
 	sint64 chat_id = 1;
 	string message = 2;
+	string secret = 3;
 }
 
 // Ответное gPRC-сообщение на запрос на Telegram-уведомление

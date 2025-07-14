@@ -16,7 +16,7 @@ namespace ShopServices.DataAccess.Repositories
     public class PhoneNotificationsRepository : IPhoneNotificationsRepository
     {
         private readonly ShopServicesDbContext _dbContext;
-
+        private const int MAX_RETRY_COUNT = 10;
         public PhoneNotificationsRepository(ShopServicesDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -75,6 +75,19 @@ namespace ShopServices.DataAccess.Repositories
                 .Skip((int)skipCount).Take((int)limitCount).ToListAsync() :
                 await _dbContext.PhoneNotifications.AsNoTracking().Where(pn => pn.ChangedEntityId == orderId && pn.ModelEntityType == (uint)ModelEntityType.Order && pn.BuyerId == buyerId)
                 .Skip((int)skipCount).Take((int)limitCount).ToListAsync();
+
+            return phoneNotificationsLst.Select(phoneNotification => GetCoreNotification(phoneNotification));
+        }
+
+        public async Task<IEnumerable<Notification>> GetPhoneNotificationsToSend(
+            ulong minNotificationId,
+            uint take = 1000)
+        {
+            var limitCount = take > 1000 ? 1000 : take;
+            List<Entities.PhoneNotification> phoneNotificationsLst = await _dbContext.PhoneNotifications.AsNoTracking()
+                .Where(phoneNotification => phoneNotification.Id >= minNotificationId && phoneNotification.UnsuccessfulAttempts < MAX_RETRY_COUNT)
+                .OrderBy(phoneNotification => phoneNotification.Id)
+                .Take((int)limitCount).ToListAsync();
 
             return phoneNotificationsLst.Select(phoneNotification => GetCoreNotification(phoneNotification));
         }

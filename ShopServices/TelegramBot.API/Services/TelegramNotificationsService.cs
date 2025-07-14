@@ -27,7 +27,7 @@ namespace TelegramBot.API.Services
         /// <param name="text"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<Telegram.Bot.Types.Message> SendMessage(
+        public async Task<Telegram.Bot.Types.Message?> SendMessage(
             Telegram.Bot.Types.ChatId chatId,
             string text,
             CancellationToken cancellationToken = default)
@@ -39,7 +39,7 @@ namespace TelegramBot.API.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "ERROR SendMessage {ChatId}", chatId.Identifier);
-                throw;
+                return null;
             }
         }
     }
