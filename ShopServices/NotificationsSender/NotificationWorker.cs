@@ -24,29 +24,41 @@ namespace NotificationsSender
         private readonly IServiceScopeFactory _scopeFactory;
 
         private readonly GrpcTgNotifications.GrpcTgNotificationsClient _grpcClient;
+
+        #region //INotificationsSenderService _notificationsSenderService, dbContext, phoneNotificationsRepository, emailNotificationsRepository получаем из DI и IServiceScopeFactory
         //private readonly INotificationsSenderService _notificationsSenderService;
-        private JwtSettings _jwtSettings;
+        #endregion //INotificationsSenderService _notificationsSenderService, dbContext, phoneNotificationsRepository, emailNotificationsRepository получаем из DI и IServiceScopeFactory
+        
+        private JwtSettings? _jwtSettings;
         private readonly Serilog.ILogger _logger;
-        private Metadata _headers;
+        private Metadata? _headers;
+        private DateTime? _tokenExpires = null;
         private ulong _minEmailNotificationId = 0;
         private ulong _minPhoneNotificationId = 0;
+        private const ulong SENDING_INTERVAL_SECONDS = 60;
+        private const ulong TOKEN_EXPIRATION_TIME_HOURS = 1;
 
         public NotificationWorker(
             IServiceScopeFactory scopeFactory,
             GrpcTgNotifications.GrpcTgNotificationsClient grpcClient,
-            //INotificationsSenderService notificationsSenderService,
             Serilog.ILogger logger)
         {
             _scopeFactory = scopeFactory;
 
             _grpcClient = grpcClient;
-            //_notificationsSenderService = notificationsSenderService;
             _logger = logger;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
+            _logger.Information("Worker running at: {time}", DateTimeOffset.Now);
+
+            await DoWork(stoppingToken);
+        }
+
+        private async Task DoWork(CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
@@ -66,44 +78,127 @@ namespace NotificationsSender
                         _jwtSettings = notificationsSenderService.GetJwtSettings();
                         DefineHeaders();
                     }
+                    if (_tokenExpires < DateTime.UtcNow)
+                        DefineHeaders();
 
                     var phoneNotifications = await notificationsSenderService.GetPhoneNotificationsToSend(minNotificationId: _minPhoneNotificationId);
-                    foreach (var pn in phoneNotifications)
-                    {
-                        if (pn.NotificationMethod == ShopServices.Core.Enums.NotificationMethod.TelegramMessage)
-                        {
-                            var chatIdParsed = long.TryParse(pn.Recipient, out long chatId);
-                            if (!chatIdParsed)
-                            {
-                                _logger.Warning("{Recipient} is not long chatId", pn.Recipient);
-                                await phoneNotificationsRepository.SaveUnsuccessfulAttempt(pn.Id, DateTime.Now);
-                                continue;
-                            }
-                            var sendTgNotificationRequest = new SendTgNotificationRequest
-                            {
-                                ChatId = chatId,
-                                Message = "Test notification to Telegram"
-                            };
-                            var resultReply = await _grpcClient.SendNotificationAsync(sendTgNotificationRequest, _headers, cancellationToken: stoppingToken);
-                            if (resultReply.StatusCode != (int)HttpStatusCode.OK)
-                            {
-                                await phoneNotificationsRepository.SaveUnsuccessfulAttempt(pn.Id, DateTime.Now);
-                                continue;
-                            }
+                    await SendPhoneNotifications(phoneNotificationsRepository, phoneNotifications, cancellationToken);
 
-                            await phoneNotificationsRepository.UpdateSent(pn.Id, DateTime.Now);
-                            continue;
-                        }
-                    }
+                    var emailNotifications = await notificationsSenderService.GetEmailNotificationsToSend(minNotificationId: _minEmailNotificationId);
+                    await SendEmailNotifications(emailNotificationsRepository, emailNotifications, cancellationToken);
 
-                    var emailNotifications = await notificationsSenderService.GetPhoneNotificationsToSend(minNotificationId: _minPhoneNotificationId);
+                    _logger.Information("Worker pause at {time}", DateTimeOffset.Now);
+                    await Task.Delay(TimeSpan.FromSeconds(SENDING_INTERVAL_SECONDS), cancellationToken);
                 }
                 catch (Exception ex)
                 {
                     _logger.Error(ex.ToString());
                 }
+            }
+            _logger.Information("Cancellation at: {time}", DateTimeOffset.Now);
+            return;
+        }
 
+        private async Task SendEmailNotifications(
+            IEmailNotificationsRepository emailNotificationsRepository,
+            IEnumerable<ShopServices.Core.Models.Notification> emailNotifications,
+            CancellationToken cancellationToken)
+        {
+            var noError = true;
+            foreach (var en in emailNotifications)
+            {
+                try
+                {
+                    //var sendEmailNotificationRequest = new SendEmailNotificationRequest
+                    //{
+                    //    Phone = pn.Recipient,
+                    //    Message = pn.Message
+                    //};
+                    //var resultReply = await _grpcEmailClient.SendNotificationAsync(sendEmailNotificationRequest, _headers, cancellationToken: cancellationToken);
+                    //if (resultReply.StatusCode != (int)HttpStatusCode.OK)
+                    //{
+                    //    await emailNotificationsRepository.SaveUnsuccessfulAttempt(pn.Id, DateTime.Now);
+                    //    noError = false;
+                    //    continue;
+                    //}
 
+                    await emailNotificationsRepository.UpdateSent(en.Id, DateTime.Now);
+                    if (noError)
+                        _minEmailNotificationId = en.Id + 1;
+                    continue;
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error(ex, $"en.Id={en.Id}");
+                    await emailNotificationsRepository.SaveUnsuccessfulAttempt(en.Id, DateTime.Now);
+                    noError = false;
+                }
+            }
+        }
+
+        private async Task SendPhoneNotifications(
+            IPhoneNotificationsRepository phoneNotificationsRepository,
+            IEnumerable<ShopServices.Core.Models.Notification> phoneNotifications,
+            CancellationToken cancellationToken)
+        {
+            var noError = true;
+            foreach (var pn in phoneNotifications)
+            {
+                try
+                {
+                    if (pn.NotificationMethod == ShopServices.Core.Enums.NotificationMethod.TelegramMessage)
+                    {
+                        var chatIdParsed = long.TryParse(pn.Recipient, out long chatId);
+                        if (!chatIdParsed)
+                        {
+                            _logger.Warning("{Recipient} is not long chatId", pn.Recipient);
+                            await phoneNotificationsRepository.SaveUnsuccessfulAttempt(pn.Id, DateTime.Now);
+                            continue;
+                        }
+                        var sendTgNotificationRequest = new SendTgNotificationRequest
+                        {
+                            ChatId = chatId,
+                            Message = pn.Message
+                        };
+                        var resultReply = await _grpcClient.SendNotificationAsync(sendTgNotificationRequest, _headers, cancellationToken: cancellationToken);
+                        if (resultReply.StatusCode != (int)HttpStatusCode.OK)
+                        {
+                            await phoneNotificationsRepository.SaveUnsuccessfulAttempt(pn.Id, DateTime.Now);
+                            noError = false;
+                            continue;
+                        }
+
+                        await phoneNotificationsRepository.UpdateSent(pn.Id, DateTime.Now);
+
+                        if (noError)
+                            _minPhoneNotificationId = pn.Id + 1;
+                        continue;
+                    }
+                    //SMS
+                    //var sendSmsNotificationRequest = new SendSmsNotificationRequest
+                    //{
+                    //    Phone = pn.Recipient,
+                    //    Message = pn.Message
+                    //};
+                    //var smsResultReply = await _grpcSmsClient.SendNotificationAsync(sendSmsNotificationRequest, _headers, cancellationToken: cancellationToken);
+                    //if (smsResultReply.StatusCode != (int)HttpStatusCode.OK)
+                    //{
+                    //    await phoneNotificationsRepository.SaveUnsuccessfulAttempt(pn.Id, DateTime.Now);
+                    //    noError = false;
+                    //    continue;
+                    //}
+
+                    //await phoneNotificationsRepository.UpdateSent(pn.Id, DateTime.Now);
+                    //if (noError)
+                    //    _minPhoneNotificationId = pn.Id + 1;
+                    //continue;
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error(ex, $"pn.Id={pn.Id}");
+                    await phoneNotificationsRepository.SaveUnsuccessfulAttempt(pn.Id, DateTime.Now);
+                    noError = false;
+                }
             }
         }
 
@@ -114,12 +209,13 @@ namespace NotificationsSender
                 //new Claim(ClaimTypes.Name, loginData.Login),
                 new Claim(ClaimTypes.Role, Roles.NotificationsSender)
             };
+            _tokenExpires = DateTime.UtcNow.Add(TimeSpan.FromHours(TOKEN_EXPIRATION_TIME_HOURS));
 
             return new JwtSecurityToken(
-                issuer: _jwtSettings.Issuer,
+                issuer: _jwtSettings!.Issuer,
                 audience: _jwtSettings.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.Add(TimeSpan.FromHours(24)),
+                expires: _tokenExpires,
                 signingCredentials: new SigningCredentials(
                     key: new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(_jwtSettings.KEY!)),
                     algorithm: SecurityAlgorithms.HmacSha256));

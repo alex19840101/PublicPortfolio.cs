@@ -54,8 +54,20 @@ try
     builder.Services.AddOpenApi();
 
     string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ShopServices")!;
+    string defaultDataBaseConnectionStr = builder.Configuration.GetConnectionString("DefaultConnection")!;
 
     var isDevelopment = env.IsDevelopment();
+
+    builder.Services.AddDbContext<ShopServicesDbContext>(builder =>
+    {
+        builder.UseNpgsql(connectionString: defaultDataBaseConnectionStr, o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
+                .LogTo(Console.WriteLine, LogLevel.Information)
+                .EnableSensitiveDataLogging();
+
+        builder.LogTo(Console.WriteLine);
+        //builder.ConfigureWarnings(wcb => wcb.Ignore(RelationalEventId.PendingModelChangesWarning));
+    });
+
 
     if (isDevelopment)
     {
@@ -67,7 +79,7 @@ try
                     .EnableSensitiveDataLogging();
 
             builder.LogTo(Console.WriteLine);
-            builder.ConfigureWarnings(wcb => wcb.Ignore(RelationalEventId.PendingModelChangesWarning));
+            //builder.ConfigureWarnings(wcb => wcb.Ignore(RelationalEventId.PendingModelChangesWarning));
         });
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
     }

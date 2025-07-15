@@ -85,7 +85,9 @@ namespace ShopServices.DataAccess.Repositories
         {
             var limitCount = take > 1000 ? 1000 : take;
             List<Entities.PhoneNotification> phoneNotificationsLst = await _dbContext.PhoneNotifications.AsNoTracking()
-                .Where(phoneNotification => phoneNotification.Id >= minNotificationId && phoneNotification.UnsuccessfulAttempts < MAX_RETRY_COUNT)
+                .Where(phoneNotification => phoneNotification.Id >= minNotificationId &&
+                       phoneNotification.Sent == null &&
+                       phoneNotification.UnsuccessfulAttempts < MAX_RETRY_COUNT)
                 .OrderBy(phoneNotification => phoneNotification.Id)
                 .Take((int)limitCount).ToListAsync();
 
