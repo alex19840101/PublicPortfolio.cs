@@ -4,18 +4,18 @@
     public class SmsBotClientOptionsSettings
     {
         /// <summary> Токен для бота для отправки SMS-уведомлений </summary>
-        public string? BotToken { get; init; } = null!;
+        public string? BotToken { get; init; }
         /// <summary> Строка подключения
         /// <para> Azure: Find your Communication Services resource in the Azure portal </para></summary>
-        public string? ConnectionString { get; init; } = null!;
+        public string? ConnectionString { get; init; }
 
         /// <summary> Имя пользователя-бота для отправки SMS-уведомлений </summary>
-        public string? UserName { get; init; } = null!;
+        public string? UserName { get; init; }
         /// <summary> Пароль пользователя-бота для отправки SMS-уведомлений </summary>
-        public string? Password { get; init; } = null!;
+        public string? Password { get; init; }
 
         /// <summary> Host для отправки SMS-уведомлений </summary>
-        public string? HostName { get; init; } = default!;
+        public string? HostName { get; init; }
 
         /// <summary> Порт для отправки SMS-уведомлений </summary>
         public int? Port { get; init; }
@@ -26,7 +26,7 @@
 
         /// <summary> Настройки для бота для отправки SMS-уведомлений </summary>
         public SmsBotClientOptionsSettings(
-            string botToken)
+            string? botToken)
         {
             BotToken = botToken;
         }

@@ -16,6 +16,7 @@ using NotifierByEmail.API;
 using NotifierByEmail.API.Interfaces;
 using NotifierByEmail.API.Services;
 using NotifierByEmail.API.Services.gRPC;
+using Microsoft.Extensions.Logging;
 
 const string SERVICE_NAME = "NotifierByEmail.API";
 const string APPSETTINGS_BOT_SECTION = "EmailBot";
@@ -41,7 +42,6 @@ builder.Services.Configure<EmailBotOptionsSettings>(config: builder.Configuratio
 //    {
 //        var botSettings = serviceProvider.GetRequiredService<IOptions<EmailBotOptionsSettings>>().Value;
 //        ArgumentNullException.ThrowIfNull(botSettings);
-//        ArgumentNullException.ThrowIfNull(botSettings.BotToken);
 //        var botOptions = new EmailBotOptionsSettings(botSettings.BotToken);
 //        return new EmailBotClient(options: botOptions, httpClient);
 //    });
@@ -79,8 +79,17 @@ var tokenValidationParameters = builder.Configuration.GetTokenValidationParamete
 //    });
 builder.Services.AddAuthenticationBuilderForJWT(tokenValidationParameters);
 
+builder.Services.AddScoped<EmailBotOptionsSettings>();
+//builder.Services.AddScoped<IEmailNotificationsService, EmailNotificationsService>();
+var emailBotOptionsSettings = new EmailBotOptionsSettings
+{
+    BotToken = builder.Configuration[$"{APPSETTINGS_BOT_SECTION}:BotToken"]
+};
 
-builder.Services.AddScoped<IEmailNotificationsService, EmailNotificationsService>();
+
+builder.Services.AddScoped<IEmailNotificationsService>(src => new EmailNotificationsService(
+    emailBotOptionsSettings: emailBotOptionsSettings,
+    src.GetRequiredService<ILogger<EmailNotificationsService>>()));
 //builder.Services.AddHostedService<EmailWorker>();
 
 var isDevelopment = env.IsDevelopment();

@@ -4,11 +4,11 @@
     public class EmailBotOptionsSettings
     {
         /// <summary> Токен для бота для отправки E-mail-писем (уведомлений) </summary>
-        public string? BotToken { get; init; } = null!;
+        public string? BotToken { get; init; }
         /// <summary> Имя пользователя-бота для отправки E-mail-писем (уведомлений) </summary>
-        public string? UserName { get; init; } = null!;
+        public string? UserName { get; init; }
         /// <summary> Пароль пользователя-бота для отправки E-mail-писем (уведомлений) </summary>
-        public string? Password { get; init; } = null!;
+        public string? Password { get; init; }
 
         /// <summary> Host для отправки E-mail-писем (уведомлений) </summary>
         public string HostName { get; init; } = default!;

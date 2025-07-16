@@ -16,6 +16,7 @@ using NotifierBySms.API;
 using NotifierBySms.API.Interfaces;
 using NotifierBySms.API.Services;
 using NotifierBySms.API.Services.gRPC;
+using Microsoft.Extensions.Logging;
 
 const string SERVICE_NAME = "NotifierBySms.API";
 const string APPSETTINGS_BOT_SECTION = "SmsBot";
@@ -41,7 +42,6 @@ builder.Services.AddHttpClient(name: "ShopServices.NotifierBySms.API.Client")
     {
         var botSettings = serviceProvider.GetRequiredService<IOptions<SmsBotClientOptionsSettings>>().Value;
         ArgumentNullException.ThrowIfNull(botSettings);
-        ArgumentNullException.ThrowIfNull(botSettings.BotToken);
         var botOptions = new SmsBotClientOptionsSettings(botSettings.BotToken);
         return new SmsBotClient(settings: botOptions, httpClient);
     });
@@ -79,8 +79,25 @@ var tokenValidationParameters = builder.Configuration.GetTokenValidationParamete
 //    });
 builder.Services.AddAuthenticationBuilderForJWT(tokenValidationParameters);
 
-builder.Services.AddScoped<ISmsNotificationsService, SmsNotificationsService>();
-builder.Services.AddScoped<ISmsNotificationsService, SmsNotificationsByAzureService>();
+builder.Services.AddScoped<SmsBotClientOptionsSettings>();
+//builder.Services.AddScoped<ISmsNotificationsService, SmsNotificationsService>();
+//builder.Services.AddScoped<ISmsNotificationsService, SmsNotificationsByAzureService>();
+
+
+var smsBotClientOptionsSettings = new SmsBotClientOptionsSettings(builder.Configuration[$"{APPSETTINGS_BOT_SECTION}:BotToken"])
+{
+    ConnectionString = builder.Configuration[$"{APPSETTINGS_BOT_SECTION}:ConnectionString"],
+};
+
+builder.Services.AddScoped<ISmsNotificationsService>(src => new SmsNotificationsService(
+    smsBotClientOptionsSettings: smsBotClientOptionsSettings,
+    src.GetRequiredService<ILogger<SmsNotificationsService>>()));
+
+builder.Services.AddScoped<ISmsNotificationsService>(src => new SmsNotificationsByAzureService(
+    smsBotClientOptionsSettings: smsBotClientOptionsSettings,
+    src.GetRequiredService<ILogger<SmsNotificationsByAzureService>>()));
+
+
 //builder.Services.AddHostedService<SmsWorker>();
 
 var isDevelopment = env.IsDevelopment();
