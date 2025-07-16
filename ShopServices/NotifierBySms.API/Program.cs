@@ -79,8 +79,8 @@ var tokenValidationParameters = builder.Configuration.GetTokenValidationParamete
 //    });
 builder.Services.AddAuthenticationBuilderForJWT(tokenValidationParameters);
 
-
 builder.Services.AddScoped<ISmsNotificationsService, SmsNotificationsService>();
+builder.Services.AddScoped<ISmsNotificationsService, SmsNotificationsByAzureService>();
 //builder.Services.AddHostedService<SmsWorker>();
 
 var isDevelopment = env.IsDevelopment();
@@ -121,7 +121,7 @@ app.UseAuthorization();
 app.UseEndpoints(static endpoints =>
 {
     //endpoints.MapGrpcService<GreeterService>(); //Debug
-    //endpoints.MapGrpcService<GrpcSmsNotificationsService>();
+    endpoints.MapGrpcService<GrpcSmsNotificationsService>();
 });
 
 app.MapControllers();

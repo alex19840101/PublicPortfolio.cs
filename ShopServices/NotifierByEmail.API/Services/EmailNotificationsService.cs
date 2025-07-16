@@ -69,7 +69,7 @@ namespace NotifierByEmail.API.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "ERROR SendEmail {emailReceiver}", emailReceiver);
+                _logger.LogWarning(ex, "ERROR SendEmail {emailReceiver}", emailReceiver);
                 return new Result
                 {
                     Message = ResultMessager.SEND_EMAIL_ERROR,

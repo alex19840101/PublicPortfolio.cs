@@ -121,7 +121,7 @@ app.UseAuthorization();
 app.UseEndpoints(static endpoints =>
 {
     //endpoints.MapGrpcService<GreeterService>(); //Debug
-    //endpoints.MapGrpcService<GrpcEmailNotificationsService>();
+    endpoints.MapGrpcService<GrpcEmailNotificationsService>();
 });
 
 app.MapControllers();

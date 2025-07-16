@@ -43,10 +43,10 @@ namespace NotifierBySms.API.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "ERROR SendSmsNotification {phoneReceiver}", phoneReceiver);
+                _logger.LogWarning(ex, "ERROR SendSmsNotification {phoneReceiver}", phoneReceiver);
                 return new Result
                 {
-                    Message = ResultMessager.SEND_EMAIL_ERROR,
+                    Message = ResultMessager.SEND_SMS_ERROR,
                     StatusCode = System.Net.HttpStatusCode.InternalServerError
                 };
             }

@@ -179,6 +179,8 @@
         public const string PHONE_NOTIFICATION_SENT_EARLIER = "Phone notification sent earlier";
         public const string UNSUCCESSFULL_ATTEMPT_SAVED_EARLIER = "Unsuccessful attempt saved earlier";
         public const string SENDRESULT_IS_NULL_TELEGRAM = "sendResult == null at telegram notification";
+        public const string SENDRESULT_IS_NULL_EMAIL = "sendResult == null at E-mail notification";
+        public const string SENDRESULT_IS_NULL_SMS = "sendResult == null at SMS notification";
         public const string SEND_EMAIL_ERROR = "SendEmail error";
         public const string SEND_SMS_ERROR = "SendSmsNotification error";
         public const string SMS_OK_SIMULATION = "OK simulation. Payed SMS are not implemented in pet project";
