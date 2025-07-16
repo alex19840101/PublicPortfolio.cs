@@ -16,6 +16,8 @@ using ShopServices.Core.Repositories;
 using ShopServices.Core.Services;
 using ShopServices.DataAccess;
 using TelegramBot.API.Services.gRPC.Notifications;
+using NotifierByEmail.API.Services.gRPC.Notifications;
+using NotifierBySms.API.Services.gRPC.Notifications;
 
 namespace NotificationsSender
 {
@@ -23,7 +25,9 @@ namespace NotificationsSender
     {
         private readonly IServiceScopeFactory _scopeFactory;
 
-        private readonly GrpcTgNotifications.GrpcTgNotificationsClient _grpcClient;
+        private readonly GrpcTgNotifications.GrpcTgNotificationsClient _grpcTgClient;
+        private readonly GrpcEmailNotifications.GrpcEmailNotificationsClient _grpcEmailClient;
+        private readonly GrpcSmsNotifications.GrpcSmsNotificationsClient _grpcSmsClient;
 
         #region //INotificationsSenderService _notificationsSenderService, dbContext, phoneNotificationsRepository, emailNotificationsRepository получаем из DI и IServiceScopeFactory
         //private readonly INotificationsSenderService _notificationsSenderService;
@@ -45,7 +49,7 @@ namespace NotificationsSender
         {
             _scopeFactory = scopeFactory;
 
-            _grpcClient = grpcClient;
+            _grpcTgClient = grpcClient;
             _logger = logger;
         }
 
@@ -109,18 +113,20 @@ namespace NotificationsSender
             {
                 try
                 {
-                    //var sendEmailNotificationRequest = new SendEmailNotificationRequest
-                    //{
-                    //    Phone = pn.Recipient,
-                    //    Message = pn.Message
-                    //};
-                    //var resultReply = await _grpcEmailClient.SendNotificationAsync(sendEmailNotificationRequest, _headers, cancellationToken: cancellationToken);
-                    //if (resultReply.StatusCode != (int)HttpStatusCode.OK)
-                    //{
-                    //    await emailNotificationsRepository.SaveUnsuccessfulAttempt(pn.Id, DateTime.Now);
-                    //    noError = false;
-                    //    continue;
-                    //}
+                    var sendEmailNotificationRequest = new SendEmailNotificationRequest
+                    {
+                        EmailSender = en.Sender,
+                        EmailReceiver = en.Recipient,
+                        Topic = en.Topic,
+                        EmailBody = en.Message
+                    };
+                    var resultReply = await _grpcEmailClient.SendEmailNotificationAsync(sendEmailNotificationRequest, _headers, cancellationToken: cancellationToken);
+                    if (resultReply.StatusCode != (int)HttpStatusCode.OK)
+                    {
+                        await emailNotificationsRepository.SaveUnsuccessfulAttempt(en.Id, DateTime.Now);
+                        noError = false;
+                        continue;
+                    }
 
                     await emailNotificationsRepository.UpdateSent(en.Id, DateTime.Now);
                     if (noError)
@@ -160,7 +166,7 @@ namespace NotificationsSender
                             ChatId = chatId,
                             Message = pn.Message
                         };
-                        var resultReply = await _grpcClient.SendNotificationAsync(sendTgNotificationRequest, _headers, cancellationToken: cancellationToken);
+                        var resultReply = await _grpcTgClient.SendNotificationAsync(sendTgNotificationRequest, _headers, cancellationToken: cancellationToken);
                         if (resultReply.StatusCode != (int)HttpStatusCode.OK)
                         {
                             await phoneNotificationsRepository.SaveUnsuccessfulAttempt(pn.Id, DateTime.Now);
@@ -175,23 +181,24 @@ namespace NotificationsSender
                         continue;
                     }
                     //SMS
-                    //var sendSmsNotificationRequest = new SendSmsNotificationRequest
-                    //{
-                    //    Phone = pn.Recipient,
-                    //    Message = pn.Message
-                    //};
-                    //var smsResultReply = await _grpcSmsClient.SendNotificationAsync(sendSmsNotificationRequest, _headers, cancellationToken: cancellationToken);
-                    //if (smsResultReply.StatusCode != (int)HttpStatusCode.OK)
-                    //{
-                    //    await phoneNotificationsRepository.SaveUnsuccessfulAttempt(pn.Id, DateTime.Now);
-                    //    noError = false;
-                    //    continue;
-                    //}
+                    var sendSmsNotificationRequest = new SendSmsNotificationRequest
+                    {
+                        PhoneSender = pn.Sender,
+                        PhoneReceiver = pn.Recipient,
+                        Message = pn.Message
+                    };
+                    var smsResultReply = await _grpcSmsClient.SendSmsNotificationAsync(sendSmsNotificationRequest, _headers, cancellationToken: cancellationToken);
+                    if (smsResultReply.StatusCode != (int)HttpStatusCode.OK)
+                    {
+                        await phoneNotificationsRepository.SaveUnsuccessfulAttempt(pn.Id, DateTime.Now);
+                        noError = false;
+                        continue;
+                    }
 
-                    //await phoneNotificationsRepository.UpdateSent(pn.Id, DateTime.Now);
-                    //if (noError)
-                    //    _minPhoneNotificationId = pn.Id + 1;
-                    //continue;
+                    await phoneNotificationsRepository.UpdateSent(pn.Id, DateTime.Now);
+                    if (noError)
+                        _minPhoneNotificationId = pn.Id + 1;
+                    continue;
                 }
                 catch (Exception ex)
                 {

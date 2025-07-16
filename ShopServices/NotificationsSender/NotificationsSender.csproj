@@ -45,6 +45,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\NotifierByEmail.API\NotifierByEmail.API.csproj" />
+		<ProjectReference Include="..\NotifierBySms.API\NotifierBySms.API.csproj" />
 		<ProjectReference Include="..\ServiceCollectionsExtensions\ServiceCollectionsExtensions.csproj" />
 		<ProjectReference Include="..\ShopServices.Abstractions\ShopServices.Abstractions.csproj" />
 		<ProjectReference Include="..\ShopServices.BusinessLogic\ShopServices.BusinessLogic.csproj" />
