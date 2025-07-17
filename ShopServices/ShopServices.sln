@@ -59,6 +59,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramBot.API", "Telegram
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationsSender", "NotificationsSender\NotificationsSender.csproj", "{89B21393-B23D-45FA-BF2E-7295C416DCBF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifierByEmail.API", "NotifierByEmail.API\NotifierByEmail.API.csproj", "{F2F96C4B-2EDF-4B0A-8492-92286CDF20D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifierBySms.API", "NotifierBySms.API\NotifierBySms.API.csproj", "{407390AD-73E1-40C7-A0CB-FAB0787062DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +157,14 @@ Global
 		{89B21393-B23D-45FA-BF2E-7295C416DCBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89B21393-B23D-45FA-BF2E-7295C416DCBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89B21393-B23D-45FA-BF2E-7295C416DCBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2F96C4B-2EDF-4B0A-8492-92286CDF20D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2F96C4B-2EDF-4B0A-8492-92286CDF20D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2F96C4B-2EDF-4B0A-8492-92286CDF20D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2F96C4B-2EDF-4B0A-8492-92286CDF20D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{407390AD-73E1-40C7-A0CB-FAB0787062DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{407390AD-73E1-40C7-A0CB-FAB0787062DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{407390AD-73E1-40C7-A0CB-FAB0787062DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{407390AD-73E1-40C7-A0CB-FAB0787062DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

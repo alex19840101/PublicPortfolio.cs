@@ -30,7 +30,7 @@ namespace TelegramBot.API.Services.gRPC
         }
 
 
-        /// <summary> gRPC-запрос на сообщение-уведомление для отправки в Telegram </summary>
+        /// <summary> Обработка gRPC-запроса  для отправки уведомления в Telegram </summary>
         /// <param name="sendTgNotificationRequest"> gRPC-запрос | The request received from the client.</param>
         /// <param name="context"> gRPC-контекст | The context of the server-side call handler being invoked.</param>
         /// <returns>The response to send back to the client (wrapped by a task).</returns>

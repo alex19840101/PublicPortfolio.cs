@@ -45,6 +45,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\NotifierByEmail.API\NotifierByEmail.API.csproj" />
+		<ProjectReference Include="..\NotifierBySms.API\NotifierBySms.API.csproj" />
 		<ProjectReference Include="..\ServiceCollectionsExtensions\ServiceCollectionsExtensions.csproj" />
 		<ProjectReference Include="..\ShopServices.Abstractions\ShopServices.Abstractions.csproj" />
 		<ProjectReference Include="..\ShopServices.BusinessLogic\ShopServices.BusinessLogic.csproj" />
@@ -59,6 +61,21 @@
 		</Protobuf>
 		<Protobuf Include="..\TelegramBot.API\Protos\GrpcTgNotifications.proto" GrpcServices="Client">
 			<Link>Protos\GrpcTgNotifications.proto</Link>
+		</Protobuf>
+
+		
+		<Protobuf Include="..\NotifierByEmail.API\Protos\greet.proto" GrpcServices="Client">
+			<Link>Protos\greet.proto</Link>
+		</Protobuf>
+		<Protobuf Include="..\NotifierByEmail.API\Protos\GrpcEmailNotifications.proto" GrpcServices="Client">
+			<Link>Protos\GrpcEmailNotifications.proto</Link>
+		</Protobuf>
+
+		<Protobuf Include="..\NotifierBySms.API\Protos\greet.proto" GrpcServices="Client">
+			<Link>Protos\greet.proto</Link>
+		</Protobuf>
+		<Protobuf Include="..\NotifierBySms.API\Protos\GrpcSmsNotifications.proto" GrpcServices="Client">
+			<Link>Protos\GrpcSmsNotifications.proto</Link>
 		</Protobuf>
 	</ItemGroup>
 

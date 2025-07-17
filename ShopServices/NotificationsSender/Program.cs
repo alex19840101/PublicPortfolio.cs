@@ -11,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Logging;
 using NotificationsSender;
+using NotifierByEmail.API.Services.gRPC.Notifications;
+using NotifierBySms.API.Services.gRPC.Notifications;
 using Serilog;
 using ServiceCollectionsExtensions;
 using ShopServices.BusinessLogic;
@@ -102,6 +104,18 @@ try
     {
         options.Address = new Uri("https://localhost:7248");
     });
+    
+    builder.Services.AddGrpcClient<GrpcEmailNotifications.GrpcEmailNotificationsClient>(options =>
+    {
+        options.Address = new Uri("https://localhost:7051");
+    });
+
+    builder.Services.AddGrpcClient<GrpcSmsNotifications.GrpcSmsNotificationsClient>(options =>
+    {
+        options.Address = new Uri("https://localhost:7057");
+    });
+
+
     var jwtSettings = builder.Configuration.GetSection("JWT").Get<JwtSettings>();
     
     builder.Services.AddScoped<IEmailNotificationsRepository, EmailNotificationsRepository>();
