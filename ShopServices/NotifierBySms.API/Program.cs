@@ -33,7 +33,7 @@ builder.Configuration
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-builder.Services.AddSwaggerAndVersioning(SERVICE_NAME, includeAbstractionsXml: false);
+builder.Services.AddSwaggerAndVersioning(SERVICE_NAME);
 
 builder.Services.Configure<SmsBotClientOptionsSettings>(config: builder.Configuration.GetSection(key: APPSETTINGS_BOT_SECTION));
 var smsBotClientOptionsSettings = builder.Configuration.GetSection(key: APPSETTINGS_BOT_SECTION)?.Get<SmsBotClientOptionsSettings>();

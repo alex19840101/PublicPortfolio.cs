@@ -30,7 +30,7 @@ namespace NotifierBySms.API.Controllers
         }
 
         /// <summary> Отправка SMS-уведомления </summary>
-        /// <param name="sendSmsRequest"> Запрос на отправку E-mail-письма </param>
+        /// <param name="sendSmsRequest"> Запрос на отправку SMS-уведомления </param>
         /// <returns></returns>
         [HttpPost]
         public async Task SendSms(
