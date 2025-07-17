@@ -97,8 +97,12 @@ namespace NotificationsSender
                     var emailNotifications = await notificationsSenderService.GetEmailNotificationsToSend(minNotificationId: _minEmailNotificationId);
                     await SendEmailNotifications(emailNotificationsRepository, emailNotifications, cancellationToken);
 
+                    #if DEBUG
+                    Console.WriteLine($"{nameof(_jwtSettings)}: {_jwtSettings!.ToString()}");
+                    #endif
                     _logger.Information("Worker pause at {time}", DateTimeOffset.Now);
                     await Task.Delay(TimeSpan.FromSeconds(SENDING_INTERVAL_SECONDS), cancellationToken);
+
                 }
                 catch (Exception ex)
                 {

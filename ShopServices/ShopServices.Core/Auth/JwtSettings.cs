@@ -9,5 +9,10 @@ namespace ShopServices.Core.Auth
         public string Issuer {  get; set; }
         public string Audience { get; set; }
         public string KEY { get; set; }
+
+        public override string ToString()
+        {
+            return $"Issuer: \"{Issuer}\" Audience: \"{Audience}\" KEY: \"{KEY}\"";
+        }
     }
 }
