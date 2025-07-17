@@ -79,7 +79,7 @@ var tokenValidationParameters = builder.Configuration.GetTokenValidationParamete
 //    });
 builder.Services.AddAuthenticationBuilderForJWT(tokenValidationParameters);
 
-builder.Services.AddScoped<EmailBotOptionsSettings>();
+builder.Services.AddSingleton<EmailBotOptionsSettings>();
 //builder.Services.AddScoped<IEmailNotificationsService, EmailNotificationsService>();
 var emailBotOptionsSettings = new EmailBotOptionsSettings
 {

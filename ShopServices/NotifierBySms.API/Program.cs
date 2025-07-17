@@ -36,7 +36,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddSwaggerAndVersioning(SERVICE_NAME, includeAbstractionsXml: false);
 
 builder.Services.Configure<SmsBotClientOptionsSettings>(config: builder.Configuration.GetSection(key: APPSETTINGS_BOT_SECTION));
-
+var smsBotClientOptionsSettings = builder.Configuration.GetSection(key: APPSETTINGS_BOT_SECTION)?.Get<SmsBotClientOptionsSettings>();
 builder.Services.AddHttpClient(name: "ShopServices.NotifierBySms.API.Client")
     .AddTypedClient<ISmsBotClient>(factory: (HttpClient httpClient, IServiceProvider serviceProvider) =>
     {
@@ -79,15 +79,15 @@ var tokenValidationParameters = builder.Configuration.GetTokenValidationParamete
 //    });
 builder.Services.AddAuthenticationBuilderForJWT(tokenValidationParameters);
 
-builder.Services.AddScoped<SmsBotClientOptionsSettings>();
+builder.Services.AddSingleton<SmsBotClientOptionsSettings>(smsBotClientOptionsSettings!);
 //builder.Services.AddScoped<ISmsNotificationsService, SmsNotificationsService>();
 //builder.Services.AddScoped<ISmsNotificationsService, SmsNotificationsByAzureService>();
 
 
-var smsBotClientOptionsSettings = new SmsBotClientOptionsSettings(builder.Configuration[$"{APPSETTINGS_BOT_SECTION}:BotToken"])
-{
-    ConnectionString = builder.Configuration[$"{APPSETTINGS_BOT_SECTION}:ConnectionString"],
-};
+//var smsBotClientOptionsSettings = new SmsBotClientOptionsSettings(builder.Configuration[$"{APPSETTINGS_BOT_SECTION}:BotToken"])
+//{
+//    ConnectionString = builder.Configuration[$"{APPSETTINGS_BOT_SECTION}:ConnectionString"],
+//};
 
 builder.Services.AddScoped<ISmsNotificationsService>(src => new SmsNotificationsService(
     smsBotClientOptionsSettings: smsBotClientOptionsSettings,

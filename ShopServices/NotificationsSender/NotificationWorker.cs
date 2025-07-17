@@ -45,11 +45,16 @@ namespace NotificationsSender
         public NotificationWorker(
             IServiceScopeFactory scopeFactory,
             GrpcTgNotifications.GrpcTgNotificationsClient grpcClient,
+            GrpcEmailNotifications.GrpcEmailNotificationsClient grpcEmailClient,
+            GrpcSmsNotifications.GrpcSmsNotificationsClient grpcSmsClient,
             Serilog.ILogger logger)
         {
             _scopeFactory = scopeFactory;
 
             _grpcTgClient = grpcClient;
+            _grpcEmailClient = grpcEmailClient;
+            _grpcSmsClient = grpcSmsClient;
+
             _logger = logger;
         }
 
