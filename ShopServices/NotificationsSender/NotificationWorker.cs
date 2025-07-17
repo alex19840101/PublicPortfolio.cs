@@ -18,6 +18,7 @@ using ShopServices.DataAccess;
 using TelegramBot.API.Services.gRPC.Notifications;
 using NotifierByEmail.API.Services.gRPC.Notifications;
 using NotifierBySms.API.Services.gRPC.Notifications;
+using System.Linq;
 
 namespace NotificationsSender
 {
@@ -114,6 +115,8 @@ namespace NotificationsSender
             CancellationToken cancellationToken)
         {
             var noError = true;
+            var sentCount = 0;
+            var errorsCount = 0;
             foreach (var en in emailNotifications)
             {
                 try
@@ -130,6 +133,7 @@ namespace NotificationsSender
                     {
                         await emailNotificationsRepository.SaveUnsuccessfulAttempt(en.Id, DateTime.Now);
                         noError = false;
+                        errorsCount++;
                         continue;
                     }
 
@@ -143,8 +147,11 @@ namespace NotificationsSender
                     _logger.Error(ex, $"en.Id={en.Id}");
                     await emailNotificationsRepository.SaveUnsuccessfulAttempt(en.Id, DateTime.Now);
                     noError = false;
+                    errorsCount++;
                 }
             }
+            var count = emailNotifications.Count();
+            Console.WriteLine($"{nameof(SendEmailNotifications)}\t|count:{count}|sentCount:{sentCount}|errorsCount:{errorsCount}");
         }
 
         private async Task SendPhoneNotifications(
@@ -153,6 +160,11 @@ namespace NotificationsSender
             CancellationToken cancellationToken)
         {
             var noError = true;
+            
+            var sentTgCount = 0;
+            var errorsTgCount = 0;
+            var sentSmsCount = 0;
+            var errorsSmsCount = 0;
             foreach (var pn in phoneNotifications)
             {
                 try
@@ -176,6 +188,7 @@ namespace NotificationsSender
                         {
                             await phoneNotificationsRepository.SaveUnsuccessfulAttempt(pn.Id, DateTime.Now);
                             noError = false;
+                            errorsTgCount++;
                             continue;
                         }
 
@@ -183,6 +196,7 @@ namespace NotificationsSender
 
                         if (noError)
                             _minPhoneNotificationId = pn.Id + 1;
+                        sentTgCount++;
                         continue;
                     }
                     //SMS
@@ -197,12 +211,14 @@ namespace NotificationsSender
                     {
                         await phoneNotificationsRepository.SaveUnsuccessfulAttempt(pn.Id, DateTime.Now);
                         noError = false;
+                        errorsSmsCount++;
                         continue;
                     }
 
                     await phoneNotificationsRepository.UpdateSent(pn.Id, DateTime.Now);
                     if (noError)
                         _minPhoneNotificationId = pn.Id + 1;
+                    sentSmsCount++;
                     continue;
                 }
                 catch (Exception ex)
@@ -210,8 +226,16 @@ namespace NotificationsSender
                     _logger.Error(ex, $"pn.Id={pn.Id}");
                     await phoneNotificationsRepository.SaveUnsuccessfulAttempt(pn.Id, DateTime.Now);
                     noError = false;
+                    if (pn.NotificationMethod == ShopServices.Core.Enums.NotificationMethod.TelegramMessage)
+                        errorsTgCount++;
+                    else errorsSmsCount++;
                 }
             }
+            var count = phoneNotifications.Count();
+            var tgCount = phoneNotifications.Count(pn => pn.NotificationMethod == ShopServices.Core.Enums.NotificationMethod.TelegramMessage);
+            var smsCount = count - tgCount;
+            Console.WriteLine($"{nameof(SendPhoneNotifications)}\t|Tg\t|count:{tgCount}|sentCount:{sentTgCount}|errorsCount:{errorsTgCount}");
+            Console.WriteLine($"{nameof(SendPhoneNotifications)}\t|SMS\t|count:{smsCount}|sentCount:{sentSmsCount}|errorsCount:{errorsSmsCount}");
         }
 
         private JwtSecurityToken GetJwtSecurityToken()
