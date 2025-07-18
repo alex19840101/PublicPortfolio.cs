@@ -49,6 +49,12 @@ builder.Services.Configure<EmailBotOptionsSettings>(config: builder.Configuratio
 
 builder.Services.AddGrpc();
 
+builder.Services.AddHttpContextAccessor();
+
+var tokenValidationParameters = builder.Configuration.GetTokenValidationParametersForJWT();
+
+builder.Services.AddAuthenticationBuilderForJWT(tokenValidationParameters);
+
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy =>
     {
@@ -56,29 +62,7 @@ builder.Services.AddAuthorizationBuilder()
         policy.RequireClaim(ClaimTypes.Role);
     });
 
-builder.Services.AddHttpContextAccessor();
-
 builder.Services.AddScoped<IAuthorizationHandler, RoleAuthorizationHandler>();
-var tokenValidationParameters = builder.Configuration.GetTokenValidationParametersForJWT();
-//var tokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-//{
-//    ValidateIssuer = true,
-//    ValidIssuer = builder.Configuration["JWT:Issuer"],
-//    ValidateAudience = true,
-//    ValidAudience = builder.Configuration["JWT:Audience"],
-//    ValidateLifetime = true,
-//    IssuerSigningKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(builder.Configuration["JWT:KEY"]!)),
-//    ValidateIssuerSigningKey = true
-//};
-
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options =>
-//    {
-//        options.TokenValidationParameters = tokenValidationParameters;
-//        options.IncludeErrorDetails = true;
-//        options.SaveToken = true;
-//    });
-builder.Services.AddAuthenticationBuilderForJWT(tokenValidationParameters);
 
 builder.Services.AddSingleton<EmailBotOptionsSettings>();
 //builder.Services.AddScoped<IEmailNotificationsService, EmailNotificationsService>();

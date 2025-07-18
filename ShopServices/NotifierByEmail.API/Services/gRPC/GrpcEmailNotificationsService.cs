@@ -35,7 +35,7 @@ namespace NotifierByEmail.API.Services.gRPC
         /// <param name="context"></param>
         /// <returns></returns>
         [Authorize(Roles = Roles.NotificationsSender)]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public override async Task<SendEmailReply> SendEmailNotification(SendEmailNotificationRequest sendEmailNotificationRequest, ServerCallContext context)
         {
             var expectedSecret = $"{sendEmailNotificationRequest.EmailReceiver.GetHashCode()}{_secret}{sendEmailNotificationRequest.Topic.GetHashCode()}";

@@ -35,7 +35,7 @@ namespace NotifierBySms.API.Services.gRPC
         /// <param name="context"></param>
         /// <returns></returns>
         [Authorize(Roles = Roles.NotificationsSender)]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public override async Task<SendSmsReply> SendSmsNotification(SendSmsNotificationRequest sendSmsNotificationRequest, ServerCallContext context)
         {
             var expectedSecret = $"{sendSmsNotificationRequest.PhoneReceiver.GetHashCode()}{_secret}{sendSmsNotificationRequest.Message.GetHashCode()}";
