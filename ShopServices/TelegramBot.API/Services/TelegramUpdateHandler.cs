@@ -54,8 +54,11 @@ public class TelegramUpdateHandler : IUpdateHandler
         ITelegramBotClient botClient,
         Exception exception,
         HandleErrorSource source,
-        CancellationToken cancellationToken) =>
-        throw new NotImplementedException();
+        CancellationToken cancellationToken)
+    {
+        _logger.LogError("Exception: {Exception}", exception);
+        return Task.CompletedTask;
+    }
 
 
     /// <summary> Обработчик нового Telegram-сообщения </summary>
