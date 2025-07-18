@@ -27,7 +27,8 @@ IHostEnvironment env = builder.Environment;
 
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddUserSecrets<Program>();
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
