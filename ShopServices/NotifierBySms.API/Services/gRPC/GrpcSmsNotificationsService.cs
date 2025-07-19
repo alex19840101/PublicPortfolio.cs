@@ -36,7 +36,6 @@ namespace NotifierBySms.API.Services.gRPC
         public override async Task<SendSmsReply> SendSmsNotification(SendSmsNotificationRequest sendSmsNotificationRequest, ServerCallContext context)
         {
             var expectedSecret = $"1{sendSmsNotificationRequest.PhoneSender}01{sendSmsNotificationRequest.PhoneReceiver}0";
-            //$"1{pn.Sender}01{pn.Recipient}"
             if (string.IsNullOrWhiteSpace(sendSmsNotificationRequest.Secret) ||
                 !string.Equals(sendSmsNotificationRequest.Secret, expectedSecret))
             {
