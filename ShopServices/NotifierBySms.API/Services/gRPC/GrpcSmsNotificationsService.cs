@@ -17,17 +17,14 @@ namespace NotifierBySms.API.Services.gRPC
     {
         private readonly ISmsNotificationsService _smsNotificationsService;
         private readonly ILogger<GrpcSmsNotificationsService> _logger;
-        private readonly string _secret;
 
         /// <summary> Констуктор внутреннего gRPC-сервиса для работы с SMS-уведомлениями </summary>
         public GrpcSmsNotificationsService(
             ISmsNotificationsService SmsNotificationsService,
-            ILogger<GrpcSmsNotificationsService> logger,
-            string secret)
+            ILogger<GrpcSmsNotificationsService> logger)
         {
             _smsNotificationsService = SmsNotificationsService;
             _logger = logger;
-            _secret = secret;
         }
 
         /// <summary> Обработка gRPC-запроса для отправки SMS-уведомления </summary>
@@ -35,10 +32,10 @@ namespace NotifierBySms.API.Services.gRPC
         /// <param name="context"></param>
         /// <returns></returns>
         [Authorize(Roles = Roles.NotificationsSender)]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public override async Task<SendSmsReply> SendSmsNotification(SendSmsNotificationRequest sendSmsNotificationRequest, ServerCallContext context)
         {
-            var expectedSecret = $"{sendSmsNotificationRequest.PhoneReceiver.GetHashCode()}{_secret}{sendSmsNotificationRequest.Message.GetHashCode()}";
+            var expectedSecret = $"1{sendSmsNotificationRequest.PhoneReceiver.GetHashCode()}1{sendSmsNotificationRequest.Message.GetHashCode()}";
             if (string.IsNullOrWhiteSpace(sendSmsNotificationRequest.Secret) ||
                 !string.Equals(sendSmsNotificationRequest.Secret, expectedSecret))
             {

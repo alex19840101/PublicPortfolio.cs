@@ -17,17 +17,14 @@ namespace NotifierByEmail.API.Services.gRPC
     {
         private readonly IEmailNotificationsService _emailNotificationsService;
         private readonly ILogger<GrpcEmailNotificationsService> _logger;
-        private readonly string _secret;
 
         /// <summary> Констуктор внутреннего gRPC-сервиса для работы с E-mail-уведомлениями </summary>
         public GrpcEmailNotificationsService(
             IEmailNotificationsService emailNotificationsService,
-            ILogger<GrpcEmailNotificationsService> logger,
-            string secret)
+            ILogger<GrpcEmailNotificationsService> logger)
         {
             _emailNotificationsService = emailNotificationsService;
             _logger = logger;
-            _secret = secret;
         }
 
         /// <summary> Обработка gRPC-запроса для отправки E-mail-письма </summary>
@@ -35,10 +32,10 @@ namespace NotifierByEmail.API.Services.gRPC
         /// <param name="context"></param>
         /// <returns></returns>
         [Authorize(Roles = Roles.NotificationsSender)]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public override async Task<SendEmailReply> SendEmailNotification(SendEmailNotificationRequest sendEmailNotificationRequest, ServerCallContext context)
         {
-            var expectedSecret = $"{sendEmailNotificationRequest.EmailReceiver.GetHashCode()}{_secret}{sendEmailNotificationRequest.Topic.GetHashCode()}";
+            var expectedSecret = $"1{sendEmailNotificationRequest.EmailReceiver.GetHashCode()}00{sendEmailNotificationRequest.Topic.GetHashCode()}";
             if (string.IsNullOrWhiteSpace(sendEmailNotificationRequest.Secret) ||
                 !string.Equals(sendEmailNotificationRequest.Secret, expectedSecret))
             {

@@ -16,17 +16,14 @@ namespace TelegramBot.API.Services.gRPC
     {
         private readonly ITelegramNotificationService _telegramNotificationService;
         private readonly ILogger<GrpcTgNotificationsService> _logger;
-        private readonly string _secret;
 
         /// <summary> Констуктор внутреннего gRPC-сервиса для работы с Telegram-уведомлениями </summary>
         public GrpcTgNotificationsService(
             ITelegramNotificationService telegramNotificationService,
-            ILogger<GrpcTgNotificationsService> logger,
-            string secret)
+            ILogger<GrpcTgNotificationsService> logger)
         {
             _telegramNotificationService = telegramNotificationService;
             _logger = logger;
-            _secret = secret;
         }
 
 
@@ -35,10 +32,10 @@ namespace TelegramBot.API.Services.gRPC
         /// <param name="context"> gRPC-контекст | The context of the server-side call handler being invoked.</param>
         /// <returns>The response to send back to the client (wrapped by a task).</returns>
         [Authorize(Roles = Roles.NotificationsSender)]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public override async Task<ResultReply> SendNotification(SendTgNotificationRequest sendTgNotificationRequest, ServerCallContext context)
         {
-            var expectedSecret = $"{sendTgNotificationRequest.ChatId.GetHashCode()}{_secret}{sendTgNotificationRequest.Message.GetHashCode()}";
+            var expectedSecret = $"1{sendTgNotificationRequest.ChatId.GetHashCode()}0";
             if (string.IsNullOrWhiteSpace(sendTgNotificationRequest.Secret) ||
                 !string.Equals(sendTgNotificationRequest.Secret, expectedSecret))
             {

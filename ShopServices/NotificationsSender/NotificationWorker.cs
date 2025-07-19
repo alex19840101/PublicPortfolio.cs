@@ -130,7 +130,8 @@ namespace NotificationsSender
                         EmailSender = en.Sender,
                         EmailReceiver = en.Recipient,
                         Topic = en.Topic,
-                        EmailBody = en.Message
+                        EmailBody = en.Message,
+                        Secret = $"1{en.Recipient.GetHashCode()}00{en.Topic.GetHashCode()}"
                     };
                     var resultReply = await _grpcEmailClient.SendEmailNotificationAsync(sendEmailNotificationRequest, _headers, cancellationToken: cancellationToken);
                     if (resultReply.StatusCode != (int)HttpStatusCode.OK)
@@ -185,7 +186,8 @@ namespace NotificationsSender
                         var sendTgNotificationRequest = new SendTgNotificationRequest
                         {
                             ChatId = chatId,
-                            Message = pn.Message
+                            Message = pn.Message,
+                            Secret = $"1{chatId.GetHashCode()}0"
                         };
                         var resultReply = await _grpcTgClient.SendNotificationAsync(sendTgNotificationRequest, _headers, cancellationToken: cancellationToken);
                         if (resultReply.StatusCode != (int)HttpStatusCode.OK)
