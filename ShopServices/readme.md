@@ -32,6 +32,9 @@ Goods.API
 GoodsGroups.API
 Managers.API
 Notifications.API
+NotificationsSender
+NotifierByEmail.API
+NotifierBySms.API
 Orders.API
 Prices.API
 Shops.API
@@ -50,6 +53,9 @@ Goods.API\
 GoodsGroups.API\
 Managers.API\
 Notifications.API\
+NotificationsSender\
+NotifierByEmail.API\
+NotifierBySms.API\
 Orders.API\
 Prices.API\
 Shops.API\
@@ -71,9 +77,9 @@ Warehouse.API\
 **ASP.NET Core Web API**:
 - All ***.API projects.
 
-**gRPC service and test client with auth.:**
-- //TODO: GrpcService(s),
-- //TODO: GrpcClient(s) for methods simple testing with auth.
+**gRPC-services and notifiers with auth.:**
+- TelegramBot.API, NotifierByEmail.API, NotifierBySms.API
+- NotificationsSender as gRPC-client
 
 **- ORM:** EF Core.
 
@@ -85,11 +91,11 @@ Warehouse.API\
 **- Auth. (authentication and authorization):**
 - JWT-tokens + roles.
 - Authorization required in methods.
-Using in APIs projects //TODO: auth. in GrpcService(s), GrpcClient(s)
+Using in APIs projects, gRPC-services and NotificationsSender
 
 **- Documentation**: Swagger (OpenAPI) in APIs.
 
-**- Logging**: Serilog (console, file) in APIs //TODO: in GrpcService.
+**- Logging**: Serilog (console, file) in APIs, gRPC services and NotificationsSender.
 
 **- Unit Tests for Busines Logic services:**
 - MsTest tests (BuyerSeviceTests, EmployeeSeviceTests);
@@ -97,3 +103,5 @@ Using in APIs projects //TODO: auth. in GrpcService(s), GrpcClient(s)
 
 **- Notifications:
 - Telegram (using Telegram.Bot v22.6.0 in TelegramBot.API)
+- E-mail notifications (using MailKit)
+- SMS-notifications (SmsNotificationsService - notifier abstract simulation and SmsNotificationsByAzureService using Azure.Communication.Sms)
