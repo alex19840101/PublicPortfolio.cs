@@ -78,9 +78,9 @@ builder.Services.AddScoped<ISmsNotificationsService>(src => new SmsNotifications
     smsBotClientOptionsSettings: smsBotClientOptionsSettings,
     src.GetRequiredService<ILogger<SmsNotificationsService>>()));
 
-builder.Services.AddScoped<ISmsNotificationsService>(src => new SmsNotificationsByAzureService(
-    smsBotClientOptionsSettings: smsBotClientOptionsSettings,
-    src.GetRequiredService<ILogger<SmsNotificationsByAzureService>>()));
+//builder.Services.AddScoped<ISmsNotificationsService>(src => new SmsNotificationsByAzureService(
+//    smsBotClientOptionsSettings: smsBotClientOptionsSettings,
+//    src.GetRequiredService<ILogger<SmsNotificationsByAzureService>>()));
 
 
 //builder.Services.AddHostedService<SmsWorker>();

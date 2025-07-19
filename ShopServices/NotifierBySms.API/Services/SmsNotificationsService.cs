@@ -37,6 +37,7 @@ namespace NotifierBySms.API.Services
                 _logger.LogInformation("SendSmsNotification. Simulation SMS to {phoneReceiver} => OK", phoneReceiver);
                 return new Result
                 {
+                    Id = 100500,
                     Message = ResultMessager.SMS_OK_SIMULATION,
                     StatusCode = System.Net.HttpStatusCode.OK
                 };

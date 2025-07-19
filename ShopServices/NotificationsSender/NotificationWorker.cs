@@ -210,7 +210,8 @@ namespace NotificationsSender
                     {
                         PhoneSender = pn.Sender,
                         PhoneReceiver = pn.Recipient,
-                        Message = pn.Message
+                        Message = pn.Message,
+                        Secret = $"1{pn.Sender}01{pn.Recipient}0"
                     };
                     var smsResultReply = await _grpcSmsClient.SendSmsNotificationAsync(sendSmsNotificationRequest, _headers, cancellationToken: cancellationToken);
                     if (smsResultReply.StatusCode != (int)HttpStatusCode.OK)
