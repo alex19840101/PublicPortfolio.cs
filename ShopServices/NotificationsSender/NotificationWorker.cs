@@ -131,7 +131,7 @@ namespace NotificationsSender
                         EmailReceiver = en.Recipient,
                         Topic = en.Topic,
                         EmailBody = en.Message,
-                        Secret = $"1{en.Recipient.GetHashCode()}00{en.Topic.GetHashCode()}"
+                        Secret = $"1{DateTime.Now.ToShortDateString}00"
                     };
                     var resultReply = await _grpcEmailClient.SendEmailNotificationAsync(sendEmailNotificationRequest, _headers, cancellationToken: cancellationToken);
                     if (resultReply.StatusCode != (int)HttpStatusCode.OK)
