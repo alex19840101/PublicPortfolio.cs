@@ -35,7 +35,7 @@ namespace NotifierBySms.API.Services.gRPC
         [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public override async Task<SendSmsReply> SendSmsNotification(SendSmsNotificationRequest sendSmsNotificationRequest, ServerCallContext context)
         {
-            var expectedSecret = $"1{sendSmsNotificationRequest.PhoneReceiver.GetHashCode()}1{sendSmsNotificationRequest.Message.GetHashCode()}";
+            var expectedSecret = $"1{sendSmsNotificationRequest.PhoneSender}01{sendSmsNotificationRequest.PhoneReceiver}0";
             if (string.IsNullOrWhiteSpace(sendSmsNotificationRequest.Secret) ||
                 !string.Equals(sendSmsNotificationRequest.Secret, expectedSecret))
             {
@@ -56,7 +56,7 @@ namespace NotifierBySms.API.Services.gRPC
 
             if (sendResult == null)
             {
-                _logger.LogWarning("sendResult == null. Tg.MessageID={ID}", sendResult?.Id);
+                _logger.LogWarning("sendResult == null. SMS.MessageID={ID}", sendResult?.Id);
                 return new SendSmsReply
                 {
                     Message = ResultMessager.SENDRESULT_IS_NULL_SMS,
@@ -64,7 +64,7 @@ namespace NotifierBySms.API.Services.gRPC
                 };
             }
 
-            _logger.LogInformation("SENT NOTIFICATION. Tg.MessageID={ID}", sendResult!.Id);
+            _logger.LogInformation("SENT NOTIFICATION. SMS.MessageID={ID}", sendResult!.Id);
 
             return new SendSmsReply
             {

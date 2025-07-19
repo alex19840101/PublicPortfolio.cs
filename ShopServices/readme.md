@@ -101,7 +101,7 @@ Using in APIs projects, gRPC-services and NotificationsSender
 - MsTest tests (BuyerSeviceTests, EmployeeSeviceTests);
 - using extra NuGet packages: Moq, AutoFixture, FluentAssertions (methods versions with FluentAssertions and without FluentAssertions in AuthServiceTests).
 
-**- Notifications:
+**- Notifications:**
 - Telegram (using Telegram.Bot v22.6.0 in TelegramBot.API)
 - E-mail notifications (using MailKit)
 - SMS-notifications (SmsNotificationsService - notifier abstract simulation and SmsNotificationsByAzureService using Azure.Communication.Sms)

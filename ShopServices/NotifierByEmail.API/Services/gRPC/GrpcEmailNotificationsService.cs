@@ -35,7 +35,7 @@ namespace NotifierByEmail.API.Services.gRPC
         [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public override async Task<SendEmailReply> SendEmailNotification(SendEmailNotificationRequest sendEmailNotificationRequest, ServerCallContext context)
         {
-            var expectedSecret = $"1{sendEmailNotificationRequest.EmailReceiver.GetHashCode()}00{sendEmailNotificationRequest.Topic.GetHashCode()}";
+            var expectedSecret = $"1{DateTime.Now.ToShortDateString}00";
             if (string.IsNullOrWhiteSpace(sendEmailNotificationRequest.Secret) ||
                 !string.Equals(sendEmailNotificationRequest.Secret, expectedSecret))
             {

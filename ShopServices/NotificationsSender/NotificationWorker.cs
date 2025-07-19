@@ -131,7 +131,7 @@ namespace NotificationsSender
                         EmailReceiver = en.Recipient,
                         Topic = en.Topic,
                         EmailBody = en.Message,
-                        Secret = $"1{en.Recipient.GetHashCode()}00{en.Topic.GetHashCode()}"
+                        Secret = $"1{DateTime.Now.ToShortDateString}00"
                     };
                     var resultReply = await _grpcEmailClient.SendEmailNotificationAsync(sendEmailNotificationRequest, _headers, cancellationToken: cancellationToken);
                     if (resultReply.StatusCode != (int)HttpStatusCode.OK)
@@ -210,7 +210,8 @@ namespace NotificationsSender
                     {
                         PhoneSender = pn.Sender,
                         PhoneReceiver = pn.Recipient,
-                        Message = pn.Message
+                        Message = pn.Message,
+                        Secret = $"1{pn.Sender}01{pn.Recipient}0"
                     };
                     var smsResultReply = await _grpcSmsClient.SendSmsNotificationAsync(sendSmsNotificationRequest, _headers, cancellationToken: cancellationToken);
                     if (smsResultReply.StatusCode != (int)HttpStatusCode.OK)
