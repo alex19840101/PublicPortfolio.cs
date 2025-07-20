@@ -62,7 +62,7 @@ namespace NewsFeedSystem.API
                 xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 options.IncludeXmlComments(xmlPath);
                 options.CustomSchemaIds(x => x.FullName);
-                options.GeneratePolymorphicSchemas();
+                //options.GeneratePolymorphicSchemas();
 
                 options.AddSecurityDefinition($"AuthToken {apiVersion}",
                     new OpenApiSecurityScheme

@@ -76,7 +76,7 @@ namespace ProjectTasksTrackService.DataAccess.Entities
                 !string.Equals(comparedAuthUser.PasswordHash, _passwordHash) ||
                 !string.Equals(comparedAuthUser.Nick, _nick) ||
                 !string.Equals(comparedAuthUser.Phone, _phone) ||
-                !string.Equals(comparedAuthUser.Role, _phone) ||
+                !string.Equals(comparedAuthUser.Role, _role) ||
                 comparedAuthUser.CreatedDt != _createdDt ||
                 comparedAuthUser.LastUpdateDt != _lastUpdateDt)
                 return false;
