@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.30.2" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.70.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.71.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NewsFeedSystem.GrpcService\NewsFeedSystem.GrpcService.csproj" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<Protobuf Include="..\NewsFeedSystem.GrpcService\Protos\greet.proto" GrpcServices="Client">
+			<Link>Protos\greet.proto</Link>
+		</Protobuf>
+		<Protobuf Include="..\NewsFeedSystem.GrpcService\Protos\GrpcAuth.proto" GrpcServices="Client">
+			<Link>Protos\GrpcAuth.proto</Link>
+		</Protobuf>
+		<Protobuf Include="..\NewsFeedSystem.GrpcService\Protos\GrpcNews.proto" GrpcServices="Client">
+			<Link>Protos\GrpcNews.proto</Link>
+		</Protobuf>
+		<Protobuf Include="..\NewsFeedSystem.GrpcService\Protos\GrpcTags.proto" GrpcServices="Client">
+			<Link>Protos\GrpcTags.proto</Link>
+		</Protobuf>
+		<Protobuf Include="..\NewsFeedSystem.GrpcService\Protos\GrpcTopics.proto" GrpcServices="Client">
+			<Link>Protos\GrpcTopics.proto</Link>
+		</Protobuf>
+	</ItemGroup>
+
+</Project>

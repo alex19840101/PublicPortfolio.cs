@@ -1,0 +1,32 @@
+syntax = "proto3";
+option csharp_namespace = "NotifierByEmail.API.Services.gRPC.Notifications";
+
+package ShSEmailBot;
+
+service GrpcEmailNotifications{
+	// gRPC-запрос на сообщение-уведомление для отправки E-mail-письма
+	rpc SendEmailNotification(SendEmailNotificationRequest) returns (SendEmailReply);
+}
+
+// "Сообщение" в составе gPRC-сообщения, содержащее данные для отправки E-mail-письма
+message SendEmailNotificationRequest {
+	// *E-mail-адрес отправителя
+	string email_sender = 1;
+	// *E-mail-адрес получателя
+	string email_receiver = 2;
+	
+	// *Тема сообщения (письма)
+	string topic = 3;
+	// *Тело (Body) письма
+	string email_body = 4;
+	
+	// Секретная строка
+	string secret = 5;
+}
+
+// Ответное gPRC-сообщение на запрос на отправку E-mail-письма
+message SendEmailReply {
+	sint64 message_id = 1;	
+	string message = 2;
+	int32 status_code = 3;
+}

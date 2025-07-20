@@ -10,6 +10,8 @@
 *.~*
 *.obj
 *.exe
+*.dbmdl
+*.jfm
 .Debug.
 Web.Debug.config
 Web.Release.config
