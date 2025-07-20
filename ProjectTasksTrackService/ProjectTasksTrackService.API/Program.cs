@@ -34,6 +34,13 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
+    IHostEnvironment env = builder.Environment;
+
+    builder.Configuration
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
+    .AddUserSecrets<Program>();
+
     // Add services to the container.
     builder.Services.AddSerilog((services, loggerConfiguration) => loggerConfiguration
             .ReadFrom.Configuration(builder.Configuration)
@@ -54,7 +61,6 @@ try
         });
     });
 
-    const string KEY = "ProjectTasksTrackService:Auth/Key{)(ws;lkfj43";
     builder.Services.AddHttpContextAccessor();
 
     builder.Services.AddScoped<IAuthorizationHandler, RoleAuthorizationHandler>();
@@ -68,7 +74,7 @@ try
                 ValidateAudience = true,
                 ValidAudience = "MyAuthClient",
                 ValidateLifetime = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(KEY)),
+                IssuerSigningKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(builder.Configuration["JWT:KEY"])),
                 ValidateIssuerSigningKey = true
             };
             options.IncludeErrorDetails = true;
@@ -78,8 +84,22 @@ try
     // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
     builder.Services.AddOpenApi();
 
+    var tokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["JWT:Issuer"],
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["JWT:Audience"],
+        ValidateLifetime = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(builder.Configuration["JWT:KEY"]!)),
+        ValidateIssuerSigningKey = true
+    };
+
     builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-    builder.Services.AddScoped<IAuthService, AuthService>();
+    builder.Services.AddScoped<IAuthService>(src => new AuthService(
+        src.GetRequiredService<IAuthRepository>(),
+        tokenValidationParameters,
+        key: builder.Configuration["JWT:KEY"]!));
 
     builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
     builder.Services.AddScoped<IProjectsService, ProjectsService>();
@@ -90,11 +110,6 @@ try
     builder.Services.AddScoped<ITasksRepository, TasksRepository>();
     builder.Services.AddScoped<ITasksService, TasksService>();
 
-    IHostEnvironment env = builder.Environment;
-
-    builder.Configuration
-        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
     string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ProjectTasksTrackServiceDb");
 
     var isDevelopment = env.IsDevelopment();
@@ -156,7 +171,7 @@ try
         xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
         c.IncludeXmlComments(xmlPath);
         c.CustomSchemaIds(x => x.FullName);
-        c.GeneratePolymorphicSchemas();
+        //c.GeneratePolymorphicSchemas();
     });
     #endregion -------------------------------Swagger-------------------------------
 
