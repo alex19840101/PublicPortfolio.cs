@@ -94,7 +94,8 @@ try
 
     builder.Configuration
         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
+        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
+        .AddUserSecrets<Program>();
     string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ProjectTasksTrackServiceDb");
 
     var isDevelopment = env.IsDevelopment();
