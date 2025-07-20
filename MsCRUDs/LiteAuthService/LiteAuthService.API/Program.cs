@@ -39,7 +39,8 @@ try
 
     builder.Configuration
         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
+        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
+        .AddUserSecrets<Program>();
     string dataBaseConnectionStr = builder.Configuration.GetConnectionString("localdb");
 
     // Add services to the container.
@@ -128,7 +129,7 @@ try
         xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
         c.IncludeXmlComments(xmlPath);
         c.CustomSchemaIds(x => x.FullName);
-        c.GeneratePolymorphicSchemas();
+        //c.GeneratePolymorphicSchemas();
     });
     #endregion -------------------------------Swagger-------------------------------
 
