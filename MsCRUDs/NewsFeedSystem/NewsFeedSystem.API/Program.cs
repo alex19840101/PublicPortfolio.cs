@@ -183,7 +183,7 @@ try
         xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
         options.IncludeXmlComments(xmlPath);
         options.CustomSchemaIds(x => x.FullName);
-        options.GeneratePolymorphicSchemas();
+        //options.GeneratePolymorphicSchemas();
     });
     builder.Services.AddApiVersioning(
                         options =>
