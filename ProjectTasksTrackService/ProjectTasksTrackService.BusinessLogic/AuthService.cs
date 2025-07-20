@@ -15,14 +15,17 @@ namespace ProjectTasksTrackService.BusinessLogic
     public class AuthService : IAuthService
     {
         private readonly IAuthRepository _authRepository;
-        private const string ISSUER = "MyAuthServer";
-        private const string AUDIENCE = "MyAuthClient";
-        private const string KEY = "ProjectTasksTrackService:Auth/Key{)(ws;lkfj43";
+        private readonly TokenValidationParameters _tokenValidationParameters;
+        private readonly string _key;
         private const int LOGIN_DEFAULT_TIMEOUT = 60;
 
-        public AuthService(IAuthRepository authRepository)
+        public AuthService(IAuthRepository authRepository,
+            TokenValidationParameters tokenValidationParameters,
+            string key)
         {
             _authRepository = authRepository;
+            _tokenValidationParameters = tokenValidationParameters;
+            _key = key;
         }
 
         public async Task<AuthResult> Register(AuthUser authUser)
@@ -78,8 +81,8 @@ namespace ProjectTasksTrackService.BusinessLogic
             };
 
             var jwt = new JwtSecurityToken(
-                issuer: ISSUER,
-                audience: AUDIENCE,
+                issuer: _tokenValidationParameters.ValidIssuer,
+                audience: _tokenValidationParameters.ValidAudience,
                 claims: claims,
                 expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(loginData.TimeoutMinutes ?? LOGIN_DEFAULT_TIMEOUT)),
                 signingCredentials: new SigningCredentials(key: GetSymmetricSecurityKey(), algorithm: SecurityAlgorithms.HmacSha256));
@@ -219,7 +222,7 @@ namespace ProjectTasksTrackService.BusinessLogic
             return await _authRepository.DeleteUser(id: deleteAccountData.Id);
         }
 
-        private static SymmetricSecurityKey GetSymmetricSecurityKey() =>
-            new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(KEY));
+        private SymmetricSecurityKey GetSymmetricSecurityKey() =>
+            new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(_key));
     }
 }

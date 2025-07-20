@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.IdentityModel.Tokens;
 using Moq;
 using ProjectTasksTrackService.Core.Auth;
 using ProjectTasksTrackService.Core.Repositories;
@@ -16,7 +18,23 @@ namespace ProjectTasksTrackService.BusinessLogic.MsTests
         public AuthServiceTests()
         {
             _authRepositoryMock = new Mock<IAuthRepository>();
-            _authService = new AuthService(_authRepositoryMock.Object);
+
+            string key = "JWT:KEY.The encryption algorithm 'HS256' requires a key size of at least '128' bits";
+
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = "JWT:Issuer",
+                ValidateAudience = true,
+                ValidAudience = "JWT:Audience",
+                ValidateLifetime = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key: Encoding.UTF8.GetBytes(key)),
+                ValidateIssuerSigningKey = true
+            };
+
+            _authService = new AuthService(_authRepositoryMock.Object,
+                tokenValidationParameters,
+                key);
         }
 
         [TestMethod]
