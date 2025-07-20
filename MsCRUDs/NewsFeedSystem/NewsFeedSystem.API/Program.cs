@@ -42,7 +42,8 @@ try
 
     builder.Configuration
         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
+        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
+        .AddUserSecrets<Program>();
 
     // Add services to the container.
     builder.Services.AddSerilog((services, loggerConfiguration) => loggerConfiguration
