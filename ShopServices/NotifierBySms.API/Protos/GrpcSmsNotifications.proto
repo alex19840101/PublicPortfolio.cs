@@ -1,0 +1,30 @@
+syntax = "proto3";
+option csharp_namespace = "NotifierBySms.API.Services.gRPC.Notifications";
+
+package ShSSmsBot;
+
+service GrpcSmsNotifications{
+	// gRPC-запрос на сообщение-уведомление для отправки SMS-уведомления
+	rpc SendSmsNotification(SendSmsNotificationRequest) returns (SendSmsReply);
+}
+
+// "Сообщение" в составе gPRC-сообщения, содержащее данные для отправки SMS-уведомления
+message SendSmsNotificationRequest {
+	// *Телефон отправителя
+	string phone_sender = 1;
+	// *Телефон получателя
+	string phone_receiver = 2;
+	
+	// *Сообщение
+	string message = 3;
+	
+	// Секретная строка
+	string secret = 4;
+}
+
+// Ответное gPRC-сообщение на запрос на отправку SMS-уведомления
+message SendSmsReply {
+	sint64 message_id = 1;	
+	string message = 2;
+	int32 status_code = 3;
+}

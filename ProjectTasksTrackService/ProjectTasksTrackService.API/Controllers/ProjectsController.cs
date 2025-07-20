@@ -143,7 +143,7 @@ namespace ProjectTasksTrackService.API.Controllers
         }
 
         /// <summary> Обновление проекта </summary>
-        [HttpPost("api/v2/Projects/UpdateProject")]
+        [HttpPatch("api/v2/Projects/UpdateProject")]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(UpdateResult), (int)HttpStatusCode.NotFound)]

@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.0.4",
   "info": {
     "title": "ProjectTasksTrackService.API | v1",
     "version": "1.0.0"
@@ -143,7 +143,7 @@
       }
     },
     "/ProjectTasksTrackService/api/v2/Auth/GrantRole": {
-      "post": {
+      "patch": {
         "tags": [
           "Auth"
         ],
@@ -207,7 +207,7 @@
       }
     },
     "/ProjectTasksTrackService/api/v2/Auth/UpdateAccount": {
-      "post": {
+      "patch": {
         "tags": [
           "Auth"
         ],
@@ -697,7 +697,7 @@
       }
     },
     "/ProjectTasksTrackService/api/v2/Projects/UpdateProject": {
-      "post": {
+      "patch": {
         "tags": [
           "Projects"
         ],
@@ -1278,7 +1278,7 @@
       }
     },
     "/ProjectTasksTrackService/api/v2/SubDivisions/UpdateSubDivision": {
-      "post": {
+      "patch": {
         "tags": [
           "ProjectSubDivisions"
         ],
@@ -1895,7 +1895,7 @@
       }
     },
     "/ProjectTasksTrackService/api/v2/Tasks/UpdateTask": {
-      "post": {
+      "patch": {
         "tags": [
           "Tasks"
         ],

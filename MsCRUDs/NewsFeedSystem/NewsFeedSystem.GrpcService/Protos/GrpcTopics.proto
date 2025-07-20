@@ -1,0 +1,59 @@
+﻿syntax = "proto3";
+import "google/protobuf/wrappers.proto"; 
+option csharp_namespace = "NewsFeedSystem.GrpcService.Topics";
+
+package NewsFeedSystem;
+
+service GrpcTopics {
+	rpc CreateTopic (CreateTopicRequest) returns (CreateReply);
+	rpc GetTopic(TopicId) returns (TopicReply);
+	rpc GetTopics(GetTopicsRequest) returns (TopicsReply);
+	rpc UpdateTopic(UpdateTopicRequest) returns (ResultReply);
+	rpc DeleteTopic(TopicId) returns (ResultReply);
+}
+
+// Сообщение-запрос на создание темы
+message CreateTopicRequest {
+	string name = 1;
+}
+
+// Ответное сообщение на запрос на создание новой сущности (новостного поста/тега/темы)
+message CreateReply {
+	google.protobuf.UInt32Value id = 1; //nullable
+	string message = 2;
+	int32 status_code = 3;
+}
+
+// "Сообщение" в составе gPRC-сообщения, содержащее id темы
+message TopicId {
+	uint32 id = 1;
+}
+
+// Ответное сообщение с информацией о теме
+message TopicReply {
+	uint32 id = 1;
+	string name = 2;
+}
+
+// Сообщение-запрос на получение информации о тегах
+message GetTopicsRequest {
+	google.protobuf.UInt32Value min_topic_id = 1; //nullable
+	google.protobuf.UInt32Value max_topic_id = 2; //nullable
+}
+
+// Ответное сообщение с информацией о темах (список объектов с информацией о темах)
+message TopicsReply {
+	repeated TopicReply Topics = 1;
+}
+
+// Сообщение-запрос на обновление темы
+message UpdateTopicRequest {
+	uint32 id = 1;
+	string name = 2;
+}
+
+// Ответное сообщение на запрос на обновление/удаление данных
+message ResultReply {
+	string message = 1;
+	int32 status_code = 2;
+}

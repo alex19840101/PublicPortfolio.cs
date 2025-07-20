@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LiteAuthService.API.Controllers;
 
-/// <summary> Контроллер управления аутентификацией </summary>
+/// <summary> РљРѕРЅС‚СЂРѕР»Р»РµСЂ СѓРїСЂР°РІР»РµРЅРёСЏ Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёРµР№ </summary>
 [ApiController]
 [Route("[controller]")]
 [Produces("application/json")]
@@ -28,7 +28,7 @@ public class AuthController : ControllerBase, IAuthAPI
         _authService = authService;
     }
 
-    /// <summary> Регистрация пользователя </summary>
+    /// <summary> Р РµРіРёСЃС‚СЂР°С†РёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ </summary>
     [HttpPost("api/v1/Register")]
     [ProducesResponseType(typeof(CreateResponseDto), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -56,7 +56,7 @@ public class AuthController : ControllerBase, IAuthAPI
 
     }
 
-    /// <summary> Вход пользователя в систему </summary>
+    /// <summary> Р’С…РѕРґ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РІ СЃРёСЃС‚РµРјСѓ </summary>
     [HttpPost("api/v1/Login")]
     [ProducesResponseType(typeof(AuthResponseDto), (int)HttpStatusCode.Created)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -84,9 +84,9 @@ public class AuthController : ControllerBase, IAuthAPI
         return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
     }
 
-    #region Выход пользователя из системы
+    #region Р’С‹С…РѕРґ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёР· СЃРёСЃС‚РµРјС‹
     /*
-    /// <summary> Выход пользователя из системы </summary>
+    /// <summary> Р’С‹С…РѕРґ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёР· СЃРёСЃС‚РµРјС‹ </summary>
     [HttpPost("api/v1/Logout")]
     [ProducesResponseType(typeof(AuthResponseDto), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -109,12 +109,12 @@ public class AuthController : ControllerBase, IAuthAPI
         };
         return new ObjectResult(result) { StatusCode = StatusCodes.Status200OK };
     }*/
-    #endregion Выход пользователя из системы
+    #endregion Р’С‹С…РѕРґ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёР· СЃРёСЃС‚РµРјС‹
 
     /// <summary>
-    /// Предоставление (установка/сброс) роли аккаунту
+    /// РџСЂРµРґРѕСЃС‚Р°РІР»РµРЅРёРµ (СѓСЃС‚Р°РЅРѕРІРєР°/СЃР±СЂРѕСЃ) СЂРѕР»Рё Р°РєРєР°СѓРЅС‚Сѓ
     /// </summary>
-    [HttpPost("api/v1/GrantRole")]
+    [HttpPatch("api/v1/GrantRole")]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.NotFound)]
@@ -135,9 +135,9 @@ public class AuthController : ControllerBase, IAuthAPI
     }
 
     /// <summary>
-    /// Обновление аккаунта
+    /// РћР±РЅРѕРІР»РµРЅРёРµ Р°РєРєР°СѓРЅС‚Р°
     /// </summary>
-    [HttpPost("api/v1/UpdateAccount")]
+    [HttpPatch("api/v1/UpdateAccount")]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Unauthorized)]
@@ -159,7 +159,7 @@ public class AuthController : ControllerBase, IAuthAPI
         return Ok(updateResult);
     }
 
-    /// <summary> Удаление аккаунта пользователя им самим или администратором </summary>
+    /// <summary> РЈРґР°Р»РµРЅРёРµ Р°РєРєР°СѓРЅС‚Р° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёРј СЃР°РјРёРј РёР»Рё Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂРѕРј </summary>
     [HttpDelete("api/v1/DeleteAccount")]
     [ProducesResponseType(typeof(DeleteResult), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -182,7 +182,7 @@ public class AuthController : ControllerBase, IAuthAPI
         return Ok(deleteResult);
     }
 
-    /// <summary> Получение информации о пользователе по Id (для администраторов) </summary>
+    /// <summary> РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»Рµ РїРѕ Id (РґР»СЏ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂРѕРІ) </summary>
     [HttpGet("api/v1/Admin/GetUserInfoById")]
     [ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -200,7 +200,7 @@ public class AuthController : ControllerBase, IAuthAPI
         return Ok(UserInfoResponseDto(authUser));
     }
 
-    /// <summary> Получение информации о пользователе по логину (для администраторов) </summary>
+    /// <summary> РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»Рµ РїРѕ Р»РѕРіРёРЅСѓ (РґР»СЏ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂРѕРІ) </summary>
     [HttpGet("api/v1/Admin/GetUserInfoByLogin")]
     [ProducesResponseType(typeof(UserInfoResponseDto), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -264,7 +264,7 @@ public class AuthController : ControllerBase, IAuthAPI
             granterLogin: request.GranterLogin);
     }
 
-    #region Logout не требуется для пет-проекта
+    #region Logout РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ РґР»СЏ РїРµС‚-РїСЂРѕРµРєС‚Р°
     //[NonAction]
     //private static LogoutData LogoutData(LogoutRequestDto request)
     //{
@@ -272,7 +272,7 @@ public class AuthController : ControllerBase, IAuthAPI
     //        login: request.Login,
     //        id: request.Id);
     //}
-    #endregion Logout не требуется для пет-проекта
+    #endregion Logout РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ РґР»СЏ РїРµС‚-РїСЂРѕРµРєС‚Р°
 
     [NonAction]
     private static GrantRoleData GrantRoleData(GrantRoleRequestDto requestDto)

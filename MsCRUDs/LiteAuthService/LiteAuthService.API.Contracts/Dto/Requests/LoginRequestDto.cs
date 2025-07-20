@@ -16,7 +16,7 @@
         public string Password { get; set; }
 
         /// <summary>
-        /// Пароль для входа*
+        /// Таймаут, минут
         /// </summary>
         public int? TimeoutMinutes { get; set; }
     }

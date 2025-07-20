@@ -1,0 +1,59 @@
+﻿syntax = "proto3";
+import "google/protobuf/wrappers.proto"; 
+option csharp_namespace = "NewsFeedSystem.GrpcService.Tags";
+
+package NewsFeedSystem;
+
+service GrpcTags{
+	rpc CreateTag (CreateTagRequest) returns (CreateReply);
+	rpc GetTag(TagId) returns (TagReply);
+	rpc GetTags(GetTagsRequest) returns (TagsReply);
+	rpc UpdateTag(UpdateTagRequest) returns (ResultReply);
+	rpc DeleteTag(TagId) returns (ResultReply);
+}
+
+// Сообщение-запрос на создание тега
+message CreateTagRequest {
+	string name = 1;
+}
+
+// Ответное сообщение на запрос на создание новой сущности (новостного поста/тега/темы)
+message CreateReply {
+	google.protobuf.UInt32Value id = 1; //nullable
+	string message = 2;
+	int32 status_code = 3;
+}
+
+// "Сообщение" в составе gPRC-сообщения, содержащее id тега
+message TagId {
+	uint32 id = 1;
+}
+
+// Ответное сообщение с информацией о теге
+message TagReply {
+	uint32 id = 1;
+	string name = 2;
+}
+
+// Сообщение-запрос на получение информации о тегах
+message GetTagsRequest {
+	google.protobuf.UInt32Value min_tag_id = 1; //nullable
+	google.protobuf.UInt32Value max_tag_id = 2; //nullable
+}
+
+// Ответное сообщение с информацией о тегах (список объектов с информацией о тегах)
+message TagsReply {
+	repeated TagReply Tags = 1;
+}
+
+// Сообщение-запрос на обновление тега
+message UpdateTagRequest {
+	uint32 id = 1;
+	string name = 2;
+}
+
+// Ответное сообщение на запрос на обновление/удаление данных
+message ResultReply {
+	string message = 1;
+	int32 status_code = 2;
+}

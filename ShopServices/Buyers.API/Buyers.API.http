@@ -1,0 +1,6 @@
+@Buyers.API_HostAddress = http://localhost:5027
+
+GET {{Buyers.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
