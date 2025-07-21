@@ -36,7 +36,8 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddSwaggerAndVersioning(SERVICE_NAME);
 
-builder.Services.Configure<EmailBotOptionsSettings>(config: builder.Configuration.GetSection(key: APPSETTINGS_BOT_SECTION));
+var emailBotOptionsSettings = builder.Configuration.GetSection(key: APPSETTINGS_BOT_SECTION).Get<EmailBotOptionsSettings>();
+//builder.Services.Configure<EmailBotOptionsSettings>(config: builder.Configuration.GetSection(key: APPSETTINGS_BOT_SECTION));
 
 //builder.Services.AddHttpClient(name: "ShopServices.NotifierByEmail.API.Client")
 //    .AddTypedClient<IEmailBotClient>(factory: (HttpClient httpClient, IServiceProvider serviceProvider) =>
@@ -64,18 +65,10 @@ builder.Services.AddAuthorizationBuilder()
 
 builder.Services.AddScoped<IAuthorizationHandler, RoleAuthorizationHandler>();
 
-builder.Services.AddSingleton<EmailBotOptionsSettings>();
-//builder.Services.AddScoped<IEmailNotificationsService, EmailNotificationsService>();
-var emailBotOptionsSettings = new EmailBotOptionsSettings
-{
-    BotToken = builder.Configuration[$"{APPSETTINGS_BOT_SECTION}:BotToken"]
-};
-
-
 builder.Services.AddScoped<IEmailNotificationsService>(src => new EmailNotificationsService(
-    emailBotOptionsSettings: emailBotOptionsSettings,
+    emailBotOptionsSettings: emailBotOptionsSettings!,
     src.GetRequiredService<ILogger<EmailNotificationsService>>()));
-//builder.Services.AddHostedService<EmailWorker>();
+
 
 var isDevelopment = env.IsDevelopment();
 if (isDevelopment)
