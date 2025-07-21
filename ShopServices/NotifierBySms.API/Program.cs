@@ -1,22 +1,20 @@
 using System;
 using System.Net.Http;
 using System.Security.Claims;
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
-using Microsoft.IdentityModel.Tokens;
-using ServiceCollectionsExtensions;
 using NotifierBySms.API;
 using NotifierBySms.API.Interfaces;
 using NotifierBySms.API.Services;
 using NotifierBySms.API.Services.gRPC;
-using Microsoft.Extensions.Logging;
+using ServiceCollectionsExtensions;
 
 const string SERVICE_NAME = "NotifierBySms.API";
 const string APPSETTINGS_BOT_SECTION = "SmsBot";
@@ -65,25 +63,17 @@ builder.Services.AddAuthorizationBuilder()
 builder.Services.AddScoped<IAuthorizationHandler, RoleAuthorizationHandler>();
 
 builder.Services.AddSingleton<SmsBotClientOptionsSettings>(smsBotClientOptionsSettings!);
-//builder.Services.AddScoped<ISmsNotificationsService, SmsNotificationsService>();
-//builder.Services.AddScoped<ISmsNotificationsService, SmsNotificationsByAzureService>();
 
-
-//var smsBotClientOptionsSettings = new SmsBotClientOptionsSettings(builder.Configuration[$"{APPSETTINGS_BOT_SECTION}:BotToken"])
-//{
-//    ConnectionString = builder.Configuration[$"{APPSETTINGS_BOT_SECTION}:ConnectionString"],
-//};
-
+//variant(option) 1: SmsNotificationsService
 builder.Services.AddScoped<ISmsNotificationsService>(src => new SmsNotificationsService(
-    smsBotClientOptionsSettings: smsBotClientOptionsSettings,
+    smsBotClientOptionsSettings: smsBotClientOptionsSettings!,
     src.GetRequiredService<ILogger<SmsNotificationsService>>()));
 
+#region variant(option) 2: SmsNotificationsByAzureService with Azure
 //builder.Services.AddScoped<ISmsNotificationsService>(src => new SmsNotificationsByAzureService(
 //    smsBotClientOptionsSettings: smsBotClientOptionsSettings,
 //    src.GetRequiredService<ILogger<SmsNotificationsByAzureService>>()));
-
-
-//builder.Services.AddHostedService<SmsWorker>();
+#endregion variant(option) 2: SmsNotificationsByAzureService with Azure
 
 var isDevelopment = env.IsDevelopment();
 if (isDevelopment)
