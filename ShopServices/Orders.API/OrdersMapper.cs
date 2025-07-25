@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Http;
 using System;
 using Orders.API.Contracts.Responses;
 using ShopServices.Core.Enums;
+using ShopServices.Core.Models.Events;
+using ShopServices.Core;
 
 namespace Orders.API
 {
@@ -156,6 +158,54 @@ namespace Orders.API
                 MassInGrams = coreOrder.MassInGrams,
                 Dimensions = coreOrder.Dimensions
             });
+        }
+
+        /// <summary> Маппер в класс события "Заказ создан" </summary>
+        /// <param name="orderId"></param>
+        /// <param name="buyerId"></param>
+        /// <returns> Событие "Заказ создан" </returns>
+        internal static OrderCreated GetOrderCreated(uint orderId, uint buyerId)
+        {
+            return new OrderCreated(
+                id: Guid.NewGuid(),
+                created: DateTime.Now,
+                message: nameof(OrderCreated),
+                notification: NotificationMessages.ORDER_CREATED,
+                buyerId: buyerId,
+                orderId: orderId);
+        }
+
+        /// <summary> Маппер в класс события "Заказ отменен" </summary>
+        /// <param name="orderId"></param>
+        /// <param name="buyerId"></param>
+        /// <param name="comment"></param>
+        /// <returns> Событие "Заказ отменен" </returns>
+        internal static OrderCanceled GetOrderCanceled(uint orderId, uint buyerId, string comment)
+        {
+            return new OrderCanceled(
+                id: Guid.NewGuid(),
+                created: DateTime.Now,
+                message: $"{nameof(OrderCanceled)}.{comment}",
+                notification: NotificationMessages.ORDER_CANCELED,
+                buyerId: buyerId,
+                orderId: orderId);
+        }
+
+        /// <summary> Маппер в класс события "Заказ доставлен" </summary>
+        /// <param name="orderId"></param>
+        /// <param name="buyerId"></param>
+        /// <param name="to"> (куда доставлен заказ ) </param>
+        /// <param name="comment"></param>
+        /// <returns> Событие "Заказ доставлен" </returns>
+        internal static OrderDelivered GetOrderDelivered(uint orderId, uint buyerId, string to, string? comment)
+        {
+            return new OrderDelivered(
+                id: Guid.NewGuid(),
+                created: DateTime.Now,
+                message: $"{nameof(OrderDelivered)} {to} {comment}",
+                notification: NotificationMessages.ORDER_DELIVERED,
+                buyerId: buyerId,
+                orderId: orderId);
         }
     }
 }
