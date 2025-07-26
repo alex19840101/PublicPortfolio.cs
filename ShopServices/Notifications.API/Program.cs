@@ -57,6 +57,9 @@ try
 
     builder.Services.AddScoped<IEmailNotificationsRepository, EmailNotificationsRepository>();
     builder.Services.AddScoped<IPhoneNotificationsRepository, PhoneNotificationsRepository>();
+    builder.Services.AddScoped<IBuyersContactsRepository, BuyersContactsRepository>();
+    builder.Services.AddScoped<IEmployeesContactsRepository, EmployeesContactsRepository>();
+    builder.Services.AddScoped<IContactsGetterService, ContactsGetterService>();
     builder.Services.AddScoped<INotificationsService>(src => new NotificationsService(
         src.GetRequiredService<IEmailNotificationsRepository>(),
                    src.GetRequiredService<IPhoneNotificationsRepository>()));
