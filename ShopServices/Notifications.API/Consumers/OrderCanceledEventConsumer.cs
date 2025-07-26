@@ -8,21 +8,21 @@ using ShopServices.Core.Services;
 
 namespace Notifications.API.Consumers
 {
-    /// <summary> MassTransit-Consumer для события "Заказ создан" </summary>
-    public class OrderCreatedEventConsumer : IConsumer<OrderCreated>
+    /// <summary> MassTransit-Consumer для события "Заказ отменен" </summary>
+    public class OrderCanceledEventConsumer : IConsumer<OrderCanceled>
     {
         private readonly INotificationsService _notificationsService;
         private readonly IContactsGetterService _contactsGetterService;
-        private readonly ILogger<OrderCreatedEventConsumer> _logger;
+        private readonly ILogger<OrderCanceledEventConsumer> _logger;
 
-        /// <summary> MassTransit-Consumer для события "Заказ создан" </summary>
+        /// <summary> MassTransit-Consumer для события "Заказ отменен" </summary>
         /// <param name="notificationsService"></param>
         /// <param name="contactsGetterService"></param>
         /// <param name="logger"></param>
-        public OrderCreatedEventConsumer(
+        public OrderCanceledEventConsumer(
             INotificationsService notificationsService,
             IContactsGetterService contactsGetterService,
-            ILogger<OrderCreatedEventConsumer> logger)
+            ILogger<OrderCanceledEventConsumer> logger)
         {
             _notificationsService = notificationsService;
             _contactsGetterService = contactsGetterService;
@@ -30,35 +30,35 @@ namespace Notifications.API.Consumers
         }
 
 
-        /// <summary> Обработчик события "Заказ создан" </summary>
+        /// <summary> Обработчик события "Заказ отменен" </summary>
         /// <param name="consumeContext"></param>
         /// <returns></returns>
-        public async Task Consume(ConsumeContext<OrderCreated> consumeContext)
+        public async Task Consume(ConsumeContext<OrderCanceled> consumeContext)
         {
-            var orderCreated = consumeContext.Message;
-            _logger.LogInformation("> OrderCreated {OrderId} by {BuyerId}", orderCreated.OrderId, orderCreated.BuyerId);
+            var orderCanceled = consumeContext.Message;
+            _logger.LogInformation("> OrderCanceled {OrderId} by {BuyerId}", orderCanceled.OrderId, orderCanceled.BuyerId);
 
-            var buyerContactData = await _contactsGetterService.GetBuyerContactData(orderCreated.BuyerId);
+            var buyerContactData = await _contactsGetterService.GetBuyerContactData(orderCanceled.BuyerId);
 
             if (buyerContactData.NotificationMethods.Contains(NotificationMethod.TelegramMessage))
-                await AddNotification(buyerContactData, NotificationMethod.TelegramMessage, orderCreated);
+                await AddNotification(buyerContactData, NotificationMethod.TelegramMessage, orderCanceled);
 
             if (buyerContactData.NotificationMethods.Contains(NotificationMethod.Email))
-                await AddNotification(buyerContactData, NotificationMethod.Email, orderCreated);
+                await AddNotification(buyerContactData, NotificationMethod.Email, orderCanceled);
 
             if (buyerContactData.NotificationMethods.Contains(NotificationMethod.SMS))
-                await AddNotification(buyerContactData, NotificationMethod.SMS, orderCreated);
-            
+                await AddNotification(buyerContactData, NotificationMethod.SMS, orderCanceled);
+
             //local:
-            async Task AddNotification(ContactData contactData, NotificationMethod notificationMethod, OrderCreated orderCreated)
+            async Task AddNotification(ContactData contactData, NotificationMethod notificationMethod, OrderCanceled orderCanceled)
             {
                 await _notificationsService.AddNotification(NotificationsMapper.PrepareCoreNotification(
                             contactData: contactData,
                             notificationMethod: notificationMethod,
                             modelEntityType: ModelEntityType.Order,
-                            changedEntityId: orderCreated.OrderId,
-                            notification: orderCreated.Notification,
-                            buyerId: orderCreated.BuyerId));
+                            changedEntityId: orderCanceled.OrderId,
+                            notification: orderCanceled.Notification,
+                            buyerId: orderCanceled.BuyerId));
             }
         }
     }

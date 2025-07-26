@@ -63,6 +63,7 @@ try
     {
         configure.SetKebabCaseEndpointNameFormatter();
         configure.AddConsumer<OrderCreatedEventConsumer>();
+        configure.AddConsumer<OrderCanceledEventConsumer>();
         configure.UsingRabbitMq((busRegistrationContext, rabbitMqBusFactoryConfigurator) =>
         {
             rabbitMqBusFactoryConfigurator.Host(new Uri(builder.Configuration["RabbitMQ:Host"]!), rabbitMqHostConfigurator =>
