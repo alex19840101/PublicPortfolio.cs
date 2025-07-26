@@ -19,6 +19,8 @@ using ShopServices.DataAccess;
 using ShopServices.DataAccess.Repositories;
 using MassTransit;
 using Notifications.API.Consumers;
+using ShopServices.DataAccess.DapperInterfaces;
+using ShopServices.DataAccess.DapperImplementation;
 
 const string SERVICE_NAME = "Notifications.API";
 
@@ -77,6 +79,7 @@ try
     });
 
     string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ShopServices")!;
+    builder.Services.AddScoped<IDapperAsyncExecutor>(src => new DapperSqlExecutor(dataBaseConnectionStr));
 
     var isDevelopment = env.IsDevelopment();
 
