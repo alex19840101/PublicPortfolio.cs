@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ShopServices.Core.Enums;
 
 namespace ShopServices.Core.Models
@@ -10,23 +11,28 @@ namespace ShopServices.Core.Models
         public string Email { get; }
 
         /// <summary> Телефон(ы) </summary>
-        public string Phones { get; }
+        public string Phone { get; }
 
         /// <summary> Способы уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
-        public List<NotificationMethod> NotificationMethods { get; }
+        public System.Int16[] NotificationMethods { get; }
 
         public long? TelegramChatId { get; }
         
         public ContactData(
             string email,
-            string phones,
-            List<NotificationMethod> notificationMethods,
+            string phone,
+            System.Int16[] notificationMethods,
             long? telegramChatId)
         {
             Email = email;
-            Phones = phones;
+            Phone = phone;
             NotificationMethods = notificationMethods;
             TelegramChatId = telegramChatId;
         }
+
+        public List<NotificationMethod> GetNotificationMethods() => NotificationMethods.Select(nm => (NotificationMethod)nm).ToList();
+
+        public ContactData()
+        { }
     }
 }

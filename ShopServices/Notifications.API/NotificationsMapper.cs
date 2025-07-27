@@ -85,7 +85,7 @@ namespace Notifications.API
 
                 case NotificationMethod.SMS:
                     sender = NotificationMessages.SMS_FROM;
-                    recipient = contactData.Phones.Split(",")[0];
+                    recipient = contactData.Phone.Split(",")[0];
                     break;
 
                 default:

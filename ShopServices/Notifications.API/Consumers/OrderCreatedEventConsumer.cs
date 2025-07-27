@@ -40,13 +40,15 @@ namespace Notifications.API.Consumers
 
             var buyerContactData = await _contactsGetterService.GetBuyerContactData(orderCreated.BuyerId);
 
-            if (buyerContactData.NotificationMethods.Contains(NotificationMethod.TelegramMessage))
+            var notificationMethods = buyerContactData.GetNotificationMethods();
+
+            if (notificationMethods.Contains(NotificationMethod.TelegramMessage))
                 await AddNotification(buyerContactData, NotificationMethod.TelegramMessage, orderCreated);
 
-            if (buyerContactData.NotificationMethods.Contains(NotificationMethod.Email))
+            if (notificationMethods.Contains(NotificationMethod.Email))
                 await AddNotification(buyerContactData, NotificationMethod.Email, orderCreated);
 
-            if (buyerContactData.NotificationMethods.Contains(NotificationMethod.SMS))
+            if (notificationMethods.Contains(NotificationMethod.SMS))
                 await AddNotification(buyerContactData, NotificationMethod.SMS, orderCreated);
             
             //local:

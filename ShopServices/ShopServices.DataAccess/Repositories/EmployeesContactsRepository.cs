@@ -22,7 +22,8 @@ namespace ShopServices.DataAccess.Repositories
 
         public async Task<ContactData> GetContactData(uint employeeId)
         {
-            var sql = @"SELECT e.Email, e.Phone, e.NotificationMethods, e.TelegramChatId FROM Employees e WHERE e.Id = @id";
+            var id = (int)employeeId;
+            var sql = @"SELECT b.""Email"", b.""Phone"", b.""NotificationMethods"", b.""TelegramChatId"" FROM public.""Employees"" b WHERE b.""Id"" = @id";
             var dp = new DynamicParameters(new { employeeId });
 
             var contactData = (await _dapperSqlExecutor.QueryAsync<ContactData>(sql, dp)).SingleOrDefault();
