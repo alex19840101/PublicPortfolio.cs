@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ShopServices.Abstractions;
-using ShopServices.Core.Enums;
 using ShopServices.Core.Models;
 
 namespace ShopServices.Core.Services

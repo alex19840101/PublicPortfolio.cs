@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ using Orders.API.Contracts.Responses;
 using ShopServices.Abstractions;
 using ShopServices.Core;
 using ShopServices.Core.Auth;
+using ShopServices.Core.Models.Events;
 using ShopServices.Core.Services;
 
 namespace Orders.API.Controllers
@@ -28,14 +30,18 @@ namespace Orders.API.Controllers
     {
         private readonly IOrdersService _ordersService;
         private readonly ILogger<OrdersController> _logger;
+        /// <summary> MassTransit-публикатор ((в RabbitMQ и/или Kafka)) </summary>
+        private readonly IPublishEndpoint _massTransitPublishEndpoint;
 
         /// <summary> Конструктор контроллера управления заказами </summary>
         public OrdersController(
             IOrdersService ordersService,
-            ILogger<OrdersController> logger)
+            ILogger<OrdersController> logger,
+            IPublishEndpoint publishEndpoint)
         {
             _ordersService = ordersService;
             _logger = logger;
+            _massTransitPublishEndpoint = publishEndpoint;
         }
 
         /// <summary> Добавление заказа </summary>
@@ -88,6 +94,8 @@ namespace Orders.API.Controllers
                 Message = createResult.Message
             };
             _logger.LogInformation((EventId)(int)result!.Id!, @"added Order {result.Id}", result!.Id!);
+
+            await _massTransitPublishEndpoint.Publish<OrderCreated>(message: OrdersMapper.GetOrderCreated(orderId: (uint)result.Id, buyerId: buyerId.Value));
 
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
         }
@@ -201,6 +209,11 @@ namespace Orders.API.Controllers
             if (cancelResult.StatusCode != HttpStatusCode.OK)
                 return new ObjectResult(new Result { Message = cancelResult.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
 
+            await _massTransitPublishEndpoint.Publish<OrderCanceled>(message: OrdersMapper.GetOrderCanceled(
+                orderId: cancelOrderRequest.OrderId,
+                buyerId: buyerId.Value,
+                comment: cancelOrderRequest.Comment));
+
             return Ok(cancelResult);
         }
 
@@ -242,6 +255,11 @@ namespace Orders.API.Controllers
 
             if (cancelResult.StatusCode != HttpStatusCode.OK)
                 return new ObjectResult(new Result { Message = cancelResult.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
+
+            await _massTransitPublishEndpoint.Publish<OrderCanceled>(message: OrdersMapper.GetOrderCanceled(
+                orderId: cancelOrderRequest.OrderId,
+                buyerId: cancelOrderRequest.BuyerId,
+                comment: cancelOrderRequest.Comment));
 
             return Ok(cancelResult);
         }
@@ -325,6 +343,13 @@ namespace Orders.API.Controllers
             if (result.StatusCode != HttpStatusCode.OK)
                 return new ObjectResult(new Result { Message = result.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
 
+            await _massTransitPublishEndpoint.Publish<OrderDelivered>(message: OrdersMapper.GetOrderDelivered(
+                orderId: markAsDeliveredRequest.OrderId,
+                buyerId: result.BuyerId!.Value,
+                to: NotificationMessages.BUYER,
+                notification: NotificationMessages.ORDER_DELIVERED_TO_BUYER,
+                comment: markAsDeliveredRequest.Comment));
+
             return Ok(result);
         }
 
@@ -365,6 +390,13 @@ namespace Orders.API.Controllers
 
             if (result.StatusCode != HttpStatusCode.OK)
                 return new ObjectResult(new Result { Message = result.Message }) { StatusCode = StatusCodes.Status500InternalServerError };
+
+            await _massTransitPublishEndpoint.Publish<OrderDelivered>(message: OrdersMapper.GetOrderDelivered(
+                orderId: markAsDeliveredRequest.OrderId,
+                buyerId: result.BuyerId!.Value,
+                to: NotificationMessages.SHOP,
+                notification: NotificationMessages.ORDER_DELIVERED_TO_SHOP,
+                comment: markAsDeliveredRequest.Comment));
 
             return Ok(result);
         }

@@ -17,6 +17,10 @@ using ShopServices.Core.Repositories;
 using ShopServices.Core.Services;
 using ShopServices.DataAccess;
 using ShopServices.DataAccess.Repositories;
+using MassTransit;
+using Notifications.API.Consumers;
+using ShopServices.DataAccess.DapperInterfaces;
+using ShopServices.DataAccess.DapperImplementation;
 
 const string SERVICE_NAME = "Notifications.API";
 
@@ -53,11 +57,33 @@ try
 
     builder.Services.AddScoped<IEmailNotificationsRepository, EmailNotificationsRepository>();
     builder.Services.AddScoped<IPhoneNotificationsRepository, PhoneNotificationsRepository>();
+    builder.Services.AddScoped<IBuyersContactsRepository, BuyersContactsRepository>();
+    builder.Services.AddScoped<IEmployeesContactsRepository, EmployeesContactsRepository>();
+    builder.Services.AddScoped<IContactsGetterService, ContactsGetterService>();
     builder.Services.AddScoped<INotificationsService>(src => new NotificationsService(
         src.GetRequiredService<IEmailNotificationsRepository>(),
                    src.GetRequiredService<IPhoneNotificationsRepository>()));
 
+    builder.Services.AddMassTransit(configure =>
+    {
+        configure.SetKebabCaseEndpointNameFormatter();
+        configure.AddConsumer<OrderCreatedEventConsumer>();
+        configure.AddConsumer<OrderCanceledEventConsumer>();
+        configure.AddConsumer<OrderDeliveredEventConsumer>();
+        configure.UsingRabbitMq((busRegistrationContext, rabbitMqBusFactoryConfigurator) =>
+        {
+            rabbitMqBusFactoryConfigurator.Host(new Uri(builder.Configuration["RabbitMQ:Host"]!), rabbitMqHostConfigurator =>
+            {
+                rabbitMqHostConfigurator.Username(builder.Configuration["RabbitMQ:UserName"]!);
+                rabbitMqHostConfigurator.Password(builder.Configuration["RabbitMQ:Password"]!);
+            });
+
+            rabbitMqBusFactoryConfigurator.ConfigureEndpoints(busRegistrationContext);
+        });
+    });
+
     string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ShopServices")!;
+    builder.Services.AddScoped<IDapperAsyncExecutor>(src => new DapperSqlExecutor(dataBaseConnectionStr));
 
     var isDevelopment = env.IsDevelopment();
 

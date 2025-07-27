@@ -72,6 +72,7 @@ namespace ShopServices.DataAccess.Repositories
             return new Result
             {
                 Id = newOrderEntity.Id,
+                BuyerId = newOrderEntity.BuyerId,
                 StatusCode = HttpStatusCode.Created,
                 Message = ResultMessager.OK
             };
@@ -113,9 +114,9 @@ namespace ShopServices.DataAccess.Repositories
 
                 await _dbContext.SaveChangesAsync();
 
-                return new Result(ResultMessager.ORDER_CANCELED, HttpStatusCode.OK);
+                return new Result(ResultMessager.ORDER_CANCELED, HttpStatusCode.OK, buyerId: orderEntity.BuyerId);
             }
-            return new Result(ResultMessager.ORDER_CANCELED_EARLIER, HttpStatusCode.OK);
+            return new Result(ResultMessager.ORDER_CANCELED_EARLIER, HttpStatusCode.OK, buyerId: orderEntity.BuyerId);
         }
 
         public async Task<Result> CancelOrderByManager(
@@ -143,9 +144,9 @@ namespace ShopServices.DataAccess.Repositories
                 orderEntity.UpdateComment(comment);
                 orderEntity.UpdateUpdatedDt(DateTime.Now.ToUniversalTime());
                 await _dbContext.SaveChangesAsync();
-                return new Result(ResultMessager.ORDER_CANCELED, HttpStatusCode.OK);
+                return new Result(ResultMessager.ORDER_CANCELED, HttpStatusCode.OK, buyerId: orderEntity.BuyerId);
             }
-            return new Result(ResultMessager.ORDER_CANCELED_EARLIER, HttpStatusCode.OK);
+            return new Result(ResultMessager.ORDER_CANCELED_EARLIER, HttpStatusCode.OK, buyerId: orderEntity.BuyerId);
         }
 
         public async Task<Result> ConfirmOrderByBuyer(
@@ -194,10 +195,10 @@ namespace ShopServices.DataAccess.Repositories
                 return new Result(ResultMessager.ORDER_NOT_FOUND, HttpStatusCode.NotFound);
 
             if (orderEntity.Archieved)
-                return new Result(ResultMessager.ERROR_ORDER_CANCELED_EARLIER_OR_DELIVERED, HttpStatusCode.Conflict);
+                return new Result(ResultMessager.ERROR_ORDER_CANCELED_EARLIER_OR_DELIVERED, HttpStatusCode.Conflict, buyerId: orderEntity.BuyerId);
 
             if (orderEntity.Received != null)
-                return new Result(ResultMessager.ORDER_RECEIVED_EARLIER, HttpStatusCode.Conflict);
+                return new Result(ResultMessager.ORDER_RECEIVED_EARLIER, HttpStatusCode.Conflict, buyerId: orderEntity.BuyerId);
 
             if (orderEntity.ManagerId != managerId)
                 orderEntity.UpdateManagerId(managerId);
@@ -217,9 +218,9 @@ namespace ShopServices.DataAccess.Repositories
             }
 
             if (orderEntity.Archieved) //отмена заказа не помешала его быстрой доставке в магазин
-                return new Result(ResultMessager.ORDER_CANCELED_EARLIER_DELIVERED_TO_SHOP, HttpStatusCode.OK);
+                return new Result(ResultMessager.ORDER_CANCELED_EARLIER_DELIVERED_TO_SHOP, HttpStatusCode.OK, buyerId: orderEntity.BuyerId);
 
-            return new Result(ResultMessager.OK, HttpStatusCode.OK);
+            return new Result(ResultMessager.OK, HttpStatusCode.OK, buyerId: orderEntity.BuyerId);
         }
 
         public async Task<Result> MarkAsReceived(
@@ -655,10 +656,10 @@ namespace ShopServices.DataAccess.Repositories
                 return new Result(ResultMessager.ORDER_NOT_FOUND, HttpStatusCode.NotFound);
 
             if (orderEntity.Archieved)
-                return new Result(ResultMessager.ERROR_ORDER_CANCELED_EARLIER_OR_DELIVERED, HttpStatusCode.Conflict);
+                return new Result(ResultMessager.ERROR_ORDER_CANCELED_EARLIER_OR_DELIVERED, HttpStatusCode.Conflict, buyerId: orderEntity.BuyerId);
 
             if (orderEntity.Received != null)
-                return new Result(ResultMessager.ORDER_RECEIVED_EARLIER, HttpStatusCode.Conflict);
+                return new Result(ResultMessager.ORDER_RECEIVED_EARLIER, HttpStatusCode.Conflict, buyerId: orderEntity.BuyerId);
 
             if (orderEntity.CourierId != courierId)
                 orderEntity.UpdateCourierId(courierId);
@@ -675,9 +676,9 @@ namespace ShopServices.DataAccess.Repositories
             {
                 orderEntity.UpdateUpdatedDt(datetime);
                 await _dbContext.SaveChangesAsync();
-                return new Result(ResultMessager.OK, HttpStatusCode.OK);
+                return new Result(ResultMessager.OK, HttpStatusCode.OK, buyerId: orderEntity.BuyerId);
             }
-            return new Result(ResultMessager.ORDER_DELIVERED_EARLIER, HttpStatusCode.OK);
+            return new Result(ResultMessager.ORDER_DELIVERED_EARLIER, HttpStatusCode.OK, buyerId: orderEntity.BuyerId);
         }
 
         /// <summary> Маппер Entities.Order - Core.Models.Order </summary>

@@ -10,6 +10,9 @@ namespace ShopServices.Abstractions
         /// <summary> Id сущности </summary>
         public ulong? Id { get; set; }
 
+        /// <summary> Id покупателя (для уведомлений покупателя) </summary>
+        public uint? BuyerId { get; set; }
+
         /// <summary> Сообщение о результате создания/изменения/удаления </summary>
         public string Message { get; set; }
 
@@ -23,11 +26,13 @@ namespace ShopServices.Abstractions
         /// <summary> Результат обработки запроса на создание/изменение/удаление </summary>
         public Result(string message,
             HttpStatusCode statusCode,
-            uint? id = null)
+            uint? id = null,
+            uint? buyerId = null)
         {
             Message = message;
             StatusCode = statusCode;
             Id = id;
+            BuyerId = buyerId;
         }
     }
 }

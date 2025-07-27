@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Notifications.API.Contracts.Requests;
 using Notifications.API.Contracts.Responses;
+using ShopServices.Core;
+using ShopServices.Core.Enums;
 using ShopServices.Core.Models;
 
 namespace Notifications.API
@@ -35,7 +37,7 @@ namespace Notifications.API
         /// </summary>
         /// <param name="addNotificationRequestDto"></param>
         /// <param name="employeeId"> Id работника </param>
-        /// <returns></returns>
+        /// <returns> Core.Models.Notification-модель нового уведомления </returns>
         internal static Notification PrepareCoreNotification(
             AddNotificationRequestDto addNotificationRequestDto,
             uint employeeId)
@@ -57,6 +59,56 @@ namespace Notifications.API
                 creator: $"Employee {employeeId} Notifications.API");
         }
 
+        /// <summary> Маппер-формирователь Core.Models.Notification-модели нового уведомления </summary>
+        /// <returns> Core.Models.Notification-модель нового уведомления | null - не уведомлять </returns>
+        internal static Notification? PrepareCoreNotification(
+            ContactData contactData,
+            NotificationMethod notificationMethod,
+            ModelEntityType modelEntityType,
+            ulong changedEntityId,
+            string notification,
+            uint? buyerId)
+        {
+            string sender;
+            string recipient;
+            switch (notificationMethod)
+            {
+                case NotificationMethod.Email:
+                    sender = NotificationMessages.EMAIL_FROM;
+                    recipient = contactData.Email;
+                    break;
+
+                case NotificationMethod.TelegramMessage:
+                    sender = NotificationMessages.TELEGRAM_NOTIFICATION_FROM;
+                    recipient = contactData.TelegramChatId!.Value.ToString();
+                    break;
+
+                case NotificationMethod.SMS:
+                    sender = NotificationMessages.SMS_FROM;
+                    recipient = contactData.Phone.Split(",")[0];
+                    break;
+
+                default:
+                    return null;
+            }
+            if (string.IsNullOrWhiteSpace(recipient))
+            {
+                return null;
+            }
+
+            return new Notification(
+                id: 0,
+                notificationMethod: notificationMethod,
+                modelEntityType: modelEntityType,
+                buyerId: buyerId,
+                changedEntityId: changedEntityId,
+                sender: sender,
+                recipient: recipient,
+                topic: notification,
+                message: notification,
+                created: DateTime.Now,
+                creator: NotificationMessages.NOTIFICATION_API);
+        }
 
         /// <summary>
         /// Маппинг IEnumerable(Core.Models.Notification) - IEnumerable(Contracts.Responses.NotificationDataResponseDto)
