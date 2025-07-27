@@ -81,7 +81,7 @@ Warehouse.API\
 - TelegramBot.API, NotifierByEmail.API, NotifierBySms.API
 - NotificationsSender as gRPC-client
 
-**- ORM:** EF Core.
+**- ORM:** EF Core, + Dapper in Notifications.API.
 
 **- DataBase**: PostgreSQL 17.
 
@@ -100,6 +100,9 @@ Using in APIs projects, gRPC-services and NotificationsSender
 **- Unit Tests for Busines Logic services:**
 - MsTest tests (BuyerSeviceTests, EmployeeSeviceTests);
 - using extra NuGet packages: Moq, AutoFixture, FluentAssertions (methods versions with FluentAssertions and without FluentAssertions in AuthServiceTests).
+
+**- Event sourcing, Event Bus:**
+- MassTransit, RabbitMQ.
 
 **- Notifications:**
 - Telegram (using Telegram.Bot v22.6.0 in TelegramBot.API)

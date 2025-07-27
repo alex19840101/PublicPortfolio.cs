@@ -9,4 +9,4 @@ Redis is using for news posts caching.
 
 ## [ProjectTasksTrackService](ProjectTasksTrackService) - pet project service for projects, projectSubDivisions, tasks (.NET 9.0, Microsoft EF Core + PostgreSQL 17).
 
-## [ShopServices](ShopServices) (In development) - pet project services for chain of shops (stores) (.NET 9.0, Microsoft EF Core + PostgreSQL 17).
+## [ShopServices](ShopServices) (In development) - pet project services for chain of shops (stores) (.NET 9.0, Microsoft EF Core, Dapper + PostgreSQL 17, MassTransit, RabbitMQ).
