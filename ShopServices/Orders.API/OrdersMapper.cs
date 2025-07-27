@@ -170,7 +170,7 @@ namespace Orders.API
                 id: Guid.NewGuid(),
                 created: DateTime.Now,
                 message: nameof(OrderCreated),
-                notification: NotificationMessages.ORDER_CREATED,
+                notification: NotificationMessages.ORDER_CREATED.Replace("{id}", orderId.ToString()),
                 buyerId: buyerId,
                 orderId: orderId);
         }
@@ -186,7 +186,7 @@ namespace Orders.API
                 id: Guid.NewGuid(),
                 created: DateTime.Now,
                 message: $"{nameof(OrderCanceled)}.{comment}",
-                notification: NotificationMessages.ORDER_CANCELED,
+                notification: NotificationMessages.ORDER_CANCELED.Replace("{id}", orderId.ToString()),
                 buyerId: buyerId,
                 orderId: orderId);
         }
@@ -194,16 +194,17 @@ namespace Orders.API
         /// <summary> Маппер в класс события "Заказ доставлен" </summary>
         /// <param name="orderId"></param>
         /// <param name="buyerId"></param>
-        /// <param name="to"> (куда доставлен заказ ) </param>
+        /// <param name="to"> (куда доставлен заказ (в магазин/покупетелю)) </param>
+        /// <param name="notification"> Уведомление </param>
         /// <param name="comment"></param>
         /// <returns> Событие "Заказ доставлен" </returns>
-        internal static OrderDelivered GetOrderDelivered(uint orderId, uint buyerId, string to, string? comment)
+        internal static OrderDelivered GetOrderDelivered(uint orderId, uint buyerId, string to, string notification, string? comment)
         {
             return new OrderDelivered(
                 id: Guid.NewGuid(),
                 created: DateTime.Now,
                 message: $"{nameof(OrderDelivered)} {to} {comment}",
-                notification: NotificationMessages.ORDER_DELIVERED,
+                notification: notification.Replace("{id}", orderId.ToString()),
                 buyerId: buyerId,
                 orderId: orderId);
         }

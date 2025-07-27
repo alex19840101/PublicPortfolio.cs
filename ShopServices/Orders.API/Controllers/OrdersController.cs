@@ -345,8 +345,9 @@ namespace Orders.API.Controllers
 
             await _massTransitPublishEndpoint.Publish<OrderDelivered>(message: OrdersMapper.GetOrderDelivered(
                 orderId: markAsDeliveredRequest.OrderId,
-                buyerId: 0,
-                to: "Buyer",
+                buyerId: result.BuyerId!.Value,
+                to: NotificationMessages.BUYER,
+                notification: NotificationMessages.ORDER_DELIVERED_TO_BUYER,
                 comment: markAsDeliveredRequest.Comment));
 
             return Ok(result);
@@ -392,8 +393,9 @@ namespace Orders.API.Controllers
 
             await _massTransitPublishEndpoint.Publish<OrderDelivered>(message: OrdersMapper.GetOrderDelivered(
                 orderId: markAsDeliveredRequest.OrderId,
-                buyerId: 0,
-                to: "shop",
+                buyerId: result.BuyerId!.Value,
+                to: NotificationMessages.SHOP,
+                notification: NotificationMessages.ORDER_DELIVERED_TO_SHOP,
                 comment: markAsDeliveredRequest.Comment));
 
             return Ok(result);

@@ -14,10 +14,11 @@ namespace ShopServices.Core.Models
         public string Phone { get; }
 
         /// <summary> Способы уведомлений по <see cref="ShopServices.Core.Enums.NotificationMethod"/></summary>
-        public System.Int16[] NotificationMethods { get; }
+        public System.Int16[] NotificationMethods { get; }      //Int16 для Dapper
 
         public long? TelegramChatId { get; }
-        
+
+        /// <summary> Контактные данные для автоматических уведомлений о событиях </summary>
         public ContactData(
             string email,
             string phone,
@@ -32,6 +33,7 @@ namespace ShopServices.Core.Models
 
         public List<NotificationMethod> GetNotificationMethods() => NotificationMethods.Select(nm => (NotificationMethod)nm).ToList();
 
+        /// <summary> Контактные данные для автоматических уведомлений о событиях </summary>
         public ContactData()
         { }
     }
