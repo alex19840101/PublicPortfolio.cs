@@ -24,7 +24,7 @@ namespace ShopServices.DataAccess.Repositories
         {
             var id = (int)employeeId;
             var sql = @"SELECT b.""Email"", b.""Phone"", b.""NotificationMethods"", b.""TelegramChatId"" FROM public.""Employees"" b WHERE b.""Id"" = @id";
-            var dp = new DynamicParameters(new { employeeId });
+            var dp = new DynamicParameters(new { id });
 
             var contactData = (await _dapperSqlExecutor.QueryAsync<ContactData>(sql, dp)).SingleOrDefault();
 
