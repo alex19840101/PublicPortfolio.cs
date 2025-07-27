@@ -102,7 +102,7 @@ Using in APIs projects, gRPC-services and NotificationsSender
 - using extra NuGet packages: Moq, AutoFixture, FluentAssertions (methods versions with FluentAssertions and without FluentAssertions in AuthServiceTests).
 
 **- Event sourcing, Event Bus:**
-- MassTransit, RabbitMQ. //Using in Orders.API, Notifications.API
+- MassTransit, RabbitMQ. //Using in Buyers.API, Employees.API, Orders.API, Notifications.API
 
 **- Notifications:**
 - Telegram (using Telegram.Bot v22.6.0 in TelegramBot.API)

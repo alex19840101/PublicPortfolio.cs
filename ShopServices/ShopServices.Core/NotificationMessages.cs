@@ -13,5 +13,11 @@
 
         public const string BUYER = "Buyer";
         public const string SHOP = "Shop";
+
+        public const string REGISTERED_NEW_BUYER = "Покупатель {id} зарегистрирован";
+        public const string BUYER_UPDATED = "Покупатель {id} обновил личные данные";
+
+        public const string REGISTERED_NEW_EMPLOYEE = "Работник {id} зарегистрирован";
+        public const string EMPLOYEE_UPDATED = "Работник {id} обновил личные данные";
     }
 }

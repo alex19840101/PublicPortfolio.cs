@@ -67,6 +67,11 @@ try
     builder.Services.AddMassTransit(configure =>
     {
         configure.SetKebabCaseEndpointNameFormatter();
+        configure.AddConsumer<BuyerRegisteredEventConsumer>();
+        configure.AddConsumer<BuyerUpdatedEventConsumer>();
+        configure.AddConsumer<EmployeeRegisteredEventConsumer>();
+        configure.AddConsumer<EmployeeUpdatedEventConsumer>();
+        configure.AddConsumer<OrderCreatedEventConsumer>();
         configure.AddConsumer<OrderCreatedEventConsumer>();
         configure.AddConsumer<OrderCanceledEventConsumer>();
         configure.AddConsumer<OrderDeliveredEventConsumer>();

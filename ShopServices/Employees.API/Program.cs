@@ -17,6 +17,7 @@ using ShopServices.Core.Repositories;
 using ShopServices.Core.Services;
 using ShopServices.DataAccess;
 using ShopServices.DataAccess.Repositories;
+using MassTransit;
 
 const string SERVICE_NAME = "Employees.API";
 
@@ -50,6 +51,10 @@ try
     builder.Services.AddAuthenticationBuilderForJWT(tokenValidationParameters);
 
     builder.Services.AddOpenApi();
+    builder.Services.AddMassTransit(configure =>
+    {
+        configure.UsingRabbitMq();
+    });
 
     builder.Services.AddScoped<IEmployeesRepository, EmployeesRepository>();
     builder.Services.AddScoped<ICouriersRepository, CouriersRepository>();

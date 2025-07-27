@@ -13,6 +13,9 @@ using ShopServices.Abstractions.Auth;
 using Buyers.API.Contracts.Requests;
 using ShopServices.Core.Models;
 using ShopServices.Core.Enums;
+using MassTransit;
+using Microsoft.Extensions.Logging;
+using ShopServices.Core.Models.Events;
 
 namespace Buyers.API.Controllers;
 
@@ -25,11 +28,18 @@ namespace Buyers.API.Controllers;
 public class BuyersController : ControllerBase
 {
     private readonly IBuyersService _buyersService;
+    /// <summary> MassTransit-публикатор ((в RabbitMQ и/или Kafka)) </summary>
+    private readonly IPublishEndpoint _massTransitPublishEndpoint;
+    private readonly ILogger<BuyersController> _logger;
 
     /// <summary> Конструктор контроллера управления аутентификацией покупателей </summary>
-    public BuyersController(IBuyersService buyersService)
+    public BuyersController(IBuyersService buyersService,
+        IPublishEndpoint publishEndpoint,
+        ILogger<BuyersController> logger)
     {
         _buyersService = buyersService;
+        _massTransitPublishEndpoint = publishEndpoint;
+        _logger = logger;
     }
 
     /// <summary> Регистрация покупателя </summary>
@@ -60,6 +70,10 @@ public class BuyersController : ControllerBase
             Id = registerResult!.Id!.Value,
             Message = registerResult.Message,
         };
+        _logger.LogInformation((EventId)(int)result!.Id!, @"Registered Buyer {result.Id}", result!.Id!);
+
+        await _massTransitPublishEndpoint.Publish<BuyerRegistered>(message: BuyerMapper.GetBuyerRegistered(buyerId: (uint)registerResult!.Id!.Value));
+
         return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
 
     }
@@ -136,6 +150,8 @@ public class BuyersController : ControllerBase
 
         if (updateResult.StatusCode == HttpStatusCode.Conflict)
             return new ConflictObjectResult(updateResult);
+
+        await _massTransitPublishEndpoint.Publish<BuyerUpdated>(message: BuyerMapper.GetBuyerUpdated(buyerId: request!.Id));
 
         return Ok(updateResult);
     }
