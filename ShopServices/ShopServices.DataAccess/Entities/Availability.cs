@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopServices.DataAccess.Entities
 {
@@ -15,5 +16,20 @@ namespace ShopServices.DataAccess.Entities
         [Column(TypeName = "integer")]
         public uint? WarehouseId { get; private set; }
         public int Count { get; private set; }
+
+        public uint? ManagerId { get; private set; }
+
+        /// <summary> Дата и время создания записи </summary>
+        public DateTime Created { get; private set; }
+
+        /// <summary> Дата и время обновления записи </summary>
+        public DateTime? Updated { get; private set; }
+
+        /// <summary> Дата и время следующей поставки </summary>
+        public DateTime? NextSupplyTime { get; private set; }
+
+        /// <summary> Дата и время предыдущей поставки </summary>
+        public DateTime? LastSupplyTime { get; private set; }
+
     }
 }
