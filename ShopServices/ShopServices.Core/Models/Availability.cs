@@ -25,5 +25,30 @@ namespace ShopServices.Core.Models
 
         /// <summary> Дата и время предыдущей поставки </summary>
         public DateTime? LastSupplyTime { get; private set; }
+
+        public Availability(
+            ulong id,
+            uint productId,
+            uint? shopId,
+            uint? warehouseId,
+            int count,
+            uint? managerId,
+            DateTime created,
+            DateTime? updated,
+            DateTime? nextSupplyTime,
+            DateTime? lastSupplyTime
+            )
+        {
+            Id = id;
+            ProductId = productId;
+            ShopId = shopId;
+            WarehouseId = warehouseId;
+            Count = count;
+            ManagerId = managerId;
+            Created = created;
+            Updated = updated;
+            NextSupplyTime = nextSupplyTime;
+            LastSupplyTime = lastSupplyTime;
+        }
     }
 }

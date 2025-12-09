@@ -77,7 +77,6 @@ namespace Goods.API.Controllers
             _logger.LogInformation((EventId)(int)result!.Id!, @"added Product {result.Id}", result!.Id!);
             
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
-
         }
 
         /// <summary> Получение товара по id </summary>
