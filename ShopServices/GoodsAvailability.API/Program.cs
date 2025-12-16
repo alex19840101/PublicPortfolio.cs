@@ -51,9 +51,16 @@ try
 
     builder.Services.AddOpenApi();
 
+    builder.Services.AddScoped<IAvailabilityRepository, AvailabilityRepository>();
     builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
-    builder.Services.AddScoped<IGoodsService>(src => new GoodsService(
-        src.GetRequiredService<IProductsRepository>()));
+    builder.Services.AddScoped<IShopsRepository, ShopsRepository>();
+    builder.Services.AddScoped<IWarehousesRepository, WarehousesRepository>();
+
+    builder.Services.AddScoped<IGoodsAvailabilityService>(src => new GoodsAvailabilityService(
+        src.GetRequiredService<IAvailabilityRepository>(),
+        src.GetRequiredService<IProductsRepository>(),
+        src.GetRequiredService<IShopsRepository>(),
+        src.GetRequiredService<IWarehousesRepository>()));
 
     builder.Services.AddSingleton<ICacheService, CacheService>();
     builder.Services.AddStackExchangeRedisCaching(builder.Configuration);
