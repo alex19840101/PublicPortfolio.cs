@@ -14,6 +14,9 @@ namespace ShopServices.Core.Models
 
         public uint? ManagerId { get; private set; }
 
+        /// <summary> Название магазина/склада </summary>
+        public string PlaceName { get; private set; }
+
         /// <summary> Дата и время создания записи </summary>
         public DateTime Created { get; private set; }
 
@@ -33,6 +36,7 @@ namespace ShopServices.Core.Models
             uint? warehouseId,
             int count,
             uint? managerId,
+            string placeName,
             DateTime created,
             DateTime? updated,
             DateTime? nextSupplyTime,
@@ -45,10 +49,36 @@ namespace ShopServices.Core.Models
             WarehouseId = warehouseId;
             Count = count;
             ManagerId = managerId;
+            PlaceName = placeName;
             Created = created;
             Updated = updated;
             NextSupplyTime = nextSupplyTime;
             LastSupplyTime = lastSupplyTime;
+        }
+
+
+        /// <summary>
+        /// Проверка на равенство (существующей Availability) с игнорированием:
+        /// <para> - Id (Id до момента добавления не определен, как бы равен нулю),</para>
+        /// <para> - Created </para>
+        /// </summary>
+        /// <param name="comparedAvailability"> Availability для сравнения</param>
+        /// <returns></returns>
+        public bool IsEqualIgnoreIdAndDt(Availability comparedAvailability)
+        {
+            if (comparedAvailability.ProductId != ProductId ||
+                !string.Equals(comparedAvailability.PlaceName, PlaceName) ||
+                comparedAvailability.Count != Count ||
+                comparedAvailability.ShopId != ShopId ||
+                comparedAvailability.ShopId != ShopId ||
+                comparedAvailability.WarehouseId != WarehouseId ||
+                comparedAvailability.ManagerId != ManagerId ||
+                comparedAvailability.Updated != Updated ||
+                comparedAvailability.NextSupplyTime != NextSupplyTime ||
+                comparedAvailability.LastSupplyTime != LastSupplyTime)
+                return false;
+
+            return true;
         }
     }
 }

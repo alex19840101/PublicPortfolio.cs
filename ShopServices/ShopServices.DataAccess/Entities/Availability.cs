@@ -19,6 +19,8 @@ namespace ShopServices.DataAccess.Entities
 
         public uint? ManagerId { get; private set; }
 
+        /// <summary> Название магазина/склада </summary>
+        public string PlaceName { get; private set; }
         /// <summary> Дата и время создания записи </summary>
         public DateTime Created { get; private set; }
 

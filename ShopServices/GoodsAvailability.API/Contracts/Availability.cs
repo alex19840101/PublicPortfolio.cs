@@ -14,6 +14,9 @@ namespace GoodsAvailability.API.Contracts
 
         public uint? ManagerId { get; set; }
 
+        /// <summary> Название магазина/склада </summary>
+        public string PlaceName { get; set; }
+
         /// <summary> Дата и время создания записи </summary>
         public DateTime Created { get; set; }
 

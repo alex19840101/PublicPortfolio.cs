@@ -124,7 +124,7 @@ namespace GoodsAvailability.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [Authorize(Roles = $"{Roles.Admin}, {Roles.Developer}, {Roles.Manager}")]
         [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
-        public async Task<IActionResult> UpdateProduct(Availability availabilityDto)
+        public async Task<IActionResult> UpdateAvailability(Availability availabilityDto)
         {
             var updateResult = await _goodsAvailabilityService.UpdateAvailability(AvailabilityMapper.GetCoreAvailability(availabilityDto));
 
@@ -132,6 +132,30 @@ namespace GoodsAvailability.API.Controllers
                 return NotFound(updateResult);
 
             return Ok(updateResult);
+        }
+
+        /// <summary> Удаление информации о наличии товара в магазине/на складе по id записи о наличии </summary>
+        /// <param name="id"> id записи о наличии </param>
+        /// <returns></returns>
+        [HttpDelete]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [Authorize(Roles = $"{Roles.Admin}, {Roles.Developer}, {Roles.Manager}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
+        public async Task<IActionResult> DeleteAvailability(uint availabilityId)
+        {
+            var deleteResult = await _goodsAvailabilityService.DeleteAvailability(availabilityId);
+
+            if (deleteResult.StatusCode == HttpStatusCode.NotFound)
+                return NotFound(deleteResult);
+
+            if (deleteResult.StatusCode == HttpStatusCode.Forbidden)
+                return new ObjectResult(deleteResult) { StatusCode = StatusCodes.Status403Forbidden };
+
+            return Ok(deleteResult);
         }
     }
 }

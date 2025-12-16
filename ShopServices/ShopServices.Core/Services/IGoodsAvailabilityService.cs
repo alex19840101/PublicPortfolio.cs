@@ -9,11 +9,12 @@ namespace ShopServices.Core.Services
     public interface IGoodsAvailabilityService
     {
         public Task<Result> AddAvailability(Availability availability);
-        public Task<Availability> GetAvailabilityById(uint id);
+        public Task<Availability> GetAvailabilityById(ulong id);
         public Task<IEnumerable<Availability>> GetAvailabilitiesByProductId(
             uint productId,
             uint byPage = 10,
             uint page = 1);
         public Task<Result> UpdateAvailability(Availability availability);
+        public Task<Result> DeleteAvailability(ulong availabilityId);
     }
 }
