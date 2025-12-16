@@ -26,6 +26,7 @@ namespace GoodsAvailability.API
             return new Availability(
                 id: availabilityDto.Id,
                 productId: availabilityDto.ProductId,
+                cityTownCode: availabilityDto.CityTownCode,
                 shopId: availabilityDto.ShopId,
                 warehouseId: availabilityDto.WarehouseId,
                 count: availabilityDto.Count,
@@ -48,6 +49,7 @@ namespace GoodsAvailability.API
             {
                 Id = coreAvailability.Id,
                 ProductId = coreAvailability.ProductId,
+                CityTownCode = coreAvailability.CityTownCode,
                 ShopId = coreAvailability.ShopId,
                 WarehouseId = coreAvailability.WarehouseId,
                 Count = coreAvailability.Count,

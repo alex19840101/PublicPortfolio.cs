@@ -197,5 +197,8 @@
         public const string CREATED_IS_MORE_THAN_NOW = "Created > Now";
         public const string UPDATED_IS_MORE_THAN_NOW = "Updated > Now";
         public const string LASTSUPPLYTIME_IS_MORE_THAN_NOW = "LastSupplyTime > Now";
+
+        public const string AVAILABILITY_UPDATED = "Availability updated";
+        public const string AVAILABILITY_IS_ACTUAL = "Availability is actual";
     }
 }

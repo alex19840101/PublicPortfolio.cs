@@ -2,6 +2,7 @@
 
 namespace ShopServices.Core.Models
 {
+    /// <summary> Информация о наличии (доступности) товара на складе/в магазине </summary>
     public class Availability
     {
         /// <summary> Уникальный идентификатор наличия (доступности) товара на складе/в магазине </summary>
@@ -13,6 +14,8 @@ namespace ShopServices.Core.Models
         public int Count { get; private set; }
 
         public uint? ManagerId { get; private set; }
+
+        public uint CityTownCode { get; private set; }
 
         /// <summary> Название магазина/склада </summary>
         public string PlaceName { get; private set; }
@@ -32,6 +35,7 @@ namespace ShopServices.Core.Models
         public Availability(
             ulong id,
             uint productId,
+            uint cityTownCode,
             uint? shopId,
             uint? warehouseId,
             int count,
@@ -45,6 +49,7 @@ namespace ShopServices.Core.Models
         {
             Id = id;
             ProductId = productId;
+            CityTownCode = cityTownCode;
             ShopId = shopId;
             WarehouseId = warehouseId;
             Count = count;

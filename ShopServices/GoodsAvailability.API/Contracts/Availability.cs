@@ -2,6 +2,7 @@
 
 namespace GoodsAvailability.API.Contracts
 {
+    /// <summary> Информация о наличии (доступности) товара на складе/в магазине </summary>
     public class Availability
     {
         /// <summary> Уникальный идентификатор наличия (доступности) товара на складе/в магазине </summary>
@@ -13,6 +14,9 @@ namespace GoodsAvailability.API.Contracts
         public int Count { get; set; }
 
         public uint? ManagerId { get; set; }
+
+        /// <summary> Код города/населенного пункта </summary>
+        public uint CityTownCode { get; set; }
 
         /// <summary> Название магазина/склада </summary>
         public string PlaceName { get; set; }

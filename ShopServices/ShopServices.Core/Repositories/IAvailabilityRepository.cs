@@ -7,6 +7,7 @@ using ShopServices.Core.Models;
 
 namespace ShopServices.Core.Repositories
 {
+    /// <summary> "Репозиторий" данных о наличии (доступности) товара на складе/в магазине </summary>
     public interface IAvailabilityRepository
     {
         Task<Result> Create(Availability newAvailability);
