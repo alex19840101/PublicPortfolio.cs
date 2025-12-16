@@ -1,4 +1,6 @@
-﻿using ShopServices.Core.Models;
+﻿using System.Collections.Generic;
+using System.Linq;
+using ShopServices.Core.Models;
 
 namespace GoodsAvailability.API
 {
