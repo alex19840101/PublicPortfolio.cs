@@ -151,6 +151,7 @@
         public const string WAREHOUSE_RARAM_NAME = "warehouse";
         public const string WAREHOUSE_IS_ACTUAL = "Warehouse is actual";
         public const string WAREHOUSE_UPDATED = "Warehouse updated";
+        public const string WAREHOUSE_NOT_FOUND = "warehouse (WarehouseId) not found";
         
         //deliveries
         public const string DELIVERY_RARAM_NAME = "delivery";

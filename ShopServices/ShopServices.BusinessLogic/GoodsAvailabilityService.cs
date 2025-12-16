@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 using ShopServices.Abstractions;
 using ShopServices.Core;
 using ShopServices.Core.Models;
-using ShopServices.Core.Services;
 using ShopServices.Core.Repositories;
-using System.Linq;
+using ShopServices.Core.Services;
 
 namespace ShopServices.BusinessLogic
 {
@@ -52,6 +51,24 @@ namespace ShopServices.BusinessLogic
                     return new Result(ResultMessager.CONFLICT, System.Net.HttpStatusCode.Conflict);
 
                 return new Result(ResultMessager.ALREADY_EXISTS, System.Net.HttpStatusCode.Created, id: existingProductAvailability.Id);
+            }
+
+            var product = await _productsRepository.GetProductById(newAvailability.ProductId);
+            if (product == null)
+                return new Result(ResultMessager.PRODUCT_NOT_FOUND, System.Net.HttpStatusCode.NotFound);
+
+            if (newAvailability.ShopId > 0)
+            {
+                var shop = await _shopsRepository.GetShopById(newAvailability.ShopId.Value);
+                if (shop == null)
+                    return new Result(ResultMessager.SHOP_NOT_FOUND, System.Net.HttpStatusCode.NotFound);
+            }
+
+            if (newAvailability.WarehouseId > 0)
+            {
+                var warehouse = await _warehousesRepository.GetWarehouseById(newAvailability.WarehouseId.Value);
+                if (warehouse == null)
+                    return new Result(ResultMessager.WAREHOUSE_NOT_FOUND, System.Net.HttpStatusCode.NotFound);
             }
 
             var createResult = await _availabilityRepository.Create(newAvailability);
