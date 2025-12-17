@@ -35,7 +35,7 @@ namespace ShopServices.BusinessLogic
             if (newAvailability == null)
                 throw new ArgumentNullException(ResultMessager.NEWAVAILABILITY_RARAM_NAME);
 
-            var unValidatedAvailabilityResult = UnValidatedAvailabilityResult(newAvailability);
+            var unValidatedAvailabilityResult = UnValidatedAvailabilityResult(newAvailability, idShouldBeZeroForAdd: true);
             if (unValidatedAvailabilityResult != null)
                 return unValidatedAvailabilityResult;
 
@@ -83,7 +83,7 @@ namespace ShopServices.BusinessLogic
 
         public async Task<IEnumerable<Availability>> GetAvailabilitiesByProductId(uint productId, uint byPage = 10, uint page = 1)
         {
-            throw new NotImplementedException();
+            return await _availabilityRepository.GetAvailabilitiesByProductId(productId);
         }
 
         public async Task<Availability> GetAvailabilityById(ulong availabilityId)
@@ -109,9 +109,9 @@ namespace ShopServices.BusinessLogic
         /// </summary>
         /// <param name="availability"> Availability - наличие товара в магазине/на складе </param>
         /// <returns> Result - при ошибке | null, если проверка пройдена </returns>
-        private Result UnValidatedAvailabilityResult(Availability availability)
+        private Result UnValidatedAvailabilityResult(Availability availability, bool idShouldBeZeroForAdd = false)
         {
-            if (availability.Id > 0)
+            if (idShouldBeZeroForAdd && availability.Id > 0)
                 return new Result(ResultMessager.ID_SHOULD_BE_ZERO, System.Net.HttpStatusCode.BadRequest);
 
             if (string.IsNullOrWhiteSpace(availability.PlaceName))

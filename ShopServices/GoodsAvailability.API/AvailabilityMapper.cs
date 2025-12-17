@@ -16,6 +16,8 @@ namespace GoodsAvailability.API
                 WarehouseId = coreAvailability.WarehouseId,
                 Count = coreAvailability.Count,
                 ManagerId = coreAvailability.ManagerId,
+                PlaceName = coreAvailability.PlaceName,
+                CityTownCode = coreAvailability.CityTownCode,
                 Created = coreAvailability.Created,
                 Updated = coreAvailability.Updated,
                 NextSupplyTime = coreAvailability.NextSupplyTime,
