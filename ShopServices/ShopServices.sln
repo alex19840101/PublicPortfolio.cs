@@ -63,6 +63,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifierByEmail.API", "Noti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifierBySms.API", "NotifierBySms.API\NotifierBySms.API.csproj", "{407390AD-73E1-40C7-A0CB-FAB0787062DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoodsAvailability.API", "GoodsAvailability.API\GoodsAvailability.API.csproj", "{62C66064-C3AA-4B72-A4AB-3FBEB653FD4F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -165,6 +167,10 @@ Global
 		{407390AD-73E1-40C7-A0CB-FAB0787062DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{407390AD-73E1-40C7-A0CB-FAB0787062DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{407390AD-73E1-40C7-A0CB-FAB0787062DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62C66064-C3AA-4B72-A4AB-3FBEB653FD4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62C66064-C3AA-4B72-A4AB-3FBEB653FD4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62C66064-C3AA-4B72-A4AB-3FBEB653FD4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62C66064-C3AA-4B72-A4AB-3FBEB653FD4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -190,6 +196,7 @@ Global
 		{4B9DD6FE-191D-453E-B039-11075C72CF80} = {14413E6D-D4C2-42F5-98E8-C69317157467}
 		{DE67B699-1804-4DAB-BC40-EBFDD8FC11B8} = {14413E6D-D4C2-42F5-98E8-C69317157467}
 		{0315B489-F6C0-4E10-97D6-47880B4AD219} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
+		{62C66064-C3AA-4B72-A4AB-3FBEB653FD4F} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B2F4AA3-7062-4E67-80C6-AE6A295F568E}

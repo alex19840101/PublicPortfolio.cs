@@ -151,6 +151,7 @@
         public const string WAREHOUSE_RARAM_NAME = "warehouse";
         public const string WAREHOUSE_IS_ACTUAL = "Warehouse is actual";
         public const string WAREHOUSE_UPDATED = "Warehouse updated";
+        public const string WAREHOUSE_NOT_FOUND = "warehouse (WarehouseId) not found";
         
         //deliveries
         public const string DELIVERY_RARAM_NAME = "delivery";
@@ -184,5 +185,21 @@
         public const string SEND_EMAIL_ERROR = "SendEmail error";
         public const string SEND_SMS_ERROR = "SendSmsNotification error";
         public const string SMS_OK_SIMULATION = "OK simulation. Payed SMS are not implemented in pet project";
+
+        //availabilities
+        public const string NEWAVAILABILITY_RARAM_NAME = "newAvailability";
+        public const string AVAILABILITY_RARAM_NAME = "availability";
+        public const string ID_SHOULD_BE_ZERO = "Availability.Id should be zero";
+        public const string PLACENAME_SHOULD_NOT_BE_EMPTY = "PlaceName should be not empty";
+        public const string PRODUCT_ID_SHOULD_BE_POSITIVE = "ProductId should be positive";
+        public const string SHOP_ID_XOR_WAREHOUSE_ID_SHOULD_BE_POSITIVE = "ShopId XOR WarehouseId should be positive";
+        public const string SHOPID_SHOULD_BE_POSITIVE = "shopId == 0, should be positive (>0) or null";
+        public const string WAREHOUSEID_SHOULD_BE_POSITIVE = "warehouseId == 0, should be positive (>0) or null";
+        public const string CREATED_IS_MORE_THAN_NOW = "Created > Now";
+        public const string UPDATED_IS_MORE_THAN_NOW = "Updated > Now";
+        public const string LASTSUPPLYTIME_IS_MORE_THAN_NOW = "LastSupplyTime > Now";
+
+        public const string AVAILABILITY_UPDATED = "Availability updated";
+        public const string AVAILABILITY_IS_ACTUAL = "Availability is actual";
     }
 }

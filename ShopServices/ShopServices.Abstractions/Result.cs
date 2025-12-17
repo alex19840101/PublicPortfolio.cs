@@ -26,7 +26,7 @@ namespace ShopServices.Abstractions
         /// <summary> Результат обработки запроса на создание/изменение/удаление </summary>
         public Result(string message,
             HttpStatusCode statusCode,
-            uint? id = null,
+            ulong? id = null,
             uint? buyerId = null)
         {
             Message = message;
