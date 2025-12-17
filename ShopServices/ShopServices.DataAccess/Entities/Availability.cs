@@ -12,14 +12,28 @@ namespace ShopServices.DataAccess.Entities
         public ulong Id { get; private set; }
 
         public uint ProductId { get; private set; }
+        
         [Column(TypeName = "integer")]
         public uint? ShopId { get; private set; }
+        /// <summary> Навигационное свойство - магазин </summary>
+        public Shop Shop { get; }
+        
         [Column(TypeName = "integer")]
         public uint? WarehouseId { get; private set; }
+
+        /// <summary> Навигационное свойство - склад </summary>
+        public Warehouse? Warehouse { get; }
+        
+        [Column(TypeName = "integer")]
         public int Count { get; private set; }
 
+        [Column(TypeName = "integer")]
         public uint? ManagerId { get; private set; }
 
+        /// <summary> Навигационное свойство - менеджер </summary>
+        public Manager? Manager { get; private set; }
+        
+        [Column(TypeName = "integer")]
         public uint CityTownCode { get; private set; }
 
         /// <summary> Название магазина/склада </summary>
