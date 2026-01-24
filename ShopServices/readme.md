@@ -105,6 +105,6 @@ Using in APIs projects, gRPC-services and NotificationsSender
 - MassTransit, RabbitMQ. //Using in Buyers.API, Employees.API, Orders.API, Notifications.API
 
 **- Notifications:**
-- Telegram (using Telegram.Bot v22.6.0 in TelegramBot.API)
+- Telegram (using Telegram.Bot (v22.8.1) in TelegramBot.API)
 - E-mail notifications (using MailKit)
 - SMS-notifications (SmsNotificationsService - notifier abstract simulation and SmsNotificationsByAzureService using Azure.Communication.Sms)
