@@ -201,5 +201,8 @@
 
         public const string AVAILABILITY_UPDATED = "Availability updated";
         public const string AVAILABILITY_IS_ACTUAL = "Availability is actual";
+
+        //trade
+        public const string BUYERID_CONFLICT = "buyerId conflict";
     }
 }

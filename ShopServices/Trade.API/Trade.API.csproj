@@ -43,4 +43,8 @@
 		<ProjectReference Include="..\ShopServices.DataAccess\ShopServices.DataAccess.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Новая папка\" />
+	</ItemGroup>
+
 </Project>
