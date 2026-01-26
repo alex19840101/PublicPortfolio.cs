@@ -1,7 +1,7 @@
 ﻿namespace Trade.API.Contracts.Requests
 {
-    /// <summary> Подзапрос на добавление товарной позиции в заказе/чеке/квитанции </summary>
-    public class AddOrderPositionRequest
+    /// <summary> Подзапрос с данными товарной позиции в заказе/чеке/квитанции </summary>
+    public class OrderPositionRequest
     {
         #region //Id генерируется автоматически
         ///// <summary> *Уникальный идентификатор товарной позиции системе </summary>

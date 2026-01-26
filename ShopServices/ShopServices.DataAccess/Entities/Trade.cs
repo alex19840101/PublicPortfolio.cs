@@ -68,7 +68,6 @@ namespace ShopServices.DataAccess.Entities
             long id,
             uint? orderId,
             uint? buyerId,
-            List<OrderPosition> positions,
             decimal cost,
             string currency,
             DateTime created,
@@ -86,7 +85,6 @@ namespace ShopServices.DataAccess.Entities
             Id = id;
             OrderId = orderId;
             BuyerId = buyerId;
-            Positions = positions ?? throw new ArgumentNullException(nameof(positions));
             Cost = cost;
             Currency = currency ?? throw new ArgumentNullException(nameof(currency));
             Created = created;

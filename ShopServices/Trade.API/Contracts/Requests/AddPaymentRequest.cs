@@ -13,7 +13,7 @@ namespace Trade.API.Contracts.Requests
         public uint? BuyerId { get; set; }
 
         /// <summary> Список товарных позиций в заказе/чеке/квитанции </summary>
-        public List<AddOrderPositionRequest> Positions { get; set; } = default!;
+        public List<OrderPositionRequest> Positions { get; set; } = default!;
 
         /// <summary> Полная стоимость заказа/чека/квитанции </summary>
         public decimal Cost { get; set; }
