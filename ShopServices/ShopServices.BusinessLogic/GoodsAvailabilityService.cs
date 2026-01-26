@@ -100,7 +100,6 @@ namespace ShopServices.BusinessLogic
             if (unValidatedAvailabilityResult != null)
                 return unValidatedAvailabilityResult;
 
-
             return await _availabilityRepository.UpdateAvailability(availability);
         }
 
