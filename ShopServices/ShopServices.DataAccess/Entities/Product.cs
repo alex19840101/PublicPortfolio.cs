@@ -51,8 +51,12 @@ namespace ShopServices.DataAccess.Entities
 
         /// <summary> Габариты </summary>
         public string Dimensions { get; private set; } = default!;
+        /// <summary> Навигационное свойство: коллекция заказов с данным продуктом </summary>
 
         public ICollection<Order>? Orders { get; private set; }
+        
+        /// <summary> Навигационное свойство: коллекция транзакций с данным продуктом </summary>
+        public ICollection<Trade>? Trades { get; private set; }
 
         /// <summary> Id текущей цены на товар (из Prices) </summary>
         [Column(TypeName = "integer")]

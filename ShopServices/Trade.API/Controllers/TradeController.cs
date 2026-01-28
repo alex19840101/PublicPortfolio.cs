@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -10,6 +14,7 @@ using ShopServices.Core;
 using ShopServices.Core.Auth;
 using ShopServices.Core.Services;
 using Trade.API.Contracts.Requests;
+using Trade.API.Contracts.Responses;
 
 namespace Trade.API.Controllers
 {
@@ -48,7 +53,7 @@ namespace Trade.API.Controllers
                     return new ObjectResult(userIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
             }
 
-            var createResult = await _tradeService.AddTrade(TradeMapper.PrepareCoreTrade(addPaymentRequestDto));
+            var createResult = await _tradeService.AddPayment(TradeMapper.PrepareCorePayment(addPaymentRequestDto));
 
             if (createResult.StatusCode == HttpStatusCode.BadRequest)
                 return new BadRequestObjectResult(new ProblemDetails { Title = createResult.Message });
@@ -89,7 +94,7 @@ namespace Trade.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Conflict)]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
-        [Authorize(Roles = $"{Roles.Buyer}, {Roles.Manager}, {Roles.Courier}")]
+        [Authorize(Roles = $"{Roles.Manager}, {Roles.Courier}")]
         [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
         public async Task<IActionResult> AddRefund(AddRefundRequest addRefundRequestDto)
         {
@@ -102,7 +107,7 @@ namespace Trade.API.Controllers
                     return new ObjectResult(userIdMismatch) { StatusCode = StatusCodes.Status403Forbidden };
             }
 
-            var createResult = await _tradeService.AddRefund(TradeMapper.PrepareCoreTrade(addRefundRequestDto));
+            var createResult = await _tradeService.AddRefund(TradeMapper.PrepareCoreRefund(addRefundRequestDto));
 
             if (createResult.StatusCode == HttpStatusCode.BadRequest)
                 return new BadRequestObjectResult(new ProblemDetails { Title = createResult.Message });
@@ -133,6 +138,112 @@ namespace Trade.API.Controllers
 
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
         }
+
+        /// <summary> Получение информации о транзакции оплаты/возврата по её id </summary>
+        /// <param name="transactionId"> id транзакции оплаты/возврата </param>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(TransactionInfoResponseDto), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [Authorize(Roles = $"{Roles.Buyer}, {Roles.Manager}, {Roles.Courier}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
+        public async Task<IActionResult> GetTransactionInfoById(long transactionId)
+        {
+            uint? userId = GetUserIdFromClaim();
+            var role = HttpContext.User.FindFirst(ClaimTypes.Role)!.Value;
+            if (!string.Equals(role, Roles.Buyer))
+                userId = null;
+
+            var order = await _tradeService.GetTransactionInfoById(transactionId, userId);
+
+            if (order is null)
+                return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
+
+            return Ok(TradeMapper.GetTransactionInfoResponseDto(order));
+        }
+
+        /// <summary> Получение информации о транзакциях оплаты/возврата покупателя для указанного временного интервала </summary>
+        /// <param name="buyerId"> id покупателя </param>
+        /// <param name="createdFromDt"> Создан от какого времени </param>
+        /// <param name="createdToDt"> Создан до какого времени</param>
+        /// <param name="byPage"> Количество товаров на странице </param>
+        /// <param name="page"> Номер страницы </param>
+        /// <returns> IEnumerable(TransactionInfoResponseDto) - перечень транзакциях оплаты/возврата покупателя для указанного временного интервала </returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<TransactionInfoResponseDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [Authorize(Roles = $"{Roles.Buyer}, {Roles.Manager}, {Roles.Courier}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
+        public async Task<IEnumerable<TransactionInfoResponseDto>> GetTransactionInfosByBuyerId(
+            uint buyerId,
+            DateTime createdFromDt,
+            DateTime? createdToDt,
+            [Range(1, 100)] uint byPage = 10,
+            [Range(1, uint.MaxValue)] uint page = 1)
+        {
+            uint? buyerIdFromClaim = GetUserIdFromClaim();
+            if (buyerIdFromClaim == null)
+                return [];
+
+            var buyerIdMismatch = ReturnResultAtBuyerMismatch(buyerId, userIdFromClaim: buyerIdFromClaim.Value);
+            if (buyerIdMismatch != null)
+                return [];
+
+            var trxCollection = await _tradeService.GetTransactionInfosByBuyerId(
+                buyerId: buyerId,
+                buyerIdFromClaim: buyerIdFromClaim,
+                createdFromDt: createdFromDt,
+                createdToDt: createdToDt,
+                byPage: byPage,
+                page: page);
+
+            if (!trxCollection.Any())
+                return [];
+
+            return trxCollection.GetTrxDtos();
+        }
+
+        /// <summary> Получение информации о транзакциях оплаты/возврата по id заказа </summary>
+        /// <param name="orderId"> id заказа </param>
+        /// <param name="buyerId"> id покупателя </param>
+        /// <returns> IEnumerable(TransactionInfoResponseDto) - перечень транзакций оплаты/возврата по id заказа </returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<TransactionInfoResponseDto>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Unauthorized)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Forbidden)]
+        [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
+        [Authorize(Roles = $"{Roles.Buyer}, {Roles.Manager}, {Roles.Courier}")]
+        [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
+        public async Task<IEnumerable<TransactionInfoResponseDto>> GetTransactionInfosByOrderId(
+            uint orderId,
+            uint buyerId)
+        {
+            uint? buyerIdFromClaim = GetUserIdFromClaim();
+            if (buyerIdFromClaim == null)
+                return [];
+
+            var buyerIdMismatch = ReturnResultAtBuyerMismatch(buyerId, userIdFromClaim: buyerIdFromClaim.Value);
+            if (buyerIdMismatch != null)
+                return [];
+
+            var trxCollection = await _tradeService.GetTransactionInfosByOrderId(
+                orderId,
+                buyerId: buyerId,
+                buyerIdFromClaim: buyerIdFromClaim);
+
+            if (!trxCollection.Any())
+                return [];
+
+            return trxCollection.GetTrxDtos();
+        }
+
 
         [NonAction]
         private uint? GetUserIdFromClaim()

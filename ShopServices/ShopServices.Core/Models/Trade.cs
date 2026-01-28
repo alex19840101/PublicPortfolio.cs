@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ShopServices.Core.Models
 {
-    /// <summary> Платеж (транзакция) </summary>
+    /// <summary> Платеж (транзакция) оплаты/возврата </summary>
     public class Trade
     {
         public long Id { get; private set; }

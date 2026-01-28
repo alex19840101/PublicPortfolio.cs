@@ -5,7 +5,7 @@ using ShopServices.Core;
 
 namespace ShopServices.DataAccess.Entities
 {
-    /// <summary> Платеж (транзакция) </summary>
+    /// <summary> Платеж (транзакция) оплаты/возврата </summary>
     public class Trade
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -64,6 +64,9 @@ namespace ShopServices.DataAccess.Entities
         /// <summary> В архиве ли (отменен ли) платеж </summary>
         public bool Archived { get; private set; }
 
+        /// <summary> Навигационное свойство: коллекция товаров из чека/квитанции/заказа </summary>
+        public ICollection<Product> Products { get; } = [];
+
         public Trade(
             long id,
             uint? orderId,
@@ -79,7 +82,7 @@ namespace ShopServices.DataAccess.Entities
             uint? courierId,
             DateTime? refundDateTime,
             decimal? refundAmount,
-            string refundInfo,
+            string? refundInfo,
             bool archived)
         {
             Id = id;

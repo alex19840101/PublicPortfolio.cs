@@ -204,5 +204,8 @@
 
         //trade
         public const string BUYERID_CONFLICT = "buyerId conflict";
+        public const string IMPOSSIBLE_TO_ADD_ARCHIVED_PAYMENT = "Impossible to add archived payment";
+        public const string REFUNDAMOUNT_SHOULD_BE_POSITIVE = "RefundAmount should be positive (>0)";
+        public const string TRADE_RARAM_NAME = "trade";
     }
 }
