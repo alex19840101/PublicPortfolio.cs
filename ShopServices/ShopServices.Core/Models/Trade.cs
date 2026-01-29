@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Unicode;
 
 namespace ShopServices.Core.Models
 {
@@ -105,7 +107,16 @@ namespace ShopServices.Core.Models
         /// Получение сериализованного списка оплачиваемых/возвращаемых товарных позиций
         /// </summary>
         /// <returns> Cписок оплачиваемых/возвращаемых товарных позиций, сериализованный в строку </returns>
-        public string GetPositionsStr() => JsonSerializer.Serialize(Positions);
+        public string GetPositionsStr()
+        {
+            var options = new JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),
+                WriteIndented = false,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+            };
 
+            return JsonSerializer.Serialize(Positions, options);
+        }
     }
 }
