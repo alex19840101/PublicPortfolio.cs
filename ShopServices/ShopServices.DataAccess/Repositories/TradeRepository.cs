@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ShopServices.Abstractions;
@@ -133,11 +135,17 @@ namespace ShopServices.DataAccess.Repositories
         /// <returns> Core.Models.Trade - транзакция оплаты/возврата </returns>
         private static Trade GetCoreTrade(Entities.Trade tradeEntity)
         {
+            var options = new JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),
+                WriteIndented = true,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+            };
             return new Trade(
                 id: tradeEntity.Id,
                 orderId: tradeEntity.OrderId,
                 buyerId: tradeEntity.BuyerId,
-                positions: JsonSerializer.Deserialize<List<OrderPosition>>(tradeEntity.Positions),
+                positions: JsonSerializer.Deserialize<List<OrderPosition>>(tradeEntity.Positions, options),
                 amount: tradeEntity.Amount,
                 currency: tradeEntity.Currency,
                 created: tradeEntity.Created,

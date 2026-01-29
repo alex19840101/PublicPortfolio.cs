@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ShopServices.Core.Models
 {
@@ -16,6 +17,7 @@ namespace ShopServices.Core.Models
         public uint? BuyerId { get; private set; }
 
         /// <summary> Cписок оплачиваемых/возвращаемых товарных позиций  </summary>
+        [JsonObjectCreationHandling(JsonObjectCreationHandling.Populate)] //для десериализации свойства только для чтения: https://learn.microsoft.com/ru-ru/dotnet/standard/serialization/system-text-json/immutability
         public List<OrderPosition> Positions { get; private set; } = default!;
 
         /// <summary> Оплачиваемая сумма/полная стоимость заказа/чека/квитанции </summary>

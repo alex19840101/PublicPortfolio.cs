@@ -18,15 +18,22 @@ using Trade.API.Contracts.Responses;
 
 namespace Trade.API.Controllers
 {
+    /// <summary> Контроллер управления транзакциями оплат/возвратов </summary>
     [ApiController]
-    [Route("[controller]")]
+    [Asp.Versioning.ApiVersion(1.0)]
+    [Route("api/v{version:apiVersion}/[controller]/[action]")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
     public class TradeController : ControllerBase
     {
         private readonly ITradeService _tradeService;
         private readonly ILogger<TradeController> _logger;
 
-        public TradeController(ILogger<TradeController> logger)
+        public TradeController(
+            ITradeService tradeService,
+            ILogger<TradeController> logger)
         {
+            _tradeService = tradeService;
             _logger = logger;
         }
         //TODO: Trade.API
