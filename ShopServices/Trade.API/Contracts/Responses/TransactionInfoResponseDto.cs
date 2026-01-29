@@ -15,11 +15,14 @@ namespace Trade.API.Contracts.Responses
         /// <summary> Id покупателя (при заказе) </summary> 
         public uint? BuyerId { get; set; }
 
-        /// <summary> Список товарных позиций в заказе/чеке/квитанции </summary>
+        /// <summary> Cписок оплачиваемых/возвращаемых товарных позиций  </summary>
         public List<OrderPositionResponseDto> Positions { get; set; } = default!;
 
-        /// <summary> Полная стоимость заказа/чека/квитанции </summary>
-        public decimal Cost { get; set; }
+        /// <summary> Сериализованный список оплачиваемых/возвращаемых товарных позиций  </summary>
+        public string PositionsStr { get; set; } = default!;
+
+        /// <summary> Оплачиваемая сумма/полная стоимость заказа/чека/квитанции </summary>
+        public decimal Amount { get; set; }
 
         /// <summary> Валюта </summary>
         public string Currency { get; set; } = default!;

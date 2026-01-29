@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ShopServices.Abstractions;
@@ -30,9 +31,10 @@ namespace ShopServices.DataAccess.Repositories
                 id: newTrade.Id,
                 orderId: newTrade.OrderId,
                 buyerId: newTrade.BuyerId,
-                cost: newTrade.Cost,
+                amount: newTrade.Amount,
                 currency: newTrade.Currency,
                 created: newTrade.Created,
+                positions: newTrade.GetPositionsStr(),
                 paymentInfo: newTrade.PaymentInfo,
                 extraInfo: newTrade.ExtraInfo,
                 comment: newTrade.Comment,
@@ -49,24 +51,6 @@ namespace ShopServices.DataAccess.Repositories
             await _dbContext.SaveChangesAsync();
 
             await _dbContext.Entry(newTradeEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id транзакции
-
-            var orderPositionsEntities = from op in newTrade.Positions
-                                         select new Entities.OrderPosition(
-                                         id: 0,
-                                         orderId: newTradeEntity.OrderId ?? 0,
-                                         productId: op.ProductId,
-                                         articleNumber: op.ArticleNumber,
-                                         brand: op.Brand,
-                                         name: op.Name,
-                                         @params: op.Params,
-                                         price: op.Price,
-                                         quantity: op.Quantity,
-                                         cost: op.Cost,
-                                         currency: op.Currency);
-
-            ArgumentNullException.ThrowIfNull(orderPositionsEntities);
-
-            await _dbContext.OrderPositions.AddRangeAsync(orderPositionsEntities);
 
             await _dbContext.SaveChangesAsync();
 
@@ -88,9 +72,10 @@ namespace ShopServices.DataAccess.Repositories
                 id: newTrade.Id,
                 orderId: newTrade.OrderId,
                 buyerId: newTrade.BuyerId,
-                cost: newTrade.Cost,
+                amount: newTrade.Amount,
                 currency: newTrade.Currency,
                 created: newTrade.Created,
+                positions: newTrade.GetPositionsStr(),
                 paymentInfo: newTrade.PaymentInfo,
                 extraInfo: newTrade.ExtraInfo,
                 comment: newTrade.Comment,
@@ -107,24 +92,6 @@ namespace ShopServices.DataAccess.Repositories
             await _dbContext.SaveChangesAsync();
 
             await _dbContext.Entry(newTradeEntity).GetDatabaseValuesAsync(); //получение сгенерированного БД id транзакции
-
-            var orderPositionsEntities = from op in newTrade.Positions
-                                         select new Entities.OrderPosition(
-                                         id: 0,
-                                         orderId: newTradeEntity.OrderId ?? 0,
-                                         productId: op.ProductId,
-                                         articleNumber: op.ArticleNumber,
-                                         brand: op.Brand,
-                                         name: op.Name,
-                                         @params: op.Params,
-                                         price: op.Price,
-                                         quantity: op.Quantity,
-                                         cost: op.Cost,
-                                         currency: op.Currency);
-
-            ArgumentNullException.ThrowIfNull(orderPositionsEntities);
-
-            await _dbContext.OrderPositions.AddRangeAsync(orderPositionsEntities);
 
             await _dbContext.SaveChangesAsync();
 
@@ -166,27 +133,12 @@ namespace ShopServices.DataAccess.Repositories
         /// <returns> Core.Models.Trade - транзакция оплаты/возврата </returns>
         private static Trade GetCoreTrade(Entities.Trade tradeEntity)
         {
-            var coreOrderPositions = from op in tradeEntity.Positions
-                                     select new OrderPosition
-                                     (
-                                         id: op.Id,
-                                         productId: op.ProductId,
-                                         articleNumber: op.ArticleNumber,
-                                         brand: op.Brand,
-                                         name: op.Name,
-                                         parameters: op.Params,
-                                         price: op.Price,
-                                         quantity: op.Quantity,
-                                         cost: op.Cost,
-                                         currency: op.Currency
-                                     );
-
             return new Trade(
                 id: tradeEntity.Id,
                 orderId: tradeEntity.OrderId,
                 buyerId: tradeEntity.BuyerId,
-                positions: coreOrderPositions.ToList(),
-                cost: tradeEntity.Cost,
+                positions: JsonSerializer.Deserialize<List<OrderPosition>>(tradeEntity.Positions),
+                amount: tradeEntity.Amount,
                 currency: tradeEntity.Currency,
                 created: tradeEntity.Created,
                 paymentInfo: tradeEntity.PaymentInfo,

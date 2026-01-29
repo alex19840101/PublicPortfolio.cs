@@ -55,9 +55,6 @@ namespace ShopServices.DataAccess.Entities
 
         public ICollection<Order>? Orders { get; private set; }
         
-        /// <summary> Навигационное свойство: коллекция транзакций с данным продуктом </summary>
-        public ICollection<Trade>? Trades { get; private set; }
-
         /// <summary> Id текущей цены на товар (из Prices) </summary>
         [Column(TypeName = "integer")]
         public uint? PriceId { get; private set; }

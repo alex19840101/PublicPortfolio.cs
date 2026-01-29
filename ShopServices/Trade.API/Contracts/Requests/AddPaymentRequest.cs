@@ -15,8 +15,8 @@ namespace Trade.API.Contracts.Requests
         /// <summary> Список товарных позиций в заказе/чеке/квитанции </summary>
         public List<OrderPositionRequest> Positions { get; set; } = default!;
 
-        /// <summary> Полная стоимость заказа/чека/квитанции </summary>
-        public decimal Cost { get; set; }
+        /// <summary> Оплачиваемая сумма/полная стоимость заказа/чека/квитанции </summary>
+        public decimal Amount { get; set; }
 
         /// <summary> Валюта </summary>
         public string Currency { get; set; } = default!;

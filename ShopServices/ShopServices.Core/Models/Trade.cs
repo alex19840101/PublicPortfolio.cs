@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace ShopServices.Core.Models
 {
@@ -14,11 +15,11 @@ namespace ShopServices.Core.Models
         /// <summary> Id покупателя (при заказе) </summary> 
         public uint? BuyerId { get; private set; }
 
-        /// <summary> Список товарных позиций в заказе/чеке/квитанции </summary>
+        /// <summary> Cписок оплачиваемых/возвращаемых товарных позиций  </summary>
         public List<OrderPosition> Positions { get; private set; } = default!;
 
-        /// <summary> Полная стоимость заказа/чека/квитанции </summary>
-        public decimal Cost { get; private set; }
+        /// <summary> Оплачиваемая сумма/полная стоимость заказа/чека/квитанции </summary>
+        public decimal Amount { get; private set; }
 
         /// <summary> Валюта </summary>
         public string Currency { get; private set; }
@@ -57,7 +58,7 @@ namespace ShopServices.Core.Models
             uint? orderId,
             uint? buyerId,
             List<OrderPosition> positions,
-            decimal cost,
+            decimal amount,
             string currency,
             DateTime created,
             string paymentInfo,
@@ -75,7 +76,7 @@ namespace ShopServices.Core.Models
             OrderId = orderId;
             BuyerId = buyerId;
             Positions = positions ?? throw new ArgumentNullException(nameof(positions));
-            Cost = cost;
+            Amount = amount;
             Currency = currency ?? throw new ArgumentNullException(nameof(currency));
             Created = created;
             PaymentInfo = paymentInfo ?? throw new ArgumentNullException(nameof(paymentInfo));
@@ -97,5 +98,12 @@ namespace ShopServices.Core.Models
 
             BuyerId = buyerId;
         }
+
+        /// <summary>
+        /// Получение сериализованного списка оплачиваемых/возвращаемых товарных позиций
+        /// </summary>
+        /// <returns> Cписок оплачиваемых/возвращаемых товарных позиций, сериализованный в строку </returns>
+        public string GetPositionsStr() => JsonSerializer.Serialize(Positions);
+
     }
 }

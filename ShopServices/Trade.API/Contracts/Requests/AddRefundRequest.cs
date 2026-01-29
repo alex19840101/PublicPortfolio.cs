@@ -19,7 +19,7 @@ namespace Trade.API.Contracts.Requests
         public List<OrderPositionRequest> Positions { get; set; } = default!;
 
         /// <summary> Полная стоимость заказа/чека/квитанции </summary>
-        public decimal Cost { get; set; }
+        public decimal Amount { get; set; }
 
         /// <summary> Валюта </summary>
         public string Currency { get; set; } = default!;

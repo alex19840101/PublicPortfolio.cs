@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using ShopServices.Core;
 
@@ -23,11 +22,11 @@ namespace ShopServices.DataAccess.Entities
         /// <summary> Id покупателя (при заказе) </summary>
         public uint? BuyerId { get; private set; }
 
-        /// <summary> Навигационное свойство: список товарных позиций в заказе/чеке/квитанции  </summary>
-        public ICollection<OrderPosition> Positions { get; } = [];
+        /// <summary> Cписок оплачиваемых/возвращаемых товарных позиций  </summary>
+        public string Positions { get; private set; } = default!;
 
-        /// <summary> Полная стоимость заказа/чека/квитанции </summary>
-        public decimal Cost { get; private set; }
+        /// <summary> Оплачиваемая сумма/полная стоимость заказа/чека/квитанции </summary>
+        public decimal Amount { get; private set; }
 
         /// <summary> Валюта </summary>
         public string Currency { get; private set; } = default!;
@@ -49,7 +48,9 @@ namespace ShopServices.DataAccess.Entities
 
         /// <summary> Магазин покупки </summary>
         public uint? ShopId { get; private set; }
+        [Column(TypeName = "integer")]
         public uint? ManagerId { get; private set; }
+        [Column(TypeName = "integer")]
         public uint? CourierId { get; private set; }
 
         /// <summary> Дата и время возврата денежных средств </summary>
@@ -64,16 +65,15 @@ namespace ShopServices.DataAccess.Entities
         /// <summary> В архиве ли (отменен ли) платеж </summary>
         public bool Archived { get; private set; }
 
-        /// <summary> Навигационное свойство: коллекция товаров из чека/квитанции/заказа </summary>
-        public ICollection<Product> Products { get; } = [];
 
         public Trade(
             long id,
             uint? orderId,
             uint? buyerId,
-            decimal cost,
+            decimal amount,
             string currency,
             DateTime created,
+            string positions,
             string paymentInfo,
             string extraInfo,
             string comment,
@@ -88,9 +88,10 @@ namespace ShopServices.DataAccess.Entities
             Id = id;
             OrderId = orderId;
             BuyerId = buyerId;
-            Cost = cost;
+            Amount = amount;
             Currency = currency ?? throw new ArgumentNullException(nameof(currency));
             Created = created;
+            Positions = positions ?? throw new ArgumentNullException(nameof(positions));
             PaymentInfo = paymentInfo ?? throw new ArgumentNullException(nameof(paymentInfo));
             ExtraInfo = extraInfo;
             Comment = comment;

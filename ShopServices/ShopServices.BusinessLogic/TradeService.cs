@@ -171,8 +171,8 @@ namespace ShopServices.BusinessLogic
             if (trade.BuyerId == 0)
                 return new Result(ResultMessager.BUYER_NOT_FOUND, System.Net.HttpStatusCode.NotFound);
 
-            if (trade.Cost <= 0)
-                return new Result(ResultMessager.COST_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.BadRequest);
+            if (trade.Amount <= 0)
+                return new Result(ResultMessager.AMOUNT_SHOULD_BE_POSITIVE, System.Net.HttpStatusCode.BadRequest);
 
             if (string.IsNullOrWhiteSpace(trade.Currency))
                 return new Result(ResultMessager.CURRENCY_SHOULD_NOT_BE_EMPTY, System.Net.HttpStatusCode.BadRequest);

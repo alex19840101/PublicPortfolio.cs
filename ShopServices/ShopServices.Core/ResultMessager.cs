@@ -203,6 +203,7 @@
         public const string AVAILABILITY_IS_ACTUAL = "Availability is actual";
 
         //trade
+        public const string AMOUNT_SHOULD_BE_POSITIVE = "Amount should be positive (>0)";
         public const string BUYERID_CONFLICT = "buyerId conflict";
         public const string IMPOSSIBLE_TO_ADD_ARCHIVED_PAYMENT = "Impossible to add archived payment";
         public const string REFUNDAMOUNT_SHOULD_BE_POSITIVE = "RefundAmount should be positive (>0)";

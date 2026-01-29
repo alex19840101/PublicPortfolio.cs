@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using ShopServices.Core.Models;
 using Trade.API.Contracts.Requests;
 using Trade.API.Contracts.Responses;
@@ -15,7 +16,6 @@ namespace Trade.API
                 Id = coreTrade.Id,
                 OrderId = coreTrade.OrderId,
                 BuyerId = coreTrade.BuyerId,
-
                 Positions = coreTrade.Positions.Select(op => new OrderPositionResponseDto
                 {
                     Id = op.Id,
@@ -29,8 +29,8 @@ namespace Trade.API
                     Cost = op.Cost,
                     Currency = op.Currency
                 }).ToList(),
-
-                Cost = coreTrade.Cost,
+                PositionsStr = coreTrade.GetPositionsStr(),
+                Amount = coreTrade.Amount,
                 Currency = coreTrade.Currency,
                 Created = coreTrade.Created,
                 PaymentInfo = coreTrade.PaymentInfo,
@@ -72,7 +72,7 @@ namespace Trade.API
                 orderId: addPaymentRequestDto.OrderId,
                 buyerId: addPaymentRequestDto.BuyerId,
                 positions: coreOrderPositions.ToList(),
-                cost: addPaymentRequestDto.Cost,
+                amount: addPaymentRequestDto.Amount,
                 currency: addPaymentRequestDto.Currency,
                 created: addPaymentRequestDto.Created,
                 paymentInfo: addPaymentRequestDto.PaymentInfo,
@@ -113,7 +113,7 @@ namespace Trade.API
                 orderId: addRefundRequestDto.OrderId,
                 buyerId: addRefundRequestDto.BuyerId,
                 positions: coreOrderPositions.ToList(),
-                cost: addRefundRequestDto.Cost,
+                amount: addRefundRequestDto.Amount,
                 currency: addRefundRequestDto.Currency,
                 created: addRefundRequestDto.Created,
                 paymentInfo: addRefundRequestDto.PaymentInfo,
@@ -138,7 +138,6 @@ namespace Trade.API
                 Id = coreTrade.Id,
                 OrderId = coreTrade.OrderId,
                 BuyerId = coreTrade.BuyerId,
-
                 Positions = coreTrade.Positions.Select(op => new OrderPositionResponseDto
                 {
                     Id = op.Id,
@@ -152,8 +151,8 @@ namespace Trade.API
                     Cost = op.Cost,
                     Currency = op.Currency
                 }).ToList(),
-
-                Cost = coreTrade.Cost,
+                PositionsStr = coreTrade.GetPositionsStr(),
+                Amount = coreTrade.Amount,
                 Currency = coreTrade.Currency,
                 Created = coreTrade.Created,
                 PaymentInfo = coreTrade.PaymentInfo,
