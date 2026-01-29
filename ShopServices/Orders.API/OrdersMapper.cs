@@ -92,7 +92,7 @@ namespace Orders.API
                     articleNumber: null,
                     brand: null,
                     name: null,
-                    parameters: null,
+                    @params: null,
                     price: op.Price,
                     quantity: op.Quantity,
                     cost: op.Cost,

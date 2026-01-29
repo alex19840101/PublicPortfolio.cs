@@ -694,7 +694,7 @@ namespace ShopServices.DataAccess.Repositories
                                          articleNumber: op.ArticleNumber,
                                          brand: op.Brand,
                                          name: op.Name,
-                                         parameters: op.Params,
+                                         @params: op.Params,
                                          price: op.Price,
                                          quantity: op.Quantity,
                                          cost: op.Cost,
