@@ -18,10 +18,17 @@ namespace ShopServices.DataAccess.Repositories
     public class TradeRepository : ITradeRepository
     {
         private readonly ShopServicesDbContext _dbContext;
+        private readonly JsonSerializerOptions _jsonSerializerOptions;
 
         public TradeRepository(ShopServicesDbContext dbContext)
         {
             _dbContext = dbContext;
+            _jsonSerializerOptions = new JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),
+                WriteIndented = false,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+            }; ;
         }
 
         public async Task<Result> AddPayment(Trade newTrade)
@@ -133,19 +140,13 @@ namespace ShopServices.DataAccess.Repositories
         /// <summary> Маппер Entities.Trade - Core.Models.Trade </summary>
         /// <param name="tradeEntity"> Entities.Trade - транзакция оплаты/возврата (из БД) </param>
         /// <returns> Core.Models.Trade - транзакция оплаты/возврата </returns>
-        private static Trade GetCoreTrade(Entities.Trade tradeEntity)
+        private Trade GetCoreTrade(Entities.Trade tradeEntity)
         {
-            var options = new JsonSerializerOptions
-            {
-                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),
-                WriteIndented = true,
-                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
-            };
             return new Trade(
                 id: tradeEntity.Id,
                 orderId: tradeEntity.OrderId,
                 buyerId: tradeEntity.BuyerId,
-                positions: JsonSerializer.Deserialize<List<OrderPosition>>(tradeEntity.Positions, options),
+                positions: JsonSerializer.Deserialize<List<OrderPosition>>(tradeEntity.Positions, _jsonSerializerOptions),
                 amount: tradeEntity.Amount,
                 currency: tradeEntity.Currency,
                 created: tradeEntity.Created,
