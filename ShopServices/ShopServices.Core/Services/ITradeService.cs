@@ -20,14 +20,12 @@ namespace ShopServices.Core.Services
             uint? buyerId);
         public Task<IEnumerable<Trade>> GetTransactionInfosByBuyerId(
             uint buyerId,
-            uint? buyerIdFromClaim,
             DateTime createdFromDt,
             DateTime? createdToDt,
             uint byPage,
             uint page);
         public Task<IEnumerable<Trade>> GetTransactionInfosByOrderId(
             uint orderId,
-            uint? buyerId,
-            uint? buyerIdFromClaim);
+            uint? buyerId);
     }
 }

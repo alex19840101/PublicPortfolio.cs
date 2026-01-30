@@ -18,10 +18,17 @@ namespace ShopServices.DataAccess.Repositories
     public class TradeRepository : ITradeRepository
     {
         private readonly ShopServicesDbContext _dbContext;
+        private readonly JsonSerializerOptions _jsonSerializerOptions;
 
         public TradeRepository(ShopServicesDbContext dbContext)
         {
             _dbContext = dbContext;
+            _jsonSerializerOptions = new JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),
+                WriteIndented = false,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+            }; ;
         }
 
         public async Task<Result> AddPayment(Trade newTrade)
@@ -122,30 +129,34 @@ namespace ShopServices.DataAccess.Repositories
             uint take,
             uint skipCount)
         {
-            List<Entities.Trade> entitiesTrades = await GetIQueryableTradesByByyer(buyerId, createdFromDt, createdToDt)
+            List<Entities.Trade> entitiesTrades = await GetIQueryableTradesByBuyer(buyerId, createdFromDt, createdToDt)
                 .Skip((int)skipCount)
                 .Take((int)take)
                 .ToListAsync();
 
-            return entitiesTrades.Select(order => GetCoreTrade(order));
+            return entitiesTrades.Select(trade => GetCoreTrade(trade));
         }
-    
+
+        public async Task<IEnumerable<Trade>> GetTransactionInfosByOrderId(uint orderId, uint? buyerId)
+        {
+            var query = buyerId == null ?
+                _dbContext.Trades.AsNoTracking().Where(trade => trade.OrderId == orderId) :
+                _dbContext.Trades.AsNoTracking().Where(trade => trade.OrderId == orderId && trade.BuyerId == buyerId);
+            var entitiesTrades = await query.ToListAsync();
+
+            return entitiesTrades.Select(trade => GetCoreTrade(trade));
+        }
+
         /// <summary> Маппер Entities.Trade - Core.Models.Trade </summary>
         /// <param name="tradeEntity"> Entities.Trade - транзакция оплаты/возврата (из БД) </param>
         /// <returns> Core.Models.Trade - транзакция оплаты/возврата </returns>
-        private static Trade GetCoreTrade(Entities.Trade tradeEntity)
+        private Trade GetCoreTrade(Entities.Trade tradeEntity)
         {
-            var options = new JsonSerializerOptions
-            {
-                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic),
-                WriteIndented = true,
-                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
-            };
             return new Trade(
                 id: tradeEntity.Id,
                 orderId: tradeEntity.OrderId,
                 buyerId: tradeEntity.BuyerId,
-                positions: JsonSerializer.Deserialize<List<OrderPosition>>(tradeEntity.Positions, options),
+                positions: JsonSerializer.Deserialize<List<OrderPosition>>(tradeEntity.Positions, _jsonSerializerOptions),
                 amount: tradeEntity.Amount,
                 currency: tradeEntity.Currency,
                 created: tradeEntity.Created,
@@ -166,7 +177,7 @@ namespace ShopServices.DataAccess.Repositories
         /// <param name="createdFromDt"> Создан от какого времени </param>
         /// <param name="createdToDt"> Создан до какого времени </param>
         /// <returns> IQueryable(Entities.Order) </returns>
-        private IQueryable<Entities.Trade> GetIQueryableTradesByByyer(
+        private IQueryable<Entities.Trade> GetIQueryableTradesByBuyer(
             uint buyerId,
             DateTime createdFromDt,
             DateTime? createdToDt)
