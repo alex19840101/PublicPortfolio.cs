@@ -52,6 +52,9 @@ namespace Trade.API.Controllers
         public async Task<IActionResult> AddPayment(AddPaymentRequest addPaymentRequestDto)
         {
             uint? buyerId = GetUserIdFromClaim();
+            var role = HttpContext.User.FindFirst(ClaimTypes.Role)!.Value;
+            if (!string.Equals(role, Roles.Buyer))
+                buyerId = null;
 
             if (buyerId != null && addPaymentRequestDto.BuyerId != null)
             {
@@ -106,6 +109,9 @@ namespace Trade.API.Controllers
         public async Task<IActionResult> AddRefund(AddRefundRequest addRefundRequestDto)
         {
             uint? buyerId = GetUserIdFromClaim();
+            var role = HttpContext.User.FindFirst(ClaimTypes.Role)!.Value;
+            if (!string.Equals(role, Roles.Buyer))
+                buyerId = null;
 
             if (buyerId != null && addRefundRequestDto.BuyerId != null)
             {
@@ -195,12 +201,19 @@ namespace Trade.API.Controllers
             [Range(1, uint.MaxValue)] uint page = 1)
         {
             uint? buyerIdFromClaim = GetUserIdFromClaim();
+            var role = HttpContext.User.FindFirst(ClaimTypes.Role)!.Value;
+            if (!string.Equals(role, Roles.Buyer))
+                buyerIdFromClaim = null;
+
             if (buyerIdFromClaim == null)
                 return [];
 
-            var buyerIdMismatch = ReturnResultAtBuyerMismatch(buyerId, userIdFromClaim: buyerIdFromClaim.Value);
-            if (buyerIdMismatch != null)
-                return [];
+            if (buyerIdFromClaim != null)
+            {
+                var buyerIdMismatch = ReturnResultAtBuyerMismatch(buyerId, userIdFromClaim: buyerIdFromClaim.Value);
+                if (buyerIdMismatch != null)
+                    return [];
+            }
 
             var trxCollection = await _tradeService.GetTransactionInfosByBuyerId(
                 buyerId: buyerId,
@@ -233,12 +246,19 @@ namespace Trade.API.Controllers
             uint buyerId)
         {
             uint? buyerIdFromClaim = GetUserIdFromClaim();
+            var role = HttpContext.User.FindFirst(ClaimTypes.Role)!.Value;
+            if (!string.Equals(role, Roles.Buyer))
+                buyerIdFromClaim = null;
+
             if (buyerIdFromClaim == null)
                 return [];
 
-            var buyerIdMismatch = ReturnResultAtBuyerMismatch(buyerId, userIdFromClaim: buyerIdFromClaim.Value);
-            if (buyerIdMismatch != null)
-                return [];
+            if (buyerIdFromClaim != null)
+            {
+                var buyerIdMismatch = ReturnResultAtBuyerMismatch(buyerId, userIdFromClaim: buyerIdFromClaim.Value);
+                if (buyerIdMismatch != null)
+                    return [];
+            }
 
             var trxCollection = await _tradeService.GetTransactionInfosByOrderId(
                 orderId,
@@ -263,9 +283,9 @@ namespace Trade.API.Controllers
         }
 
         [NonAction]
-        private static Result? ReturnResultAtBuyerMismatch(uint? buyerId, uint userIdFromClaim)
+        private static Result? ReturnResultAtBuyerMismatch(uint? buyerId, uint? userIdFromClaim)
         {
-            if (buyerId is null)
+            if (buyerId is null || userIdFromClaim is null)
                 return null;
 
             if (buyerId != userIdFromClaim)
