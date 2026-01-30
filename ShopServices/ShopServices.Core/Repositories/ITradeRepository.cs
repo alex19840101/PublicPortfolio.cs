@@ -17,5 +17,8 @@ namespace ShopServices.Core.Repositories
             DateTime? createdToDt,
             uint take,
             uint skipCount);
+        Task<IEnumerable<Trade>> GetTransactionInfosByOrderId(
+            uint orderId,
+            uint? buyerId);
     }
 }

@@ -129,14 +129,24 @@ namespace ShopServices.DataAccess.Repositories
             uint take,
             uint skipCount)
         {
-            List<Entities.Trade> entitiesTrades = await GetIQueryableTradesByByyer(buyerId, createdFromDt, createdToDt)
+            List<Entities.Trade> entitiesTrades = await GetIQueryableTradesByBuyer(buyerId, createdFromDt, createdToDt)
                 .Skip((int)skipCount)
                 .Take((int)take)
                 .ToListAsync();
 
-            return entitiesTrades.Select(order => GetCoreTrade(order));
+            return entitiesTrades.Select(trade => GetCoreTrade(trade));
         }
-    
+
+        public async Task<IEnumerable<Trade>> GetTransactionInfosByOrderId(uint orderId, uint? buyerId)
+        {
+            var query = buyerId == null ?
+                _dbContext.Trades.AsNoTracking().Where(trade => trade.OrderId == orderId) :
+                _dbContext.Trades.AsNoTracking().Where(trade => trade.OrderId == orderId && trade.BuyerId == buyerId);
+            var entitiesTrades = await query.ToListAsync();
+
+            return entitiesTrades.Select(trade => GetCoreTrade(trade));
+        }
+
         /// <summary> Маппер Entities.Trade - Core.Models.Trade </summary>
         /// <param name="tradeEntity"> Entities.Trade - транзакция оплаты/возврата (из БД) </param>
         /// <returns> Core.Models.Trade - транзакция оплаты/возврата </returns>
@@ -167,7 +177,7 @@ namespace ShopServices.DataAccess.Repositories
         /// <param name="createdFromDt"> Создан от какого времени </param>
         /// <param name="createdToDt"> Создан до какого времени </param>
         /// <returns> IQueryable(Entities.Order) </returns>
-        private IQueryable<Entities.Trade> GetIQueryableTradesByByyer(
+        private IQueryable<Entities.Trade> GetIQueryableTradesByBuyer(
             uint buyerId,
             DateTime createdFromDt,
             DateTime? createdToDt)

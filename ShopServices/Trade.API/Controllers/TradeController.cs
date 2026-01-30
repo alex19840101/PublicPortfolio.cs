@@ -205,7 +205,7 @@ namespace Trade.API.Controllers
             if (!string.Equals(role, Roles.Buyer))
                 buyerIdFromClaim = null;
 
-            if (buyerIdFromClaim == null)
+            if (buyerIdFromClaim == null && string.Equals(role, Roles.Buyer))
                 return [];
 
             if (buyerIdFromClaim != null)
@@ -217,7 +217,6 @@ namespace Trade.API.Controllers
 
             var trxCollection = await _tradeService.GetTransactionInfosByBuyerId(
                 buyerId: buyerId,
-                buyerIdFromClaim: buyerIdFromClaim,
                 createdFromDt: createdFromDt,
                 createdToDt: createdToDt,
                 byPage: byPage,
@@ -250,7 +249,7 @@ namespace Trade.API.Controllers
             if (!string.Equals(role, Roles.Buyer))
                 buyerIdFromClaim = null;
 
-            if (buyerIdFromClaim == null)
+            if (buyerIdFromClaim == null && string.Equals(role, Roles.Buyer))
                 return [];
 
             if (buyerIdFromClaim != null)
@@ -262,8 +261,7 @@ namespace Trade.API.Controllers
 
             var trxCollection = await _tradeService.GetTransactionInfosByOrderId(
                 orderId,
-                buyerId: buyerId,
-                buyerIdFromClaim: buyerIdFromClaim);
+                buyerId: buyerId);
 
             if (!trxCollection.Any())
                 return [];

@@ -110,7 +110,6 @@ namespace ShopServices.BusinessLogic
 
         public async Task<IEnumerable<Trade>> GetTransactionInfosByBuyerId(
             uint buyerId,
-            uint? buyerIdFromClaim,
             DateTime createdFromDt,
             DateTime? createdToDt,
             uint byPage,
@@ -118,9 +117,6 @@ namespace ShopServices.BusinessLogic
         {
             var take = byPage;
             var skip = page > 1 ? (page - 1) * byPage : 0;
-
-            if (buyerIdFromClaim != buyerId)
-                return new List<Trade>();
 
             return await _tradeRepository.GetTransactionInfosByBuyerId(
                 buyerId: buyerId,
@@ -130,12 +126,13 @@ namespace ShopServices.BusinessLogic
                 skipCount: skip);
         }
 
-        public Task<IEnumerable<Trade>> GetTransactionInfosByOrderId(
+        public async Task<IEnumerable<Trade>> GetTransactionInfosByOrderId(
             uint orderId,
-            uint? buyerId,
-            uint? buyerIdFromClaim)
+            uint? buyerId)
         {
-            throw new NotImplementedException();
+            return await _tradeRepository.GetTransactionInfosByOrderId(
+                orderId: orderId,
+                buyerId: buyerId);
         }
 
         #region private - validators
