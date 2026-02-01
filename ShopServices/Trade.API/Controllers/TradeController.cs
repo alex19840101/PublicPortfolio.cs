@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +19,7 @@ using Trade.API.Contracts.Responses;
 
 namespace Trade.API.Controllers
 {
-    /// <summary> Контроллер управления транзакциями оплат/возвратов </summary>
+    /// <summary> РљРѕРЅС‚СЂРѕР»Р»РµСЂ СѓРїСЂР°РІР»РµРЅРёСЏ С‚СЂР°РЅР·Р°РєС†РёСЏРјРё РѕРїР»Р°С‚/РІРѕР·РІСЂР°С‚РѕРІ </summary>
     [ApiController]
     [Asp.Versioning.ApiVersion(1.0)]
     [Route("api/v{version:apiVersion}/[controller]/[action]")]
@@ -28,18 +29,22 @@ namespace Trade.API.Controllers
     {
         private readonly ITradeService _tradeService;
         private readonly ILogger<TradeController> _logger;
+        private readonly ProducerService _producerService;
 
+        /// <summary> РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРЅС‚СЂРѕР»Р»РµСЂР° СѓРїСЂР°РІР»РµРЅРёСЏ С‚СЂР°РЅР·Р°РєС†РёСЏРјРё РѕРїР»Р°С‚/РІРѕР·РІСЂР°С‚РѕРІ </summary>
         public TradeController(
             ITradeService tradeService,
+            ProducerService producerService,
             ILogger<TradeController> logger)
         {
             _tradeService = tradeService;
+            _producerService = producerService;
             _logger = logger;
         }
-        //TODO: Trade.API
 
-        /// <summary> Добавление оплаты </summary>
-        /// <param name="addPaymentRequestDto"> Запрос на добавление оплаты </param>
+        /// <summary> Р”РѕР±Р°РІР»РµРЅРёРµ РѕРїР»Р°С‚С‹ </summary>
+        /// <param name="addPaymentRequestDto"> Р—Р°РїСЂРѕСЃ РЅР° РґРѕР±Р°РІР»РµРЅРёРµ РѕРїР»Р°С‚С‹ </param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Created)]
@@ -49,7 +54,7 @@ namespace Trade.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
         [Authorize(Roles = $"{Roles.Buyer}, {Roles.Manager}, {Roles.Courier}")]
         [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
-        public async Task<IActionResult> AddPayment(AddPaymentRequest addPaymentRequestDto)
+        public async Task<IActionResult> AddPayment(AddPaymentRequest addPaymentRequestDto, CancellationToken cancellationToken)
         {
             uint? buyerId = GetUserIdFromClaim();
             var role = HttpContext.User.FindFirst(ClaimTypes.Role)!.Value;
@@ -92,11 +97,16 @@ namespace Trade.API.Controllers
             };
             _logger.LogInformation((EventId)(int)result!.Id!, @"added Payment {result.Id}", result!.Id!);
 
+            await _producerService.ProduceAsync(
+                topic: $"PaymentB{addPaymentRequestDto.BuyerId}o{addPaymentRequestDto.OrderId}",
+                message: $"ID{result!.Id!}",
+                cancellationToken);
+
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
         }
 
-        /// <summary> Добавление возврата </summary>
-        /// <param name="addRefundRequestDto"> Запрос на добавление возврата </param>
+        /// <summary> Р”РѕР±Р°РІР»РµРЅРёРµ РІРѕР·РІСЂР°С‚Р° </summary>
+        /// <param name="addRefundRequestDto"> Р—Р°РїСЂРѕСЃ РЅР° РґРѕР±Р°РІР»РµРЅРёРµ РІРѕР·РІСЂР°С‚Р° </param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Created)]
@@ -106,7 +116,7 @@ namespace Trade.API.Controllers
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
         [Authorize(Roles = $"{Roles.Manager}, {Roles.Courier}")]
         [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
-        public async Task<IActionResult> AddRefund(AddRefundRequest addRefundRequestDto)
+        public async Task<IActionResult> AddRefund(AddRefundRequest addRefundRequestDto, CancellationToken cancellationToken)
         {
             uint? buyerId = GetUserIdFromClaim();
             var role = HttpContext.User.FindFirst(ClaimTypes.Role)!.Value;
@@ -148,12 +158,16 @@ namespace Trade.API.Controllers
                 Message = createResult.Message
             };
             _logger.LogInformation((EventId)(int)result!.Id!, @"added Refund {result.Id}", result!.Id!);
+            await _producerService.ProduceAsync(
+                topic: $"RefundB{addRefundRequestDto.BuyerId}o{addRefundRequestDto.OrderId}",
+                message: $"ID{result!.Id!}",
+                cancellationToken);
 
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
         }
 
-        /// <summary> Получение информации о транзакции оплаты/возврата по её id </summary>
-        /// <param name="transactionId"> id транзакции оплаты/возврата </param>
+        /// <summary> РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ С‚СЂР°РЅР·Р°РєС†РёРё РѕРїР»Р°С‚С‹/РІРѕР·РІСЂР°С‚Р° РїРѕ РµС‘ id </summary>
+        /// <param name="transactionId"> id С‚СЂР°РЅР·Р°РєС†РёРё РѕРїР»Р°С‚С‹/РІРѕР·РІСЂР°С‚Р° </param>
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(TransactionInfoResponseDto), (int)HttpStatusCode.OK)]
@@ -178,13 +192,13 @@ namespace Trade.API.Controllers
             return Ok(TradeMapper.GetTransactionInfoResponseDto(order));
         }
 
-        /// <summary> Получение информации о транзакциях оплаты/возврата покупателя для указанного временного интервала </summary>
-        /// <param name="buyerId"> id покупателя </param>
-        /// <param name="createdFromDt"> Создан от какого времени </param>
-        /// <param name="createdToDt"> Создан до какого времени</param>
-        /// <param name="byPage"> Количество товаров на странице </param>
-        /// <param name="page"> Номер страницы </param>
-        /// <returns> IEnumerable(TransactionInfoResponseDto) - перечень транзакциях оплаты/возврата покупателя для указанного временного интервала </returns>
+        /// <summary> РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ С‚СЂР°РЅР·Р°РєС†РёСЏС… РѕРїР»Р°С‚С‹/РІРѕР·РІСЂР°С‚Р° РїРѕРєСѓРїР°С‚РµР»СЏ РґР»СЏ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІСЂРµРјРµРЅРЅРѕРіРѕ РёРЅС‚РµСЂРІР°Р»Р° </summary>
+        /// <param name="buyerId"> id РїРѕРєСѓРїР°С‚РµР»СЏ </param>
+        /// <param name="createdFromDt"> РЎРѕР·РґР°РЅ РѕС‚ РєР°РєРѕРіРѕ РІСЂРµРјРµРЅРё </param>
+        /// <param name="createdToDt"> РЎРѕР·РґР°РЅ РґРѕ РєР°РєРѕРіРѕ РІСЂРµРјРµРЅРё</param>
+        /// <param name="byPage"> РљРѕР»РёС‡РµСЃС‚РІРѕ С‚РѕРІР°СЂРѕРІ РЅР° СЃС‚СЂР°РЅРёС†Рµ </param>
+        /// <param name="page"> РќРѕРјРµСЂ СЃС‚СЂР°РЅРёС†С‹ </param>
+        /// <returns> IEnumerable(TransactionInfoResponseDto) - РїРµСЂРµС‡РµРЅСЊ С‚СЂР°РЅР·Р°РєС†РёСЏС… РѕРїР»Р°С‚С‹/РІРѕР·РІСЂР°С‚Р° РїРѕРєСѓРїР°С‚РµР»СЏ РґР»СЏ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РІСЂРµРјРµРЅРЅРѕРіРѕ РёРЅС‚РµСЂРІР°Р»Р° </returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<TransactionInfoResponseDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]
@@ -228,10 +242,10 @@ namespace Trade.API.Controllers
             return trxCollection.GetTrxDtos();
         }
 
-        /// <summary> Получение информации о транзакциях оплаты/возврата по id заказа </summary>
-        /// <param name="orderId"> id заказа </param>
-        /// <param name="buyerId"> id покупателя </param>
-        /// <returns> IEnumerable(TransactionInfoResponseDto) - перечень транзакций оплаты/возврата по id заказа </returns>
+        /// <summary> РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ С‚СЂР°РЅР·Р°РєС†РёСЏС… РѕРїР»Р°С‚С‹/РІРѕР·РІСЂР°С‚Р° РїРѕ id Р·Р°РєР°Р·Р° </summary>
+        /// <param name="orderId"> id Р·Р°РєР°Р·Р° </param>
+        /// <param name="buyerId"> id РїРѕРєСѓРїР°С‚РµР»СЏ </param>
+        /// <returns> IEnumerable(TransactionInfoResponseDto) - РїРµСЂРµС‡РµРЅСЊ С‚СЂР°РЅР·Р°РєС†РёР№ РѕРїР»Р°С‚С‹/РІРѕР·РІСЂР°С‚Р° РїРѕ id Р·Р°РєР°Р·Р° </returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<TransactionInfoResponseDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ProblemDetails), (int)HttpStatusCode.BadRequest)]

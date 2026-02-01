@@ -91,6 +91,7 @@ try
         .AddEntityFrameworkStores<ShopServicesDbContext>();
 
     builder.Services.AddSwaggerAndVersioning(SERVICE_NAME);
+    builder.Services.AddScoped<ProducerService>();
    
     var app = builder.Build();
 
