@@ -58,11 +58,18 @@ internal class TradeEventConsumerJob : BackgroundService
                     _logger.LogInformation($"OffSet:{consumeRefundResult.Offset} MSG: {consumeRefundResult.Message.Value}");
                 }
             }
+            catch (ConsumeException ex)
+            {
+                _logger.LogError(ex.Error.Reason);
+            }
+
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
             }
         }
+        paymentConsumer.Close();
+        refundConsumer.Close();
         return Task.CompletedTask;
     }
 }

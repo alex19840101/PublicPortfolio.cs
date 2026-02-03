@@ -38,11 +38,17 @@ internal class LegacyTradeEventConsumerJob : BackgroundService
 
                 _logger.LogInformation($"Offset:{consumeResult.Offset} MSG: {consumeResult.Message.Value}");
             }
+            catch (ConsumeException ex)
+            {
+                _logger.LogError(ex.Error.Reason);
+            }
+
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
             }
         }
+        consumer.Close();
 
         return Task.CompletedTask;
     }
