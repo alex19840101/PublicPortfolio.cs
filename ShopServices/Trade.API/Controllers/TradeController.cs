@@ -106,7 +106,10 @@ namespace Trade.API.Controllers
             var message = TradeMapper.GetPaymentReceived(tradeId: (long)result.Id, orderId: addPaymentRequestDto.OrderId, buyerId: addPaymentRequestDto.BuyerId);
             await _producerService.ProduceAsync<uint?, PaymentReceived>(
                   topic: EventsTopics.PAYMENT_RECIEVED,
-                  message: new Message<uint?, PaymentReceived> { Value = message },
+                  message: new Message<uint?, PaymentReceived>
+                  { 
+                      Key = addPaymentRequestDto.OrderId ?? addPaymentRequestDto.BuyerId,
+                      Value = message },
                   cancellationToken);
 
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
@@ -173,7 +176,11 @@ namespace Trade.API.Controllers
             var message = TradeMapper.GetRefundReceived(tradeId: (long)result.Id, orderId: addRefundRequestDto.OrderId, buyerId: addRefundRequestDto.BuyerId);
             await _producerService.ProduceAsync<uint?, RefundReceived>(
                   topic: EventsTopics.REFUND_RECIEVED,
-                  message: new Message<uint?, RefundReceived> { Value = message },
+                  message: new Message<uint?, RefundReceived>
+                  {
+                      Key = addRefundRequestDto.OrderId ?? addRefundRequestDto.BuyerId,
+                      Value = message
+                  },
                   cancellationToken);
 
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
