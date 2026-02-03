@@ -12,10 +12,12 @@ namespace ShopServices.Core.Models
     {
         public long Id { get; private set; }
 
-        /// <summary> Id заказа (при заказе) </summary>
+        /// <summary> Id заказа (при заказе)
+        /// <para> (Покупка и оплата могут быть оффлайн без авторизации и привязки к аккаунту) </para></summary>
         public uint? OrderId { get; private set; }
 
-        /// <summary> Id покупателя (при заказе) </summary> 
+        /// <summary> Id покупателя (при заказе)
+        /// <para> (Покупка и оплата могут быть оффлайн без авторизации и привязки к аккаунту) </para></summary>
         public uint? BuyerId { get; private set; }
 
         /// <summary> Cписок оплачиваемых/возвращаемых товарных позиций  </summary>

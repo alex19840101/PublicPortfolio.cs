@@ -6,6 +6,7 @@ using System.Net;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using Confluent.Kafka;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using ShopServices.Abstractions;
 using ShopServices.Core;
 using ShopServices.Core.Auth;
+using ShopServices.Core.Models.Events;
 using ShopServices.Core.Services;
 using Trade.API.Contracts.Requests;
 using Trade.API.Contracts.Responses;
@@ -98,9 +100,14 @@ namespace Trade.API.Controllers
             _logger.LogInformation((EventId)(int)result!.Id!, @"added Payment {result.Id}", result!.Id!);
 
             await _producerService.ProduceAsync(
-                topic: $"PaymentB{addPaymentRequestDto.BuyerId}o{addPaymentRequestDto.OrderId}",
-                message: $"ID{result!.Id!}",
+                topic: EventsTopics.LEGACY_PAYMENT_RECIEVED,
+                message: $"Added Payment ID{result!.Id!} Buyer={addPaymentRequestDto.BuyerId} Order={addPaymentRequestDto.OrderId}",
                 cancellationToken);
+            var message = TradeMapper.GetPaymentReceived(tradeId: (long)result.Id, orderId: addPaymentRequestDto.OrderId, buyerId: buyerId);
+            await _producerService.ProduceAsync<uint?, PaymentReceived>(
+                  topic: EventsTopics.PAYMENT_RECIEVED,
+                  message: new Message<uint?, PaymentReceived> { Value = message },
+                  cancellationToken);
 
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
         }
@@ -159,9 +166,15 @@ namespace Trade.API.Controllers
             };
             _logger.LogInformation((EventId)(int)result!.Id!, @"added Refund {result.Id}", result!.Id!);
             await _producerService.ProduceAsync(
-                topic: $"RefundB{addRefundRequestDto.BuyerId}o{addRefundRequestDto.OrderId}",
-                message: $"ID{result!.Id!}",
+                topic: EventsTopics.LEGACY_REFUND_RECIEVED,
+                message: $"Added Refund ID{result!.Id!} Buyer={addRefundRequestDto.BuyerId} Order={addRefundRequestDto.OrderId}",
                 cancellationToken);
+
+            var message = TradeMapper.GetRefundReceived(tradeId: (long)result.Id, orderId: addRefundRequestDto.OrderId, buyerId: buyerId);
+            await _producerService.ProduceAsync<uint?, RefundReceived>(
+                  topic: EventsTopics.REFUND_RECIEVED,
+                  message: new Message<uint?, RefundReceived> { Value = message },
+                  cancellationToken);
 
             return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
         }
