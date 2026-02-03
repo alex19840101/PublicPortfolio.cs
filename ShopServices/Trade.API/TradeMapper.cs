@@ -190,7 +190,7 @@ namespace Trade.API
         }
 
         /// <summary> Маппер в класс события "возврат платежа" </summary>
-        /// <param name="tradeId"> Id транзакции (оплаты) </param>
+        /// <param name="tradeId"> Id транзакции (возврата) </param>
         /// <param name="orderId"> Id заказа (при заказе)
         /// <para> (Покупка и оплата могут быть оффлайн без авторизации и привязки к аккаунту) </para></param>
         /// <param name="buyerId"> Id покупателя (при заказе)

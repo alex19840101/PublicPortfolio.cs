@@ -103,7 +103,7 @@ namespace Trade.API.Controllers
                 topic: EventsTopics.LEGACY_PAYMENT_RECIEVED,
                 message: $"Added Payment ID{result!.Id!} Buyer={addPaymentRequestDto.BuyerId} Order={addPaymentRequestDto.OrderId}",
                 cancellationToken);
-            var message = TradeMapper.GetPaymentReceived(tradeId: (long)result.Id, orderId: addPaymentRequestDto.OrderId, buyerId: buyerId);
+            var message = TradeMapper.GetPaymentReceived(tradeId: (long)result.Id, orderId: addPaymentRequestDto.OrderId, buyerId: addPaymentRequestDto.BuyerId);
             await _producerService.ProduceAsync<uint?, PaymentReceived>(
                   topic: EventsTopics.PAYMENT_RECIEVED,
                   message: new Message<uint?, PaymentReceived> { Value = message },
@@ -170,7 +170,7 @@ namespace Trade.API.Controllers
                 message: $"Added Refund ID{result!.Id!} Buyer={addRefundRequestDto.BuyerId} Order={addRefundRequestDto.OrderId}",
                 cancellationToken);
 
-            var message = TradeMapper.GetRefundReceived(tradeId: (long)result.Id, orderId: addRefundRequestDto.OrderId, buyerId: buyerId);
+            var message = TradeMapper.GetRefundReceived(tradeId: (long)result.Id, orderId: addRefundRequestDto.OrderId, buyerId: addRefundRequestDto.BuyerId);
             await _producerService.ProduceAsync<uint?, RefundReceived>(
                   topic: EventsTopics.REFUND_RECIEVED,
                   message: new Message<uint?, RefundReceived> { Value = message },
