@@ -69,6 +69,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{5149
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleTradeWatcher", "SimpleTradeWatcher\SimpleTradeWatcher.csproj", "{647E0828-45A7-48C6-A71F-EE3A837DC42D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeWatcher", "TradeWatcher\TradeWatcher.csproj", "{B0D8D4C2-28E4-4002-AF57-0EE69702E748}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -179,6 +181,10 @@ Global
 		{647E0828-45A7-48C6-A71F-EE3A837DC42D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{647E0828-45A7-48C6-A71F-EE3A837DC42D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{647E0828-45A7-48C6-A71F-EE3A837DC42D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0D8D4C2-28E4-4002-AF57-0EE69702E748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0D8D4C2-28E4-4002-AF57-0EE69702E748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0D8D4C2-28E4-4002-AF57-0EE69702E748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0D8D4C2-28E4-4002-AF57-0EE69702E748}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -206,6 +212,7 @@ Global
 		{0315B489-F6C0-4E10-97D6-47880B4AD219} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
 		{62C66064-C3AA-4B72-A4AB-3FBEB653FD4F} = {36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}
 		{647E0828-45A7-48C6-A71F-EE3A837DC42D} = {5149C97E-D024-4ABF-9AFB-A8E562DF5C54}
+		{B0D8D4C2-28E4-4002-AF57-0EE69702E748} = {5149C97E-D024-4ABF-9AFB-A8E562DF5C54}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B2F4AA3-7062-4E67-80C6-AE6A295F568E}
