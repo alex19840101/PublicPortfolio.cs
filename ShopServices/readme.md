@@ -69,6 +69,7 @@ TelegramBot.API\
 TestFixtures\
 TestResults\
 Trade.API\
+TradeWatcher\ // - Kafka consumer
 Warehouse.API\
 ```
 
@@ -105,7 +106,7 @@ Using in APIs projects, gRPC-services and NotificationsSender
 **- Event sourcing, Event Bus:**
 - MassTransit, RabbitMQ. //Using in Buyers.API, Employees.API, Orders.API, Notifications.API
 //RabbitMQ run in docker: docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4.1.2-management
-- Kafka (Confluent.Kafka 2.13.0 in Trade.API (producer) and SimpleTradeWatcher (consumer))
+- Kafka (Confluent.Kafka 2.13.0 in Trade.API (producer), SimpleTradeWatcher (consumer), TradeWatcher (consumer))
 
 **- Notifications:**
 - Telegram (using Telegram.Bot (v22.8.1) in TelegramBot.API)
