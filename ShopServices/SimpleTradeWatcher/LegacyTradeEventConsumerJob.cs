@@ -17,7 +17,7 @@ internal class LegacyTradeEventConsumerJob : BackgroundService
     {
         var config = new ConsumerConfig
         {
-            BootstrapServers = "localhost:9092",
+            BootstrapServers = "localhost:29092,localhost:39092,localhost:49092",
             GroupId = "test-group",
             AutoOffsetReset = AutoOffsetReset.Earliest
         };

@@ -19,22 +19,22 @@ internal class TradeEventConsumerJob : BackgroundService
     {
         var config = new ConsumerConfig
         {
-            BootstrapServers = "localhost:9092",
+            BootstrapServers = "localhost:29092,localhost:39092,localhost:49092",
             GroupId = "test-group",
             AutoOffsetReset = AutoOffsetReset.Earliest
         };
 
         const int CONSUMER_TIMEOUT_SECONDS = 5;
 
-        using var paymentConsumer = new ConsumerBuilder<int, PaymentReceived>(config)
-            .SetKeyDeserializer(Deserializers.Int32)
+        using var paymentConsumer = new ConsumerBuilder<long, PaymentReceived>(config)
+            .SetKeyDeserializer(Deserializers.Int64)
             .SetValueDeserializer(new SystemTextJsonDeserializer<PaymentReceived>())
             .Build();
 
         paymentConsumer.Subscribe(EventsTopics.PAYMENT_RECIEVED);
         
-        using var refundConsumer = new ConsumerBuilder<int, RefundReceived>(config)
-            .SetKeyDeserializer(Deserializers.Int32)
+        using var refundConsumer = new ConsumerBuilder<long, RefundReceived>(config)
+            .SetKeyDeserializer(Deserializers.Int64)
             .SetValueDeserializer(new SystemTextJsonDeserializer<RefundReceived>())
             .Build();
 
