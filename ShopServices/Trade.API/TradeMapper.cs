@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using ShopServices.Core.Models;
+using ShopServices.Core.Models.Events;
 using Trade.API.Contracts.Requests;
 using Trade.API.Contracts.Responses;
 
@@ -166,6 +168,44 @@ namespace Trade.API
                 RefundInfo = coreTrade.RefundInfo,
                 Archived = coreTrade.Archived
             });
+        }
+
+        /// <summary> Маппер в класс события "поступила оплата" </summary>
+        /// <param name="tradeId"> Id транзакции (оплаты) </param>
+        /// <param name="orderId"> Id заказа (при заказе)
+        /// <para> (Покупка и оплата могут быть оффлайн без авторизации и привязки к аккаунту) </para></param>
+        /// <param name="buyerId"> Id покупателя (при заказе)
+        /// <para> (Покупка и оплата могут быть оффлайн без авторизации и привязки к аккаунту) </para></param>
+        /// <returns> Событие "поступила оплата" </returns>
+        internal static PaymentReceived GetPaymentReceived(long tradeId, uint? orderId, uint? buyerId)
+        {
+            return new PaymentReceived(
+                id: Guid.NewGuid(),
+                tradeId: tradeId,
+                created: DateTime.Now,
+                message: EventsNames.PAYMENT_RECIEVED,
+                notification: EventsNames.PAYMENT_RECIEVED,
+                buyerId: buyerId,
+                orderId: orderId);
+        }
+
+        /// <summary> Маппер в класс события "возврат платежа" </summary>
+        /// <param name="tradeId"> Id транзакции (возврата) </param>
+        /// <param name="orderId"> Id заказа (при заказе)
+        /// <para> (Покупка и оплата могут быть оффлайн без авторизации и привязки к аккаунту) </para></param>
+        /// <param name="buyerId"> Id покупателя (при заказе)
+        /// <para> (Покупка и оплата могут быть оффлайн без авторизации и привязки к аккаунту) </para></param>
+        /// <returns> Событие "возврат платежа" </returns>
+        internal static RefundReceived GetRefundReceived(long tradeId, uint? orderId, uint? buyerId)
+        {
+            return new RefundReceived(
+                id: Guid.NewGuid(),
+                tradeId: tradeId,
+                created: DateTime.Now,
+                message: EventsNames.PAYMENT_RECIEVED,
+                notification: EventsNames.PAYMENT_RECIEVED,
+                buyerId: buyerId,
+                orderId: orderId);
         }
     }
 }
