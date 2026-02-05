@@ -19,7 +19,7 @@ namespace Trade.API
 
             _producerConfig = new ProducerConfig
             {
-                BootstrapServers = "localhost:29092",
+                BootstrapServers = "localhost:9092",
                 AllowAutoCreateTopics = true,
                 Acks = Acks.All
             };

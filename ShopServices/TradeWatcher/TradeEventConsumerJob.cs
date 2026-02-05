@@ -19,7 +19,7 @@ internal class TradeEventConsumerJob : BackgroundService
     {
         var config = new ConsumerConfig
         {
-            BootstrapServers = "localhost:29092",
+            BootstrapServers = "localhost:9092",
             GroupId = "test-group",
             AutoOffsetReset = AutoOffsetReset.Earliest
         };
