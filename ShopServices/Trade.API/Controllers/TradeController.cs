@@ -104,11 +104,11 @@ namespace Trade.API.Controllers
                 message: $"Added Payment ID{result!.Id!} Buyer={addPaymentRequestDto.BuyerId} Order={addPaymentRequestDto.OrderId}",
                 cancellationToken);
             var message = TradeMapper.GetPaymentReceived(tradeId: (long)result.Id, orderId: addPaymentRequestDto.OrderId, buyerId: addPaymentRequestDto.BuyerId);
-            await _producerService.ProduceAsync<uint?, PaymentReceived>(
+            await _producerService.ProduceAsync<long, PaymentReceived>(
                   topic: EventsTopics.PAYMENT_RECIEVED,
-                  message: new Message<uint?, PaymentReceived>
+                  message: new Message<long, PaymentReceived>
                   { 
-                      Key = addPaymentRequestDto.OrderId ?? addPaymentRequestDto.BuyerId,
+                      Key = (long)(addPaymentRequestDto.OrderId ?? addPaymentRequestDto.BuyerId ?? result!.Id!),
                       Value = message },
                   cancellationToken);
 
@@ -117,6 +117,7 @@ namespace Trade.API.Controllers
 
         /// <summary> Добавление возврата </summary>
         /// <param name="addRefundRequestDto"> Запрос на добавление возврата </param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(typeof(Result), (int)HttpStatusCode.Created)]
@@ -174,11 +175,11 @@ namespace Trade.API.Controllers
                 cancellationToken);
 
             var message = TradeMapper.GetRefundReceived(tradeId: (long)result.Id, orderId: addRefundRequestDto.OrderId, buyerId: addRefundRequestDto.BuyerId);
-            await _producerService.ProduceAsync<uint?, RefundReceived>(
+            await _producerService.ProduceAsync<long, RefundReceived>(
                   topic: EventsTopics.REFUND_RECIEVED,
-                  message: new Message<uint?, RefundReceived>
+                  message: new Message<long, RefundReceived>
                   {
-                      Key = addRefundRequestDto.OrderId ?? addRefundRequestDto.BuyerId,
+                      Key = (long)(addRefundRequestDto.OrderId ?? addRefundRequestDto.BuyerId ?? result.Id),
                       Value = message
                   },
                   cancellationToken);
