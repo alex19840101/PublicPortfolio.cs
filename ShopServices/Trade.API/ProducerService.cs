@@ -57,7 +57,9 @@ namespace Trade.API
         /// <param name="cancellationToken"> Токен отмены </param>
         public async Task ProduceAsync<TKey, TValue>(string topic, Message<TKey, TValue> message, CancellationToken cancellationToken)
         {
-            using var producer = new ProducerBuilder<TKey, TValue>(_producerConfig).Build();
+            using var producer = new ProducerBuilder<TKey, TValue>(_producerConfig)
+                .SetValueSerializer(new SystemTextJSonSerializer<TValue>())
+                .Build();
 
             try
             {
