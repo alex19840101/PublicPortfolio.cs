@@ -10,5 +10,10 @@ namespace ShopServices.Core.Models.Events
             base(id, tradeId, created, message, notification, buyerId, orderId)
         {
         }
+
+        public override string ToString()
+        {
+            return $"Refund(tradeId={TradeId},buyer={BuyerId},order={OrderId})";
+        }
     }
 }

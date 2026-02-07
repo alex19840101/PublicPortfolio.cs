@@ -202,8 +202,8 @@ namespace Trade.API
                 id: Guid.NewGuid(),
                 tradeId: tradeId,
                 created: DateTime.Now,
-                message: EventsNames.PAYMENT_RECIEVED,
-                notification: EventsNames.PAYMENT_RECIEVED,
+                message: EventsNames.REFUND_RECIEVED,
+                notification: EventsNames.REFUND_RECIEVED,
                 buyerId: buyerId,
                 orderId: orderId);
         }
