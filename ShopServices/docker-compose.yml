@@ -1,12 +1,4 @@
 services:
-  zookeeper:
-    image: confluentinc/cp-zookeeper:latest
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - 22181:2181
-
   controller-1:
     image: apache/kafka:latest
     container_name: controller-1
@@ -105,15 +97,12 @@ services:
 
 
   kafka-ui:
-    image: provectuslabs/kafka-ui
+    image: provectuslabs/kafka-ui:latest
     container_name: kafka-ui
     ports:
-      - 8090:8080
-    restart: always
+      - 8082:8080
     environment:
-      - KAFKA_CLUSTERS_0_NAME=local
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka-1:29092,kafka-2:29093
-      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+      DYNAMIC_CONFIG_ENABLED: true
     links:
       - broker-1
       - broker-2
@@ -121,4 +110,3 @@ services:
       - controller-1
       - controller-2
       - controller-3
-      - zookeeper
