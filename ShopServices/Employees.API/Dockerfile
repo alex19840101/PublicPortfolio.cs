@@ -12,19 +12,25 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Auth.API/Auth.API.csproj", "Auth.API/"]
-RUN dotnet restore "./Auth.API/Auth.API.csproj"
+COPY ["ServiceCollectionsExtensions/ServiceCollectionsExtensions.csproj", "ServiceCollectionsExtensions/"]
+RUN dotnet restore "./ServiceCollectionsExtensions/ServiceCollectionsExtensions.csproj"
 COPY . .
-WORKDIR "/src/Auth.API"
-RUN dotnet build "./Auth.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/ServiceCollectionsExtensions"
+RUN dotnet build "./ServiceCollectionsExtensions.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+COPY ["Employees.API/Employees.API.csproj", "Employees.API/"]
+RUN dotnet restore "./Employees.API/Employees.API.csproj"
+COPY . .
+WORKDIR "/src/Employees.API"
+RUN dotnet build "./Employees.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Этот этап используется для публикации проекта службы, который будет скопирован на последний этап
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Auth.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Employees.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Этот этап используется в рабочей среде или при запуске из VS в обычном режиме (по умолчанию, когда конфигурация отладки не используется)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Auth.API.dll"]
+ENTRYPOINT ["dotnet", "Employees.API.dll"]
