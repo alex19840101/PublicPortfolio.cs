@@ -12,6 +12,36 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+COPY ["ServiceCollectionsExtensions/ServiceCollectionsExtensions.csproj", "ServiceCollectionsExtensions/"]
+RUN dotnet restore "./ServiceCollectionsExtensions/ServiceCollectionsExtensions.csproj"
+COPY . .
+WORKDIR "/src/ServiceCollectionsExtensions"
+RUN dotnet build "./ServiceCollectionsExtensions.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+COPY ["ShopServices.Abstractions/ShopServices.Abstractions.csproj", "ShopServices.Abstractions/"]
+RUN dotnet restore "./ShopServices.Abstractions/ShopServices.Abstractions.csproj"
+COPY . .
+WORKDIR "/src/ShopServices.Abstractions"
+RUN dotnet build "./ShopServices.Abstractions.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+COPY ["ShopServices.BusinessLogic/ShopServices.BusinessLogic.csproj", "ShopServices.BusinessLogic/"]
+RUN dotnet restore "./ShopServices.BusinessLogic/ShopServices.BusinessLogic.csproj"
+COPY . .
+WORKDIR "/src/ShopServices.BusinessLogic"
+RUN dotnet build "./ShopServices.BusinessLogic.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+COPY ["ShopServices.Core/ShopServices.Core.csproj", "ShopServices.Core/"]
+RUN dotnet restore "./ShopServices.Core/ShopServices.Core.csproj"
+COPY . .
+WORKDIR "/src/ShopServices.Core"
+RUN dotnet build "./ShopServices.Core.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+COPY ["ShopServices.DataAccess/ShopServices.DataAccess.csproj", "ShopServices.DataAccess/"]
+RUN dotnet restore "./ShopServices.DataAccess/ShopServices.DataAccess.csproj"
+COPY . .
+WORKDIR "/src/ShopServices.DataAccess"
+RUN dotnet build "./ShopServices.DataAccess.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
 
 COPY ["Employees.API/Employees.API.csproj", "Employees.API/"]
 RUN dotnet restore "./Employees.API/Employees.API.csproj"
