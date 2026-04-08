@@ -19,6 +19,10 @@
 	  <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.1" />
 	  <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.1" />
 	  <PackageReference Include="Grpc.AspNetCore" Version="2.76.0" />
+	  <PackageReference Include="Grpc.Tools" Version="2.80.0">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
 	  <PackageReference Include="MailKit" Version="4.15.1" />
 	  <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.14" />
 	  <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.6" />

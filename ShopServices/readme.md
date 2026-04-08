@@ -1,6 +1,6 @@
 # ShopServices (In development)
 
-ShopServices - pet project services for chain of shops (stores).
+ShopServices - pet project microservices for chain of shops (stores).
 
 ## **Entities:**
 ```csharp
@@ -109,6 +109,6 @@ Using in APIs projects, gRPC-services and NotificationsSender
 - Kafka (Confluent.Kafka 2.13.0 in Trade.API (producer), SimpleTradeWatcher (consumer), TradeWatcher (consumer))
 
 **- Notifications:**
-- Telegram (using Telegram.Bot (v22.9.5.3) in TelegramBot.API)
+- Telegram (using Telegram.Bot (v22.9.6) in TelegramBot.API)
 - E-mail notifications (using MailKit)
 - SMS-notifications (SmsNotificationsService - notifier abstract simulation and SmsNotificationsByAzureService using Azure.Communication.Sms)
