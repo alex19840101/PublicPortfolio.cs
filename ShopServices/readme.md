@@ -1,6 +1,6 @@
 # ShopServices (In development)
 
-ShopServices - pet project services for chain of shops (stores).
+ShopServices - pet project microservices for chain of shops (stores).
 
 ## **Entities:**
 ```csharp
@@ -64,10 +64,12 @@ ShopServices.BusinessLogic\
 ShopServices.BusinessLogic.MsTests\
 ShopServices.Core\
 ShopServices.DataAccess\
+SimpleTradeWatcher\ // - Kafka consumer
 TelegramBot.API\
 TestFixtures\
 TestResults\
 Trade.API\
+TradeWatcher\ // - Kafka consumer
 Warehouse.API\
 ```
 
@@ -81,7 +83,7 @@ Warehouse.API\
 - TelegramBot.API, NotifierByEmail.API, NotifierBySms.API
 - NotificationsSender as gRPC-client
 
-**- ORM:** EF Core.
+**- ORM:** EF Core, + Dapper in Notifications.API.
 
 **- DataBase**: PostgreSQL 17.
 
@@ -101,7 +103,12 @@ Using in APIs projects, gRPC-services and NotificationsSender
 - MsTest tests (BuyerSeviceTests, EmployeeSeviceTests);
 - using extra NuGet packages: Moq, AutoFixture, FluentAssertions (methods versions with FluentAssertions and without FluentAssertions in AuthServiceTests).
 
+**- Event sourcing, Event Bus:**
+- MassTransit, RabbitMQ. //Using in Buyers.API, Employees.API, Orders.API, Notifications.API
+//RabbitMQ run in docker: docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:4.1.2-management
+- Kafka (Confluent.Kafka 2.13.0 in Trade.API (producer), SimpleTradeWatcher (consumer), TradeWatcher (consumer))
+
 **- Notifications:**
-- Telegram (using Telegram.Bot v22.6.0 in TelegramBot.API)
+- Telegram (using Telegram.Bot in TelegramBot.API)
 - E-mail notifications (using MailKit)
 - SMS-notifications (SmsNotificationsService - notifier abstract simulation and SmsNotificationsByAzureService using Azure.Communication.Sms)

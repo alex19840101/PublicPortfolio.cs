@@ -13,6 +13,9 @@ using ShopServices.Abstractions.Auth;
 using Employees.API.Contracts.Requests;
 using ShopServices.Core.Enums;
 using System.Collections.Generic;
+using MassTransit;
+using Microsoft.Extensions.Logging;
+using ShopServices.Core.Models.Events;
 
 namespace Employees.API.Controllers;
 
@@ -25,11 +28,18 @@ namespace Employees.API.Controllers;
 public class EmployeesController : ControllerBase
 {
     private readonly IEmployeesService _employeesService;
+    /// <summary> MassTransit-публикатор ((в RabbitMQ и/или Kafka)) </summary>
+    private readonly IPublishEndpoint _massTransitPublishEndpoint;
+    private readonly ILogger<EmployeesController> _logger;
 
     /// <summary> Конструктор контроллера управления аутентификацией работников </summary>
-    public EmployeesController(IEmployeesService employeesService)
+    public EmployeesController(IEmployeesService employeesService,
+        IPublishEndpoint publishEndpoint,
+        ILogger<EmployeesController> logger)
     {
         _employeesService = employeesService;
+        _massTransitPublishEndpoint = publishEndpoint;
+        _logger = logger;
     }
 
     /// <summary> Регистрация работника </summary>
@@ -40,7 +50,7 @@ public class EmployeesController : ControllerBase
     [ProducesResponseType(typeof(Result), (int)HttpStatusCode.InternalServerError)]
     public async Task<IActionResult> Register(RegisterRequestDto request)
     {
-        var registerResult = await _employeesService.Register(GetCoreEmployee(request));
+        var registerResult = await _employeesService.Register(EmployeesMapper.GetCoreEmployee(request));
 
         if (registerResult.StatusCode == HttpStatusCode.BadRequest)
             return new BadRequestObjectResult(new ProblemDetails { Title = registerResult.Message });
@@ -60,6 +70,9 @@ public class EmployeesController : ControllerBase
             Id = registerResult!.Id!.Value,
             Message = registerResult.Message,
         };
+        _logger.LogInformation((EventId)(int)result!.Id!, @"Registered Employee {result.Id}", result!.Id!);
+        await _massTransitPublishEndpoint.Publish<EmployeeRegistered>(message: EmployeesMapper.GetEmployeeRegistered(employeeId: (uint)registerResult!.Id!.Value));
+
         return new ObjectResult(result) { StatusCode = StatusCodes.Status201Created };
 
     }
@@ -72,7 +85,7 @@ public class EmployeesController : ControllerBase
     [ProducesResponseType(typeof(AuthResponseDto), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> Login(LoginRequestDto request)
     {
-        var loginResult = await _employeesService.Login(GetCoreLoginData(request));
+        var loginResult = await _employeesService.Login(EmployeesMapper.GetCoreLoginData(request));
 
         if (loginResult.StatusCode == HttpStatusCode.BadRequest)
             return new BadRequestObjectResult(new ProblemDetails { Title = loginResult.Message });
@@ -104,7 +117,7 @@ public class EmployeesController : ControllerBase
     [Authorize(AuthenticationSchemes = AuthSchemes.Bearer)]
     public async Task<IActionResult> GrantRole(GrantRoleRequestDto request)
     {
-        var grantResult = await _employeesService.GrantRole(GetCoreGrantRoleData(request));
+        var grantResult = await _employeesService.GrantRole(EmployeesMapper.GetCoreGrantRoleData(request));
 
         if (grantResult.StatusCode == HttpStatusCode.NotFound)
             return NotFound(grantResult);
@@ -126,7 +139,7 @@ public class EmployeesController : ControllerBase
     [ProducesResponseType(typeof(AuthResult), (int)HttpStatusCode.Conflict)]
     public async Task<IActionResult> UpdateAccount(UpdateAccountRequestDto request)
     {
-        var updateResult = await _employeesService.UpdateAccount(GetCoreUpdateAccountData(request));
+        var updateResult = await _employeesService.UpdateAccount(EmployeesMapper.GetCoreUpdateAccountData(request));
 
         if (updateResult.StatusCode == HttpStatusCode.NotFound)
             return NotFound(updateResult);
@@ -136,6 +149,8 @@ public class EmployeesController : ControllerBase
 
         if (updateResult.StatusCode == HttpStatusCode.Conflict)
             return new ConflictObjectResult(updateResult);
+
+        await _massTransitPublishEndpoint.Publish<EmployeeUpdated>(message: EmployeesMapper.GetEmployeeUpdated(employeeId: request!.Id));
 
         return Ok(updateResult);
     }
@@ -149,7 +164,7 @@ public class EmployeesController : ControllerBase
     [ProducesResponseType(typeof(Result), (int)HttpStatusCode.NotFound)]
     public async Task<IActionResult> DeleteAccount(DeleteAccountRequestDto request)
     {
-        var deleteResult = await _employeesService.DeleteAccount(GetCoreDeleteAccountData(request));
+        var deleteResult = await _employeesService.DeleteAccount(EmployeesMapper.GetCoreDeleteAccountData(request));
 
         if (deleteResult.StatusCode == HttpStatusCode.NotFound)
             return NotFound(deleteResult);
@@ -178,7 +193,7 @@ public class EmployeesController : ControllerBase
         if (employee is null)
             return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
 
-        return Ok(GetUserInfoResponseDto(employee));
+        return Ok(EmployeesMapper.GetUserInfoResponseDto(employee));
     }
 
     /// <summary> Получение информации о работнике по логину (для администраторов) </summary>
@@ -196,108 +211,8 @@ public class EmployeesController : ControllerBase
         if (employee is null)
             return NotFound(new Result { Message = ResultMessager.NOT_FOUND });
 
-        return Ok(GetUserInfoResponseDto(employee));
+        return Ok(EmployeesMapper.GetUserInfoResponseDto(employee));
     }
 
-    [NonAction]
-    private static Employee GetCoreEmployee(RegisterRequestDto request) =>
-        new Employee(
-            id: 0,
-            login: request.Login,
-            name: request.Name,
-            surname: request.Surname,
-            address: request.Address,
-            email: request.Email,
-            passwordHash: SHA256Hasher.GeneratePasswordHash(request.Password, request.RepeatPassword),
-            nick: request.Nick,
-            phone: request.Phone,
-            telegramChatId: null,
-            notificationMethods: [NotificationMethod.Email, NotificationMethod.SMS],
-            role: request.RequestedRole,
-            granterId: null,
-            createdDt: DateTime.Now,
-            lastUpdateDt: null,
-            shopId: request.ShopId,
-            warehouseId: request.WarehouseId);
-
-    [NonAction]
-    private static LoginData GetCoreLoginData(LoginRequestDto request)
-    {
-        return new LoginData(
-            login: request.Login,
-            passwordHash: SHA256Hasher.GeneratePasswordHash(request.Password, request.Password),
-            timeoutMinutes: request.TimeoutMinutes);
-    }
-
-
-    [NonAction]
-    private static DeleteAccountData GetCoreDeleteAccountData(DeleteAccountRequestDto request)
-    {
-        return new DeleteAccountData(
-            id: request.Id,
-            login: request.Login,
-            passwordHash: SHA256Hasher.GeneratePasswordHash(request.Password, request.RepeatPassword),
-            granterId: request.GranterId,
-            granterLogin: request.GranterLogin);
-    }
-
-    #region Logout не требуется для пет-проекта
-    //[NonAction]
-    //private static LogoutData LogoutData(LogoutRequestDto request)
-    //{
-    //    return new LogoutData(
-    //        login: request.Login,
-    //        id: request.Id);
-    //}
-    #endregion Logout не требуется для пет-проекта
-
-    [NonAction]
-    private static GrantRoleData GetCoreGrantRoleData(GrantRoleRequestDto requestDto)
-    {
-        return new GrantRoleData(
-            id: requestDto.Id,
-            login: requestDto.Login,
-            passwordHash: SHA256Hasher.GeneratePasswordHash(requestDto.Password, repeatPassword: requestDto.Password),
-            newRole: requestDto.NewRole,
-            granterId: requestDto.GranterId,
-            granterLogin: requestDto.GranterLogin);
-    }
-
-    [NonAction]
-    private static UpdateAccountData GetCoreUpdateAccountData(UpdateAccountRequestDto requestDto)
-    {
-        return new UpdateAccountData(
-                id: requestDto.Id,
-                login: requestDto.Login,
-                name: requestDto.Name,
-                surname: requestDto.Surname,
-                address: requestDto.Address,
-                email: requestDto.Email,
-                passwordHash: SHA256Hasher.GeneratePasswordHash(requestDto.ExistingPassword, repeatPassword: requestDto.ExistingPassword),
-                newPasswordHash: requestDto.NewPassword != null ? SHA256Hasher.GeneratePasswordHash(requestDto.NewPassword, repeatPassword: requestDto.RepeatNewPassword) : null,
-                nick: requestDto.Nick,
-                phone: requestDto.Phone,
-                telegramChatId: requestDto.TelegramChatId,
-                shopId: requestDto.ShopId,
-                warehouseId: requestDto.WarehouseId,
-                requestedRole: requestDto.RequestedRole);
-    }
-
-    [NonAction]
-    private static UserInfoResponseDto GetUserInfoResponseDto(Employee employee) =>
-        new UserInfoResponseDto
-        {
-            Id = employee.Id,
-            Login = employee.Login,
-            Name = employee.Name,
-            Surname = employee.Surname,
-            Email = employee.Email,
-            Nick = employee.Nick,
-            Phone = employee.Phone,
-            TelegramChatId = employee.TelegramChatId,
-            NotificationMethods = employee.NotificationMethods,
-            Role = employee.Role,
-            ShopId = employee.ShopId,
-            WarehouseId = employee.WarehouseId,
-        };
+    
 }
