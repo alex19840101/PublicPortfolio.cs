@@ -30,6 +30,8 @@ namespace ShopServices.DataAccess.Entities
         public bool Blocked { get { return _blocked; } }
 
         public ICollection<Order> Orders { get; set; } = [];
+        /// <summary> Навигационное свойство: коллекция транзакций оплаты/возврата </summary>
+        public ICollection<Trade> Trades { get; set; } = [];
         public ICollection<Delivery> Deliveries { get; set; } = [];
 
 

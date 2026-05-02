@@ -69,7 +69,7 @@ namespace NotifierByEmail.API.Services.gRPC
 
             return new SendEmailReply
             {
-                MessageId = (long)sendResult.Id!,
+                //MessageId = (long)sendResult.Id!, //отсутствует в ответе
                 Message = "OK",
                 StatusCode = (int)HttpStatusCode.OK
             };

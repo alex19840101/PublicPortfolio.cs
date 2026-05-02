@@ -52,8 +52,12 @@ try
     builder.Services.AddOpenApi();
 
     builder.Services.AddScoped<ITradeRepository, TradeRepository>();
+    builder.Services.AddScoped<IBuyersRepository, BuyersRepository>();
+    builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
     builder.Services.AddScoped<ITradeService>(src => new TradeService(
-        src.GetRequiredService<ITradeRepository>()));
+        src.GetRequiredService<ITradeRepository>(),
+        src.GetRequiredService<IBuyersRepository>(),
+        src.GetRequiredService<IProductsRepository>()));
 
     string dataBaseConnectionStr = builder.Configuration.GetConnectionString("ShopServices")!;
 
@@ -87,6 +91,7 @@ try
         .AddEntityFrameworkStores<ShopServicesDbContext>();
 
     builder.Services.AddSwaggerAndVersioning(SERVICE_NAME);
+    builder.Services.AddScoped<ProducerService>();
    
     var app = builder.Build();
 
