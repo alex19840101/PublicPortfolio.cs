@@ -18,7 +18,7 @@
 	<PackageReference Include="Asp.Versioning.Http" Version="8.1.1" />
 	<PackageReference Include="Asp.Versioning.Mvc" Version="8.1.1" />
 	<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.1" />
-	<PackageReference Include="Grpc.AspNetCore" Version="2.76.0" />
+	<PackageReference Include="Grpc.AspNetCore" Version="2.80.0" />
 	<PackageReference Include="Grpc.Tools" Version="2.80.0">
 	  <PrivateAssets>all</PrivateAssets>
 	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -26,7 +26,7 @@
 	<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.15" />
 	<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.6" />
 	<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.6" />
-	<PackageReference Include="Telegram.Bot" Version="22.9.6.1" />
+	<PackageReference Include="Telegram.Bot" Version="22.9.6.2" />
   </ItemGroup>
 
   <ItemGroup>
