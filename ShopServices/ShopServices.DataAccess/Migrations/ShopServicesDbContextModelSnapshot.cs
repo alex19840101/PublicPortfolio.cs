@@ -18,7 +18,7 @@ namespace ShopServices.DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.6")
+                .HasAnnotation("ProductVersion", "9.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -46,8 +46,28 @@ namespace ShopServices.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<int>("CityTownCode")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Count")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastSupplyTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("ManagerId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("NextSupplyTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("PlaceName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
@@ -55,10 +75,15 @@ namespace ShopServices.DataAccess.Migrations
                     b.Property<int?>("ShopId")
                         .HasColumnType("integer");
 
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int?>("WarehouseId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ManagerId");
 
                     b.ToTable("Availabilities");
                 });
@@ -784,7 +809,70 @@ namespace ShopServices.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<bool>("Archived")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("BuyerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comment")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<int?>("CourierId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("character varying(5)");
+
+                    b.Property<string>("ExtraInfo")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<int?>("ManagerId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PaymentInfo")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<string>("Positions")
+                        .IsRequired()
+                        .HasMaxLength(16384)
+                        .HasColumnType("character varying(16384)");
+
+                    b.Property<decimal?>("RefundAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime?>("RefundDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("RefundInfo")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<int?>("ShopId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("BuyerId");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ShopId");
 
                     b.ToTable("Trades");
                 });
@@ -909,6 +997,15 @@ namespace ShopServices.DataAccess.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ShopServices.DataAccess.Entities.Availability", b =>
+                {
+                    b.HasOne("ShopServices.DataAccess.Entities.Manager", "Manager")
+                        .WithMany()
+                        .HasForeignKey("ManagerId");
+
+                    b.Navigation("Manager");
+                });
+
             modelBuilder.Entity("ShopServices.DataAccess.Entities.Delivery", b =>
                 {
                     b.HasOne("ShopServices.DataAccess.Entities.Buyer", null)
@@ -995,6 +1092,28 @@ namespace ShopServices.DataAccess.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("ShopServices.DataAccess.Entities.Trade", b =>
+                {
+                    b.HasOne("ShopServices.DataAccess.Entities.Buyer", "Buyer")
+                        .WithMany("Trades")
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("ShopServices.DataAccess.Entities.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("ShopServices.DataAccess.Entities.Shop", "Shop")
+                        .WithMany()
+                        .HasForeignKey("ShopId");
+
+                    b.Navigation("Buyer");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Shop");
+                });
+
             modelBuilder.Entity("ShopServices.DataAccess.Entities.Courier", b =>
                 {
                     b.HasOne("ShopServices.DataAccess.Entities.Employee", null)
@@ -1018,6 +1137,8 @@ namespace ShopServices.DataAccess.Migrations
                     b.Navigation("Deliveries");
 
                     b.Navigation("Orders");
+
+                    b.Navigation("Trades");
                 });
 
             modelBuilder.Entity("ShopServices.DataAccess.Entities.Order", b =>

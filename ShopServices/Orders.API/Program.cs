@@ -17,6 +17,7 @@ using ShopServices.Core.Repositories;
 using ShopServices.Core.Services;
 using ShopServices.DataAccess;
 using ShopServices.DataAccess.Repositories;
+using MassTransit;
 
 const string SERVICE_NAME = "Orders.API";
 
@@ -50,7 +51,10 @@ try
     builder.Services.AddAuthenticationBuilderForJWT(tokenValidationParameters);
 
     builder.Services.AddOpenApi();
-
+    builder.Services.AddMassTransit(configure =>
+    {
+        configure.UsingRabbitMq();
+    });
     builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
     builder.Services.AddScoped<IBuyersRepository, BuyersRepository>();
     builder.Services.AddScoped<IPricesRepository, PricesRepository>();

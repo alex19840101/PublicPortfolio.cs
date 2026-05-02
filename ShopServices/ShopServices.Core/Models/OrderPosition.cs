@@ -1,47 +1,50 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace ShopServices.Core.Models
 {
     /// <summary> Товарная позиция в заказе </summary>
+    [JsonObjectCreationHandling(JsonObjectCreationHandling.Populate)] //для десериализации свойства только для чтения: https://learn.microsoft.com/ru-ru/dotnet/standard/serialization/system-text-json/immutability
     public class OrderPosition
     {
         /// <summary> *Уникальный идентификатор товарной позиции в системе </summary>
-        public uint Id { get; private set; }
+        [JsonInclude]  public uint Id { get; private set; }
 
         /// <summary> *Уникальный идентификатор товара в системе </summary>
-        public uint ProductId { get; private set; }
+        [JsonInclude] public uint ProductId { get; private set; }
 
         /// <summary> Артикул производителя (при наличии) </summary>
-        public string ArticleNumber { get; private set; }
+        [JsonInclude] public string ArticleNumber { get; private set; }
 
         /// <summary> Производитель (бренд) </summary>
-        public string Brand { get; private set; }
+        [JsonInclude] public string Brand { get; private set; }
 
         /// <summary> *Название товара </summary>
-        public string Name { get; private set; }
+        [JsonInclude] public string Name { get; private set; }
 
         /// <summary> Параметры товара </summary>
-        public string Params { get; private set; }
-        
+        [JsonInclude] public string Params { get; private set; }
+
         /// <summary> Цена за единицу измерения </summary>
-        public decimal Price { get; private set; }
+        [JsonInclude] public decimal Price { get; private set; }
 
         /// <summary> Количество, единиц измерения </summary>
-        public float Quantity { get; private set; }
+        [JsonInclude] public float Quantity { get; private set; }
 
         /// <summary> Стоимость общая по товарной позиции </summary>
-        public decimal Cost { get; private set; }
+        [JsonInclude] public decimal Cost { get; private set; }
 
         /// <summary> Валюта </summary>
-        public string Currency { get; private set; }
+        [JsonInclude] public string Currency { get; private set; }
 
+        [JsonConstructor]
         public OrderPosition(
             uint id,
             uint productId,
             string articleNumber,
             string brand,
             string name,
-            string parameters,
+            string @params,
             decimal price,
             float quantity,
             decimal cost,
@@ -52,7 +55,7 @@ namespace ShopServices.Core.Models
             ArticleNumber = articleNumber;
             Brand = brand;
             Name = name;
-            Params = parameters;
+            Params = @params;
             Price = price;
             Quantity = quantity;
             Cost = cost;

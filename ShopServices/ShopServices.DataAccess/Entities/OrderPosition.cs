@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopServices.DataAccess.Entities
 {
@@ -16,6 +15,9 @@ namespace ShopServices.DataAccess.Entities
         
         /// <summary> Навигационное свойство: заказ </summary>
         public Order Order { get; } = default!;
+
+        /// <summary> Навигационное свойство: транзакция </summary>
+        public Trade? Trade { get; }
 
         /// <summary> *Уникальный идентификатор товара в системе </summary>
         public uint ProductId { get; private set; }
