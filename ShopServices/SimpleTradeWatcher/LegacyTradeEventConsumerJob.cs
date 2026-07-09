@@ -19,7 +19,8 @@ internal class LegacyTradeEventConsumerJob : BackgroundService
         {
             BootstrapServers = "localhost:29092,localhost:39092,localhost:49092",
             GroupId = "test-group",
-            AutoOffsetReset = AutoOffsetReset.Earliest
+            AutoOffsetReset = AutoOffsetReset.Earliest,
+            //ApiVersionRequest = false
         };
         const int CONSUMER_TIMEOUT_SECONDS = 5;
         using var consumer = new ConsumerBuilder<Ignore, string>(config).Build();
