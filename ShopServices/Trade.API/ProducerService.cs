@@ -21,7 +21,8 @@ namespace Trade.API
             {
                 BootstrapServers = "localhost:29092,localhost:39092,localhost:49092",
                 AllowAutoCreateTopics = true,
-                Acks = Acks.All
+                Acks = Acks.All,
+                //LingerMs = 5000
             };
         }
 
