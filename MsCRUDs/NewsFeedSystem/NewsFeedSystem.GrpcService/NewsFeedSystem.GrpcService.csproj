@@ -16,18 +16,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.80.0" />
-	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.17" />
-	<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.17" />
-	<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.17" />
-	<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.17" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.17">
+    <PackageReference Include="Grpc.AspNetCore" />
+	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+	<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
+	<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+	<PackageReference Include="Microsoft.AspNetCore.Identity.UI" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" >
 		<PrivateAssets>all</PrivateAssets>
 		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	</PackageReference>
-	<PackageReference Include="Serilog" Version="4.4.0" />
-	<PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
-	<PackageReference Include="Serilog.Expressions" Version="5.0.0" />
+	<PackageReference Include="Serilog" />
+	<PackageReference Include="Serilog.AspNetCore" />
+	<PackageReference Include="Serilog.Expressions" />
   </ItemGroup>
 
   <ItemGroup>
