@@ -10,42 +10,42 @@
     <PackageVersion Include="MassTransit" Version="8.5.5" />
     <PackageVersion Include="MassTransit.AspNetCore" Version="7.3.1" />
     <PackageVersion Include="MassTransit.RabbitMQ" Version="8.5.5" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.17" />
-    <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.17" />
-    <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.17" />
-    <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.17" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.18" />
+    <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.18" />
+    <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.18" />
+    <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.18" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
-    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="9.0.17" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.17" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.17" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.17" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="9.0.18" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="9.0.18" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.18" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.18" />
     <PackageVersion Include="Microsoft.Extensions.ApiDescription.Server" Version="9.0.11" />
-    <PackageVersion Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.17" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.17" />
-    <PackageVersion Include="Microsoft.IdentityModel.Tokens" Version="8.19.1" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
+    <PackageVersion Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.18" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.18" />
+    <PackageVersion Include="Microsoft.IdentityModel.Tokens" Version="8.19.2" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <PackageVersion Include="Serilog" Version="4.4.0" />
     <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageVersion Include="Serilog.Expressions" Version="5.0.0" />
     <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.6" />
     <PackageVersion Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.6" />
-    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.19.1" />
+    <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.19.2" />
     <PackageVersion Include="AutoFixture" Version="4.18.1" />
     <PackageVersion Include="FluentAssertions" Version="8.10.0" />
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="MSTest" Version="4.3.2" />
     <PackageVersion Include="System.Net.Http" Version="4.3.4" />
     <PackageVersion Include="System.Text.RegularExpressions" Version="4.3.1" />
-    <PackageVersion Include="System.Text.Json" Version="9.0.17" />
+    <PackageVersion Include="System.Text.Json" Version="9.0.18" />
     <PackageVersion Include="Google.Protobuf" Version="3.35.1" />
     <PackageVersion Include="Grpc.AspNetCore" Version="2.80.0" />
     <PackageVersion Include="Grpc.Net.Client" Version="2.80.0" />
     <PackageVersion Include="Grpc.Tools" Version="2.82.0" />
     <PackageVersion Include="Confluent.Kafka" Version="2.15.0" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.17" />
-    <PackageVersion Include="Telegram.Bot" Version="22.10.1.1" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.18" />
+    <PackageVersion Include="Telegram.Bot" Version="22.10.2" />
     <PackageVersion Include="MailKit" Version="4.17.0" />
     <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
     <PackageVersion Include="Azure.Communication.Sms" Version="1.0.2" />
