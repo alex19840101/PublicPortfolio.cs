@@ -10,7 +10,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.20" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.20" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.20" />
-    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.3.12" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.3.13" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="9.0.20" />
@@ -38,7 +38,7 @@
     <PackageVersion Include="Serilog.Expressions" Version="5.0.0" />
     <PackageVersion Include="AutoFixture" Version="4.18.1" />
     <PackageVersion Include="FluentAssertions" Version="8.10.0" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.0" />
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="MSTest" Version="4.4.0" />
   </ItemGroup>
