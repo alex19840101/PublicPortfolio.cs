@@ -6,7 +6,7 @@
     <PackageVersion Include="Asp.Versioning.Http" Version="8.1.1" />
     <PackageVersion Include="Asp.Versioning.Mvc" Version="8.1.1" />
     <PackageVersion Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.1" />
-    <PackageVersion Include="Dapper" Version="2.1.86" />
+    <PackageVersion Include="Dapper" Version="2.1.89" />
     <PackageVersion Include="MassTransit" Version="8.5.5" />
     <PackageVersion Include="MassTransit.AspNetCore" Version="7.3.1" />
     <PackageVersion Include="MassTransit.RabbitMQ" Version="8.5.5" />
