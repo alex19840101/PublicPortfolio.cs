@@ -31,7 +31,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
         {
             ProjectTask task = null;
             CreateResult createResult = null;
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => createResult = await _tasksService.Create(task));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => createResult = await _tasksService.Create(task));
 
             _tasksRepositoryMock.Verify(sr => sr.Add(task, false), Times.Never);
             Assert.That(exception != null);
@@ -44,7 +44,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
         {
             ProjectTask task = null;
             CreateResult createResult = null;
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => createResult = await _tasksService.Create(task));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => createResult = await _tasksService.Create(task));
 
             _tasksRepositoryMock.Verify(sr => sr.Add(task, false), Times.Never);
             exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ErrorStrings.TASK_PARAM_NAME);
@@ -223,7 +223,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
         {
             IEnumerable<ProjectTask> tasks = null;
             ImportResult importResult = null;
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => importResult = await _tasksService.Import(tasks));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => importResult = await _tasksService.Import(tasks));
 
             _tasksRepositoryMock.Verify(sr => sr.Import(tasks), Times.Never);
             Assert.That(exception != null);
@@ -236,7 +236,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
         {
             IEnumerable<ProjectTask> tasks = null;
             ImportResult importResult = null;
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => importResult = await _tasksService.Import(tasks));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => importResult = await _tasksService.Import(tasks));
 
             _tasksRepositoryMock.Verify(sr => sr.Import(tasks), Times.Never);
             exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ErrorStrings.TASKS_PARAM_NAME);
@@ -421,7 +421,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
                 .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.BadRequest, Message = importResultExpectedMessage, ImportedCount = 0 });
 
             ImportResult importResult = null;
-            var exception = Assert.ThrowsAsync<InvalidOperationException>(async () => importResult = await _tasksService.Import(tasks));
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(async () => importResult = await _tasksService.Import(tasks));
 
             _tasksRepositoryMock.Verify(sr => sr.GetAllTasks(), Times.Once);
             _tasksRepositoryMock.Verify(sr => sr.Import(tasks), Times.Once);
@@ -445,7 +445,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
                 .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.BadRequest, Message = importResultExpectedMessage, ImportedCount = 0 });
 
             ImportResult importResult = null;
-            var exception = Assert.ThrowsAsync<InvalidOperationException>(async () => importResult = await _tasksService.Import(tasks));
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(async () => importResult = await _tasksService.Import(tasks));
 
             _tasksRepositoryMock.Verify(sr => sr.GetAllTasks(), Times.Once);
             _tasksRepositoryMock.Verify(sr => sr.Import(tasks), Times.Once);

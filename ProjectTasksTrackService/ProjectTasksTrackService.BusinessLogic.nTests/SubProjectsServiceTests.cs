@@ -31,7 +31,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
         {
             ProjectSubDivision sub = null;
             CreateResult createResult = null;
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => createResult = await _subProjectsService.Create(sub));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => createResult = await _subProjectsService.Create(sub));
 
             _subProjectsRepositoryMock.Verify(sr => sr.Add(sub, false), Times.Never);
             Assert.That(exception != null);
@@ -44,7 +44,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
         {
             ProjectSubDivision sub = null;
             CreateResult createResult = null;
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => createResult = await _subProjectsService.Create(sub));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => createResult = await _subProjectsService.Create(sub));
 
             _subProjectsRepositoryMock.Verify(sr => sr.Add(sub, false), Times.Never);
             exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ErrorStrings.SUBPROJECT_PARAM_NAME);
@@ -215,7 +215,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
         {
             IEnumerable<ProjectSubDivision> subs = null;
             ImportResult importResult = null;
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => importResult = await _subProjectsService.Import(subs));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => importResult = await _subProjectsService.Import(subs));
 
             _subProjectsRepositoryMock.Verify(sr => sr.Import(subs), Times.Never);
             Assert.That(exception != null);
@@ -228,7 +228,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
         {
             IEnumerable<ProjectSubDivision> subs = null;
             ImportResult importResult = null;
-            var exception = Assert.ThrowsAsync<ArgumentNullException>(async () => importResult = await _subProjectsService.Import(subs));
+            var exception = await Assert.ThrowsAsync<ArgumentNullException>(async () => importResult = await _subProjectsService.Import(subs));
 
             _subProjectsRepositoryMock.Verify(sr => sr.Import(subs), Times.Never);
             exception.Should().NotBeNull().And.Match<ArgumentNullException>(e => e.ParamName == ErrorStrings.SUBS_PARAM_NAME);
@@ -413,7 +413,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
                 .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.BadRequest, Message = importResultExpectedMessage, ImportedCount = 0 });
 
             ImportResult importResult = null;
-            var exception = Assert.ThrowsAsync<InvalidOperationException>(async () => importResult = await _subProjectsService.Import(subs));
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(async () => importResult = await _subProjectsService.Import(subs));
 
             _subProjectsRepositoryMock.Verify(sr => sr.GetAllProjectSubDivisions(), Times.Once);
             _subProjectsRepositoryMock.Verify(sr => sr.Import(subs), Times.Once);
@@ -437,7 +437,7 @@ namespace ProjectTasksTrackService.BusinessLogic.nTests
                 .ReturnsAsync(new ImportResult { StatusCode = System.Net.HttpStatusCode.BadRequest, Message = importResultExpectedMessage, ImportedCount = 0 });
 
             ImportResult importResult = null;
-            var exception = Assert.ThrowsAsync<InvalidOperationException>(async () => importResult = await _subProjectsService.Import(subs));
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(async () => importResult = await _subProjectsService.Import(subs));
 
             _subProjectsRepositoryMock.Verify(sr => sr.GetAllProjectSubDivisions(), Times.Once);
             _subProjectsRepositoryMock.Verify(sr => sr.Import(subs), Times.Once);
