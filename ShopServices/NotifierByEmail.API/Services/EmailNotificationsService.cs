@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MailKit;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Logging;
 using MimeKit;
@@ -63,7 +64,7 @@ namespace NotifierByEmail.API.Services
 
                 return new Result
                 {
-                    Message = response,
+                    Message = response.ResponseText,
                     StatusCode = System.Net.HttpStatusCode.OK
                 };
             }
