@@ -56,8 +56,8 @@ namespace NotifierByEmail.API.Services
 
                 // Note: only needed if the SMTP server requires authentication
                 await smtpClient.AuthenticateAsync(
-                    userName: _emailBotOptionsSettings.UserName,
-                    password: _emailBotOptionsSettings.Password);
+                    userName: _emailBotOptionsSettings.UserName!,
+                    password: _emailBotOptionsSettings.Password!);
 
                 var response = await smtpClient.SendAsync(message);
                 await smtpClient.DisconnectAsync(true);
